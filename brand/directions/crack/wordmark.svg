@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume — Crack of Light direction</title>
+  <desc id="desc">A spare custom wordmark interrupted by one narrow amber wedge.</desc>
+  <g fill="none" stroke="#F4F1EA" stroke-width="13" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M34 34V103C34 134 52 150 78 150C104 150 122 134 122 103V34"/>
+    <path d="M151 75H232L158 146H239"/>
+    <path d="M269 76V118C269 137 280 148 298 148C316 148 328 136 328 118V76M328 76V146"/>
+    <path d="M361 146V76M361 105C361 86 372 74 389 74C407 74 417 86 417 105V146M417 105C417 86 428 74 445 74C463 74 473 86 473 105V146"/>
+    <path d="M573 123C567 140 553 149 534 149C509 149 493 133 493 111C493 89 509 73 532 73C555 73 570 88 570 109H495"/>
+  </g>
+  <path fill="#F2A64A" d="M122 25L137 25L120 97L113 97Z"/>
+</svg>

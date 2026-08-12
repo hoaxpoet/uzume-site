@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume pronunciation lockup — Rhythm</title>
+  <desc id="desc">Uzume wordmark with the pronunciation oo-ZOO-meh.</desc>
+  <g fill="none" stroke="#F4F1EA" stroke-width="10" stroke-linecap="butt" stroke-linejoin="bevel">
+    <path d="M34 34V112C34 138 51 151 77 151C103 151 120 138 120 112V34M55 34V110C55 123 62 130 77 130C92 130 99 123 99 110V34"/>
+    <path d="M148 78H226L158 145H236"/>
+    <path d="M264 78V118C264 138 276 148 294 148C312 148 324 137 324 118V78M288 78V120"/>
+    <path d="M354 146V78M377 146V104C377 86 387 77 402 77C417 77 426 88 426 104V146M450 146V104C450 86 460 77 475 77C490 77 499 88 499 104V146"/>
+    <path d="M574 122C568 139 555 148 537 148C513 148 500 133 500 112C500 90 514 76 535 76C557 76 571 91 571 111H503"/>
+  </g>
+  <path d="M377 77V146" stroke="#F2A64A" stroke-width="10"/>
+  <text x="36" y="202" fill="#C4BFB5" font-family="PT Sans, sans-serif" font-size="18" font-weight="600" letter-spacing="3">oo-ZOO-meh</text>
+</svg>

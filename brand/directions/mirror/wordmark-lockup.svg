@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume pronunciation lockup — Mirror Catch</title>
+  <desc id="desc">Uzume wordmark with the pronunciation oo-ZOO-meh.</desc>
+  <g fill="none" stroke="#F4F1EA" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M35 35V103C35 133 53 149 79 149C105 149 123 133 123 103V35"/>
+    <path d="M154 78H232L159 145H238"/>
+    <path d="M269 78V117C269 137 281 148 299 148C317 148 329 136 329 117V78M329 78V145"/>
+    <path d="M362 145V78M362 105C362 87 373 76 390 76C407 76 418 88 418 105V145M418 105C418 87 429 76 446 76C463 76 474 88 474 105V145"/>
+    <path d="M572 121C566 139 552 148 533 148C509 148 493 133 493 111C493 89 509 75 532 75C555 75 570 90 570 110H497"/>
+  </g>
+  <circle cx="548" cy="92" r="7" fill="#F2A64A"/>
+  <text x="36" y="202" fill="#C4BFB5" font-family="PT Sans, sans-serif" font-size="18" font-weight="600" letter-spacing="3">oo-ZOO-meh</text>
+</svg>
