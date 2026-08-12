@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume icon — Crack of Light</title>
+  <desc id="desc">A dark continuous rounded square split by one thin amber wedge of first light.</desc>
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="#111114"/>
+  <path fill="#19191D" d="M212 196H812C847 196 876 225 876 260V764C876 799 847 828 812 828H212C177 828 148 799 148 764V260C148 225 177 196 212 196Z"/>
+  <path fill="#09090B" d="M206 202H716L472 822H206C177 822 154 799 154 770V254C154 225 177 202 206 202Z"/>
+  <path fill="#F2A64A" d="M715 202H751L504 822H469Z"/>
+</svg>
