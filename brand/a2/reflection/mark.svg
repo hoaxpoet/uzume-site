@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Reflection mark</title>
+  <desc id="desc">Five measured events cross a quiet divide, with restrained lower reflections and one amber catch of light.</desc>
+  <rect x="10" y="42" width="12" height="16" rx="6" fill="#F4F1EA"/>
+  <rect x="10" y="62" width="12" height="16" rx="6" fill="#77776F"/>
+  <rect x="32" y="26" width="12" height="32" rx="6" fill="#F4F1EA"/>
+  <rect x="32" y="62" width="12" height="32" rx="6" fill="#77776F"/>
+  <rect x="54" y="12" width="12" height="96" rx="6" fill="#F2A64A"/>
+  <rect x="76" y="30" width="12" height="28" rx="6" fill="#F4F1EA"/>
+  <rect x="76" y="62" width="12" height="28" rx="6" fill="#77776F"/>
+  <rect x="98" y="44" width="12" height="14" rx="6" fill="#F4F1EA"/>
+  <rect x="98" y="62" width="12" height="14" rx="6" fill="#77776F"/>
+</svg>

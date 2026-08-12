@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uzume — A.2 myth resolution</title>
+    <style>
+      @font-face {
+        font-family: "Alumni Sans";
+        src: url("../../../../brand/fonts/AlumniSans.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "PT Sans";
+        src: url("../../../../brand/fonts/PTSans.ttc") format("truetype");
+        font-style: normal;
+        font-weight: 400 700;
+        font-display: swap;
+      }
+
+      :root {
+        color-scheme: dark;
+        --canvas: #0a0a0c;
+        --surface: #111114;
+        --surface-raised: #19191d;
+        --ink: #f4f1ea;
+        --muted: #aaa8a2;
+        --quiet: #85837d;
+        --rule: #303035;
+        --accent: #f2a64a;
+        --accent-ink: #241707;
+        --radius: 16px;
+      }
+
+      * { box-sizing: border-box; }
+
+      html { background: var(--canvas); }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--canvas);
+        font-family: "PT Sans", sans-serif;
+        font-size: 16px;
+        line-height: 1.55;
+      }
+
+      button { font: inherit; }
+      img { display: block; max-width: 100%; }
+
+      .shell {
+        width: min(calc(100% - 40px), 1560px);
+        margin: 0 auto;
+      }
+
+      .display {
+        font-family: "Alumni Sans", sans-serif;
+        font-weight: 590;
+        letter-spacing: -0.016em;
+      }
+
+      header {
+        min-height: 62vh;
+        display: grid;
+        grid-template-columns: minmax(0, 0.82fr) minmax(500px, 1.18fr);
+        gap: clamp(48px, 7vw, 120px);
+        align-items: center;
+        padding: 72px 0 64px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      h1, h2, h3, p { margin-top: 0; }
+
+      h1 {
+        max-width: 8ch;
+        margin-bottom: 28px;
+        font-size: clamp(4.8rem, 8vw, 6rem);
+        line-height: 0.82;
+        text-wrap: balance;
+      }
+
+      .intro {
+        max-width: 48ch;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .intro strong { color: var(--ink); }
+
+      .hero-lockup {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: 0.8fr 1fr 0.8fr;
+        align-items: end;
+        gap: clamp(20px, 3vw, 44px);
+      }
+
+      .hero-option {
+        min-width: 0;
+        display: grid;
+        justify-items: center;
+        gap: 18px;
+      }
+
+      .hero-option:nth-child(2) { transform: translateY(-40px); }
+
+      .hero-option img {
+        width: 100%;
+        aspect-ratio: 1;
+        background: var(--surface);
+        border-radius: clamp(28px, 4vw, 64px);
+      }
+
+      .hero-option span {
+        color: var(--quiet);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .review-note {
+        display: flex;
+        justify-content: space-between;
+        gap: 32px;
+        align-items: center;
+        padding: 26px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .review-note p {
+        max-width: 72ch;
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .theme-switch {
+        flex: 0 0 auto;
+        display: inline-flex;
+        padding: 4px;
+        background: var(--surface);
+        border-radius: 12px;
+      }
+
+      .theme-switch button {
+        min-height: 40px;
+        padding: 0 16px;
+        color: var(--muted);
+        background: transparent;
+        border: 0;
+        border-radius: 9px;
+        cursor: pointer;
+      }
+
+      .theme-switch button[aria-pressed="true"] {
+        color: var(--ink);
+        background: var(--surface-raised);
+      }
+
+      .theme-switch button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .directions { border-bottom: 1px solid var(--rule); }
+
+      .direction {
+        display: grid;
+        grid-template-columns: minmax(240px, 0.42fr) minmax(0, 1.58fr);
+        gap: clamp(48px, 7vw, 120px);
+        padding: 88px 0 104px;
+      }
+
+      .direction + .direction { border-top: 1px solid var(--rule); }
+
+      .direction-copy {
+        align-self: start;
+        position: sticky;
+        top: 32px;
+      }
+
+      .direction h2 {
+        max-width: 8ch;
+        margin-bottom: 20px;
+        font-size: clamp(4rem, 6vw, 5.5rem);
+        line-height: 0.84;
+      }
+
+      .direction-copy > p {
+        max-width: 40ch;
+        color: var(--muted);
+      }
+
+      .mechanism {
+        margin-top: 30px;
+        padding-top: 24px;
+        border-top: 1px solid var(--rule);
+      }
+
+      .mechanism strong {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--ink);
+      }
+
+      .mechanism span {
+        display: block;
+        color: var(--quiet);
+      }
+
+      .direction-stage { min-width: 0; }
+
+      .wordmark-stage {
+        min-height: 330px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(22px, 4vw, 54px);
+        padding: clamp(40px, 6vw, 84px);
+        color: #f4f1ea;
+        background: #111114;
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .wordmark-stage img {
+        width: clamp(76px, 9vw, 134px);
+        flex: 0 0 auto;
+      }
+
+      .wordmark {
+        min-width: 0;
+        font-size: clamp(6rem, 13vw, 12rem);
+        line-height: 0.7;
+        white-space: nowrap;
+      }
+
+      .pronunciation {
+        margin-top: 18px;
+        color: var(--quiet);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-align: right;
+        text-transform: uppercase;
+      }
+
+      .application-grid {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.84fr) minmax(320px, 1.16fr);
+        gap: 20px;
+        margin-top: 54px;
+      }
+
+      .size-proof {
+        --quiet: #85837d;
+        min-height: 330px;
+        display: flex;
+        align-items: flex-end;
+        gap: 24px;
+        padding: 28px;
+        background: #19191d;
+        border-radius: var(--radius);
+      }
+
+      .size {
+        display: grid;
+        justify-items: center;
+        gap: 10px;
+        color: var(--quiet);
+        font-size: 12px;
+      }
+
+      .size img { border-radius: 22.5%; }
+      .size.s16 img { width: 16px; }
+      .size.s32 img { width: 32px; }
+      .size.s128 { margin-left: auto; }
+      .size.s128 img { width: 128px; }
+
+      .product-proof {
+        --surface: #111114;
+        --ink: #f4f1ea;
+        --muted: #aaa8a2;
+        --quiet: #85837d;
+        --rule: #303035;
+        color: var(--ink);
+        overflow: hidden;
+        background: var(--surface);
+        border-radius: var(--radius);
+      }
+
+      .product-bar {
+        min-height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 0 22px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .mini-lockup {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 27px;
+        line-height: 1;
+      }
+
+      .mini-lockup img { width: 26px; }
+
+      .product-status {
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .product-body { padding: 28px 22px 32px; }
+
+      .product-body h3 {
+        max-width: 10ch;
+        margin-bottom: 8px;
+        font-size: 48px;
+        line-height: 0.9;
+      }
+
+      .product-body > p { color: var(--muted); }
+
+      .sequence {
+        margin-top: 30px;
+        border-top: 1px solid var(--rule);
+      }
+
+      .sequence-row {
+        display: grid;
+        grid-template-columns: 70px 1fr;
+        gap: 16px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .sequence-row span:first-child {
+        color: var(--quiet);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .accent-line { height: 8px; background: var(--accent); }
+
+      .decision {
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(480px, 1.2fr);
+        gap: clamp(48px, 8vw, 140px);
+        padding: 96px 0 112px;
+      }
+
+      .decision h2 {
+        max-width: 9ch;
+        margin-bottom: 20px;
+        font-size: clamp(4rem, 6vw, 5.5rem);
+        line-height: 0.84;
+      }
+
+      .decision-copy p {
+        max-width: 44ch;
+        color: var(--muted);
+      }
+
+      .decision-table { align-self: start; border-top: 1px solid var(--rule); }
+
+      .decision-row {
+        display: grid;
+        grid-template-columns: 110px 1fr 1fr;
+        gap: 24px;
+        padding: 20px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .decision-row strong { font-size: 24px; }
+      .decision-row span { color: var(--muted); }
+
+      body.paper {
+        color-scheme: light;
+        --canvas: #efede7;
+        --surface: #f9f7f1;
+        --surface-raised: #e4e1d9;
+        --ink: #17171a;
+        --muted: #55544f;
+        --quiet: #65645f;
+        --rule: #cbc8bf;
+      }
+
+      @media (max-width: 980px) {
+        .shell { width: min(calc(100% - 30px), 1560px); }
+        header { min-height: auto; grid-template-columns: 1fr; padding-top: 54px; }
+        .hero-lockup { max-width: 720px; }
+        .direction { grid-template-columns: 1fr; gap: 42px; padding-block: 70px; }
+        .direction-copy { position: static; }
+        .direction-copy > p { max-width: 58ch; }
+        .application-grid { grid-template-columns: 1fr; }
+        .decision { grid-template-columns: 1fr; }
+      }
+
+      @media (max-width: 620px) {
+        .shell { width: min(calc(100% - 24px), 1560px); }
+        h1 { font-size: 4.4rem; }
+        .intro { font-size: 16px; }
+        .hero-lockup { gap: 10px; }
+        .hero-option { gap: 10px; }
+        .hero-option:nth-child(2) { transform: translateY(-18px); }
+        .hero-option span { font-size: 10px; letter-spacing: 0.04em; }
+        .review-note { align-items: flex-start; flex-direction: column; }
+        .wordmark-stage { min-height: 230px; gap: 16px; padding: 34px 18px; }
+        .wordmark-stage img { width: 62px; }
+        .wordmark { font-size: clamp(4.4rem, 23vw, 7rem); }
+        .size-proof { min-height: 250px; gap: 18px; padding: 22px; }
+        .size.s128 img { width: 104px; }
+        .product-bar { align-items: flex-start; flex-direction: column; padding-block: 16px; }
+        .decision-row { grid-template-columns: 1fr; gap: 6px; }
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      THESIS: Planned rhythm becomes first light; this review refuses both literal myth illustration and a generic equalizer left unexplained.
+      OWN-WORLD: Near-black theater, warm neutral type, one amber aperture, measured vertical events, Alumni Sans display and PT Sans text.
+      STORY: Compare three ways the same chosen identity can carry threshold, arrival, or reflection before one mechanism is finalized.
+      FIRST VIEWPORT: A concise premise faces three staggered icon masters; no option receives a scale or finish advantage.
+      FORM: User-pinned A.2 identity refinement; seed key not applicable to this narrow continuation.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+    -->
+    <main class="shell">
+      <header>
+        <div>
+          <h1 class="display">A, made mythic.</h1>
+          <p class="intro"><strong>Alumni Sans is fixed.</strong> The palette is quiet again. This increment changes only the mark’s narrative turn: the instant a planned performance opens darkness to light.</p>
+        </div>
+        <div class="hero-lockup" aria-label="Three A.2 app icon directions">
+          <div class="hero-option"><img src="../../../../brand/a2/aperture/icon.svg" alt="Aperture icon" /><span>Aperture</span></div>
+          <div class="hero-option"><img src="../../../../brand/a2/arrival/icon.svg" alt="Arrival icon" /><span>Arrival</span></div>
+          <div class="hero-option"><img src="../../../../brand/a2/reflection/icon.svg" alt="Reflection icon" /><span>Reflection</span></div>
+        </div>
+      </header>
+
+      <div class="review-note">
+        <p>Judge the large lockup for identity, the 16/32/128 px row for recognition, and the product header for restraint. All three use the same type, spacing, language, and single accent.</p>
+        <div class="theme-switch" aria-label="Proof background">
+          <button type="button" data-theme="dark" aria-pressed="true">Dark</button>
+          <button type="button" data-theme="paper" aria-pressed="false">Paper</button>
+        </div>
+      </div>
+
+      <section class="directions" aria-label="A.2 mark directions">
+        <article class="direction">
+          <div class="direction-copy">
+            <h2 class="display">Aperture</h2>
+            <p>Four measured events flank one narrow opening. The center is no longer another beat; it is the threshold created by the plan.</p>
+            <p class="mechanism"><strong>Mythic mechanism</strong><span>The cave opens and first light enters.</span></p>
+            <p class="mechanism"><strong>Honest risk</strong><span>The fine amber slit needs optical care below 24 px.</span></p>
+          </div>
+          <div class="direction-stage">
+            <div class="wordmark-stage">
+              <img src="../../../../brand/a2/aperture/mark.svg" alt="Aperture mark" />
+              <div class="wordmark display">Uzume</div>
+            </div>
+            <div class="pronunciation">oo-ZOO-meh</div>
+            <div class="application-grid">
+              <div class="size-proof" aria-label="Aperture icon at 16, 32, and 128 pixels">
+                <div class="size s16"><img src="../../../../brand/a2/aperture/icon.svg" alt="" /><span>16</span></div>
+                <div class="size s32"><img src="../../../../brand/a2/aperture/icon.svg" alt="" /><span>32</span></div>
+                <div class="size s128"><img src="../../../../brand/a2/aperture/icon.svg" alt="" /><span>128</span></div>
+              </div>
+              <div class="product-proof">
+                <div class="product-bar">
+                  <div class="mini-lockup display"><img src="../../../../brand/a2/aperture/mark.svg" alt="" />Uzume</div>
+                  <span class="product-status">Rehearsal ready</span>
+                </div>
+                <div class="product-body">
+                  <h3 class="display">Opening sequence</h3>
+                  <p>Tuesday, August 18 · Studio A</p>
+                  <div class="sequence">
+                    <div class="sequence-row"><span>6:30</span><span>Company arrival</span></div>
+                    <div class="sequence-row"><span>6:45</span><span>Spacing and sound</span></div>
+                    <div class="sequence-row"><span>7:10</span><span>Full sequence</span></div>
+                  </div>
+                </div>
+                <div class="accent-line"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="direction">
+          <div class="direction-copy">
+            <h2 class="display">Arrival</h2>
+            <p>The original five-event Measure mark remains intact. First light arrives on the longest gesture, turning a sequence into a consequence.</p>
+            <p class="mechanism"><strong>Mythic mechanism</strong><span>The planned performance reaches the beat that changes the room.</span></p>
+            <p class="mechanism"><strong>Honest risk</strong><span>This is the clearest continuation—and remains closest to an equalizer.</span></p>
+          </div>
+          <div class="direction-stage">
+            <div class="wordmark-stage">
+              <img src="../../../../brand/a2/arrival/mark.svg" alt="Arrival mark" />
+              <div class="wordmark display">Uzume</div>
+            </div>
+            <div class="pronunciation">oo-ZOO-meh</div>
+            <div class="application-grid">
+              <div class="size-proof" aria-label="Arrival icon at 16, 32, and 128 pixels">
+                <div class="size s16"><img src="../../../../brand/a2/arrival/icon.svg" alt="" /><span>16</span></div>
+                <div class="size s32"><img src="../../../../brand/a2/arrival/icon.svg" alt="" /><span>32</span></div>
+                <div class="size s128"><img src="../../../../brand/a2/arrival/icon.svg" alt="" /><span>128</span></div>
+              </div>
+              <div class="product-proof">
+                <div class="product-bar">
+                  <div class="mini-lockup display"><img src="../../../../brand/a2/arrival/mark.svg" alt="" />Uzume</div>
+                  <span class="product-status">Rehearsal ready</span>
+                </div>
+                <div class="product-body">
+                  <h3 class="display">Opening sequence</h3>
+                  <p>Tuesday, August 18 · Studio A</p>
+                  <div class="sequence">
+                    <div class="sequence-row"><span>6:30</span><span>Company arrival</span></div>
+                    <div class="sequence-row"><span>6:45</span><span>Spacing and sound</span></div>
+                    <div class="sequence-row"><span>7:10</span><span>Full sequence</span></div>
+                  </div>
+                </div>
+                <div class="accent-line"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="direction">
+          <div class="direction-copy">
+            <h2 class="display">Reflection</h2>
+            <p>Five events cross a quiet divide. Their lower halves return as restrained reflections while the center catches amber.</p>
+            <p class="mechanism"><strong>Mythic mechanism</strong><span>The mirror returns the first light created by the performance.</span></p>
+            <p class="mechanism"><strong>Honest risk</strong><span>The richer story creates the most detail at 16 px.</span></p>
+          </div>
+          <div class="direction-stage">
+            <div class="wordmark-stage">
+              <img src="../../../../brand/a2/reflection/mark.svg" alt="Reflection mark" />
+              <div class="wordmark display">Uzume</div>
+            </div>
+            <div class="pronunciation">oo-ZOO-meh</div>
+            <div class="application-grid">
+              <div class="size-proof" aria-label="Reflection icon at 16, 32, and 128 pixels">
+                <div class="size s16"><img src="../../../../brand/a2/reflection/icon.svg" alt="" /><span>16</span></div>
+                <div class="size s32"><img src="../../../../brand/a2/reflection/icon.svg" alt="" /><span>32</span></div>
+                <div class="size s128"><img src="../../../../brand/a2/reflection/icon.svg" alt="" /><span>128</span></div>
+              </div>
+              <div class="product-proof">
+                <div class="product-bar">
+                  <div class="mini-lockup display"><img src="../../../../brand/a2/reflection/mark.svg" alt="" />Uzume</div>
+                  <span class="product-status">Rehearsal ready</span>
+                </div>
+                <div class="product-body">
+                  <h3 class="display">Opening sequence</h3>
+                  <p>Tuesday, August 18 · Studio A</p>
+                  <div class="sequence">
+                    <div class="sequence-row"><span>6:30</span><span>Company arrival</span></div>
+                    <div class="sequence-row"><span>6:45</span><span>Spacing and sound</span></div>
+                    <div class="sequence-row"><span>7:10</span><span>Full sequence</span></div>
+                  </div>
+                </div>
+                <div class="accent-line"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="decision">
+        <div class="decision-copy">
+          <h2 class="display">Choose the mechanism.</h2>
+          <p>The type system and identity lane no longer need a vote. The next decision is narrower: which transformation can become the final mark without explanation?</p>
+        </div>
+        <div class="decision-table">
+          <div class="decision-row"><strong class="display">Aperture</strong><span>Strongest threshold</span><span>Quietest myth reference</span></div>
+          <div class="decision-row"><strong class="display">Arrival</strong><span>Strongest continuity</span><span>Best immediate scaling</span></div>
+          <div class="decision-row"><strong class="display">Reflection</strong><span>Strongest mirror story</span><span>Most small-size detail</span></div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const buttons = document.querySelectorAll("[data-theme]");
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          document.body.classList.toggle("paper", button.dataset.theme === "paper");
+          buttons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+        });
+      });
+    </script>
+  </body>
+</html>
