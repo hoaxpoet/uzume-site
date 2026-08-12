@@ -2,6 +2,8 @@
 
 > Working notes for BRAND.1. This file remains provisional until the Task-5 direction is chosen.
 
+> **Task-5 redirect:** the first visual round was rejected. Direction C's mark is a lead only; all first-round logotypes and the single-amber palette are reopened. See `docs/reviews/BRAND.1/REDIRECT.md`.
+
 ## Foundations
 
 Uzume is pronounced **oo-ZOO-meh**. The identity principle is **the engine's output is the brand**: a dark, restrained, typographic theater that gives the app's footage the entire color field. The sole chrome accent is First Light amber (`#F2A64A` and state variants); it is never joined by a second accent.
@@ -21,3 +23,17 @@ The wordmark is built from repeated vertical measures, including a doubled U and
 ## Size-legibility evidence
 
 The three 1024 px icon masters are rendered at native 16, 32, and 128 px in the review page and archived as direction-specific screenshots under `docs/reviews/BRAND.1/screenshots/`. The review uses true CSS pixel sizes rather than enlarged simulations.
+
+## Task-5 redirect directions
+
+### A — Measure
+
+The five-beat clue becomes a score rather than a waveform: events begin and end at distinct moments instead of sharing a baseline. Geologica's variable humanist geometry supplies the authority and typographic range the first-round constructed lettering lacked, while violet, cyan, gold, and ember act as named voices rather than a single permanent accent.
+
+### B — Chorus
+
+Five bars become five presences leaning toward a shared center, moving the mark away from software meters and toward ensemble performance. Ysabeau contributes warm, Garamond-informed proportions, and the ivory website world proves Uzume can retain a dark app stage without forcing every brand surface into near-black.
+
+### C — Signal
+
+The beat sequence becomes a framed chromatic signal whose internal colors can be re-keyed by preset, contributor, or campaign while its silhouette remains stable. Gabarito gives the wordmark a friendly geometric voice; the risk is digital familiarity, controlled by assigning each spectrum color a real role rather than scattering it as decoration.
