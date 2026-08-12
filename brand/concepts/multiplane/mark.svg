@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Multiplane mark</title>
+  <desc id="desc">Three prepared visual planes separate diagonally, revealing an amber field.</desc>
+  <rect x="12" y="44" width="58" height="58" rx="9" fill="#111114" stroke="#77776F" stroke-width="7"/>
+  <rect x="30" y="27" width="58" height="58" rx="9" fill="#111114" stroke="#F4F1EA" stroke-width="7"/>
+  <rect x="48" y="10" width="58" height="58" rx="9" fill="#111114" stroke="#F4F1EA" stroke-width="7"/>
+  <rect x="73" y="35" width="20" height="20" rx="5" fill="#F2A64A"/>
+</svg>

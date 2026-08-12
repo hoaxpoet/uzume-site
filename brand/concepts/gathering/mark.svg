@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Gathering mark</title>
+  <desc id="desc">Five angled presences converge around an open center; one returns as amber light.</desc>
+  <path d="M50 10H70L67 42H53Z" fill="#F4F1EA"/>
+  <path d="M102 34L108 53L76 60L72 46Z" fill="#F4F1EA"/>
+  <path d="M91 100L74 110L61 78L75 70Z" fill="#F2A64A"/>
+  <path d="M29 100L12 89L39 68L50 78Z" fill="#F4F1EA"/>
+  <path d="M18 34L12 53L44 60L48 46Z" fill="#F4F1EA"/>
+</svg>

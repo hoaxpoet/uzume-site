@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Gathering icon</title>
+  <desc id="desc">A dark rounded square containing five angled presences around an open center, with one amber return.</desc>
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="#111114"/>
+  <g transform="translate(212 212) scale(5)">
+    <path d="M50 10H70L67 42H53Z" fill="#F4F1EA"/>
+    <path d="M102 34L108 53L76 60L72 46Z" fill="#F4F1EA"/>
+    <path d="M91 100L74 110L61 78L75 70Z" fill="#F2A64A"/>
+    <path d="M29 100L12 89L39 68L50 78Z" fill="#F4F1EA"/>
+    <path d="M18 34L12 53L44 60L48 46Z" fill="#F4F1EA"/>
+  </g>
+</svg>

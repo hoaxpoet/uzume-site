@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uzume — distinct concept reset</title>
+    <style>
+      @font-face{font-family:"Alumni Sans";src:url("../../../../brand/fonts/AlumniSans.ttf") format("truetype");font-weight:100 900;font-display:swap}
+      @font-face{font-family:"PT Sans";src:url("../../../../brand/fonts/PTSans.ttc") format("truetype");font-weight:400 700;font-display:swap}
+      :root{color-scheme:dark;--canvas:#09090b;--surface:#111114;--raised:#19191d;--line:#34343a;--ink:#f4f1ea;--muted:#b7b3ab;--quiet:#969188;--amber:#f2a64a;--on-amber:#201507}
+      *{box-sizing:border-box}
+      html{background:var(--canvas)}
+      body{margin:0;color:var(--ink);background:var(--canvas);font-family:"PT Sans",sans-serif;font-size:16px;line-height:1.55}
+      img{display:block;max-width:100%}
+      h1,h2,h3,p{margin-top:0}
+      .display{font-family:"Alumni Sans",sans-serif;font-weight:590;letter-spacing:-.018em}
+      .shell{width:min(calc(100% - 40px),1600px);margin:0 auto}
+      header{min-height:66vh;display:grid;grid-template-columns:minmax(0,.72fr) minmax(580px,1.28fr);gap:clamp(56px,8vw,150px);align-items:center;padding:80px 0 64px;border-bottom:1px solid var(--line)}
+      h1{max-width:8ch;margin-bottom:28px;font-size:clamp(4.8rem,8vw,6rem);line-height:.82;text-wrap:balance}
+      .intro{max-width:48ch;margin-bottom:0;color:var(--muted);font-size:18px}
+      .intro strong{color:var(--ink)}
+      .concept-index{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,30px);align-items:end}
+      .index-item{min-width:0;display:grid;gap:14px}
+      .index-item:nth-child(2){transform:translateY(-28px)}
+      .index-item:nth-child(3){transform:translateY(18px)}
+      .index-item img{width:100%;aspect-ratio:1;border-radius:23%;background:var(--surface)}
+      .index-item strong{font-size:25px;line-height:1}
+      .index-item span{color:var(--quiet);font-size:12px;line-height:1.35}
+      .control-note{padding:25px 0;color:var(--muted);border-bottom:1px solid var(--line)}
+      .control-note p{max-width:75ch;margin:0}
+      .concept{position:relative;min-height:100vh;display:grid;grid-template-columns:minmax(260px,.42fr) minmax(0,1.58fr);gap:clamp(50px,8vw,140px);align-items:center;padding:92px 0 104px;border-bottom:1px solid var(--line);overflow:hidden}
+      .concept-copy{position:relative;z-index:2}
+      .concept h2{max-width:8ch;margin-bottom:22px;font-size:clamp(4.3rem,7vw,6rem);line-height:.82}
+      .concept-copy>p{max-width:38ch;color:var(--muted)}
+      .truth{margin-top:30px;padding-top:22px;border-top:1px solid var(--line)}
+      .truth strong{display:block;margin-bottom:5px;color:var(--ink)}
+      .truth span{color:var(--quiet)}
+      .concept-stage{position:relative;z-index:1;min-width:0}
+      .identity{min-height:370px;display:flex;align-items:center;justify-content:center;gap:clamp(28px,5vw,66px);padding:clamp(40px,7vw,90px);background:var(--surface);border-radius:16px;overflow:hidden}
+      .identity img{width:clamp(90px,12vw,164px);flex:0 0 auto}
+      .name{font-size:clamp(7rem,16vw,14rem);line-height:.67;white-space:nowrap}
+      .evidence{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(350px,1.2fr);gap:20px;margin-top:20px}
+      .icon-proof{min-height:330px;display:flex;align-items:flex-end;gap:24px;padding:28px;background:var(--raised);border-radius:16px}
+      .size{display:grid;justify-items:center;gap:9px;color:var(--quiet);font-size:12px}
+      .size img{border-radius:23%}.s16 img{width:16px}.s32 img{width:32px}.s128{margin-left:auto}.s128 img{width:128px}
+      .application{position:relative;min-height:330px;overflow:hidden;background:var(--surface);border-radius:16px}
+      .app-head{min-height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid var(--line)}
+      .mini{display:flex;align-items:center;gap:10px;font-size:27px;line-height:1}.mini img{width:26px}
+      .status{color:var(--amber);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+      .app-body{padding:27px 22px 32px}.app-body h3{max-width:10ch;margin-bottom:8px;font-size:48px;line-height:.9}.app-body>p{color:var(--muted)}
+      .sequence{margin-top:26px;border-top:1px solid var(--line)}.row{display:grid;grid-template-columns:70px 1fr;gap:15px;padding:13px 0;border-bottom:1px solid var(--line)}.row span:first-child{color:var(--quiet);font-variant-numeric:tabular-nums}
+      .accent-rule{position:absolute;inset:auto 0 0;height:8px;background:var(--amber)}
+      .blocking .application:before{content:"";position:absolute;width:220px;height:130px;right:-35px;top:58px;background:url("../../../../brand/concepts/blocking/mark.svg") center/contain no-repeat;opacity:.08}
+      .multiplane .identity{background:#101013}.multiplane .application:before{content:"";position:absolute;right:-14px;bottom:-40px;width:190px;height:190px;background:url("../../../../brand/concepts/multiplane/mark.svg") center/contain no-repeat;opacity:.09}
+      .gathering .identity{position:relative}.gathering .identity:before{content:"";position:absolute;width:620px;height:620px;border:1px solid var(--line);border-radius:50%;opacity:.65}.gathering .identity>*{position:relative;z-index:1}.gathering .application:before{content:"";position:absolute;right:-42px;top:50px;width:200px;height:200px;background:url("../../../../brand/concepts/gathering/mark.svg") center/contain no-repeat;opacity:.08}
+      .arrival .identity:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 69%,rgba(242,166,74,.035) 69%);pointer-events:none}.arrival .identity{position:relative}.arrival .identity>*{position:relative;z-index:1}
+      .decision{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(50px,8vw,140px);padding:100px 0 120px}.decision h2{max-width:8ch;margin-bottom:18px;font-size:clamp(4.5rem,7vw,6rem);line-height:.82}.decision p{max-width:42ch;color:var(--muted)}
+      .matrix{border-top:1px solid var(--line)}.matrix-row{display:grid;grid-template-columns:120px 1fr 1fr;gap:20px;padding:18px 0;border-bottom:1px solid var(--line)}.matrix-row strong{font-size:24px}.matrix-row span{color:var(--muted)}
+      @media(max-width:980px){.shell{width:min(calc(100% - 30px),1600px)}header{min-height:auto;grid-template-columns:1fr;padding-top:56px}.concept-index{max-width:760px}.concept{grid-template-columns:1fr;gap:44px;min-height:auto;padding-block:72px}.concept-copy>p{max-width:58ch}.evidence{grid-template-columns:1fr}.decision{grid-template-columns:1fr}}
+      @media(max-width:620px){.shell{width:min(calc(100% - 24px),1600px)}h1{font-size:4.4rem}.intro{font-size:16px}.concept-index{grid-template-columns:repeat(2,1fr)}.index-item:nth-child(n){transform:none}.concept{padding-block:62px}.identity{min-height:230px;gap:17px;padding:32px 18px}.identity img{width:64px}.name{font-size:clamp(4.5rem,24vw,7rem)}.icon-proof{min-height:250px}.s128 img{width:104px}.app-head{align-items:flex-start;flex-direction:column;padding-block:16px}.matrix-row{grid-template-columns:1fr;gap:5px}}
+    </style>
+  </head>
+  <body>
+    <!--
+      THESIS: Four materially different identity systems compete on product truth, refusing cosmetic variations of one five-bar logo.
+      OWN-WORLD: Alumni Sans, near-black theater, warm neutral type, one amber consequence; geometry changes completely by concept.
+      STORY: Arrival is the incumbent benchmark; Blocking, Multiplane, and Gathering each translate plan-then-perform through a different cultural artifact.
+      FIRST VIEWPORT: Four icon masters establish genuinely different silhouettes before the reader enters full lockups and applications.
+      FORM: Distinct brand-concept review, grounded candidate seven with three user-required counterdirections; seed key 2d6935bc.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+    -->
+    <main class="shell">
+      <header>
+        <div>
+          <h1 class="display">Different ideas. Same brief.</h1>
+          <p class="intro"><strong>Arrival remains the benchmark, not the template.</strong> The other three concepts begin from different artifacts—stage blocking, multiplane image-making, and a gathered audience—and build their own silhouettes and systems.</p>
+        </div>
+        <div class="concept-index" aria-label="Four distinct identity concepts">
+          <div class="index-item"><img src="../../../../brand/a2/arrival/icon.svg" alt="Arrival icon"/><strong class="display">Arrival</strong><span>Score · consequence</span></div>
+          <div class="index-item"><img src="../../../../brand/concepts/blocking/icon.svg" alt="Blocking icon"/><strong class="display">Blocking</strong><span>Plan · choreography</span></div>
+          <div class="index-item"><img src="../../../../brand/concepts/multiplane/icon.svg" alt="Multiplane icon"/><strong class="display">Multiplane</strong><span>Layers · reveal</span></div>
+          <div class="index-item"><img src="../../../../brand/concepts/gathering/icon.svg" alt="Gathering icon"/><strong class="display">Gathering</strong><span>Attention · return</span></div>
+        </div>
+      </header>
+      <div class="control-note"><p>Alumni Sans, PT Sans, the dark theater, and one amber accent are fixed controls. Compare the idea, mark silhouette, small-size behavior, and how each system enters product UI.</p></div>
+
+      <section class="concept arrival">
+        <div class="concept-copy"><h2 class="display">Arrival</h2><p>A planned score reaches its consequential cue. The longest event changes from neutral to first light.</p><p class="truth"><strong>Why it belongs</strong><span>It expresses orchestration directly and reads instantly at every size.</span></p><p class="truth"><strong>Honest risk</strong><span>It can still be mistaken for an equalizer without the wider system.</span></p></div>
+        <div class="concept-stage"><div class="identity"><img src="../../../../brand/a2/arrival/mark.svg" alt="Arrival mark"/><div class="name display">Uzume</div></div><div class="evidence"><div class="icon-proof"><div class="size s16"><img src="../../../../brand/a2/arrival/icon.svg" alt=""/><span>16</span></div><div class="size s32"><img src="../../../../brand/a2/arrival/icon.svg" alt=""/><span>32</span></div><div class="size s128"><img src="../../../../brand/a2/arrival/icon.svg" alt=""/><span>128</span></div></div><div class="application"><div class="app-head"><div class="mini display"><img src="../../../../brand/a2/arrival/mark.svg" alt=""/>Uzume</div><span class="status">Plan ready</span></div><div class="app-body"><h3 class="display">Opening sequence</h3><p>Tuesday · Studio A</p><div class="sequence"><div class="row"><span>6:30</span><span>Company arrival</span></div><div class="row"><span>6:45</span><span>Spacing and sound</span></div><div class="row"><span>7:10</span><span>Full sequence</span></div></div></div><div class="accent-rule"></div></div></div></div>
+      </section>
+
+      <section class="concept blocking">
+        <div class="concept-copy"><h2 class="display">Blocking</h2><p>A performance is not a waveform; it is movement deliberately plotted through time and space. Five positions form one route, with light appearing only at its resolved endpoint.</p><p class="truth"><strong>Mythic mechanism</strong><span>Omoikane’s plan becomes choreography; emergence is earned by completing it.</span></p><p class="truth"><strong>Honest risk</strong><span>The connected nodes can drift toward mapping or analytics if the route loses its stage-like irregularity.</span></p></div>
+        <div class="concept-stage"><div class="identity"><img src="../../../../brand/concepts/blocking/mark.svg" alt="Blocking mark"/><div class="name display">Uzume</div></div><div class="evidence"><div class="icon-proof"><div class="size s16"><img src="../../../../brand/concepts/blocking/icon.svg" alt=""/><span>16</span></div><div class="size s32"><img src="../../../../brand/concepts/blocking/icon.svg" alt=""/><span>32</span></div><div class="size s128"><img src="../../../../brand/concepts/blocking/icon.svg" alt=""/><span>128</span></div></div><div class="application"><div class="app-head"><div class="mini display"><img src="../../../../brand/concepts/blocking/mark.svg" alt=""/>Uzume</div><span class="status">Route resolved</span></div><div class="app-body"><h3 class="display">Performance map</h3><p>Five cues · one arc</p><div class="sequence"><div class="row"><span>A</span><span>Listen and establish</span></div><div class="row"><span>C</span><span>Open the field</span></div><div class="row"><span>E</span><span>Return to light</span></div></div></div><div class="accent-rule"></div></div></div></div>
+      </section>
+
+      <section class="concept multiplane">
+        <div class="concept-copy"><h2 class="display">Multiplane</h2><p>Uzume’s repertoire is prepared as visual planes, not a single reactive surface. The layers separate and a small field of first light becomes visible between them.</p><p class="truth"><strong>Mythic mechanism</strong><span>A dark world is rearranged in advance so light has somewhere to appear.</span></p><p class="truth"><strong>Honest risk</strong><span>Stacked frames are familiar in creative software; the diagonal separation and amber reveal must stay proprietary.</span></p></div>
+        <div class="concept-stage"><div class="identity"><img src="../../../../brand/concepts/multiplane/mark.svg" alt="Multiplane mark"/><div class="name display">Uzume</div></div><div class="evidence"><div class="icon-proof"><div class="size s16"><img src="../../../../brand/concepts/multiplane/icon.svg" alt=""/><span>16</span></div><div class="size s32"><img src="../../../../brand/concepts/multiplane/icon.svg" alt=""/><span>32</span></div><div class="size s128"><img src="../../../../brand/concepts/multiplane/icon.svg" alt=""/><span>128</span></div></div><div class="application"><div class="app-head"><div class="mini display"><img src="../../../../brand/concepts/multiplane/mark.svg" alt=""/>Uzume</div><span class="status">Planes aligned</span></div><div class="app-body"><h3 class="display">Visual repertoire</h3><p>Prepared before playback</p><div class="sequence"><div class="row"><span>Near</span><span>Particle field</span></div><div class="row"><span>Mid</span><span>Folded light</span></div><div class="row"><span>Far</span><span>Quiet horizon</span></div></div></div><div class="accent-rule"></div></div></div></div>
+      </section>
+
+      <section class="concept gathering">
+        <div class="concept-copy"><h2 class="display">Gathering</h2><p>Five presences turn toward an open center. One returns as first light: not a sun symbol, but attention transformed by performance.</p><p class="truth"><strong>Mythic mechanism</strong><span>The gathered audience is essential to the Iwato story; light returns because the performance becomes impossible to ignore.</span></p><p class="truth"><strong>Honest risk</strong><span>Radial geometry can resemble a flower or aperture if the asymmetric weights are over-smoothed.</span></p></div>
+        <div class="concept-stage"><div class="identity"><img src="../../../../brand/concepts/gathering/mark.svg" alt="Gathering mark"/><div class="name display">Uzume</div></div><div class="evidence"><div class="icon-proof"><div class="size s16"><img src="../../../../brand/concepts/gathering/icon.svg" alt=""/><span>16</span></div><div class="size s32"><img src="../../../../brand/concepts/gathering/icon.svg" alt=""/><span>32</span></div><div class="size s128"><img src="../../../../brand/concepts/gathering/icon.svg" alt=""/><span>128</span></div></div><div class="application"><div class="app-head"><div class="mini display"><img src="../../../../brand/concepts/gathering/mark.svg" alt=""/>Uzume</div><span class="status">Audience gathered</span></div><div class="app-body"><h3 class="display">Shared attention</h3><p>The room turns together</p><div class="sequence"><div class="row"><span>1</span><span>Establish the center</span></div><div class="row"><span>3</span><span>Gather the field</span></div><div class="row"><span>5</span><span>Release first light</span></div></div></div><div class="accent-rule"></div></div></div></div>
+      </section>
+
+      <section class="decision"><div><h2 class="display">Now the concepts disagree.</h2><p>Arrival is no longer competing with cosmetic variants. Each alternative makes a different claim about what Uzume fundamentally is.</p></div><div class="matrix"><div class="matrix-row"><strong class="display">Arrival</strong><span>Uzume is a score</span><span>Plan reaches consequence</span></div><div class="matrix-row"><strong class="display">Blocking</strong><span>Uzume is choreography</span><span>Plan becomes movement</span></div><div class="matrix-row"><strong class="display">Multiplane</strong><span>Uzume is image-making</span><span>Prepared layers reveal light</span></div><div class="matrix-row"><strong class="display">Gathering</strong><span>Uzume is attention</span><span>Performance calls light back</span></div></div></section>
+    </main>
+  </body>
+</html>

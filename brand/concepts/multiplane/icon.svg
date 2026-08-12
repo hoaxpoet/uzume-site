@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Multiplane icon</title>
+  <desc id="desc">A dark rounded square containing three prepared visual planes separating to reveal amber.</desc>
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="#111114"/>
+  <g transform="translate(212 212) scale(5)">
+    <rect x="12" y="44" width="58" height="58" rx="9" fill="#111114" stroke="#77776F" stroke-width="7"/>
+    <rect x="30" y="27" width="58" height="58" rx="9" fill="#111114" stroke="#F4F1EA" stroke-width="7"/>
+    <rect x="48" y="10" width="58" height="58" rx="9" fill="#111114" stroke="#F4F1EA" stroke-width="7"/>
+    <rect x="73" y="35" width="20" height="20" rx="5" fill="#F2A64A"/>
+  </g>
+</svg>
