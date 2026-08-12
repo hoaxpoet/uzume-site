@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Signal app icon</title>
+  <desc id="desc">A deep indigo rounded square holding five saturated performance apertures.</desc>
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="#090D18"/>
+  <rect x="158" y="158" width="708" height="708" rx="180" fill="#11162A"/>
+  <rect x="234" y="480" width="78" height="238" rx="39" fill="#00C2D7"/>
+  <rect x="346" y="298" width="78" height="420" rx="39" fill="#F04B9C"/>
+  <rect x="458" y="418" width="78" height="300" rx="39" fill="#B9D54A"/>
+  <rect x="570" y="242" width="78" height="476" rx="39" fill="#FF7A3D"/>
+  <rect x="682" y="368" width="78" height="350" rx="39" fill="#7A68FF"/>
+</svg>

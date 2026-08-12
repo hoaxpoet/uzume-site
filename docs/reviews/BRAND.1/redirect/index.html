@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uzume — BRAND.1 redirected exploration</title>
+    <style>
+      @font-face {
+        font-family: "Geologica";
+        src: url("../../../../brand/fonts/Geologica.ttf") format("truetype");
+        font-weight: 100 900;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Ysabeau";
+        src: url("../../../../brand/fonts/Ysabeau.ttf") format("truetype");
+        font-weight: 100 1000;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Gabarito";
+        src: url("../../../../brand/fonts/Gabarito.ttf") format("truetype");
+        font-weight: 400 900;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "PT Sans";
+        src: url("../../../../brand/fonts/PTSans.ttc") format("truetype");
+        font-weight: 400 700;
+        font-display: swap;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        color-scheme: dark;
+        background: #0d0d11;
+      }
+
+      body {
+        margin: 0;
+        color: #f2f0eb;
+        background: #0d0d11;
+        font-family: "PT Sans", sans-serif;
+        font-size: 16px;
+        line-height: 1.55;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      .shell {
+        width: min(calc(100% - 40px), 1680px);
+        margin: 0 auto;
+      }
+
+      header {
+        min-height: 58vh;
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+        gap: 64px;
+        align-items: end;
+        padding: 88px 0 64px;
+        border-bottom: 1px solid #34343b;
+      }
+
+      h1 {
+        max-width: 11ch;
+        margin-bottom: 0;
+        font-family: "Geologica", sans-serif;
+        font-size: clamp(3.8rem, 7vw, 6rem);
+        font-variation-settings: "SHRP" 65, "CRSV" 0;
+        font-weight: 580;
+        letter-spacing: -0.04em;
+        line-height: 0.95;
+        text-wrap: balance;
+      }
+
+      .intro {
+        max-width: 46ch;
+        margin-bottom: 12px;
+        color: #bebac3;
+        font-size: 18px;
+      }
+
+      .intro strong {
+        color: #f2f0eb;
+      }
+
+      .instruction {
+        max-width: 48ch;
+        margin-bottom: 0;
+        color: #8f8b95;
+        font-size: 14px;
+      }
+
+      .directions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .direction {
+        min-width: 0;
+        padding: 64px clamp(24px, 3vw, 48px) 96px;
+      }
+
+      .direction + .direction {
+        border-left: 1px solid #34343b;
+      }
+
+      .direction > h2 {
+        min-height: 2.3em;
+        max-width: 10ch;
+        margin-bottom: 16px;
+        font-family: var(--display);
+        font-size: 38px;
+        font-weight: 620;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+      }
+
+      .direction > .thesis {
+        min-height: 5em;
+        margin-bottom: 40px;
+        color: #aaa6b0;
+      }
+
+      .measure {
+        --display: "Geologica", sans-serif;
+        --world: #0b0c10;
+        --ink: #f4f6f1;
+        --muted: #aeb4ad;
+        --one: #7f6aff;
+        --two: #37d6c0;
+        --three: #f5c84c;
+        --four: #ff6b4a;
+      }
+
+      .chorus {
+        --display: "Ysabeau", sans-serif;
+        --world: #f3eee6;
+        --ink: #17121f;
+        --muted: #69606e;
+        --one: #ff5e70;
+        --two: #4e7bff;
+        --three: #74d99f;
+        --four: #c177ff;
+      }
+
+      .signal {
+        --display: "Gabarito", sans-serif;
+        --world: #090d18;
+        --ink: #f3f1ec;
+        --muted: #a7adbc;
+        --one: #00c2d7;
+        --two: #f04b9c;
+        --three: #b9d54a;
+        --four: #ff7a3d;
+      }
+
+      .identity {
+        min-height: 250px;
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        gap: 20px;
+        align-items: center;
+        padding: 28px;
+        color: var(--ink);
+        background: var(--world);
+        border-radius: 16px;
+      }
+
+      .identity .mark {
+        width: 72px;
+        height: 72px;
+        grid-row: 1 / 3;
+      }
+
+      .identity .name {
+        min-width: 0;
+        grid-column: 2;
+        grid-row: 1;
+        align-self: end;
+        font-family: var(--display);
+        font-size: clamp(44px, 4vw, 66px);
+        font-weight: 600;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      .measure .identity .name {
+        font-variation-settings: "SHRP" 72, "CRSV" 0;
+        font-weight: 580;
+      }
+
+      .chorus .identity .name {
+        font-weight: 560;
+      }
+
+      .signal .identity .name {
+        font-weight: 650;
+      }
+
+      .identity .pronunciation {
+        grid-column: 2;
+        grid-row: 2;
+        align-self: start;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.11em;
+      }
+
+      .spec-label {
+        margin: 40px 0 14px;
+        color: #8f8b95;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .font-note {
+        margin: 14px 0 0;
+        color: #8f8b95;
+        font-size: 13px;
+      }
+
+      .icon-row {
+        min-height: 180px;
+        display: flex;
+        align-items: end;
+        gap: 24px;
+        padding: 24px;
+        background: #16161c;
+        border-radius: 16px;
+      }
+
+      .icon-size {
+        display: grid;
+        justify-items: center;
+        gap: 8px;
+        color: #8f8b95;
+        font-size: 12px;
+      }
+
+      .icon-size:last-child {
+        margin-left: auto;
+      }
+
+      .icon-size img {
+        display: block;
+      }
+
+      .palette {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        min-height: 120px;
+        overflow: hidden;
+        border-radius: 16px;
+      }
+
+      .palette span {
+        display: flex;
+        align-items: end;
+        padding: 10px;
+        color: #101016;
+        background: var(--swatch);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .site-scene {
+        min-height: 360px;
+        position: relative;
+        overflow: hidden;
+        padding: 24px;
+        color: var(--ink);
+        background: var(--world);
+        border-radius: 16px;
+      }
+
+      .mini-nav {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: var(--display);
+        font-weight: 650;
+      }
+
+      .mini-nav img {
+        width: 22px;
+        height: 22px;
+      }
+
+      .mini-nav .mini-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .mini-nav .mini-link {
+        color: var(--muted);
+        font-family: "PT Sans", sans-serif;
+        font-size: 12px;
+      }
+
+      .site-scene h3 {
+        position: relative;
+        z-index: 2;
+        max-width: 8ch;
+        margin: 72px 0 0;
+        font-family: var(--display);
+        font-size: clamp(36px, 4vw, 58px);
+        font-weight: 620;
+        letter-spacing: -0.04em;
+        line-height: 0.96;
+      }
+
+      .measure .site-scene h3 {
+        font-variation-settings: "SHRP" 72;
+      }
+
+      .site-art {
+        position: absolute;
+        right: 22px;
+        bottom: 20px;
+        width: 36%;
+        height: 64%;
+        display: flex;
+        align-items: end;
+        gap: 8px;
+      }
+
+      .site-art i {
+        flex: 1;
+        display: block;
+        height: var(--height);
+        background: var(--color);
+        border-radius: 100px 100px 8px 8px;
+      }
+
+      .chorus .site-art {
+        align-items: center;
+        transform: rotate(-7deg);
+      }
+
+      .chorus .site-art i {
+        border-radius: 100px;
+      }
+
+      .signal .site-art {
+        width: 42%;
+        height: 70%;
+        padding: 18px;
+        background: #11162a;
+        border-radius: 28px;
+      }
+
+      .signal .site-art i {
+        border-radius: 100px;
+      }
+
+      .app-scene {
+        overflow: hidden;
+        color: var(--ink);
+        background: var(--world);
+        border-radius: 16px;
+      }
+
+      .app-bar {
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 14px;
+        color: var(--muted);
+        border-bottom: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+        font-size: 11px;
+      }
+
+      .app-bar b {
+        color: var(--ink);
+        font-family: var(--display);
+      }
+
+      .app-body {
+        display: grid;
+        grid-template-columns: 70% 30%;
+        min-height: 270px;
+      }
+
+      .engine-frame {
+        position: relative;
+        overflow: hidden;
+        background: #07070b;
+      }
+
+      .engine-frame .field {
+        position: absolute;
+        inset: 22px;
+        display: grid;
+        grid-template-columns: 1.4fr 0.8fr 1fr;
+        grid-template-rows: 1fr 0.7fr;
+        gap: 8px;
+        transform: rotate(-3deg) scale(1.06);
+      }
+
+      .field span:nth-child(1) {
+        grid-row: 1 / 3;
+        background: var(--one);
+      }
+
+      .field span:nth-child(2) {
+        background: var(--two);
+      }
+
+      .field span:nth-child(3) {
+        background: var(--three);
+      }
+
+      .field span:nth-child(4) {
+        grid-column: 2 / 4;
+        background: var(--four);
+      }
+
+      .chorus .field span {
+        border-radius: 50%;
+      }
+
+      .chorus .field span:nth-child(4) {
+        border-radius: 120px;
+      }
+
+      .signal .engine-frame .field {
+        grid-template-columns: repeat(4, 1fr);
+        transform: none;
+      }
+
+      .app-side {
+        padding: 18px 14px;
+        color: var(--muted);
+        background: color-mix(in srgb, var(--world) 86%, var(--ink));
+        font-size: 11px;
+      }
+
+      .app-side strong {
+        display: block;
+        margin-bottom: 16px;
+        color: var(--ink);
+        font-family: var(--display);
+        font-size: 15px;
+      }
+
+      .app-side span {
+        display: block;
+        height: 6px;
+        margin-bottom: 10px;
+        background: color-mix(in srgb, var(--ink) 18%, transparent);
+        border-radius: 4px;
+      }
+
+      .rationale {
+        margin: 40px 0 0;
+        color: #aaa6b0;
+      }
+
+      .risk {
+        margin: 22px 0 0;
+        padding-top: 18px;
+        color: #8f8b95;
+        border-top: 1px solid #34343b;
+        font-size: 14px;
+      }
+
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 40px;
+        padding: 40px 0 64px;
+        color: #8f8b95;
+        border-top: 1px solid #34343b;
+      }
+
+      footer strong {
+        color: #f2f0eb;
+      }
+
+      @media (max-width: 1100px) {
+        header {
+          min-height: auto;
+          grid-template-columns: 1fr;
+          padding-top: 64px;
+        }
+
+        .directions {
+          grid-template-columns: 1fr;
+        }
+
+        .direction + .direction {
+          border-top: 1px solid #34343b;
+          border-left: 0;
+        }
+
+        .direction > h2,
+        .direction > .thesis {
+          min-height: auto;
+        }
+
+        .identity .name {
+          font-size: clamp(48px, 11vw, 72px);
+        }
+      }
+
+      @media (max-width: 560px) {
+        .shell {
+          width: min(calc(100% - 24px), 1680px);
+        }
+
+        header {
+          gap: 32px;
+          padding: 48px 0 40px;
+        }
+
+        h1 {
+          font-size: 3.35rem;
+        }
+
+        .direction {
+          padding-right: 0;
+          padding-left: 0;
+        }
+
+        .identity {
+          min-height: 200px;
+          grid-template-columns: 54px minmax(0, 1fr);
+          padding: 20px;
+        }
+
+        .identity .mark {
+          width: 54px;
+          height: 54px;
+        }
+
+        .identity .name {
+          font-size: clamp(42px, 14vw, 60px);
+        }
+
+        .app-body {
+          grid-template-columns: 1fr;
+        }
+
+        .app-side {
+          display: none;
+        }
+
+        footer {
+          display: block;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 1ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      THESIS: Arranged energy is the usable clue from round one; this review refuses both myth illustration and equalizer-logo convention.
+      OWN-WORLD: Three complete typographic and chromatic systems show Measure, Chorus, and Signal as distinct ways to organize a controlled spectrum.
+      STORY: Matt compares mature logotypes, evolved marks, true icon sizes, website scenes, and app scenes, then chooses a system or redirects again.
+      FIRST VIEWPORT: A concise reset statement introduces three equal specimen lanes; each lane carries identity, product breadth, rationale, and risk.
+      FORM: Side-by-side brand application proof, second Task-5 round, seed key BRAND1-REDIRECT.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+    -->
+    <div class="shell">
+      <header>
+        <h1>Not a light. A performance system.</h1>
+        <div>
+          <p class="intro"><strong>Round one mistook restraint for restriction.</strong> This reset keeps the useful clue—arranged energy—then tests it as measure, ensemble, and signal. Every system now has enough color and typographic range to support both the website and the app.</p>
+          <p class="instruction">Compare the complete system, not just the icon: wordmark, mark at native sizes, palette, website scene, and app scene. Nothing from the first round is fixed.</p>
+        </div>
+      </header>
+
+      <main class="directions" aria-label="Redirected Uzume brand directions">
+        <article class="direction measure">
+          <h2>A. Measure</h2>
+          <p class="thesis">A performance is planned in time. Five events occupy a score; color identifies voices without becoming decoration.</p>
+
+          <div class="identity">
+            <img class="mark" src="../../../../brand/redirect/measure/mark.svg" alt="Five events arranged at distinct heights" />
+            <div class="name">Uzume</div>
+            <div class="pronunciation">oo-ZOO-meh</div>
+          </div>
+          <p class="font-note">Geologica · variable humanist geometry with sharpened terminals · OFL 1.1</p>
+
+          <p class="spec-label">Dock evidence · actual pixels</p>
+          <div class="icon-row" aria-label="Measure icon at 16, 32, and 128 pixels">
+            <span class="icon-size"><img src="../../../../brand/redirect/measure/renders/icon-16.png" width="16" height="16" alt="" />16</span>
+            <span class="icon-size"><img src="../../../../brand/redirect/measure/renders/icon-32.png" width="32" height="32" alt="" />32</span>
+            <span class="icon-size"><img src="../../../../brand/redirect/measure/renders/icon-128.png" width="128" height="128" alt="" />128</span>
+          </div>
+
+          <p class="spec-label">Overtone palette</p>
+          <div class="palette" aria-label="Measure palette">
+            <span style="--swatch: var(--one)">Violet</span><span style="--swatch: var(--two)">Cyan</span><span style="--swatch: var(--three)">Gold</span><span style="--swatch: var(--four)">Ember</span>
+          </div>
+
+          <p class="spec-label">Website behavior</p>
+          <div class="site-scene">
+            <div class="mini-nav"><span class="mini-brand"><img src="../../../../brand/redirect/measure/mark.svg" alt="" />Uzume</span><span class="mini-link">Get the beta</span></div>
+            <h3>Music, planned in light.</h3>
+            <div class="site-art" aria-hidden="true">
+              <i style="--height:44%;--color:var(--one)"></i><i style="--height:84%;--color:var(--two)"></i><i style="--height:58%;--color:var(--three)"></i><i style="--height:100%;--color:var(--four)"></i>
+            </div>
+          </div>
+
+          <p class="spec-label">App behavior</p>
+          <div class="app-scene">
+            <div class="app-bar"><b>Uzume</b><span>Session planned</span></div>
+            <div class="app-body"><div class="engine-frame"><div class="field" aria-hidden="true"><span></span><span></span><span></span><span></span></div></div><div class="app-side"><strong>Current movement</strong><span></span><span></span><span></span></div></div>
+          </div>
+
+          <p class="rationale">The original five bars become a score rather than a waveform: events begin and end at different moments instead of sharing a baseline. Geologica brings enough authored character to stand alone, while its variable axes can serve both expressive headlines and practical UI.</p>
+          <p class="risk"><strong>Risk:</strong> The disciplined structure can skew analytical. Photography and engine footage must supply warmth.</p>
+        </article>
+
+        <article class="direction chorus">
+          <h2>B. Chorus</h2>
+          <p class="thesis">The system is an ensemble: distinct voices lean toward one shared performance, with room for warmth and daylight.</p>
+
+          <div class="identity">
+            <img class="mark" src="../../../../brand/redirect/chorus/mark.svg" alt="Five performers leaning toward a shared center" />
+            <div class="name">Uzume</div>
+            <div class="pronunciation">oo-ZOO-meh</div>
+          </div>
+          <p class="font-note">Ysabeau · Garamond-informed humanist sans · OFL 1.1</p>
+
+          <p class="spec-label">Dock evidence · actual pixels</p>
+          <div class="icon-row" aria-label="Chorus icon at 16, 32, and 128 pixels">
+            <span class="icon-size"><img src="../../../../brand/redirect/chorus/renders/icon-16.png" width="16" height="16" alt="" />16</span>
+            <span class="icon-size"><img src="../../../../brand/redirect/chorus/renders/icon-32.png" width="32" height="32" alt="" />32</span>
+            <span class="icon-size"><img src="../../../../brand/redirect/chorus/renders/icon-128.png" width="128" height="128" alt="" />128</span>
+          </div>
+
+          <p class="spec-label">Voice palette</p>
+          <div class="palette" aria-label="Chorus palette">
+            <span style="--swatch: var(--one)">Coral</span><span style="--swatch: var(--two)">Cobalt</span><span style="--swatch: var(--three)">Mint</span><span style="--swatch: var(--four)">Orchid</span>
+          </div>
+
+          <p class="spec-label">Website behavior</p>
+          <div class="site-scene">
+            <div class="mini-nav"><span class="mini-brand"><img src="../../../../brand/redirect/chorus/mark.svg" alt="" />Uzume</span><span class="mini-link">Get the beta</span></div>
+            <h3>Light comes out to listen.</h3>
+            <div class="site-art" aria-hidden="true">
+              <i style="--height:44%;--color:var(--one)"></i><i style="--height:84%;--color:var(--two)"></i><i style="--height:58%;--color:var(--three)"></i><i style="--height:100%;--color:var(--four)"></i>
+            </div>
+          </div>
+
+          <p class="spec-label">App behavior</p>
+          <div class="app-scene">
+            <div class="app-bar"><b>Uzume</b><span>Four voices active</span></div>
+            <div class="app-body"><div class="engine-frame"><div class="field" aria-hidden="true"><span></span><span></span><span></span><span></span></div></div><div class="app-side"><strong>Ensemble</strong><span></span><span></span><span></span></div></div>
+          </div>
+
+          <p class="rationale">The bars stop behaving like software meters and become five presences gathering around a center. Ysabeau has the warmth and unusual proportions the first logotypes lacked; the ivory website world proves the brand can breathe outside a permanently black stage.</p>
+          <p class="risk"><strong>Risk:</strong> This is the least overtly technical direction. Contributor surfaces would need stronger structural typography.</p>
+        </article>
+
+        <article class="direction signal">
+          <h2>C. Signal</h2>
+          <p class="thesis">The mark is a live container. Its colors can be re-keyed by context while the surrounding interface remains stable.</p>
+
+          <div class="identity">
+            <img class="mark" src="../../../../brand/redirect/signal/mark.svg" alt="Five colored performance apertures inside one field" />
+            <div class="name">Uzume</div>
+            <div class="pronunciation">oo-ZOO-meh</div>
+          </div>
+          <p class="font-note">Gabarito · generous geometric display sans · OFL 1.1</p>
+
+          <p class="spec-label">Dock evidence · actual pixels</p>
+          <div class="icon-row" aria-label="Signal icon at 16, 32, and 128 pixels">
+            <span class="icon-size"><img src="../../../../brand/redirect/signal/renders/icon-16.png" width="16" height="16" alt="" />16</span>
+            <span class="icon-size"><img src="../../../../brand/redirect/signal/renders/icon-32.png" width="32" height="32" alt="" />32</span>
+            <span class="icon-size"><img src="../../../../brand/redirect/signal/renders/icon-128.png" width="128" height="128" alt="" />128</span>
+          </div>
+
+          <p class="spec-label">Signal palette</p>
+          <div class="palette" aria-label="Signal palette">
+            <span style="--swatch: var(--one)">Aqua</span><span style="--swatch: var(--two)">Magenta</span><span style="--swatch: var(--three)">Lime</span><span style="--swatch: var(--four)">Orange</span>
+          </div>
+
+          <p class="spec-label">Website behavior</p>
+          <div class="site-scene">
+            <div class="mini-nav"><span class="mini-brand"><img src="../../../../brand/redirect/signal/mark.svg" alt="" />Uzume</span><span class="mini-link">Get the beta</span></div>
+            <h3>A light in sound.</h3>
+            <div class="site-art" aria-hidden="true">
+              <i style="--height:44%;--color:var(--one)"></i><i style="--height:84%;--color:var(--two)"></i><i style="--height:58%;--color:var(--three)"></i><i style="--height:100%;--color:var(--four)"></i>
+            </div>
+          </div>
+
+          <p class="spec-label">App behavior</p>
+          <div class="app-scene">
+            <div class="app-bar"><b>Uzume</b><span>Signal mapped</span></div>
+            <div class="app-body"><div class="engine-frame"><div class="field" aria-hidden="true"><span></span><span></span><span></span><span></span></div></div><div class="app-side"><strong>Color roles</strong><span></span><span></span><span></span></div></div>
+          </div>
+
+          <p class="rationale">The five-beat clue becomes a framed, chromatic signal rather than a free-floating audio symbol. Gabarito gives the name an easy, memorable voice and the palette can rotate with presets, contributor identities, or campaigns without redrawing the brand.</p>
+          <p class="risk"><strong>Risk:</strong> This is the most overtly digital direction. Strict role assignment is needed to keep the spectrum from becoming UI confetti.</p>
+        </article>
+      </main>
+
+      <footer>
+        <p><strong>Decision needed:</strong> choose A, B, C, combine named parts, or redirect again.</p>
+        <p>Task-5 redirect · no first-round asset is fixed</p>
+      </footer>
+    </div>
+  </body>
+</html>

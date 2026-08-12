@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 180" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Signal logotype</title>
+  <desc id="desc">Uzume set in Gabarito, a friendly geometric sans with a relaxed stance.</desc>
+  <style>
+    @font-face { font-family: Gabarito; src: url("../../fonts/Gabarito.ttf"); }
+    text { font-family: Gabarito, sans-serif; font-size: 140px; font-weight: 650; letter-spacing: -5px; }
+  </style>
+  <text x="18" y="139" fill="#F3F1EC">Uzume</text>
+</svg>

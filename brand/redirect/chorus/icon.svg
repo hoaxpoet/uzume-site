@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Chorus app icon</title>
+  <desc id="desc">An ivory rounded square with five colored performers leaning toward a shared center.</desc>
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="#F3EEE6"/>
+  <rect x="194" y="404" width="88" height="330" rx="44" fill="#FF5E70" transform="rotate(-14 238 569)"/>
+  <rect x="342" y="262" width="88" height="480" rx="44" fill="#4E7BFF" transform="rotate(-7 386 502)"/>
+  <rect x="468" y="208" width="88" height="590" rx="44" fill="#17121F"/>
+  <rect x="594" y="262" width="88" height="480" rx="44" fill="#74D99F" transform="rotate(7 638 502)"/>
+  <rect x="742" y="404" width="88" height="330" rx="44" fill="#C177FF" transform="rotate(14 786 569)"/>
+</svg>

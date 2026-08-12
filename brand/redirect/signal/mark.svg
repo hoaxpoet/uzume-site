@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Signal mark</title>
+  <desc id="desc">Five saturated apertures cut to distinct heights inside one performance field.</desc>
+  <rect x="8" y="8" width="104" height="104" rx="24" fill="#11162A"/>
+  <rect x="20" y="54" width="12" height="38" rx="6" fill="#00C2D7"/>
+  <rect x="37" y="28" width="12" height="64" rx="6" fill="#F04B9C"/>
+  <rect x="54" y="45" width="12" height="47" rx="6" fill="#B9D54A"/>
+  <rect x="71" y="20" width="12" height="72" rx="6" fill="#FF7A3D"/>
+  <rect x="88" y="38" width="12" height="54" rx="6" fill="#7A68FF"/>
+</svg>
