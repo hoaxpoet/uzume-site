@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Lightfield app icon</title>
+  <desc id="desc">A dark macOS icon filled by five large chromatic planes composed as a single frame of performed light.</desc>
+  <defs><clipPath id="field"><rect x="64" y="64" width="896" height="896" rx="224"/></clipPath></defs>
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="#0B0C10"/>
+  <g clip-path="url(#field)">
+    <path d="M44 792C232 712 294 300 510 194C690 106 862 188 986 352V548C844 402 716 350 590 402C422 472 392 776 214 934Z" fill="#7F6AFF"/>
+    <path d="M40 236C262 228 424 410 514 612C590 784 730 890 988 920V988H588C438 900 350 772 290 620C230 468 136 402 40 394Z" fill="#37D6C0"/>
+    <path d="M90 910C296 810 386 628 426 430C466 236 578 106 756 42H920C674 214 626 402 596 578C562 778 452 916 294 990H90Z" fill="#FF6B4A"/>
+    <path d="M54 574C278 502 450 532 614 650C730 734 846 754 990 714V862C812 888 656 826 516 738C394 660 244 654 54 734Z" fill="#F5C84C"/>
+    <path d="M444 276C554 330 604 436 576 548C548 660 590 758 690 830L608 934C450 824 402 674 458 520C500 404 476 334 398 304Z" fill="#F4F6F1"/>
+  </g>
+</svg>
