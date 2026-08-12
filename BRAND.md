@@ -46,6 +46,10 @@ Arrival retains the five-stroke mark with Alumni Sans. The count is not symbolic
 
 Repertoire used a custom chromatic Z. It is rejected because a standalone Z makes the brand read as “Zume,” overemphasizes the middle consonant, and risks “zoom” or generic technology associations. The full palette remains available; this particular form does not.
 
-## Open app-icon challenger — Lightfield
+## Rejected app-icon challenger — Lightfield
 
-Lightfield begins with the app icon rather than a logo mark. Five large chromatic planes cross and interrupt one another inside a dark macOS squircle, producing a composed frame of performed light. Its intended memory is “music, performed as light”: the palette supplies the contributor-built visual repertoire, while the single frame supplies authorship and orchestration. No wordmark is derived until the icon direction is reviewed.
+Lightfield began with the app icon rather than a logo mark. Five large chromatic planes crossed inside a dark macOS squircle, but the result had no memorable symbol: it could only be described as colorful crossing shapes. It is retained as possible background-graphic material, not as an identity candidate.
+
+## Open app-icon challenger — Resonant Tub
+
+Resonant Tub uses the overturned wooden tub that Uzume stamps and dances on in the Ama-no-Iwato myth. Five unequal colored impact gestures cross its top as an irregular phrase; the full palette represents the performed light rather than decorating the vessel. The candidate is raster-first, with a 1024 px master and true 16/32/128 px proofs. Its unresolved risk is small-size specificity: the colored vessel remains visible at 16 px, while the wooden construction does not.
