@@ -37,3 +37,7 @@ Five bars become five presences leaning toward a shared center, moving the mark 
 ### C — Signal
 
 The beat sequence becomes a framed chromatic signal whose internal colors can be re-keyed by preset, contributor, or campaign while its silhouette remains stable. Gabarito gives the wordmark a friendly geometric voice; the risk is digital familiarity, controlled by assigning each spectrum color a real role rather than scattering it as decoration.
+
+## Current lead — Arrival
+
+Arrival retains the five-stroke mark with Alumni Sans. The count is not symbolic: it does not represent five product phases, five cues, or five mythic events. Five is the shortest irregular phrase that gives the mark a visible center, cadence, and enough variation to feel composed rather than metered. The amber stroke is the consequential cue within that phrase—the point where a planned performance causes light to return.

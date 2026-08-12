@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Turn icon</title>
+  <desc id="desc">A near-black rounded square holding a compact U-shaped authored arc whose final folded face becomes first-light amber.</desc>
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="#111114"/>
+  <g transform="translate(212 212) scale(5)">
+    <path d="M17 15H41V70C41 85 48 93 60 93C72 93 79 85 79 70V48H103V71C103 100 86 112 60 112C34 112 17 100 17 71Z" fill="#F4F1EA"/>
+    <path d="M79 15H103V48H79Z" fill="#F2A64A"/>
+    <path d="M79 48L103 35V48L79 61Z" fill="#7A4A1E"/>
+  </g>
+</svg>
