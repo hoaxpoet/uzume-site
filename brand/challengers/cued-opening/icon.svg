@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Cued Opening icon</title>
+  <desc id="desc">A near-black rounded square holding two scored planes, a narrow dark opening, and one amber cue crossing the threshold.</desc>
+  <rect x="64" y="64" width="896" height="896" rx="224" fill="#111114"/>
+  <g transform="translate(212 212) scale(5)">
+    <path d="M15 14H50V34H42V47H50V67H38V81H50V106H15Z" fill="#F4F1EA"/>
+    <path d="M105 14H70V39H80V55H70V76H84V90H70V106H105Z" fill="#F4F1EA"/>
+    <path d="M49 58H79" fill="none" stroke="#F2A64A" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>
