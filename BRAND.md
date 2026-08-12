@@ -41,3 +41,7 @@ The beat sequence becomes a framed chromatic signal whose internal colors can be
 ## Current lead — Arrival
 
 Arrival retains the five-stroke mark with Alumni Sans. The count is not symbolic: it does not represent five product phases, five cues, or five mythic events. Five is the shortest irregular phrase that gives the mark a visible center, cadence, and enough variation to feel composed rather than metered. The amber stroke is the consequential cue within that phrase—the point where a planned performance causes light to return.
+
+## Open challenger — Repertoire
+
+Repertoire is a custom Z built as one continuous chromatic performance. Violet, cyan, gold, ember, and ivory are equal visual voices rather than a sequence in which color arrives. The form is owned directly by the Uzume name and gives the richer palette an honest structural role: the contributor-built repertoire is varied, while orchestration joins it into one performance. Its primary risk is resemblance to a broadcast identity; it must remain under review rather than being treated as a settled alternative.

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 134" role="img" aria-labelledby="title desc">
+  <title id="title">Uzume Repertoire mark</title>
+  <desc id="desc">A custom Z formed as one continuous performance across five chromatic voices.</desc>
+  <path d="M12 16H60V38H12Z" fill="#7F6AFF"/>
+  <path d="M60 16H108V38H60Z" fill="#37D6C0"/>
+  <path d="M75 38H108L45 96H12Z" fill="#F5C84C"/>
+  <path d="M12 96H60V118H12Z" fill="#FF6B4A"/>
+  <path d="M60 96H108V118H60Z" fill="#F4F6F1"/>
+</svg>
