@@ -1,0 +1,59 @@
+:root {
+  --color-canvas: #09090b;
+  --color-surface: #111114;
+  --color-surface-raised: #19191d;
+  --color-line: #323238;
+  --color-text-primary: #f4f1ea;
+  --color-text-secondary: #c4bfb5;
+  --color-text-tertiary: #969188;
+  --color-accent: #f2a64a;
+  --color-accent-hover: #ffc06b;
+  --color-accent-dim: #7a4a1e;
+  --color-on-accent: #09090b;
+
+  --font-display: "STIX Two Text", "Times New Roman", serif;
+  --font-text: "PT Sans", sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.5rem;
+  --text-4xl: clamp(3rem, 8vw, 6rem);
+  --leading-tight: 0.96;
+  --leading-heading: 1.12;
+  --leading-body: 1.6;
+  --tracking-display: -0.035em;
+  --tracking-label: 0.12em;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-10: 2.5rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+
+  --duration-immediate: 120ms;
+  --duration-standard: 240ms;
+  --duration-deliberate: 480ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-immediate: 1ms;
+    --duration-standard: 1ms;
+    --duration-deliberate: 1ms;
+  }
+}
