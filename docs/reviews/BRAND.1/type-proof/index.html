@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uzume — A typography proof</title>
+    <style>
+      @font-face {
+        font-family: "Alumni Sans";
+        src: url("../../../../brand/fonts/AlumniSans.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Geologica";
+        src: url("../../../../brand/fonts/Geologica.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "PT Sans";
+        src: url("../../../../brand/fonts/PTSans.ttc") format("truetype");
+        font-weight: 400 700;
+        font-display: swap;
+      }
+
+      :root {
+        color-scheme: dark;
+        --world: #0b0c10;
+        --surface: #14151a;
+        --surface-2: #1a1b21;
+        --ink: #f4f6f1;
+        --muted: #aeb4ad;
+        --faint: #727770;
+        --rule: #303238;
+        --violet: #7f6aff;
+        --cyan: #37d6c0;
+        --gold: #f5c84c;
+        --ember: #ff6b4a;
+      }
+
+      * { box-sizing: border-box; }
+
+      html { background: var(--world); }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--world);
+        font-family: "PT Sans", sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      button { font: inherit; }
+
+      .shell {
+        width: min(calc(100% - 40px), 1500px);
+        margin: 0 auto;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+        gap: 64px;
+        align-items: end;
+        padding: 72px 0 52px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      header h1 {
+        max-width: 11ch;
+        margin: 0;
+        font-family: "Alumni Sans", sans-serif;
+        font-size: clamp(4rem, 8vw, 6rem);
+        font-weight: 560;
+        letter-spacing: -0.025em;
+        line-height: 0.86;
+        text-wrap: balance;
+      }
+
+      header p {
+        max-width: 49ch;
+        margin: 0 0 6px;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      header strong { color: var(--ink); }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 24px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .controls p {
+        max-width: 70ch;
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .theme-switch {
+        display: inline-flex;
+        flex: 0 0 auto;
+        padding: 4px;
+        background: var(--surface);
+        border-radius: 12px;
+      }
+
+      .theme-switch button {
+        min-height: 40px;
+        padding: 0 16px;
+        color: var(--muted);
+        background: transparent;
+        border: 0;
+        border-radius: 9px;
+        cursor: pointer;
+      }
+
+      .theme-switch button[aria-pressed="true"] {
+        color: var(--ink);
+        background: var(--surface-2);
+      }
+
+      .theme-switch button:focus-visible {
+        outline: 2px solid var(--cyan);
+        outline-offset: 2px;
+      }
+
+      .comparison {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .candidate {
+        min-width: 0;
+        padding: 54px clamp(24px, 4vw, 64px) 80px;
+      }
+
+      .candidate + .candidate { border-left: 1px solid var(--rule); }
+
+      .candidate h2 {
+        margin: 0 0 10px;
+        font-family: var(--face);
+        font-size: 42px;
+        font-weight: var(--weight);
+        letter-spacing: var(--tracking);
+        line-height: 1;
+      }
+
+      .candidate > p {
+        min-height: 3em;
+        max-width: 52ch;
+        margin: 0 0 42px;
+        color: var(--muted);
+      }
+
+      .alumni {
+        --face: "Alumni Sans", sans-serif;
+        --weight: 560;
+        --tracking: -0.018em;
+      }
+
+      .geologica {
+        --face: "Geologica", sans-serif;
+        --weight: 580;
+        --tracking: -0.04em;
+      }
+
+      .geologica .type { font-variation-settings: "SHRP" 72, "CRSV" 0; }
+
+      .lockup-stage {
+        min-height: 300px;
+        display: grid;
+        place-items: center;
+        padding: 48px 28px;
+        background: var(--surface);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .lockup {
+        display: flex;
+        align-items: center;
+        gap: clamp(18px, 3vw, 34px);
+      }
+
+      .mark {
+        width: clamp(68px, 8vw, 112px);
+        height: clamp(68px, 8vw, 112px);
+        flex: 0 0 auto;
+      }
+
+      .wordmark {
+        font-family: var(--face);
+        font-size: clamp(4.8rem, 8vw, 8rem);
+        font-weight: var(--weight);
+        letter-spacing: var(--tracking);
+        line-height: 0.72;
+        white-space: nowrap;
+      }
+
+      .alumni .wordmark {
+        font-size: clamp(5.4rem, 9vw, 9rem);
+        font-weight: 590;
+        letter-spacing: -0.012em;
+      }
+
+      .sample-label {
+        margin: 38px 0 12px;
+        color: var(--faint);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .display-sample {
+        min-height: 260px;
+        padding: clamp(28px, 4vw, 48px);
+        color: #171820;
+        background: var(--gold);
+        border-radius: 16px;
+      }
+
+      .display-sample h3 {
+        max-width: 8ch;
+        margin: 0 0 28px;
+        font-family: var(--face);
+        font-size: clamp(4.2rem, 8vw, 7.5rem);
+        font-weight: var(--weight);
+        letter-spacing: var(--tracking);
+        line-height: 0.8;
+      }
+
+      .alumni .display-sample h3 {
+        font-weight: 620;
+        letter-spacing: -0.012em;
+      }
+
+      .display-sample p {
+        max-width: 36ch;
+        margin: 0;
+        color: #343020;
+        font-size: 17px;
+      }
+
+      .app-sample {
+        overflow: hidden;
+        background: var(--surface);
+        border-radius: 16px;
+      }
+
+      .app-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 58px;
+        padding: 0 20px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .mini-brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-family: var(--face);
+        font-size: 25px;
+        font-weight: var(--weight);
+        letter-spacing: var(--tracking);
+      }
+
+      .mini-brand img { width: 24px; height: 24px; }
+
+      .status {
+        color: var(--cyan);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .app-body { padding: 28px 20px 30px; }
+
+      .app-body h3 {
+        max-width: 12ch;
+        margin: 0 0 9px;
+        font-family: var(--face);
+        font-size: 42px;
+        font-weight: var(--weight);
+        letter-spacing: var(--tracking);
+        line-height: 0.95;
+      }
+
+      .app-body > p {
+        margin: 0 0 28px;
+        color: var(--muted);
+      }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: 74px 1fr;
+        gap: 0;
+        border-top: 1px solid var(--rule);
+      }
+
+      .timeline div {
+        padding: 15px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .timeline div:nth-child(odd) {
+        color: var(--faint);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .timeline div:nth-child(even) { color: var(--ink); }
+
+      .palette {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        height: 10px;
+      }
+
+      .palette span:nth-child(1) { background: var(--violet); }
+      .palette span:nth-child(2) { background: var(--cyan); }
+      .palette span:nth-child(3) { background: var(--gold); }
+      .palette span:nth-child(4) { background: var(--ember); }
+
+      body.paper {
+        --world: #efeee9;
+        --surface: #f9f8f3;
+        --surface-2: #e4e2db;
+        --ink: #16171c;
+        --muted: #555a55;
+        --faint: #70756f;
+        --rule: #cecec7;
+        color-scheme: light;
+      }
+
+      body.paper .mark,
+      body.paper .mini-brand img { filter: invert(1); }
+
+      body.paper .display-sample { color: #171820; }
+
+      @media (max-width: 860px) {
+        .shell { width: min(calc(100% - 28px), 1500px); }
+        header { grid-template-columns: 1fr; gap: 28px; padding-top: 48px; }
+        .controls { align-items: flex-start; flex-direction: column; }
+        .comparison { grid-template-columns: 1fr; }
+        .candidate { padding: 46px 0 64px; }
+        .candidate + .candidate { border-left: 0; border-top: 1px solid var(--rule); }
+        .lockup-stage { min-height: 230px; padding-inline: 18px; }
+        .wordmark { font-size: clamp(4.3rem, 20vw, 7rem); }
+        .alumni .wordmark { font-size: clamp(4.8rem, 23vw, 8rem); }
+      }
+
+      @media (max-width: 480px) {
+        .lockup { gap: 14px; }
+        .mark { width: 56px; height: 56px; }
+        .wordmark { font-size: clamp(3.8rem, 19vw, 5.4rem); }
+        .alumni .wordmark { font-size: clamp(4.2rem, 22vw, 6rem); }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header>
+        <h1>A, with two voices.</h1>
+        <p><strong>The mark, language, palette, and layouts are identical.</strong> Only the display family changes, so the difference you feel belongs to the typography.</p>
+      </header>
+
+      <div class="controls">
+        <p>Compare the large wordmark first, then the campaign line and the restrained product header. The strongest choice needs to hold all three.</p>
+        <div class="theme-switch" aria-label="Proof background">
+          <button type="button" data-theme="dark" aria-pressed="true">Dark</button>
+          <button type="button" data-theme="paper" aria-pressed="false">Paper</button>
+        </div>
+      </div>
+
+      <section class="comparison" aria-label="Typography comparison">
+        <article class="candidate alumni">
+          <h2 class="type">Alumni Sans</h2>
+          <p>Condensed, upright, and performative. Shown at a controlled medium weight—not the Impact-like extreme.</p>
+
+          <div class="lockup-stage">
+            <div class="lockup">
+              <img class="mark" src="../../../../brand/redirect/measure/mark.svg" alt="" />
+              <div class="wordmark type">Uzume</div>
+            </div>
+          </div>
+
+          <div class="sample-label">Expressive display</div>
+          <div class="display-sample">
+            <h3 class="type">Make the entrance count.</h3>
+            <p>Five moments, one shared sequence. Arrange the rehearsal before everyone enters the room.</p>
+          </div>
+
+          <div class="sample-label">Product restraint</div>
+          <div class="app-sample">
+            <div class="app-bar">
+              <div class="mini-brand type"><img src="../../../../brand/redirect/measure/mark.svg" alt="" />Uzume</div>
+              <div class="status">Rehearsal ready</div>
+            </div>
+            <div class="app-body">
+              <h3 class="type">Opening sequence</h3>
+              <p>Tuesday, August 18 · Studio A</p>
+              <div class="timeline">
+                <div>6:30</div><div>Company arrival</div>
+                <div>6:45</div><div>Spacing and sound</div>
+                <div>7:10</div><div>Full sequence</div>
+              </div>
+            </div>
+            <div class="palette" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          </div>
+        </article>
+
+        <article class="candidate geologica">
+          <h2 class="type">Geologica</h2>
+          <p>Wide, composed, and engineered. Shown with the sharper setting currently used by direction A.</p>
+
+          <div class="lockup-stage">
+            <div class="lockup">
+              <img class="mark" src="../../../../brand/redirect/measure/mark.svg" alt="" />
+              <div class="wordmark type">Uzume</div>
+            </div>
+          </div>
+
+          <div class="sample-label">Expressive display</div>
+          <div class="display-sample">
+            <h3 class="type">Make the entrance count.</h3>
+            <p>Five moments, one shared sequence. Arrange the rehearsal before everyone enters the room.</p>
+          </div>
+
+          <div class="sample-label">Product restraint</div>
+          <div class="app-sample">
+            <div class="app-bar">
+              <div class="mini-brand type"><img src="../../../../brand/redirect/measure/mark.svg" alt="" />Uzume</div>
+              <div class="status">Rehearsal ready</div>
+            </div>
+            <div class="app-body">
+              <h3 class="type">Opening sequence</h3>
+              <p>Tuesday, August 18 · Studio A</p>
+              <div class="timeline">
+                <div>6:30</div><div>Company arrival</div>
+                <div>6:45</div><div>Spacing and sound</div>
+                <div>7:10</div><div>Full sequence</div>
+              </div>
+            </div>
+            <div class="palette" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      const buttons = document.querySelectorAll("[data-theme]");
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          document.body.classList.toggle("paper", button.dataset.theme === "paper");
+          buttons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+        });
+      });
+    </script>
+  </body>
+</html>
