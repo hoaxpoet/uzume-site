@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Foundations in the Uzume design system." />
+  <title>Foundations · Uzume Design System</title>
+  <link rel="icon" href="../../../brand/favicon/favicon-32.png" />
+  <link rel="stylesheet" href="../../../tokens.css" />
+  <link rel="stylesheet" href="../uzume-components.css?v=8" />
+  <link rel="stylesheet" href="../catalogue.css?v=8" />
+</head>
+<body data-route="foundations">
+  <a class="ds-skip" href="#main">Skip to content</a>
+  <header class="ds-topbar">
+    <button class="ds-menu" type="button" aria-controls="ds-sidebar" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg><span class="sr-only">Open navigation</span></button>
+    <a class="ds-product" href="../index.html"><img src="../../../brand/wordmark/Uzume.svg" alt="Uzume" /><span>Design System</span></a>
+    <span class="ds-version">0.8 · Hardened</span>
+    <nav class="ds-toplinks" aria-label="System layers"><a href="../index.html">Overview</a><a aria-current="page" href="../foundations/">Foundations</a><a href="../components/">Web</a><a href="../native/controls/">macOS</a></nav>
+  </header>
+  <aside class="ds-sidebar" id="ds-sidebar" aria-label="Foundations navigation"><nav><section><h2>Foundations</h2><a href="#overview">Overview</a><a href="#taxonomy">Taxonomy</a><a href="#color">Color</a><a href="#typography">Typography</a><a href="#spacing">Spacing & shape</a><a href="#accessibility">Accessibility</a></section></nav><p class="ds-sidebar__count"><strong>5</strong> foundation areas</p></aside>
+  <main class="ds-main" id="main">
+    <section class="ds-page-intro" id="overview"><div><p class="ds-path">Foundations</p><h1>Shared foundations</h1><p class="ds-lede">Semantic decisions that carry across the website and macOS application while respecting each platform’s language.</p></div></section>
+    <section class="ds-doc-section" id="taxonomy">
+      <header class="ds-section-head"><p class="ds-path">Foundations / Taxonomy</p><h2>What belongs here</h2><p>A component is included only when it has a named consumer in the website plan, an existing Phosphene implementation, or an agreed Uzume screen. Morningstar’s composable model informs the contract—not the size of the inventory.</p></header>
+      <div class="ds-theme-table-wrap"><table class="ds-table"><caption>Library levels</caption><thead><tr><th>Level</th><th>Definition</th><th>Evidence gate</th><th>Examples</th></tr></thead><tbody><tr><th>Foundation</th><td>A semantic decision consumed across interfaces.</td><td>Repeated visual or behavioral decision</td><td>Color roles, type, spacing, focus</td></tr><tr><th>Component</th><td>A reusable unit with a stable responsibility and API.</td><td>Named consumers or repeated existing use</td><td>Button, Banner, Media Frame</td></tr><tr><th>Pattern</th><td>A repeatable composition for a product task.</td><td>Specified website or application journey</td><td>Download decision, Preset gallery</td></tr><tr><th>Screen</th><td>A routed state that owns orchestration.</td><td>Implemented or agreed product flow</td><td>Preparation, Streaming handoff, Settings</td></tr></tbody></table></div>
+    </section>
+<section class="ds-doc-section" id="color">
+      <header class="ds-section-head"><p class="ds-path">Foundations / Color</p><h2>Color</h2><p>Midnight and ivory establish structure. Violet identifies interaction. The complete spectrum identifies performed light. Status colors retain conventional meaning.</p></header>
+      <div class="ds-spectrum" aria-label="Uzume brand spectrum"><span class="violet">Violet<small>#7F6AFF</small></span><span class="cyan">Cyan<small>#37D6C0</small></span><span class="gold">Gold<small>#F5C84C</small></span><span class="ember">Ember<small>#FF6B4A</small></span></div>
+      <div class="ds-theme-table-wrap"><table class="ds-table"><caption>Semantic roles by appearance</caption><thead><tr><th>Role</th><th>Dark</th><th>Light</th><th>Usage</th></tr></thead><tbody><tr><th>Canvas</th><td><i style="--swatch:#0b0c10"></i>#0B0C10</td><td><i style="--swatch:#f7f7f5"></i>#F7F7F5</td><td>Page and application ground</td></tr><tr><th>Action</th><td><i style="--swatch:#7f6aff"></i>#7F6AFF</td><td><i style="--swatch:#6753d7"></i>#6753D7</td><td>Primary action and focus</td></tr><tr><th>Warning</th><td><i style="--swatch:#ffd60a"></i>#FFD60A</td><td><i style="--swatch:#5c4700"></i>#5C4700</td><td>Warning mark; never CTA</td></tr><tr><th>Error</th><td><i style="--swatch:#ff8a75"></i>#FF8A75</td><td><i style="--swatch:#9f271c"></i>#9F271C</td><td>Error and destructive state</td></tr></tbody></table></div>
+    </section>
+<section class="ds-doc-section" id="typography">
+      <header class="ds-section-head"><p class="ds-path">Foundations / Typography</p><h2>Typography</h2><p>Alumni Sans carries short brand statements. PT Sans carries website controls and documentation. Native application interfaces use San Francisco.</p></header>
+      <div class="ds-type-specimen"><div><span>Display · Alumni Sans SemiBold</span><strong>Performed light.</strong></div><div><span>Body · PT Sans Regular</span><p>Uzume prepares an orchestrated visual performance for music without revealing the plan before playback.</p></div></div>
+      <div class="ds-theme-table-wrap"><table class="ds-table"><caption>Web type roles</caption><thead><tr><th>Role</th><th>Size</th><th>Weight</th><th>Usage</th></tr></thead><tbody><tr><th>Display</th><td>56–96 px</td><td>600</td><td>Short brand statements</td></tr><tr><th>Section title</th><td>40 px</td><td>600</td><td>Major sections</td></tr><tr><th>Component title</th><td>22 px</td><td>600</td><td>Component documentation</td></tr><tr><th>Body</th><td>16 px</td><td>400</td><td>Controls and explanation</td></tr></tbody></table></div>
+    </section>
+<section class="ds-doc-section" id="spacing">
+      <header class="ds-section-head"><p class="ds-path">Foundations / Spacing & shape</p><h2>Spacing & shape</h2><p>A four-point rhythm organizes related controls and separates distinct tasks. Shape follows function rather than decoration.</p></header>
+      <div class="ds-scale"><span style="--size:4px">4</span><span style="--size:8px">8</span><span style="--size:12px">12</span><span style="--size:16px">16</span><span style="--size:24px">24</span><span style="--size:32px">32</span><span style="--size:48px">48</span><span style="--size:64px">64</span></div>
+    </section>
+<section class="ds-doc-section" id="accessibility">
+      <header class="ds-section-head"><p class="ds-path">Foundations / Accessibility</p><h2>Accessibility</h2><p>Accessibility is a component contract, not a review-stage patch.</p></header>
+      <ul class="ds-checks"><li>Normal text meets 4.5:1; meaningful boundaries and graphics meet 3:1.</li><li>Disabled controls retain 4.5:1 by Uzume policy and include an associated reason.</li><li>Status uses color, icon, and explicit language in both appearances.</li><li>Interactive targets are at least 44 × 44 px and expose visible keyboard focus.</li><li>Reduced motion, increased contrast, long labels, and media failure are defined states.</li></ul>
+    </section>
+    <footer class="ds-footer"><span>Uzume Design System 0.8</span><a href="../../../DesignSystem/COMPONENTS.md">Component contracts</a><a href="../../../docs/design/PHOSPHENE-COMPONENT-CENSUS.md">App census</a><a href="../../../DESIGN.md">Design guidelines</a></footer>
+  </main>
+  <script type="module" src="../uzume-components.js?v=8"></script>
+  <script type="module" src="../catalogue.js?v=8"></script>
+</body>
+</html>

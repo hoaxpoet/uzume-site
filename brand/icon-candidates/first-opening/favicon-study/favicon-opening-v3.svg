@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-labelledby="title desc" shape-rendering="geometricPrecision">
+  <title id="title">Uzume First Opening favicon</title>
+  <desc id="desc">A bright opening in darkness releases a compact prismatic field.</desc>
+  <rect width="32" height="32" rx="7" fill="#0B0C10"/>
+
+  <!-- Compact prismatic release: short enough to remain an opening, not a ribbon. -->
+  <path d="M10.2 10.0C14.9 9.6 20.7 11.1 24.1 14.2C19.7 13.2 15.4 12.6 11.0 12.7Z" fill="#7F6AFF"/>
+  <path d="M10.4 11.4C14.8 12.1 20.1 13.9 23.1 17.1C18.9 15.6 14.9 14.4 10.7 14.0Z" fill="#37D6C0"/>
+  <path d="M10.4 12.8C14.4 14.0 18.5 16.2 21.2 19.3C17.5 17.4 14.1 15.8 10.2 15.0Z" fill="#F5C84C"/>
+  <path d="M17.2 17.1C18.8 17.8 20.2 18.5 21.2 19.3C22.0 20.0 22.6 20.7 23.0 21.2C20.7 20.0 18.7 19.0 17.2 18.4Z" fill="#FF6B4A"/>
+
+  <!-- The opening is enlarged and nearly centered for 16 px recognition. -->
+  <path d="M8.1 9.4L10.9 11.3L10.2 15.0L8.2 13.8Z" fill="#F4F6F1"/>
+
+  <!-- One broad occlusion interrupts the release and restores the shadow/light idea. -->
+  <path d="M16.2 20.1C18.2 17.9 20.5 17.2 23.1 18.0C26.2 19.0 28.3 21.7 32 24.0V32H12.6C13.7 27.4 14.8 22.7 16.2 20.1Z" fill="#0B0C10"/>
+</svg>

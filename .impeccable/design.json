@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-13T00:00:00-05:00",
+  "title": "Design System: Uzume",
+  "extensions": {
+    "colorMeta": {
+      "canvas": { "role": "neutral", "displayName": "Midnight Canvas", "canonical": "#0b0c10", "tonalRamp": ["oklch(15% 0.01 275)", "oklch(24% 0.01 275)", "oklch(36% 0.01 275)", "oklch(48% 0.01 275)", "oklch(60% 0.01 275)", "oklch(72% 0.01 275)", "oklch(84% 0.01 275)", "oklch(95% 0.01 275)"] },
+      "text-primary": { "role": "neutral", "displayName": "Ivory Light", "canonical": "#f4f6f1", "tonalRamp": ["oklch(15% 0.01 125)", "oklch(24% 0.01 125)", "oklch(36% 0.01 125)", "oklch(48% 0.01 125)", "oklch(60% 0.01 125)", "oklch(72% 0.01 125)", "oklch(84% 0.01 125)", "oklch(95% 0.01 125)"] },
+      "accent": { "role": "primary", "displayName": "Action Violet", "canonical": "#7f6aff", "tonalRamp": ["oklch(15% 0.12 290)", "oklch(24% 0.15 290)", "oklch(36% 0.18 290)", "oklch(48% 0.20 290)", "oklch(60% 0.20 290)", "oklch(72% 0.16 290)", "oklch(84% 0.10 290)", "oklch(95% 0.03 290)"] },
+      "warning": { "role": "tertiary", "displayName": "System Yellow", "canonical": "#ffd60a", "tonalRamp": ["oklch(15% 0.07 100)", "oklch(24% 0.09 100)", "oklch(36% 0.11 100)", "oklch(48% 0.13 100)", "oklch(60% 0.15 100)", "oklch(72% 0.16 100)", "oklch(84% 0.13 100)", "oklch(95% 0.04 100)"] },
+      "opening-violet": { "role": "secondary", "displayName": "Opening Violet", "canonical": "#7f6aff", "tonalRamp": ["oklch(15% 0.12 290)", "oklch(24% 0.15 290)", "oklch(36% 0.18 290)", "oklch(48% 0.20 290)", "oklch(60% 0.20 290)", "oklch(72% 0.16 290)", "oklch(84% 0.10 290)", "oklch(95% 0.03 290)"] },
+      "opening-cyan": { "role": "secondary", "displayName": "Opening Cyan", "canonical": "#37d6c0", "tonalRamp": ["oklch(15% 0.06 180)", "oklch(24% 0.08 180)", "oklch(36% 0.10 180)", "oklch(48% 0.12 180)", "oklch(60% 0.13 180)", "oklch(72% 0.13 180)", "oklch(84% 0.09 180)", "oklch(95% 0.03 180)"] },
+      "opening-ember": { "role": "tertiary", "displayName": "Opening Ember", "canonical": "#ff6b4a", "tonalRamp": ["oklch(15% 0.10 35)", "oklch(24% 0.13 35)", "oklch(36% 0.16 35)", "oklch(48% 0.19 35)", "oklch(60% 0.21 35)", "oklch(72% 0.18 35)", "oklch(84% 0.11 35)", "oklch(95% 0.04 35)"] }
+    },
+    "themeMeta": {
+      "dark": {
+        "canvas": "#0b0c10",
+        "action": "#7f6aff",
+        "onAction": "#0b0c10",
+        "warning": { "foreground": "#ffd60a", "background": "#282400", "border": "#8c7600" },
+        "error": { "foreground": "#ff8a75", "background": "#321914", "border": "#c55646" },
+        "success": { "foreground": "#67d6a2", "background": "#122b21", "border": "#2e835e" },
+        "information": { "foreground": "#64d2ff", "background": "#102735", "border": "#1976a3" }
+      },
+      "light": {
+        "canvas": "#f7f7f5",
+        "action": "#6753d7",
+        "onAction": "#ffffff",
+        "warning": { "foreground": "#5c4700", "background": "#fff7cf", "border": "#a17a00" },
+        "error": { "foreground": "#9f271c", "background": "#fff0ed", "border": "#9f271c" },
+        "success": { "foreground": "#12633f", "background": "#eaf8f0", "border": "#12633f" },
+        "information": { "foreground": "#005ea8", "background": "#eaf5ff", "border": "#005ea8" }
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Performed Statement", "purpose": "Short website statements and branded editorial moments." },
+      "headline": { "displayName": "Section Headline", "purpose": "Major website sections." },
+      "body": { "displayName": "Functional Voice", "purpose": "Interaction, explanation, forms, and documentation." },
+      "label": { "displayName": "Compact Label", "purpose": "Control labels and metadata." }
+    },
+    "shadows": [
+      { "name": "raised", "value": "0 16px 42px rgb(0 0 0 / 32%)", "purpose": "Content that genuinely floats above another surface." },
+      { "name": "focus", "value": "0 0 0 3px #0b0c10, 0 0 0 5px #a99bff", "purpose": "Visible keyboard focus against dark surfaces." }
+    ],
+    "motion": [
+      { "name": "immediate", "value": "120ms cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Control feedback." },
+      { "name": "standard", "value": "240ms cubic-bezier(0.2, 0, 0, 1)", "purpose": "Ordinary state changes." },
+      { "name": "deliberate", "value": "480ms cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Authored opening moments." }
+    ],
+    "breakpoints": [
+      { "name": "compact", "value": "720px" },
+      { "name": "intermediate", "value": "980px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single dominant action in a decision region.",
+      "html": "<button class=\"ds-btn-primary\">Download the beta</button>",
+      "css": ".ds-btn-primary{min-height:44px;padding:10px 18px;border:1px solid transparent;border-radius:12px;background:#7f6aff;color:#0b0c10;font:700 16px/1.2 'PT Sans',system-ui,sans-serif;cursor:pointer;transition:background 120ms cubic-bezier(.22,1,.36,1),transform 120ms cubic-bezier(.22,1,.36,1)}.ds-btn-primary:hover{background:#a99bff;transform:translateY(-1px)}.ds-btn-primary:active{background:#7865ee;transform:none}.ds-btn-primary:focus-visible{outline:0;box-shadow:0 0 0 3px #0b0c10,0 0 0 5px #a99bff}"
+    },
+    {
+      "name": "Secondary Action",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A supporting action that stays quieter than violet.",
+      "html": "<button class=\"ds-btn-secondary\">View the gallery</button>",
+      "css": ".ds-btn-secondary{min-height:44px;padding:10px 18px;border:1px solid #34363f;border-radius:12px;background:#1d1f25;color:#f4f6f1;font:700 16px/1.2 'PT Sans',system-ui,sans-serif;cursor:pointer;transition:background 120ms cubic-bezier(.22,1,.36,1)}.ds-btn-secondary:hover{background:#292b33}.ds-btn-secondary:active{background:#14151a}.ds-btn-secondary:focus-visible{outline:0;box-shadow:0 0 0 3px #0b0c10,0 0 0 5px #a99bff}"
+    },
+    {
+      "name": "Labeled Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "A visible label and helper text keep the field understandable in every state.",
+      "html": "<label class=\"ds-field\"><span>Preset search</span><input type=\"search\" placeholder=\"Search by name or author\"><small>Search the eligible repertoire.</small></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:8px;color:#f4f6f1;font:400 16px/1.45 'PT Sans',system-ui,sans-serif}.ds-field>span{font-weight:700}.ds-field input{min-height:44px;padding:10px 12px;border:1px solid #34363f;border-radius:6px;background:#0b0c10;color:#f4f6f1;font:inherit}.ds-field input:focus-visible{outline:0;box-shadow:0 0 0 3px #0b0c10,0 0 0 5px #a99bff}.ds-field small{color:#c5c9c3;font-size:14px}"
+    },
+    {
+      "name": "Site Navigation",
+      "kind": "nav",
+      "description": "Calm global wayfinding with a persistent download path and visible current state.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Primary\"><strong>UZUME</strong><a aria-current=\"page\" href=\"#\">Gallery</a><a href=\"#\">Docs</a><a class=\"ds-nav-download\" href=\"#\">Download beta</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid #25272e;background:#0b0c10;color:#f4f6f1;font:400 15px/1.2 'PT Sans',system-ui,sans-serif}.ds-nav strong{margin-right:auto;font-family:'Alumni Sans','Arial Narrow',sans-serif;font-size:24px;letter-spacing:-.02em}.ds-nav a{padding:10px 12px;border-radius:6px;color:#c5c9c3;text-decoration:none}.ds-nav a:hover{background:#14151a;color:#f4f6f1}.ds-nav a:focus-visible{outline:2px solid #a99bff;outline-offset:2px}.ds-nav a[aria-current=page]{color:#f4f6f1;text-decoration:underline;text-decoration-color:#7f6aff;text-decoration-thickness:2px;text-underline-offset:7px}.ds-nav .ds-nav-download{background:#7f6aff;color:#0b0c10;font-weight:700}"
+    },
+    {
+      "name": "Media Stage",
+      "kind": "card",
+      "description": "A large, quiet frame for real engine footage and contributor attribution.",
+      "html": "<figure class=\"ds-media\"><div class=\"ds-media-frame\" aria-label=\"Performance footage poster\"></div><figcaption><strong>Preset name</strong><span>by Contributor · Certified</span></figcaption></figure>",
+      "css": ".ds-media{margin:0;overflow:hidden;border-radius:16px;background:#14151a;color:#f4f6f1;font:400 16px/1.45 'PT Sans',system-ui,sans-serif}.ds-media-frame{aspect-ratio:16/9;background:linear-gradient(145deg,#0b0c10 0 28%,#7f6aff 29% 45%,#37d6c0 46% 62%,#f5c84c 63% 76%,#ff6b4a 77% 100%)}.ds-media figcaption{display:flex;justify-content:space-between;gap:16px;padding:16px 18px}.ds-media span{color:#c5c9c3;font-size:14px}"
+    },
+    {
+      "name": "Preparation Stage",
+      "kind": "custom",
+      "description": "Truthful progress and performed light without revealing the track or preset plan.",
+      "html": "<section class=\"ds-prep\"><div class=\"ds-prep-light\" aria-hidden=\"true\"></div><div class=\"ds-prep-copy\"><span>Preparing your performance</span><strong>Understanding the shape of the music.</strong><p>8 of 14 tracks prepared</p><div class=\"ds-progress\" role=\"progressbar\" aria-label=\"Tracks prepared\" aria-valuemin=\"0\" aria-valuemax=\"14\" aria-valuenow=\"8\"><i></i></div><small>1:12 elapsed · About 54 seconds remaining</small></div></section>",
+      "css": ".ds-prep{min-height:420px;position:relative;display:flex;align-items:flex-end;overflow:hidden;padding:48px;border:1px solid #34363f;border-radius:16px;background:#0b0c10;color:#f4f6f1;font:400 15px/1.45 -apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif}.ds-prep-light{position:absolute;inset:0 0 0 48%;background:linear-gradient(155deg,#7f6aff,#37d6c0 42%,#f5c84c 67%,#ff6b4a);clip-path:polygon(20% 0,100% 0,100% 100%,0 100%,35% 55%)}.ds-prep-copy{position:relative;max-width:520px}.ds-prep-copy>span,.ds-prep-copy p,.ds-prep-copy small{color:#c5c9c3}.ds-prep-copy strong{display:block;max-width:10ch;margin:12px 0 18px;font:600 48px/.92 -apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;letter-spacing:-.03em}.ds-progress{height:4px;margin:18px 0 10px;background:#34363f}.ds-progress i{display:block;width:57%;height:100%;background:#f4f6f1}"
+    },
+    {
+      "name": "Curator Control Surface",
+      "kind": "custom",
+      "description": "An always-discoverable native control group that remains absent from Viewer output.",
+      "html": "<section class=\"ds-curator\"><div><i></i><strong>Listening and performing</strong></div><button>Hide track information</button><button class=\"ds-end\">End session</button></section>",
+      "css": ".ds-curator{width:300px;display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid #3e4049;border-radius:10px;background:#292a2f;color:#f4f6f1;box-shadow:0 16px 42px rgb(0 0 0/.32);font:400 13px/1.3 -apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif}.ds-curator div{display:flex;align-items:center;gap:9px;margin-bottom:28px}.ds-curator i{width:9px;height:9px;border-radius:50%;background:#67d6a2}.ds-curator button{min-height:38px;padding:8px 10px;border:0;border-radius:6px;background:#38393e;color:#f4f6f1;text-align:left;font:inherit}.ds-curator button:hover{background:#45464c}.ds-curator button:focus-visible{outline:2px solid #a99bff;outline-offset:2px}.ds-curator .ds-end{background:transparent;color:#ff8a75}"
+    }
+  ],
+  "narrative": {
+    "northStar": "First Opening",
+    "overview": "Uzume is a dark theater at the instant a tiny opening admits performed, prismatic light. Darkness is the condition, the opening is the event, and color is the consequence. The First Opening identity and the visualizer's real output provide spectacle; interface chrome remains restrained, specific, and calm.\n\nThis is one system expressed in two platform languages. The website persuades with editorial scale, Alumni Sans, and large fields of real engine footage. The macOS app operates through native structure, San Francisco, system colors, and minimal controls. They share intent, hierarchy, rhythm, state language, and accessibility—not pixel-identical controls.",
+    "keyCharacteristics": [
+      "Performance output receives the largest and richest visual field.",
+      "Midnight and ivory make the stage; violet communicates action; the spectrum communicates light.",
+      "Preparation is informative and atmospheric while preserving mystery.",
+      "Marketing is expressive; native controls remain recognizably macOS.",
+      "Voice and motion are plain, warm, unhurried, and specific."
+    ],
+    "rules": [
+      { "name": "The Violet Acts Rule", "body": "Violet marks the primary action and branded app tint; it is never a system status color.", "section": "colors" },
+      { "name": "The System Status Rule", "body": "Do not recolor notifications to fit the brand. Yellow warns, red fails, green succeeds, and blue informs; icons and explicit language remain mandatory.", "section": "colors" },
+      { "name": "The Gold Performs Rule", "body": "Gold belongs to First Opening, real visual output, and atmospheric light. It never identifies interface state.", "section": "colors" },
+      { "name": "The Spectrum Performs Rule", "body": "Use the full spectrum for the identity, actual engine output, atmospheric progress, and distinctions with real meaning—never as equal-colored tabs or arbitrary chart categories.", "section": "colors" },
+      { "name": "The Native Means Native Rule", "body": "Do not force Alumni Sans or PT Sans into macOS control surfaces.", "section": "typography" },
+      { "name": "The Tonal-First Rule", "body": "A surface stays flat at rest unless its behavior requires it to float above another surface.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do let real engine footage carry the largest color field on product and website surfaces.",
+      "Do use semantic tokens from tokens.css and adaptive SwiftUI/AppKit colors rather than raw values in components.",
+      "Do preserve mystery during preparation while showing truthful progress, elapsed time, credible estimates, and understandable stages.",
+      "Do lead the website with the listener's download decision; contributor recruitment is secondary.",
+      "Do meet WCAG AA, support keyboard and VoiceOver operation, expose progress semantically, and honor reduced motion, increased contrast, and transparency reduction."
+    ],
+    "donts": [
+      "Don't describe Uzume as AI-powered or claim AI orchestration.",
+      "Don't reveal the planned track sequence, preset choices, transitions, or moods before performance.",
+      "Don't make the native app look like the marketing website.",
+      "Don't redraw the spectrum as hard parallel rainbow stripes or use all identity colors as decorative controls.",
+      "Don't fabricate footage, customer claims, testimonials, service control, or production readiness."
+    ]
+  }
+}

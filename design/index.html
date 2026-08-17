@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="Uzume design system for the public website and native macOS app." />
+    <title>Uzume — Design system</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../brand/favicon/favicon-32.png" />
+    <link rel="stylesheet" href="../tokens.css" />
+    <link rel="stylesheet" href="./reference.css?v=2" />
+  </head>
+  <body>
+    <!--
+      THESIS: First Opening becomes a usable cross-platform system, not a gallery of brand assets.
+      OWN-WORLD: A midnight theater, ivory type, violet interaction, conventional system status, and prismatic content fields.
+      STORY: A designer can move from principles through tokens into web and native component decisions.
+      FIRST VIEWPORT: A 96 px-scale promise and download-path action sit left; First Opening holds the right half.
+      FORM: Evidence-led implementation reference, first-ranked structure; seed UZUME-DS-EVIDENCE-1.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+    -->
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <a class="brand-link" href="#top" aria-label="Uzume design system home">
+        <img src="../brand/favicon/favicon-32.png" alt="" width="28" height="28" />
+        <img class="brand-word" src="../brand/wordmark/Uzume.svg" alt="Uzume" />
+      </a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="chapters">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <span>Chapters</span>
+      </button>
+      <nav id="chapters" class="chapter-nav" aria-label="Design system chapters">
+        <a href="#foundations">Foundations</a><a href="#web">Website</a><a href="#app">macOS app</a><a href="#patterns">Patterns</a><a href="#governance">Governance</a><a href="../DesignSystem/Web/index.html">Library</a>
+      </nav>
+    </header>
+
+    <main id="content">
+      <section id="top" class="hero page-grid">
+        <div class="hero-copy">
+          <p class="system-name">Design system · 1.0</p>
+          <h1 class="display">A stage for performed light.</h1>
+          <p class="hero-lede">One system for an expressive website and a native macOS instrument. Shared intent, hierarchy, rhythm, and states—translated into the language of each platform.</p>
+          <div class="hero-actions"><a class="button primary" href="#foundations">Explore the system</a><a class="button secondary" href="../DESIGN.md">Read the specification</a></div>
+        </div>
+        <figure class="hero-art"><img src="../brand/icon/Uzume-1024.png" alt="First Opening: prismatic light entering between two shadow forms" /><figcaption>First Opening · selected identity</figcaption></figure>
+      </section>
+
+      <section class="principles page-grid" aria-label="System principles">
+        <article><strong class="display">Performance leads.</strong><p>The engine receives the largest, richest field. Interface chrome creates the conditions for it.</p></article>
+        <article><strong class="display">Color has meaning.</strong><p>Violet acts. The full spectrum belongs to identity, performed light, and product moments that carry the performance.</p></article>
+        <article><strong class="display">Native where it matters.</strong><p>The website persuades and teaches. The app uses macOS structure, controls, and behaviors.</p></article>
+      </section>
+
+      <section id="foundations" class="chapter page-grid">
+        <header class="chapter-head"><h2 class="display">Foundations</h2><p>Reusable decisions sit in layers: primitives support semantic roles; roles support platform mappings; mappings support components. Product code starts with roles.</p></header>
+
+        <div class="subsection token-architecture">
+          <div><h3>Token architecture</h3><p>Raw values remain replaceable. Semantic names carry intent across dark web surfaces and adaptive native appearances.</p></div>
+          <ol class="layer-flow"><li><span>Primitive</span><code>violet-500</code></li><li><span>Semantic</span><code>accent</code></li><li><span>Platform</span><code>tint</code></li><li><span>Component</span><code>primary button</code></li></ol>
+        </div>
+
+        <div class="subsection"><div class="subhead"><h3>Color roles</h3><p>Midnight and ivory hold the stage. The spectrum appears where light or real categorical meaning enters.</p></div>
+          <div class="color-system">
+            <div class="neutral-ramp"><div class="swatch canvas"><span>Canvas</span><code>#0B0C10</code></div><div class="swatch surface"><span>Surface</span><code>#14151A</code></div><div class="swatch raised"><span>Raised</span><code>#1D1F25</code></div><div class="swatch selected"><span>Selected</span><code>#292B33</code></div><div class="swatch ivory"><span>Ivory</span><code>#F4F6F1</code></div></div>
+            <div class="light-ramp"><div class="swatch violet"><span>Opening violet</span><code>#7F6AFF</code></div><div class="swatch cyan"><span>Opening cyan</span><code>#37D6C0</code></div><div class="swatch gold"><span>Opening gold</span><code>#F5C84C</code></div><div class="swatch ember"><span>Opening ember</span><code>#FF6B4A</code></div></div>
+          </div>
+          <div class="role-table-wrap"><table><thead><tr><th>Role</th><th>Use</th><th>Never</th></tr></thead><tbody><tr><td><span class="role-dot accent"></span>Accent</td><td>Primary action, focus relationship, active choice</td><td>Large decorative fields</td></tr><tr><td><span class="role-dot spectrum"></span>Spectrum</td><td>Identity, footage, meaningful metadata</td><td>Equal-colored navigation or controls</td></tr><tr><td><span class="role-dot status"></span>Status</td><td>Success, warning, error, information</td><td>Color without icon or text</td></tr></tbody></table></div>
+        </div>
+
+        <div class="subsection type-specimen"><div class="subhead"><h3>Type system</h3><p>Alumni Sans gives the brand a commanding performance voice. PT Sans carries everything users must read or operate. Native UI remains San Francisco.</p></div>
+          <div class="type-stage"><div class="display-sample"><span>Display · Alumni Sans 600</span><p class="display">Plan the arc.<br />Perform the light.</p></div><div class="body-sample"><span>Body & UI · PT Sans</span><h4>Music remains yours.</h4><p>Keep using the player you prefer. Uzume listens to the session, prepares a visual plan, and refines the performance as the music unfolds.</p><small>Metadata · 14 / 20 · Never the only source of essential meaning</small></div></div>
+          <div class="type-scale" aria-label="Web type scale"><div><b class="display t4">Display</b><code>clamp(56–96) / .92</code></div><div><b class="display t3">Heading 1</b><code>40 / 1.08</code></div><div><b class="display t2">Heading 2</b><code>28 / 1.08</code></div><div><b>Body</b><code>16 / 1.55</code></div><div><b class="small">Metadata</b><code>14 / 1.45</code></div></div>
+        </div>
+
+        <div class="subsection rhythm"><div class="subhead"><h3>Rhythm, shape, and depth</h3><p>A four-point base keeps dense app work and expansive editorial work related without forcing the same density.</p></div><div class="rhythm-grid"><div class="space-scale"><span style="--s:4px">4</span><span style="--s:8px">8</span><span style="--s:12px">12</span><span style="--s:16px">16</span><span style="--s:24px">24</span><span style="--s:32px">32</span><span style="--s:48px">48</span><span style="--s:64px">64</span></div><div class="shape-samples"><div class="shape compact">6</div><div class="shape standard">12</div><div class="shape prominent">16</div><div class="shape floating">Raised only when floating</div></div></div></div>
+      </section>
+
+      <section id="web" class="chapter web-chapter page-grid">
+        <header class="chapter-head"><h2 class="display">Website language</h2><p>The website’s first job is to turn listeners into beta users. Real performance footage leads; product difference and trust support the decision; contribution is the secondary path.</p></header>
+        <ol class="web-path" aria-label="Landing-page content order"><li><b>See it perform</b><span>Real footage, plain explanation, requirements, download</span></li><li><b>Understand the difference</b><span>Analyzed before playback, sequenced deliberately, adapted live</span></li><li><b>Trust it</b><span>Permission, privacy, beta, reduced motion, flash safety</span></li><li><b>Explore the repertoire</b><span>Certified preset footage and contributor attribution</span></li><li><b>Meet Uzume</b><span>A brief account of performance bringing light</span></li><li><b>Build with us</b><span>Metal + JSON, hot reload, tests, certification</span></li></ol>
+        <div class="subsection"><div class="subhead"><h3>Actions</h3><p>One primary action per decision region. All controls include hover, pressed, focus, disabled, and loading behavior.</p></div>
+          <div class="component-stage button-stage"><div class="button-row"><button class="button primary">Download the beta</button><button class="button secondary">View the gallery</button><button class="button quiet">Read installation notes</button></div><div class="button-row"><button class="button primary focus-demo">Focused</button><button class="button primary" disabled aria-describedby="unavailable-reason">Unavailable</button><button class="button secondary loading" aria-busy="true"><span class="spinner" aria-hidden="true"></span><span>Download the beta</span></button></div><small id="unavailable-reason">Disabled specimens always require a visible reason in production.</small><a class="inline-link" href="#patterns">Learn how permission recovery works</a></div>
+        </div>
+
+        <div class="subsection"><div class="subhead"><h3>First-viewport contract</h3><p>Within one viewport, visitors see the product moving, understand what it does, know whether their Mac qualifies, and can download it. The icon and myth never delay that answer.</p></div>
+          <div id="website-first-viewport" class="conversion-proof"><div><p class="display conversion-head">Your music,<br/>performed in light.</p><p>Uzume analyzes a playlist, prepares a visual sequence, and adapts the performance as the music unfolds.</p><button class="button primary">Download the beta</button><small>Apple Silicon · macOS 14 or later · Free public beta</small></div><div class="trust-list"><span><b>On your Mac</b>Audio analysis and planning remain local.</span><span><b>Clear permission</b>System audio uses macOS Screen Recording permission; no screen or microphone is captured.</span><span><b>Designed with care</b>Reduced motion is supported; certified presets are measured at 0 flashes per second.</span></div></div>
+        </div>
+
+        <div class="subsection"><div class="subhead"><h3>Signature media stage</h3><p>Real engine output is the marketing argument. Media receives scale, attribution, controls, and an explicit still-state for reduced motion.</p></div>
+          <figure class="media-stage"><img src="../brand/icon/Uzume-1024.png" alt="First Opening identity artwork" /><div class="media-caption"><div><strong>First Opening identity artwork</strong><span>Brand asset — not performance footage</span></div></div></figure>
+        </div>
+      </section>
+
+      <section id="app" class="chapter app-chapter page-grid">
+        <header class="chapter-head"><h2 class="display">macOS application</h2><p>Uzume is a prepared performance, not a dashboard. Configure the boundaries, add music, preserve the surprise during preparation, then let the interface disappear.</p></header>
+        <ol class="app-flow" aria-label="Application experience"><li><b>Configure</b><span>Source, output, repertoire, access</span></li><li><b>Add music</b><span>Local or streaming playlist</span></li><li class="active"><b>Prepare</b><span>Truthful progress, no spoilers</span></li><li><b>Handoff</b><span>Start automatically or await audio</span></li><li><b>Perform</b><span>Clean output, minimal controls</span></li></ol>
+
+        <div class="subsection"><div class="subhead"><h3>Preparation is the signature app surface</h3><p>The Curator is usually also the Viewer. Preparation may show how much work is complete and what kind of work is happening, but never the track order, preset choices, transitions, or plan.</p></div>
+            <div id="preparation-stage" class="prep-window" role="group" aria-label="Illustrative Uzume preparation window showing abstract light, progress, time estimate, and hidden track details">
+            <div class="titlebar"><div class="traffic" aria-hidden="true"><i></i><i></i><i></i></div><span>Uzume</span><span class="native-quiet">Cancel</span></div>
+            <div class="prep-stage"><div class="prep-light" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="prep-copy"><span>Preparing your performance</span><strong>Understanding the shape of the music.</strong><p>8 of 14 tracks prepared</p></div><div class="prep-progress" role="progressbar" aria-label="Tracks prepared" aria-valuemin="0" aria-valuemax="14" aria-valuenow="8"><span style="width:57%"></span></div><div class="prep-meta"><span>1:12 elapsed</span><span>About 54 seconds remaining</span></div><ol class="stage-trace"><li class="done">Listening</li><li class="done">Separating</li><li class="current" aria-current="step">Understanding</li><li>Composing</li></ol></div>
+          </div>
+          <div class="mystery-rule"><div><b>Reveal</b><p>Progress, completed count, elapsed time, credible estimate, and plain-language stages.</p></div><div><b>Withhold</b><p>Track names and order, artwork, preset choices, families, transitions, moods, and plan structure.</p></div></div>
+        </div>
+
+        <div class="subsection"><div class="subhead"><h3>Streaming handoff</h3><p>If Uzume cannot legitimately start the service, the preparation field becomes a direct instruction and waits for sustained audio. The first sound cuts straight into the first preset.</p></div><div class="handoff"><div class="handoff-opening"></div><div><strong class="display">Your performance is ready.</strong><p>Start the playlist in Spotify. Uzume will begin when it hears the music.</p><span class="listen-state"><i></i> Waiting for audio</span></div></div></div>
+
+        <div class="subsection"><div class="subhead"><h3>Two displays, two responsibilities</h3><p>The external display belongs to the Viewer. The Mac belongs to the Curator. Mirrored full-screen output remains the fallback when a separated controller is unavailable.</p></div><div class="display-modes"><figure><div class="viewer-output"><img src="../brand/icon/Uzume-1024.png" alt="Illustrative full-screen visual output" /></div><figcaption>Viewer display · clean visual output</figcaption></figure><figure><div class="curator-control"><div><span class="live-dot"></span><b>Listening and performing</b></div><span class="native-control">Hide track information</span><span class="native-control end-control">End session</span></div><figcaption>Curator display · status and two controls</figcaption></figure></div></div>
+
+        <div class="native-patterns"><article><h3>Configure boundaries</h3><p>Settings choose sources, display behavior, quality, accessibility, and eligible presets—never track assignments.</p></article><article><h3>Preserve mystery</h3><p>Preparation proves that work is happening without revealing what the performance will contain.</p></article><article><h3>Disappear on cue</h3><p>Audio begins; the first preset replaces preparation immediately. Persistent controls are track-information visibility and End Session.</p></article></div>
+      </section>
+
+      <section id="patterns" class="chapter page-grid">
+        <header class="chapter-head"><h2 class="display">Product patterns</h2><p>The system is credible only when difficult states are designed. These patterns apply across website education and app operation.</p></header>
+        <div class="state-matrix" role="list">
+          <article role="listitem"><span class="state-symbol loading-symbol"></span><div><h3>Working</h3><p>Keep context stable. Say what is happening and show determinate progress only when it is real.</p><code>Analyzing 4 of 12 tracks…</code></div></article>
+          <article role="listitem"><span class="state-symbol empty-symbol"></span><div><h3>Empty</h3><p>Explain why the space is empty and offer the one action that resolves it.</p><code>Choose music to prepare a session.</code></div></article>
+          <article role="listitem"><svg class="state-symbol blocked-symbol" viewBox="0 0 32 28" aria-hidden="true"><path d="M16 2 30 26H2Z"/><path d="M16 10v7M16 22h.01"/></svg><div><h3>Permission blocked</h3><p>Name the macOS permission, why it is needed, what is captured, and the recovery path.</p><code>Open System Settings</code></div></article>
+          <article role="listitem"><span class="state-symbol error-symbol"></span><div><h3>Error</h3><p>State the problem, consequence, and recovery. Preserve user work and avoid blame.</p><code>Audio became unavailable. Retry listening.</code></div></article>
+        </div>
+        <div class="subsection motion-spec"><div class="subhead"><h3>Motion and access</h3><p>The authored gesture is opening. Control feedback stays quick; reduced motion removes travel, scale, autoplay, and loops without withholding content.</p></div><div class="motion-line"><button id="motion-demo" class="opening-demo" type="button"><span class="shadow-a"></span><span class="shadow-b"></span><span class="opening"></span><em>Replay opening</em></button><dl><div><dt>Immediate</dt><dd>120 ms · control feedback</dd></div><div><dt>Standard</dt><dd>240 ms · state change</dd></div><div><dt>Deliberate</dt><dd>480 ms · authored opening</dd></div><div><dt>Reduced</dt><dd>Immediate state or crossfade</dd></div></dl></div></div>
+      </section>
+
+      <section id="governance" class="chapter governance page-grid">
+        <header class="chapter-head"><h2 class="display">Build it consistently</h2><p>A design system is a maintained agreement. New work extends it only when a reusable need is proven and the change can be tested.</p></header>
+        <div class="governance-grid"><div><h3>Source of truth</h3><ul><li><code>BRAND.md</code> — meaning, identity, voice, and expression</li><li><code>DESIGN.md</code> — interface rules and component contracts</li><li><code>tokens.css</code> — website implementation tokens</li><li><code>UzumeTokens.swift</code> — native mapping reference</li></ul></div><div><h3>Definition of done</h3><ul class="checklist"><li>Real content at compact and wide widths</li><li>Keyboard and visible focus</li><li>AA contrast and non-color state cues</li><li>Loading, empty, error, blocked, disabled</li><li>Reduced motion and increased contrast</li><li>Native convention review for app work</li></ul></div><div><h3>Contribution rule</h3><p>Add a token only for a reusable decision. Add a component after repeated intent—or sooner when centralizing behavior materially improves accessibility. Document anatomy, variants, states, and one real example.</p></div></div>
+      </section>
+    </main>
+    <footer class="page-footer page-grid"><blockquote class="display">“A light in sound, a sound-like power in light.”</blockquote><div><img src="../brand/wordmark/Uzume.svg" alt="Uzume" /><span>Design system 1.0 · August 2026</span></div></footer>
+    <script src="./reference.js?v=2"></script>
+  </body>
+</html>

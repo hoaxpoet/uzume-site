@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-labelledby="title desc" shape-rendering="geometricPrecision">
+  <title id="title">Uzume First Opening favicon</title>
+  <desc id="desc">A tiny ivory opening between two shadows releases three broad planes of prismatic color.</desc>
+  <rect width="32" height="32" rx="7" fill="#0B0C10"/>
+
+  <!-- Three optically spaced planes expand from one shared opening. -->
+  <path d="M9.3 9.2C14.2 8.9 21.4 11.2 27.1 16.1L24.9 19.1C20.1 15.2 14.8 12.8 10.2 11.7Z" fill="#7F6AFF"/>
+  <path d="M9.6 10.5C14.5 11.1 20.8 14.0 25.4 18.7L22.6 21.2C18.7 17.4 14.1 14.4 10.1 12.2Z" fill="#37D6C0"/>
+  <path d="M9.8 11.6C13.9 13.2 18.0 16.8 21.7 21.0L18.4 23.1C15.8 19.0 12.6 15.3 9.8 13.0Z" fill="#F5C84C"/>
+  <path d="M18.4 23.1C19.6 22.0 20.7 21.3 21.7 21.0C23.3 22.3 24.3 23.2 25.0 24.0L21.9 25.3C20.7 24.4 19.5 23.7 18.4 23.1Z" fill="#FF6B4A"/>
+
+  <!-- The ivory wedge is the recognition cue at 16 px. -->
+  <path d="M8.5 8.8L10.5 10.0L9.8 13.0L8.8 11.9Z" fill="#F4F6F1"/>
+
+  <!-- Shadow occlusion prevents the color from reading as a flag. -->
+  <path d="M16.9 26.5C18.5 22.8 21.0 20.5 24.1 20.2C27.0 20.0 29.1 21.7 32 24.0V32H13.7C14.8 30.1 15.8 28.2 16.9 26.5Z" fill="#0B0C10"/>
+</svg>

@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 
-PAIRINGS = (
+COMMON_PAIRINGS = (
     ("--color-text-primary", "--color-canvas", 4.5),
     ("--color-text-secondary", "--color-canvas", 4.5),
     ("--color-text-tertiary", "--color-canvas", 4.5),
@@ -20,7 +20,23 @@ PAIRINGS = (
     ("--color-text-tertiary", "--color-surface-raised", 4.5),
     ("--color-on-accent", "--color-accent", 4.5),
     ("--color-on-accent", "--color-accent-hover", 4.5),
+    ("--color-focus", "--color-canvas", 3.0),
+    ("--color-focus", "--color-surface", 3.0),
+    ("--color-text-disabled", "--color-control-disabled-background", 4.5),
 )
+
+STATUS_PAIRINGS = tuple(
+    pairing
+    for tone in ("warning", "danger", "success", "info")
+    for pairing in (
+        (f"--color-status-{tone}-foreground", f"--color-status-{tone}-background", 4.5),
+        (f"--color-status-{tone}-border", f"--color-status-{tone}-background", 3.0),
+        ("--color-text-primary", f"--color-status-{tone}-background", 4.5),
+        ("--color-text-secondary", f"--color-status-{tone}-background", 4.5),
+    )
+)
+
+PAIRINGS = COMMON_PAIRINGS + STATUS_PAIRINGS
 
 
 def channel(value: int) -> float:
@@ -47,25 +63,58 @@ def main() -> int:
         return 2
 
     source = Path(sys.argv[1]).read_text(encoding="utf-8")
-    values = dict(re.findall(r"(--[\w-]+)\s*:\s*(#[0-9a-fA-F]{3,6})\s*;", source))
+    def declarations(block: str) -> dict[str, str]:
+        return dict(re.findall(r"(--[\w-]+)\s*:\s*(#[0-9a-fA-F]{3,8}|var\(--[\w-]+\))\s*;", block))
+
+    root_match = re.search(r":root\s*\{(.*?)\n\}", source, re.DOTALL)
+    light_match = re.search(
+        r':root\[data-theme="light"\],\s*\[data-theme="light"\]\s*\{(.*?)\n\}',
+        source,
+        re.DOTALL,
+    )
+    if not root_match or not light_match:
+        print("FAIL expected root and explicit light-theme token blocks", file=sys.stderr)
+        return 1
+
+    theme_declarations = {
+        "dark": declarations(root_match.group(1)),
+        "light": {**declarations(root_match.group(1)), **declarations(light_match.group(1))},
+    }
+
+    def resolve(mapping: dict[str, str], name: str, seen: set[str] | None = None) -> str | None:
+        seen = set() if seen is None else seen
+        if name in seen:
+            return None
+        seen.add(name)
+        value = mapping.get(name)
+        if value is None:
+            return None
+        if value.startswith("#"):
+            return value
+        reference = re.fullmatch(r"var\((--[\w-]+)\)", value)
+        return resolve(mapping, reference.group(1), seen) if reference else None
+
     failures = 0
 
-    for foreground, background, minimum in PAIRINGS:
-        missing = [name for name in (foreground, background) if name not in values]
-        if missing:
-            print(f"FAIL missing token(s): {', '.join(missing)}")
-            failures += 1
-            continue
-        ratio = contrast(values[foreground], values[background])
-        status = "PASS" if ratio >= minimum else "FAIL"
-        print(f"{status} {foreground} on {background}: {ratio:.2f}:1 (minimum {minimum:.1f}:1)")
-        failures += ratio < minimum
+    for theme, mapping in theme_declarations.items():
+        values = {name: value for name in mapping if (value := resolve(mapping, name))}
+        print(f"\n{theme.upper()} THEME")
+        for foreground, background, minimum in PAIRINGS:
+            missing = [name for name in (foreground, background) if name not in values]
+            if missing:
+                print(f"FAIL missing token(s): {', '.join(missing)}")
+                failures += 1
+                continue
+            ratio = contrast(values[foreground], values[background])
+            status = "PASS" if ratio >= minimum else "FAIL"
+            print(f"{status} {foreground} on {background}: {ratio:.2f}:1 (minimum {minimum:.1f}:1)")
+            failures += ratio < minimum
 
     if failures:
         print(f"Contrast gate failed: {failures} pairing(s).", file=sys.stderr)
         return 1
 
-    print(f"Contrast gate passed: {len(PAIRINGS)} pairing(s).")
+    print(f"\nContrast gate passed: {len(PAIRINGS) * len(theme_declarations)} pairing(s).")
     return 0
 
 
