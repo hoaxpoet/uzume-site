@@ -1,18 +1,90 @@
+/* Uzume design tokens — primitives, semantic roles, then component contracts. */
 :root {
-  --color-canvas: #09090b;
-  --color-surface: #111114;
-  --color-surface-raised: #19191d;
-  --color-line: #323238;
-  --color-text-primary: #f4f1ea;
-  --color-text-secondary: #c4bfb5;
-  --color-text-tertiary: #969188;
-  --color-accent: #f2a64a;
-  --color-accent-hover: #ffc06b;
-  --color-accent-dim: #7a4a1e;
-  --color-on-accent: #09090b;
+  color-scheme: dark;
 
-  --font-display: "STIX Two Text", "Times New Roman", serif;
-  --font-text: "PT Sans", sans-serif;
+  /* Primitives: never consume these directly in components. */
+  --uzume-midnight-950: #0b0c10;
+  --uzume-midnight-900: #101116;
+  --uzume-midnight-850: #14151a;
+  --uzume-midnight-800: #1d1f25;
+  --uzume-midnight-700: #292b33;
+  --uzume-midnight-600: #34363f;
+  --uzume-paper-050: #ffffff;
+  --uzume-paper-100: #f7f7f5;
+  --uzume-paper-200: #eeeeeb;
+  --uzume-ink-900: #111217;
+  --uzume-ink-700: #4f525a;
+  --uzume-ink-600: #64676f;
+  --uzume-ivory-100: #f4f6f1;
+  --uzume-ivory-200: #e3e6df;
+  --uzume-ivory-300: #c5c9c3;
+  --uzume-ivory-400: #a4a8a2;
+  --uzume-violet-400: #a99bff;
+  --uzume-violet-500: #7f6aff;
+  --uzume-violet-600: #7865ee;
+  --uzume-cyan-500: #37d6c0;
+  --uzume-gold-400: #ffe173;
+  --uzume-gold-500: #f5c84c;
+  --uzume-gold-700: #66531f;
+  --uzume-yellow-500: #ffd60a;
+  --uzume-yellow-700: #665700;
+  --uzume-ember-500: #ff6b4a;
+  --uzume-red-400: #ff8a75;
+  --uzume-red-700: #7f2f25;
+  --uzume-green-400: #67d6a2;
+  --uzume-green-700: #20553d;
+  --uzume-blue-400: #64d2ff;
+
+  /* Semantic color roles: use these in product code. */
+  --color-canvas: var(--uzume-midnight-950);
+  --color-surface: var(--uzume-midnight-850);
+  --color-surface-raised: var(--uzume-midnight-800);
+  --color-surface-selected: var(--uzume-midnight-700);
+  --color-line: var(--uzume-midnight-600);
+  --color-line-subtle: #25272e;
+  --color-text-primary: var(--uzume-ivory-100);
+  --color-text-secondary: var(--uzume-ivory-300);
+  --color-text-tertiary: var(--uzume-ivory-400);
+  --color-text-disabled: #a4a8a2;
+  --color-control-disabled-background: var(--uzume-midnight-700);
+  --color-control-disabled-border: var(--uzume-midnight-600);
+  --color-accent: var(--uzume-violet-500);
+  --color-accent-hover: var(--uzume-violet-400);
+  --color-accent-pressed: var(--uzume-violet-600);
+  --color-accent-subtle: #352b72;
+  --color-on-accent: var(--uzume-midnight-950);
+  --color-focus: var(--uzume-violet-400);
+  --color-success: var(--uzume-green-400);
+  --color-success-subtle: var(--uzume-green-700);
+  --color-warning: var(--uzume-yellow-500);
+  --color-warning-subtle: var(--uzume-yellow-700);
+  --color-danger: var(--uzume-red-400);
+  --color-danger-subtle: var(--uzume-red-700);
+  --color-info: var(--uzume-blue-400);
+  --color-info-subtle: #15506d;
+  --color-status-warning-foreground: #ffd60a;
+  --color-status-warning-background: #282400;
+  --color-status-warning-border: #8c7600;
+  --color-status-danger-foreground: #ff8a75;
+  --color-status-danger-background: #321914;
+  --color-status-danger-border: #c55646;
+  --color-status-success-foreground: #67d6a2;
+  --color-status-success-background: #122b21;
+  --color-status-success-border: #2e835e;
+  --color-status-info-foreground: #64d2ff;
+  --color-status-info-background: #102735;
+  --color-status-info-border: #1976a3;
+  --color-scrim: rgb(0 0 0 / 72%);
+  --color-violet: var(--uzume-violet-500);
+  --color-cyan: var(--uzume-cyan-500);
+  --color-gold: var(--uzume-gold-500);
+  --color-ember: var(--uzume-ember-500);
+  --color-ivory: var(--uzume-ivory-100);
+
+  /* Typography. Alumni Sans is display-only; PT Sans carries UI and prose. */
+  --font-display: "Alumni Sans", "Arial Narrow", sans-serif;
+  --font-text: "PT Sans", system-ui, sans-serif;
+  --font-code: ui-monospace, "SFMono-Regular", Consolas, monospace;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
@@ -23,31 +95,149 @@
   --text-xl: 1.375rem;
   --text-2xl: 1.75rem;
   --text-3xl: 2.5rem;
-  --text-4xl: clamp(3rem, 8vw, 6rem);
-  --leading-tight: 0.96;
-  --leading-heading: 1.12;
-  --leading-body: 1.6;
-  --tracking-display: -0.035em;
-  --tracking-label: 0.12em;
+  --text-4xl: clamp(3.5rem, 8vw, 6rem);
+  --leading-tight: 0.92;
+  --leading-heading: 1.08;
+  --leading-body: 1.55;
+  --tracking-display: -0.02em;
+  --tracking-label: 0.04em;
+  --measure-copy: 68ch;
 
+  /* Four-point rhythm. */
+  --space-0: 0;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
+  --space-5: 1.25rem;
   --space-6: 1.5rem;
+  --space-8: 2rem;
   --space-10: 2.5rem;
+  --space-12: 3rem;
   --space-16: 4rem;
+  --space-20: 5rem;
   --space-24: 6rem;
   --space-32: 8rem;
 
   --radius-sm: 0.375rem;
   --radius-md: 0.75rem;
-  --radius-lg: 1.25rem;
+  --radius-lg: 1rem;
+  --radius-round: 999px;
+  --border-default: 1px;
+  --shadow-raised: 0 16px 42px rgb(0 0 0 / 32%);
+  --focus-ring: 0 0 0 3px var(--color-canvas), 0 0 0 5px var(--color-focus);
+
+  --control-height-sm: 2rem;
+  --control-height-md: 2.5rem;
+  --control-height-lg: 3rem;
+  --target-min-web: 2.75rem;
+  --content-narrow: 48rem;
+  --content-default: 72rem;
+  --content-wide: 90rem;
+  --page-gutter: clamp(1rem, 4vw, 3rem);
 
   --duration-immediate: 120ms;
   --duration-standard: 240ms;
   --duration-deliberate: 480ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Explicit scopes support side-by-side specimens; the root follows the OS by default. */
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+:root[data-theme="light"],
+[data-theme="light"] {
+  color-scheme: light;
+  --color-canvas: var(--uzume-paper-100);
+  --color-surface: var(--uzume-paper-050);
+  --color-surface-raised: var(--uzume-paper-050);
+  --color-surface-selected: var(--uzume-paper-200);
+  --color-line: #c9c9c5;
+  --color-line-subtle: #deded9;
+  --color-text-primary: var(--uzume-ink-900);
+  --color-text-secondary: var(--uzume-ink-700);
+  --color-text-tertiary: var(--uzume-ink-600);
+  --color-text-disabled: #64676f;
+  --color-control-disabled-background: var(--uzume-paper-200);
+  --color-control-disabled-border: #c9c9c5;
+  --color-accent: #6753d7;
+  --color-accent-hover: #5946c2;
+  --color-accent-pressed: #4f3cac;
+  --color-accent-subtle: #eae7ff;
+  --color-on-accent: #ffffff;
+  --color-focus: #6753d7;
+  --color-success: #12633f;
+  --color-success-subtle: #eaf8f0;
+  --color-warning: #5c4700;
+  --color-warning-subtle: #fff7cf;
+  --color-danger: #9f271c;
+  --color-danger-subtle: #fff0ed;
+  --color-info: #005ea8;
+  --color-info-subtle: #eaf5ff;
+  --color-status-warning-foreground: #5c4700;
+  --color-status-warning-background: #fff7cf;
+  --color-status-warning-border: #a17a00;
+  --color-status-danger-foreground: #9f271c;
+  --color-status-danger-background: #fff0ed;
+  --color-status-danger-border: #9f271c;
+  --color-status-success-foreground: #12633f;
+  --color-status-success-background: #eaf8f0;
+  --color-status-success-border: #12633f;
+  --color-status-info-foreground: #005ea8;
+  --color-status-info-background: #eaf5ff;
+  --color-status-info-border: #005ea8;
+  --color-scrim: rgb(17 18 23 / 58%);
+  --focus-ring: 0 0 0 3px var(--color-canvas), 0 0 0 5px var(--color-focus);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --color-canvas: var(--uzume-paper-100);
+    --color-surface: var(--uzume-paper-050);
+    --color-surface-raised: var(--uzume-paper-050);
+    --color-surface-selected: var(--uzume-paper-200);
+    --color-line: #c9c9c5;
+    --color-line-subtle: #deded9;
+    --color-text-primary: var(--uzume-ink-900);
+    --color-text-secondary: var(--uzume-ink-700);
+    --color-text-tertiary: var(--uzume-ink-600);
+    --color-text-disabled: #64676f;
+    --color-control-disabled-background: var(--uzume-paper-200);
+    --color-control-disabled-border: #c9c9c5;
+    --color-accent: #6753d7;
+    --color-accent-hover: #5946c2;
+    --color-accent-pressed: #4f3cac;
+    --color-accent-subtle: #eae7ff;
+    --color-on-accent: #ffffff;
+    --color-focus: #6753d7;
+    --color-success: #12633f;
+    --color-success-subtle: #eaf8f0;
+    --color-warning: #5c4700;
+    --color-warning-subtle: #fff7cf;
+    --color-danger: #9f271c;
+    --color-danger-subtle: #fff0ed;
+    --color-info: #005ea8;
+    --color-info-subtle: #eaf5ff;
+    --color-status-warning-foreground: #5c4700;
+    --color-status-warning-background: #fff7cf;
+    --color-status-warning-border: #a17a00;
+    --color-status-danger-foreground: #9f271c;
+    --color-status-danger-background: #fff0ed;
+    --color-status-danger-border: #9f271c;
+    --color-status-success-foreground: #12633f;
+    --color-status-success-background: #eaf8f0;
+    --color-status-success-border: #12633f;
+    --color-status-info-foreground: #005ea8;
+    --color-status-info-background: #eaf5ff;
+    --color-status-info-border: #005ea8;
+    --color-scrim: rgb(17 18 23 / 58%);
+    --focus-ring: 0 0 0 3px var(--color-canvas), 0 0 0 5px var(--color-focus);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

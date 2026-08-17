@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Application screens in the Uzume design system." />
+  <title>Application screens · Uzume Design System</title>
+  <link rel="icon" href="../../../../brand/favicon/favicon-32.png" />
+  <link rel="stylesheet" href="../../../../tokens.css" />
+  <link rel="stylesheet" href="../../uzume-components.css?v=8" />
+  <link rel="stylesheet" href="../../catalogue.css?v=8" />
+</head>
+<body data-route="native-screens">
+  <a class="ds-skip" href="#main">Skip to content</a>
+  <header class="ds-topbar">
+    <button class="ds-menu" type="button" aria-controls="ds-sidebar" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg><span class="sr-only">Open navigation</span></button>
+    <a class="ds-product" href="../../index.html"><img src="../../../../brand/wordmark/Uzume.svg" alt="Uzume" /><span>Design System</span></a>
+    <span class="ds-version">0.8 · Hardened</span>
+    <nav class="ds-toplinks" aria-label="System layers"><a href="../../index.html">Overview</a><a href="../../foundations/">Foundations</a><a href="../../components/">Web</a><a aria-current="page" href="../../native/controls/">macOS</a></nav>
+  </header>
+  <aside class="ds-sidebar" id="ds-sidebar" aria-label="Application screens navigation"><nav><section><h2>Application screens</h2><a href="#overview">Overview</a><a href="#native-screens">Screen inventory</a><a href="../controls/">Platform controls</a><a href="../components/">Product components</a></section></nav><p class="ds-sidebar__count"><strong>8</strong> routed product states</p></aside>
+  <main class="ds-main" id="main">
+    <section class="ds-page-intro" id="overview"><div><p class="ds-path">macOS / Screens</p><h1>Application screens</h1><p class="ds-lede">Routed product states that own orchestration or assemble multiple components. They are not component APIs.</p></div></section>
+    <section class="ds-doc-section" id="native-screens">
+      <header class="ds-section-head"><p class="ds-path">Native / Application screens</p><h2>Application screens</h2><p>These own routing, orchestration, or multi-component composition. They are documented as product states—not listed as components.</p></header>
+      <div class="ds-theme-table-wrap"><table class="ds-table"><caption>Screen and pattern migration</caption><thead><tr><th>Target state</th><th>Current source</th><th>Direction</th></tr></thead><tbody><tr><th>Session home</th><td><code>IdleView</code></td><td>Redesign entry composition</td></tr><tr><th>Source picker</th><td><code>ConnectorPickerView</code> and connector screens</td><td>Preserve tasks and state lifetime</td></tr><tr><th>Preparation</th><td><code>PreparationProgressView</code></td><td>Redesign in place using extracted rows and notices</td></tr><tr><th>Streaming handoff</th><td><code>ReadyView</code></td><td>Preserve first-audio gate; remove plan preview</td></tr><tr><th>Performance</th><td><code>PlaybackView</code> + <code>PlaybackChromeView</code></td><td>Retain layered composition; separate viewer and curator roles</td></tr><tr><th>Settings</th><td><code>SettingsView</code> and native Form sections</td><td>Retain native structure</td></tr><tr><th>Permission onboarding</th><td><code>PermissionOnboardingView</code></td><td>Retain behavior; redesign presentation</td></tr><tr><th>Session summary</th><td><code>EndedView</code></td><td>Redesign</td></tr></tbody></table></div>
+    </section>
+    <footer class="ds-footer"><span>Uzume Design System 0.8</span><a href="../../../../DesignSystem/COMPONENTS.md">Component contracts</a><a href="../../../../docs/design/PHOSPHENE-COMPONENT-CENSUS.md">App census</a><a href="../../../../DESIGN.md">Design guidelines</a></footer>
+  </main>
+  <script type="module" src="../../uzume-components.js?v=8"></script>
+  <script type="module" src="../../catalogue.js?v=8"></script>
+</body>
+</html>

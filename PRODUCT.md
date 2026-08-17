@@ -19,11 +19,11 @@ Uzume serves two audiences:
 
 ## Product Purpose
 
-Uzume is a native macOS music visualizer that performs light to whatever the listener is already playing. It pre-analyzes a playlist, lets an AI orchestrator plan the session and its transitions, then refines that plan with live analysis while the music unfolds. Success means the visual performance feels intentional rather than merely reactive, while remaining approachable to listeners and genuinely extensible by contributors.
+Uzume is a native macOS music visualizer that performs light to music. It analyzes a playlist before playback, uses a deterministic session planner to select and sequence eligible presets, then adapts the performance with live audio analysis as the music unfolds. Success means the visual performance feels intentional rather than merely reactive, while remaining approachable to listeners and genuinely extensible by contributors.
 
 ## Positioning
 
-Uzume is not a playback controller and not a generic reactive waveform. Its distinctive mechanism is an authored-performance model: whole-playlist analysis informs an orchestrated visual arc, live listening refines it, and contributor-written presets form the performance vocabulary.
+Uzume is not a generic reactive waveform. Its distinctive mechanism is a prepared-performance model: playlist analysis informs a visual sequence, live listening refines it, and contributor-written presets form the performance vocabulary. Uzume controls playback for local files; for streaming sources it listens to the external player unless a supported integration can start it legitimately.
 
 ## Operating Context
 
@@ -35,7 +35,7 @@ Uzume is a free, open-source public beta for Apple Silicon Macs running macOS 14
 - Public beta, free, open source, with GitHub Issues as the feedback path.
 - Certified presets are measured at 0 flashes per second.
 - The in-app onboarding/help persona is **Pythagoras**; this brand increment defines the future persona in two sentences only.
-- The AI orchestrator's internal codename is **Omoikane**.
+- The session planner is deterministic and rules-based. Machine learning is used for audio analysis, not generative planning. AI is not a current product or marketing claim.
 - The canonical public name is **Uzume**, pronounced **oo-ZOO-meh**.
 
 ## Brand Commitments
@@ -44,18 +44,20 @@ Uzume is a free, open-source public beta for Apple Silicon Macs running macOS 14
 - **Story:** the Ama-no-Iwato myth—a dark world, a planned performance, a mirror prepared before light exists, and light returning to watch.
 - **Tagline:** “a light in sound, a sound-like power in light,” from Samuel Taylor Coleridge's 1795 poem *The Eolian Harp* (public domain).
 - **Voice:** plain, warm, unhurried, and never breathless.
-- Myth references remain abstract. Never depict Ame-no-Uzume, shrine iconography, torii, shimenawa, or Shinto ritual objects.
+- Treat Ame-no-Uzume as the commanding performer who brings light. A respectful, research-grounded depiction is permitted; avoid caricature, sexualization, invented “Japanese” costume, and decorative shrine iconography.
 
 ## Evidence on Hand
 
 - Naming decision, pronunciation, collision review, and sensitivity posture: `docs/planning/NAMING_REPORT.md`.
 - Myth retelling and copy vault: `docs/planning/MYTH_RESEARCH.md`.
 - Audience, information architecture, design-system constraints, and accessibility commitments: `docs/planning/WEBSITE_PLAN.md`.
+- Verified application behavior: `/Users/braesidebandit/Documents/Projects/phosphene/docs/PRODUCT_SPEC.md`, `docs/UX_SPEC.md`, and the current SwiftUI implementation inspected in August 2026.
+- Interview-backed cross-surface decisions: `docs/design/EXPERIENCE_MODEL.md`.
 - No application footage, customer claims, testimonials, or production website assets exist in this repository yet; future work must not fabricate them.
 
 ## Product Principles
 
-1. **Plan, then perform.** The orchestration model—not reactive decoration—is the product's center.
+1. **Prepare, then perform.** Playlist analysis and deliberate sequencing—not reactive decoration—are the product's center.
 2. **The engine gets the stage.** Brand and interface recede so the visual output can lead.
 3. **Make contribution visible.** Presets and their authors are a first-class product surface.
 4. **Explain trust before requesting it.** Permission, local processing, beta status, and requirements are stated plainly.

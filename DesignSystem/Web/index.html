@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Overview in the Uzume design system." />
+  <title>Overview · Uzume Design System</title>
+  <link rel="icon" href="../../brand/favicon/favicon-32.png" />
+  <link rel="stylesheet" href="../../tokens.css" />
+  <link rel="stylesheet" href="./uzume-components.css?v=8" />
+  <link rel="stylesheet" href="./catalogue.css?v=8" />
+</head>
+<body data-route="overview">
+  <a class="ds-skip" href="#main">Skip to content</a>
+  <header class="ds-topbar">
+    <button class="ds-menu" type="button" aria-controls="ds-sidebar" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg><span class="sr-only">Open navigation</span></button>
+    <a class="ds-product" href="./index.html"><img src="../../brand/wordmark/Uzume.svg" alt="Uzume" /><span>Design System</span></a>
+    <span class="ds-version">0.8 · Hardened</span>
+    <nav class="ds-toplinks" aria-label="System layers"><a aria-current="page" href="./index.html">Overview</a><a href="./foundations/">Foundations</a><a href="./components/">Web</a><a href="./native/controls/">macOS</a></nav>
+  </header>
+  <aside class="ds-sidebar" id="ds-sidebar" aria-label="Overview navigation"><nav><section><h2>System layers</h2><a href="#overview">Overview</a><a href="#system-layers">Inventory</a><a href="./foundations/">Foundations</a><a href="./components/">Web components</a><a href="./patterns/">Web patterns</a><a href="./native/controls/">Native controls</a><a href="./native/components/">Native components</a><a href="./native/screens/">Application screens</a></section></nav><p class="ds-sidebar__count"><strong>6</strong> system layers</p></aside>
+  <main class="ds-main" id="main">
+    <section class="ds-page-intro" id="overview"><div><p class="ds-path">Overview</p><h1>Uzume Design System</h1><p class="ds-lede">A routed implementation reference for Uzume’s website and macOS application. Start with the layer you are building, then work from evidence to implementation.</p></div><dl class="ds-health"><div><dt>Status</dt><dd><span class="ds-dot"></span>Evidence-backed draft</dd></div><div><dt>Platforms</dt><dd>Web · macOS</dd></div><div><dt>Inventory</dt><dd>7 components · 5 patterns</dd></div><div><dt>Version</dt><dd>0.8 · Hardened</dd></div></dl></section>
+    <section class="ds-doc-section" id="system-layers"><header class="ds-section-head"><p class="ds-path">Inventory</p><h2>Choose the layer you are building</h2><p>Each route owns one kind of design-system decision. Components, patterns, native controls, and screens no longer compete in one reading path.</p></header><div class="ds-component-index ds-route-index">
+  <a href="./foundations/"><span>Shared decisions</span><strong>Foundations</strong><small>Color, type, spacing, motion, and accessibility.</small></a>
+  <a href="./components/"><span>Website · 7</span><strong>Web components</strong><small>Reusable units with named launch consumers.</small></a>
+  <a href="./patterns/"><span>Website · 5</span><strong>Web patterns</strong><small>Compositions for real website tasks.</small></a>
+  <a href="./native/controls/"><span>macOS · Platform</span><strong>Native controls</strong><small>SwiftUI and AppKit conventions supported by source evidence.</small></a>
+  <a href="./native/components/"><span>macOS · Product</span><strong>Native components</strong><small>Uzume-specific responsibilities extracted from Phosphene.</small></a>
+  <a href="./native/screens/"><span>macOS · Flows</span><strong>Application screens</strong><small>Routed states, orchestration, and composition.</small></a>
+</div></section>
+    <footer class="ds-footer"><span>Uzume Design System 0.8</span><a href="../../DesignSystem/COMPONENTS.md">Component contracts</a><a href="../../docs/design/PHOSPHENE-COMPONENT-CENSUS.md">App census</a><a href="../../DESIGN.md">Design guidelines</a></footer>
+  </main>
+  <script type="module" src="./uzume-components.js?v=8"></script>
+  <script type="module" src="./catalogue.js?v=8"></script>
+</body>
+</html>
