@@ -128,7 +128,7 @@
 .ds-preparation-field i:nth-child(4) { top: 74%; background: var(--color-ember); opacity: .66; }
 .ds-preparation-copy, .ds-preparation-rule { width: min(100%, 34rem); position: relative; z-index: 1; }
 .ds-preparation-copy > span { color: var(--uzume-ivory-300); }
-.ds-preparation-copy h3 { margin: .75rem 0 1.5rem; font: 600 clamp(2.75rem, 7vw, 4.75rem)/.92 -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -.03em; }
+.ds-preparation-copy h3 { margin: .75rem 0 1.5rem; font: 600 clamp(2.75rem, 5vw, 4rem)/.92 -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -.03em; overflow-wrap: anywhere; }
 .ds-preparation-progress { height: 3px; overflow: hidden; background: var(--uzume-midnight-600); }
 .ds-preparation-progress span { width: 57%; height: 100%; display: block; background: var(--uzume-ivory-100); }
 .ds-preparation-copy p { margin: .6rem 0 0; color: var(--uzume-ivory-300); font-size: var(--text-sm); }

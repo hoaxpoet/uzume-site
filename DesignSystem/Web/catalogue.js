@@ -39,12 +39,12 @@ const mobileNavigation = window.matchMedia('(max-width: 900px)');
 const themePreference = window.matchMedia('(prefers-color-scheme: light)');
 const themeModes = ['system', 'dark', 'light'];
 const routeName = {
-  overview: 'Inventory',
+  overview: 'Overview',
   foundations: 'Foundations',
-  components: 'Components',
-  patterns: 'Patterns',
-  'native-controls': 'Controls',
-  'native-components': 'Components',
+  components: 'Web components',
+  patterns: 'Web patterns',
+  'native-controls': 'macOS controls',
+  'native-components': 'macOS components',
   'native-screens': 'Screens',
 }[document.body.dataset.route] || 'Design system';
 
@@ -117,8 +117,9 @@ function applyTheme(mode, persist = true) {
   }
   const resolved = mode === 'system' ? (themePreference.matches ? 'light' : 'dark') : mode;
   const next = themeModes[(themeModes.indexOf(mode) + 1) % themeModes.length];
-  themeButton.querySelector('[data-theme-label]').textContent = mode === 'system' ? `System · ${resolved}` : mode;
-  themeButton.setAttribute('aria-label', `Appearance: ${mode}, currently ${resolved}. Change to ${next}.`);
+  const label = (value) => value[0].toUpperCase() + value.slice(1);
+  themeButton.querySelector('[data-theme-label]').textContent = mode === 'system' ? `System · ${label(resolved)}` : label(mode);
+  themeButton.setAttribute('aria-label', `Appearance: ${label(mode)}, currently ${label(resolved)}. Change to ${label(next)}.`);
 }
 
 applyTheme(themeMode, false);
