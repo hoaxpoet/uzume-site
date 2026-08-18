@@ -1,6 +1,6 @@
 # Uzume Design System Catalogue Audit
 
-Date: 2026-08-17  
+Date: 2026-08-17
 Scope: `DesignSystem/Web/` inventory and all seven routed catalogue pages
 
 ## Audit health score
