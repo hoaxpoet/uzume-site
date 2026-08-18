@@ -10,16 +10,19 @@ colors:
   text-primary: "#f4f6f1"
   text-secondary: "#c5c9c3"
   text-tertiary: "#a4a8a2"
+  text-disabled: "#a4a8a2"
   accent: "#7f6aff"
   accent-hover: "#a99bff"
   accent-pressed: "#7865ee"
   on-accent: "#0b0c10"
   opening-violet: "#7f6aff"
   opening-cyan: "#37d6c0"
+  opening-gold: "#f5c84c"
   opening-ember: "#ff6b4a"
   success: "#67d6a2"
   warning: "#ffd60a"
   danger: "#ff8a75"
+  information: "#64d2ff"
 typography:
   display:
     fontFamily: "Alumni Sans, Arial Narrow, sans-serif"
@@ -30,6 +33,12 @@ typography:
   headline:
     fontFamily: "Alumni Sans, Arial Narrow, sans-serif"
     fontSize: "2.5rem"
+    fontWeight: 600
+    lineHeight: 1.08
+    letterSpacing: "-0.02em"
+  title:
+    fontFamily: "Alumni Sans, Arial Narrow, sans-serif"
+    fontSize: "1.75rem"
     fontWeight: 600
     lineHeight: 1.08
     letterSpacing: "-0.02em"
@@ -75,11 +84,29 @@ components:
     rounded: "{rounded.standard}"
     padding: "10px 18px"
     height: "44px"
+  button-primary-pressed:
+    backgroundColor: "{colors.accent-pressed}"
+    textColor: "{colors.on-accent}"
+    rounded: "{rounded.standard}"
+    padding: "10px 18px"
+    height: "44px"
   button-secondary:
     backgroundColor: "{colors.surface-raised}"
     textColor: "{colors.text-primary}"
     rounded: "{rounded.standard}"
     padding: "10px 18px"
+    height: "44px"
+  button-quiet:
+    backgroundColor: "transparent"
+    textColor: "{colors.text-primary}"
+    rounded: "{rounded.standard}"
+    padding: "10px 18px"
+    height: "44px"
+  icon-button:
+    backgroundColor: "{colors.surface-raised}"
+    textColor: "{colors.text-primary}"
+    rounded: "{rounded.compact}"
+    width: "44px"
     height: "44px"
 ---
 
@@ -94,6 +121,8 @@ Uzume is a dark theater at the instant a tiny opening admits performed, prismati
 This is one system expressed in two platform languages. The website persuades with editorial scale, Alumni Sans, and large fields of real engine footage. The macOS app operates through native structure, San Francisco, system colors, and minimal controls. They share intent, hierarchy, rhythm, state language, and accessibility—not pixel-identical controls.
 
 The implementation model has four layers: primitives, semantic roles, platform mappings, then named components and patterns. Website product code consumes semantic roles from `tokens.css`; native work maps intent through SwiftUI/AppKit semantics, with `DesignSystem/UzumeTokens.swift` as the current reference.
+
+Source precedence is explicit. This frontmatter is the portable machine-readable summary; `tokens.css` and the `UzumeDesignSystem` Swift package are normative at runtime; `DesignSystem/COMPONENTS.md` owns anatomy and behavioral contracts; the routed catalogue demonstrates those contracts without expanding the inventory.
 
 **Key Characteristics:**
 
@@ -118,6 +147,7 @@ Midnight and ivory hold the stage. Violet is the interaction accent. Violet, cya
 
 ### Tertiary
 
+- **Opening Gold:** Identity artwork and performed-light fields; it never identifies an action or notification.
 - **Opening Ember:** Identity artwork and performed-light fields; danger uses its separate semantic red.
 
 ### Neutral
@@ -196,11 +226,15 @@ Detailed anatomy, variants, states, and accessibility requirements live in `Desi
 
 ### Website
 
-The launch web library contains seven stateless, composable components with named consumers in the website plan: Button, Icon Button, Link, Banner, Definition List, Media Frame, and Preset Card. It does not duplicate Starlight controls or invent form, overlay, filtering, and preference components for surfaces that are not planned.
+The launch web library contains exactly seven stateless, composable components with named consumers in the website plan. It does not duplicate Starlight controls or invent form, overlay, filtering, or preference components for surfaces that are not planned.
 
-- **Actions:** Button, Icon Button, and Link cover downloads, supporting navigation, contributor routing, and media playback. Loading preserves Button label meaning and width. Disabled controls use an opaque neutral surface, retain 4.5:1 text contrast by Uzume policy, and include a nearby reason.
-- **Feedback:** Banner covers beta availability plus permission and installation guidance. Status colors retain conventional meaning and every failure names a recovery or supporting resource.
-- **Content:** Definition List covers repeated requirements and factual metadata. Media Frame presents real engine footage with poster fallback, attribution, controls where needed, lazy loading, and a still experience under reduced motion. Preset Card retains identity and contributor credit when media fails.
+- **Button:** Primary, secondary, and quiet actions at one 44 px-minimum target size. Loading preserves the label meaning and original disabled state. Disabled controls use an opaque neutral surface, retain 4.5:1 text contrast by Uzume policy, and include a nearby reason.
+- **Icon Button:** One 44 × 44 px presentation for play, pause, and mute. The symbol is always paired with an accessible name; unavailable controls retain a nearby reason.
+- **Link:** Default and quiet navigation treatments. Unavailable copy is rendered without `href`, so it is neither clickable nor keyboard-focusable.
+- **Banner:** Information, success, warning, and error guidance with a distinct icon, explicit language, and at most one supporting link. Static specimens are not live regions; dynamically inserted updates may use `role="status"`.
+- **Definition List:** Repeated requirements and factual metadata in a two-column layout that stacks below 480 px.
+- **Media Frame:** Image, video, or explicit fallback with caption and attribution. Playback controls compose Icon Button rather than creating a second control API.
+- **Preset Card:** Preview available or unavailable, with name, author, certification, and attribution preserved when media fails. Playback controls also compose Icon Button.
 
 Website patterns compose these components without becoming component APIs: Site Header, Download Decision, Trust Explanation, Preset Gallery, and Contributor Invitation.
 

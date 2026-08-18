@@ -55,7 +55,7 @@
 .uz-link:hover { color: var(--color-accent-hover); }
 .uz-link:focus-visible { outline: 0; border-radius: var(--radius-sm); box-shadow: var(--focus-ring); }
 .uz-link--quiet { color: var(--color-text-secondary); font-weight: 400; }
-.uz-link[aria-disabled="true"] { color: var(--color-text-disabled); cursor: not-allowed; text-decoration-color: var(--color-control-disabled-border); }
+.uz-link--unavailable { color: var(--color-text-disabled); cursor: default; text-decoration-color: var(--color-control-disabled-border); }
 
 .uz-button__spinner {
   width: 1rem;
@@ -147,7 +147,8 @@
 .uz-trust-explanation p { max-width: var(--measure-copy); margin: 0; color: var(--color-text-secondary); }
 
 .uz-preset-card { margin: 0; overflow: hidden; border-radius: var(--radius-lg); background: var(--color-surface); }
-.uz-preset-card__media { aspect-ratio: 16/9; display: grid; place-items: center; padding: var(--space-6); background: var(--color-canvas); color: var(--color-text-secondary); text-align: center; }
+.uz-preset-card__media { aspect-ratio: 16/9; display: grid; place-items: center; overflow: hidden; padding: var(--space-6); background: var(--color-canvas); color: var(--color-text-secondary); text-align: center; }
+.uz-preset-card__media > img { width: calc(100% + 2 * var(--space-6)); height: calc(100% + 2 * var(--space-6)); max-width: none; object-fit: cover; }
 .uz-preset-card__media svg { width: 2rem; margin-bottom: var(--space-3); fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
 .uz-preset-card__media strong, .uz-preset-card__media span { display: block; }
 .uz-preset-card__media span { margin-top: var(--space-1); font-size: var(--text-sm); }

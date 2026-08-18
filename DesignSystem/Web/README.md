@@ -10,13 +10,13 @@ Import the semantic tokens first, followed by the component stylesheet:
 
 The library is framework-neutral and uses semantic HTML rather than custom elements. Astro or server-rendered templates can emit the documented class structure without requiring a component runtime. JavaScript is limited to the Button busy-state helper until real media behavior is integrated.
 
-Components follow the operating-system appearance through `prefers-color-scheme`. Apply `data-theme="light"` or `data-theme="dark"` to a root or component subtree for an explicit scope. Status components consume separate foreground, background, and border tokens for every tone; do not substitute the raw brand spectrum.
+Components follow the operating-system appearance through `prefers-color-scheme`. Apply `data-theme="light"` or `data-theme="dark"` to a root or component subtree for an explicit scope. The catalogue’s global Appearance control cycles through system, dark, and light modes and persists the choice locally. Status components consume separate foreground, background, and border tokens for every tone; do not substitute the raw brand spectrum.
 
 Implemented components, each with named consumers in the launch website plan:
 
 - `uz-button`: primary, secondary, and quiet landing, download, and contributor actions at one 44 px-minimum size
 - `uz-icon-button`: one 44 × 44 px play, pause, and mute presentation for hero and gallery media
-- `uz-link`: default and quiet navigation, documentation, credit, and supporting-link treatments
+- `uz-link`: default and quiet navigation, documentation, credit, and supporting-link treatments; unavailable destinations render as non-interactive text with `uz-link--unavailable`
 - `uz-banner`: beta availability plus permission and installation guidance
 - `uz-definition-list`: requirements and factual metadata
 - `uz-media-frame`: image, video, or explicit-fallback hero and prepared-performance evidence
