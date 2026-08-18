@@ -3,36 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="description" content="Native controls in the Uzume design system." />
-  <title>Native controls · Uzume Design System</title>
+  <meta name="description" content="macOS controls in the Uzume design system." />
+  <title>macOS controls · Uzume Design System</title>
   <link rel="icon" href="../../../../brand/favicon/favicon-32.png" />
   <link rel="stylesheet" href="../../../../tokens.css" />
   <link rel="stylesheet" href="../../uzume-components.css?v=15" />
-  <link rel="stylesheet" href="../../catalogue.css?v=15" />
+  <link rel="stylesheet" href="../../catalogue.css?v=16" />
 </head>
 <body data-route="native-controls">
   <a class="ds-skip" href="#main">Skip to content</a>
   <header class="ds-topbar">
     <button class="ds-menu" type="button" aria-controls="ds-sidebar" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg><span class="sr-only">Open navigation</span></button>
     <a class="ds-product" href="../../index.html"><img src="../../../../brand/wordmark/Uzume.svg" alt="Uzume" /><span>Design System</span></a>
-    <span class="ds-version">1.1 · Adapted</span>
+    <span class="ds-version">1.1</span>
     <nav class="ds-toplinks" aria-label="System layers"><a href="../../index.html">Overview</a><a href="../../foundations/">Foundations</a><a href="../../components/">Web</a><a aria-current="page" href="../../native/controls/">macOS</a></nav>
   </header>
-  <aside class="ds-sidebar" id="ds-sidebar" aria-label="Native controls navigation"><nav><section><h2>Native controls</h2><a href="#overview">Overview</a><a href="#native-census">Current app census</a><a href="#native-controls">Platform controls</a><a href="../components/">Product components</a><a href="../screens/">Application screens</a></section></nav><p class="ds-sidebar__count"><strong>8</strong> native control families</p></aside>
+  <aside class="ds-sidebar" id="ds-sidebar" aria-label="macOS controls navigation"><nav><section><h2>macOS controls</h2><a href="#overview">Overview</a><a href="#native-census">Current app census</a><a href="#native-controls">Platform controls</a><a href="../components/">Product components</a><a href="../screens/">Application screens</a></section></nav><p class="ds-sidebar__count">8 control families.</p></aside>
   <main class="ds-main" id="main">
-    <section class="ds-page-intro" id="overview"><div><p class="ds-path">macOS / Controls</p><h1>Use the macOS library</h1><p class="ds-lede">Standard SwiftUI and AppKit controls remain native. Uzume defines their roles, evidence, semantic tint, and accessibility boundaries.</p></div></section>
+    <section class="ds-page-intro" id="overview"><div><p class="ds-path">macOS / Controls</p><h1>macOS controls</h1><p class="ds-lede">Standard SwiftUI and AppKit controls remain native. Uzume defines their roles, evidence, semantic tint, and accessibility boundaries.</p></div></section>
     <section class="ds-doc-section" id="native-census">
-      <header class="ds-section-head"><p class="ds-path">Native / Current app census</p><h2>Current app census</h2><p>The Uzume system is derived from Phosphene’s working SwiftUI composition. The audit covered 49 view files and 57 named views or modifiers, including construction sites and state ownership.</p></header>
+      <header class="ds-section-head"><p class="ds-path">macOS / Current app census</p><h2>Current app census</h2><p>The Uzume system is derived from Phosphene’s working SwiftUI composition. The audit covered 49 view files and 57 named views or modifiers, including construction sites and state ownership.</p></header>
       <div class="ds-guidance"><div><h3>Preserve</h3><ul><li>Session-state routing and source capability boundaries</li><li>Connector task lifetime and environment-injected stores</li><li>Preparation publishers, recovery, and progressive readiness</li><li>First-audio detection and local-only transport</li></ul></div><div><h3>Change deliberately</h3><ul><li>Hard-coded presentation and former palette</li><li>Duplicated source tiles and recovery layouts</li><li>Plan-preview behavior that reveals future choreography</li><li>Combined viewer and curator output assumptions</li></ul></div></div>
       <p class="ds-source-note"><a href="../../../../docs/design/PHOSPHENE-COMPONENT-CENSUS.md">Read the complete component census</a></p>
     </section>
 <section class="ds-doc-section" id="native-controls">
-      <header class="ds-section-head"><p class="ds-path">Native / Platform controls</p><h2>Use the macOS library</h2><p>Uzume does not redraw standard macOS controls. These SwiftUI components are part of the design-system inventory because their roles, allowed styles, sizes, and usage still require one shared contract.</p></header>
+      <header class="ds-section-head"><p class="ds-path">macOS / Platform controls</p><h2>Platform controls</h2><p>Uzume does not redraw standard macOS controls. These SwiftUI components are part of the design-system inventory because their roles, allowed styles, sizes, and usage still require one shared contract.</p></header>
       <div class="ds-theme-table-wrap"><table class="ds-table"><caption>Controls found in Phosphene</caption><thead><tr><th>Control family</th><th>Current evidence</th><th>Uzume contract</th></tr></thead><tbody><tr><th>Button</th><td>56 construction sites</td><td>Native roles and styles; violet tint for the primary action; destructive role remains system red.</td></tr><tr><th>Toggle</th><td>4 construction sites</td><td>Immediate binary settings only; native switch or checkbox style follows context.</td></tr><tr><th>Picker</th><td>4 construction sites</td><td>Menu, segmented, or radio presentation chosen from option count and context.</td></tr><tr><th>TextField</th><td>Spotify playlist entry</td><td>Visible label, prompt, help/error relationship, native focus ring.</td></tr><tr><th>ProgressView</th><td>8 construction sites</td><td>Determinate whenever measurable; spinner only for genuinely indeterminate work.</td></tr><tr><th>DisclosureGroup</th><td>Permission explanation</td><td>Supporting detail only; never hides a required decision or recovery.</td></tr><tr><th>List and Form</th><td>Settings navigation and 4 form sections</td><td>Native sidebar/list/form structure; no bespoke card stack.</td></tr><tr><th>Sheet and confirmation dialog</th><td>5 sheets; 4 confirmation dialogs</td><td>Sheet for focused subtasks; confirmation only for consequential actions.</td></tr></tbody></table></div>
     </section>
     <footer class="ds-footer"><span>Uzume Design System 1.1</span><a href="../../../../DesignSystem/COMPONENTS.md">Component contracts</a><a href="../../../../docs/design/PHOSPHENE-COMPONENT-CENSUS.md">App census</a><a href="../../../../DESIGN.md">Design guidelines</a></footer>
   </main>
   <script type="module" src="../../uzume-components.js?v=15"></script>
-  <script type="module" src="../../catalogue.js?v=15"></script>
+  <script type="module" src="../../catalogue.js?v=16"></script>
 </body>
 </html>
