@@ -3,6 +3,8 @@
 Date: 2026-08-17
 Scope: `DesignSystem/Web/` inventory and all seven routed catalogue pages
 
+Final coherence pass completed: 2026-08-27
+
 ## Audit health score
 
 | Dimension | Score | Key finding |
@@ -34,6 +36,10 @@ Scope: `DesignSystem/Web/` inventory and all seven routed catalogue pages
 - Mobile tables now recompose into single-axis labelled records while retaining table, row, and header semantics in the DOM.
 - Mobile navigation now identifies the current route, exposes every system layer, adds a dismissible scrim, and responds safely when the viewport changes.
 - Catalogue layouts account for mobile safe-area insets and remain free of page, table, and top-bar overflow from 320 px upward.
+- Mobile route context now stays complete at ordinary phone widths and switches to an intentional short label only below 360 px.
+- The open mobile drawer makes underlying catalogue content inert until navigation closes.
+- Shared Link targets now honor the system's 44 px minimum, and nested Web/macOS routes distinguish a current platform location from the exact current page.
+- Catalogue terminology now separates HTML semantics from macOS platform language consistently.
 
 ## Remaining findings
 
@@ -57,4 +63,3 @@ Scope: `DesignSystem/Web/` inventory and all seven routed catalogue pages
 ## Recommended actions
 
 1. **[P2] `$impeccable optimize`:** Reduce the font and identity-specimen transfer weight.
-2. **[P3] `$impeccable polish`:** Run the final catalogue coherence pass after the remaining planned increments.

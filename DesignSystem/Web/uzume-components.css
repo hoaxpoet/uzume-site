@@ -51,7 +51,7 @@
 .uz-icon-button:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
 .uz-icon-button:disabled { border-color: var(--color-control-disabled-border); background: var(--color-control-disabled-background); color: var(--color-text-disabled); cursor: not-allowed; }
 
-.uz-link { color: var(--color-text-primary); font-weight: 700; text-decoration-color: var(--color-accent); text-decoration-thickness: 2px; text-underline-offset: 0.22em; }
+.uz-link { min-height: var(--target-min-web); display: inline-flex; align-items: center; color: var(--color-text-primary); font-weight: 700; text-decoration-color: var(--color-accent); text-decoration-thickness: 2px; text-underline-offset: 0.22em; }
 .uz-link:hover { color: var(--color-accent-hover); }
 .uz-link:focus-visible { outline: 0; border-radius: var(--radius-sm); box-shadow: var(--focus-ring); }
 .uz-link--quiet { color: var(--color-text-secondary); font-weight: 400; }
