@@ -34,29 +34,31 @@ if (document.body.dataset.route === 'overview') {
 const menu = document.querySelector('.ds-menu');
 const sidebar = document.querySelector('.ds-sidebar');
 const filter = document.querySelector('#ds-filter');
+const main = document.querySelector('.ds-main');
 const navLinks = [...document.querySelectorAll('.ds-sidebar a[href^="#"]')];
 const mobileNavigation = window.matchMedia('(max-width: 900px)');
 const themePreference = window.matchMedia('(prefers-color-scheme: light)');
 const themeModes = ['system', 'dark', 'light'];
-const routeName = {
-  overview: 'Overview',
-  foundations: 'Foundations',
-  components: 'Web components',
-  patterns: 'Web patterns',
-  'native-controls': 'macOS controls',
-  'native-components': 'macOS components',
-  'native-screens': 'Screens',
-}[document.body.dataset.route] || 'Design system';
+const routeContext = {
+  overview: ['Overview', 'Overview'],
+  foundations: ['Foundations', 'Foundations'],
+  components: ['Web components', 'Components'],
+  patterns: ['Web patterns', 'Patterns'],
+  'native-controls': ['macOS controls', 'Controls'],
+  'native-components': ['macOS components', 'Components'],
+  'native-screens': ['Application screens', 'Screens'],
+}[document.body.dataset.route] || ['Design system', 'System'];
 
 const mobileContext = document.createElement('span');
 mobileContext.className = 'ds-mobile-context';
-mobileContext.textContent = routeName;
-mobileContext.title = routeName;
+mobileContext.textContent = routeContext[0];
+mobileContext.dataset.shortLabel = routeContext[1];
+mobileContext.title = routeContext[0];
 document.querySelector('.ds-version')?.after(mobileContext);
 
 const catalogueRoot = new URL('./', import.meta.url);
 const systemRoutes = [
-  ['overview', 'Inventory', 'index.html'],
+  ['overview', 'Overview', 'index.html'],
   ['foundations', 'Foundations', 'foundations/'],
   ['components', 'Web components', 'components/'],
   ['patterns', 'Web patterns', 'patterns/'],
@@ -154,6 +156,8 @@ function closeNavigation({ restoreFocus = false } = {}) {
     sidebar.setAttribute('aria-hidden', 'true');
     navigationScrim.hidden = true;
     delete document.body.dataset.navigationOpen;
+    main?.removeAttribute('inert');
+    main?.removeAttribute('aria-hidden');
   }
   if (restoreFocus) menu.focus();
 }
@@ -167,6 +171,8 @@ function openNavigation() {
   menu.querySelector('.sr-only').textContent = 'Close navigation';
   navigationScrim.hidden = false;
   document.body.dataset.navigationOpen = 'true';
+  main?.setAttribute('inert', '');
+  main?.setAttribute('aria-hidden', 'true');
   window.requestAnimationFrame(() => (filter || sidebar.querySelector('a'))?.focus());
 }
 
@@ -179,6 +185,8 @@ function syncNavigationMode() {
     sidebar.dataset.open = 'false';
     navigationScrim.hidden = true;
     delete document.body.dataset.navigationOpen;
+    main?.removeAttribute('inert');
+    main?.removeAttribute('aria-hidden');
     menu?.setAttribute('aria-expanded', 'false');
     if (menu) menu.querySelector('.sr-only').textContent = 'Open navigation';
   }
@@ -311,7 +319,7 @@ function renderDemo(demo, state) {
     const media = state === 'available'
       ? '<img src="../../../brand/icon/Uzume-1024.png" alt="First Opening identity artwork; performance capture pending" width="1024" height="1024" loading="lazy">'
       : `<div>${icons.media}<strong>Preview unavailable</strong><span>The preset remains identifiable without its media.</span></div>`;
-    preview.innerHTML = `<figure class="uz-preset-card"><div class="uz-preset-card__media">${media}</div><figcaption class="uz-preset-card__caption"><span class="uz-preset-card__identity"><strong class="uz-preset-card__title">First Opening</strong><span class="uz-preset-card__author">Uzume</span></span><span class="uz-preset-card__status">Certified · 0 flashes/s<br>${state === 'available' ? 'Identity artwork' : 'Capture pending'}</span></figcaption></figure>`;
+    preview.innerHTML = `<figure class="uz-preset-card"><div class="uz-preset-card__media">${media}</div><figcaption class="uz-preset-card__caption"><span class="uz-preset-card__identity"><strong class="uz-preset-card__title">First Opening</strong><span class="uz-preset-card__author">Uzume</span></span><span class="uz-preset-card__status">Certified · steady luminance<br>${state === 'available' ? 'Identity artwork' : 'Capture pending'}</span></figcaption></figure>`;
   }
 }
 

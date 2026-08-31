@@ -22,7 +22,7 @@ Uzume is a native macOS music visualizer that performs light to whatever the lis
 
 1. **What it is:** visual performances for the music already playing.
 2. **Why it is different:** it plans a session, then refines it live.
-3. **Why it is trustworthy:** local-first explanation, clear permissions, reduced-motion support, and certified presets measured at 0 flashes per second.
+3. **Why it is trustworthy:** local-first explanation, clear permissions, reduced-motion support, and a certification gate that holds luminance steady (the app's D-157 standard — say "steady luminance," never a flashes-per-second figure, which the app does not measure).
 4. **Why it can grow:** the visual repertoire is open to shader-writing contributors.
 
 ## Tagline

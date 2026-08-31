@@ -27,13 +27,13 @@ Uzume is not a generic reactive waveform. Its distinctive mechanism is a prepare
 
 ## Operating Context
 
-Uzume is a free, open-source public beta for Apple Silicon Macs running macOS 14 or later. Listeners keep using their preferred playback source; system-audio capture requires macOS Screen Recording permission, while local-file playback does not. Contributors work in Metal and JSON with hot reload and repository test/certification gates.
+Uzume will launch as a **free, open-source public beta** for Apple Silicon Macs running macOS 14 or later, MIT-licensed. That is the intended shape of the release and the right thing to write copy toward. **It has not launched yet:** the repository is not public, and no signed or notarized build exists (Developer ID signing and notarization are blocked on a paid Apple Developer Program membership the project does not have). Write the beta in the future tense until those land — describe what the beta will be, not something a visitor can download today. Listeners keep using their preferred playback source; system-audio capture requires macOS Screen Recording permission, while local-file playback does not. Contributors work in Metal and JSON with hot reload and repository test/certification gates.
 
 ## Capabilities and Constraints
 
 - Native macOS application; this repo must not modify the application or its rename implementation.
-- Public beta, free, open source, with GitHub Issues as the feedback path.
-- Certified presets are measured at 0 flashes per second.
+- Public beta at launch: free, open source (MIT), with GitHub Issues as the feedback path once the repository is public — it is not yet.
+- Certified presets are gated on **steady luminance** (D-157): per-preset tests assert a bounded maximum per-frame brightness change across a rendered sequence, and beat-locked motion is confined to bounded regions rather than global flashes. State it that way — the app does not measure a "flashes per second" figure, so do not publish one.
 - The in-app onboarding/help persona is **Pythagoras**; this brand increment defines the future persona in two sentences only.
 - The session planner is deterministic and rules-based. Machine learning is used for audio analysis, not generative planning. AI is not a current product or marketing claim.
 - The canonical public name is **Uzume**, pronounced **oo-ZOO-meh**.
@@ -51,7 +51,7 @@ Uzume is a free, open-source public beta for Apple Silicon Macs running macOS 14
 - Naming decision, pronunciation, collision review, and sensitivity posture: `docs/planning/NAMING_REPORT.md`.
 - Myth retelling and copy vault: `docs/planning/MYTH_RESEARCH.md`.
 - Audience, information architecture, design-system constraints, and accessibility commitments: `docs/planning/WEBSITE_PLAN.md`.
-- Verified application behavior: `/Users/braesidebandit/Documents/Projects/phosphene/docs/PRODUCT_SPEC.md`, `docs/UX_SPEC.md`, and the current SwiftUI implementation inspected in August 2026.
+- Verified application behavior: the app repository [`hoaxpoet/uzume`](https://github.com/hoaxpoet/uzume) — `docs/PRODUCT_SPEC.md`, `docs/UX_SPEC.md`, and the SwiftUI implementation inspected in August 2026 (pre-rename, when the tree was still named Phosphene).
 - Interview-backed cross-surface decisions: `docs/design/EXPERIENCE_MODEL.md`.
 - No application footage, customer claims, testimonials, or production website assets exist in this repository yet; future work must not fabricate them.
 
@@ -65,4 +65,4 @@ Uzume is a free, open-source public beta for Apple Silicon Macs running macOS 14
 
 ## Accessibility & Inclusion
 
-Honor `prefers-reduced-motion` absolutely. Brand chrome becomes effectively still under reduced motion, and the product's certified-preset standard of 0 flashes per second is communicated explicitly. All brand text/background pairings must meet WCAG AA. The Japanese religious reference is treated as respectful homage within Uzume's domain of performance and is never rendered as costume or literal sacred imagery.
+Honor `prefers-reduced-motion` absolutely. Brand chrome becomes effectively still under reduced motion, and the product's certified-preset steady-luminance standard (D-157) is communicated explicitly, in the terms the app actually gates. All brand text/background pairings must meet WCAG AA. The Japanese religious reference is treated as respectful homage within Uzume's domain of performance and is never rendered as costume or literal sacred imagery.

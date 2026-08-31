@@ -7,8 +7,8 @@
   <title>Website components · Uzume Design System</title>
   <link rel="icon" href="../../../brand/favicon/favicon-32.png" />
   <link rel="stylesheet" href="../../../tokens.css" />
-  <link rel="stylesheet" href="../uzume-components.css?v=15" />
-  <link rel="stylesheet" href="../catalogue.css?v=16" />
+  <link rel="stylesheet" href="../uzume-components.css?v=16" />
+  <link rel="stylesheet" href="../catalogue.css?v=17" />
 </head>
 <body data-route="components">
   <a class="ds-skip" href="#main">Skip to content</a>
@@ -34,9 +34,9 @@
       <header class="ds-component-head"><div><p class="ds-path">Components / Actions</p><h2>Button</h2><p>Triggers an action with explicit hierarchy and accessible loading or disabled behavior.</p></div><div class="ds-source-links"><a href="https://github.com/hoaxpoet/uzume-site/blob/main/DesignSystem/Web/uzume-components.css#L3-L36">CSS · L3–36</a><a href="https://github.com/hoaxpoet/uzume-site/blob/main/DesignSystem/Web/uzume-components.js#L3-L42">Behavior · L3–42</a></div></header>
       <div class="ds-specimen" data-demo="button"><div class="ds-specimen__toolbar"><span>Canonical specimen</span><div class="ds-state-controls" role="group" aria-label="Button state"><button type="button" aria-pressed="true" data-state="ready">Ready</button><button type="button" aria-pressed="false" data-state="loading">Loading</button><button type="button" aria-pressed="false" data-state="disabled">Disabled</button></div></div><div class="ds-preview" data-preview><button type="button" class="uz-button uz-button--primary">Download beta</button><p class="uz-disabled-reason" data-reason hidden>A signed beta has not been attached.</p></div></div>
       <div class="ds-doc-grid">
-        <section><h3>API and classes</h3><dl class="ds-api-list"><div><dt><code>.uz-button</code></dt><dd>Required base class on a native <code>button</code>.</dd></div><div><dt><code>.uz-button--primary</code></dt><dd>Primary action; one per decision region.</dd></div><div><dt><code>.uz-button--secondary</code></dt><dd>Supporting action.</dd></div><div><dt><code>.uz-button--quiet</code></dt><dd>Low-emphasis action.</dd></div><div><dt><code>.uz-button__spinner</code></dt><dd>Inserted by <code>setUzumeBusy(button, true, label)</code>.</dd></div></dl></section>
+        <section><h3>API and classes</h3><dl class="ds-api-list"><div><dt><code>.uz-button</code></dt><dd>Required base class on an HTML <code>button</code>.</dd></div><div><dt><code>.uz-button--primary</code></dt><dd>Primary action; one per decision region.</dd></div><div><dt><code>.uz-button--secondary</code></dt><dd>Supporting action.</dd></div><div><dt><code>.uz-button--quiet</code></dt><dd>Low-emphasis action.</dd></div><div><dt><code>.uz-button__spinner</code></dt><dd>Inserted by <code>setUzumeBusy(button, true, label)</code>.</dd></div></dl></section>
         <section><h3>Token dependencies</h3><p class="ds-token-list"><code>--target-min-web</code><code>--color-accent</code><code>--color-accent-hover</code><code>--color-accent-pressed</code><code>--color-control-disabled-*</code><code>--focus-ring</code><code>--duration-immediate</code></p><a class="ds-inline-link" href="../foundations/#color">Inspect foundation tokens</a></section>
-        <section><h3>Accessibility requirements</h3><ul><li>Use a native button for actions; use Link for navigation.</li><li>Keep the visible label stable while loading; the helper supplies <code>aria-busy</code> and a progress label.</li><li>Associate a disabled reason with <code>aria-describedby</code>.</li><li>The 44 px minimum target comes from <code>--target-min-web</code>.</li></ul></section>
+        <section><h3>Accessibility requirements</h3><ul><li>Use an HTML button for actions; use Link for navigation.</li><li>Keep the visible label stable while loading; the helper supplies <code>aria-busy</code> and a progress label.</li><li>Associate a disabled reason with <code>aria-describedby</code>.</li><li>The 44 px minimum target comes from <code>--target-min-web</code>.</li></ul></section>
         <section class="ds-markup"><div class="ds-markup__head"><h3>Copyable markup</h3><button type="button" class="ds-copy" data-copy="button-code">Copy markup</button></div><pre><code id="button-code">&lt;button type=&quot;button&quot; class=&quot;uz-button uz-button--primary&quot;&gt;
   Download beta
 &lt;/button&gt;</code></pre></section>
@@ -74,7 +74,7 @@
     <section class="ds-component-doc" id="definition-list">
       <header class="ds-component-head"><div><p class="ds-path">Components / Content</p><h2>Definition List</h2><p>Label/value rows for requirements, metadata, and other scannable facts.</p></div><div class="ds-source-links"><a href="https://github.com/hoaxpoet/uzume-site/blob/main/DesignSystem/Web/uzume-components.css#L93-L96">CSS · L93–96</a><a href="https://github.com/hoaxpoet/uzume-site/blob/main/DesignSystem/Web/uzume-components.css#L168-L169">Responsive · L168–169</a></div></header>
       <div class="ds-specimen" data-demo="definition-list"><div class="ds-specimen__toolbar"><span>Canonical specimen</span><div class="ds-state-controls" role="group" aria-label="Definition List viewport"><button type="button" aria-pressed="true" data-state="wide">Wide</button><button type="button" aria-pressed="false" data-state="narrow">Narrow</button></div></div><div class="ds-preview ds-preview--block" data-preview><dl class="uz-definition-list"><div><dt>Computer</dt><dd>Apple Silicon Mac</dd></div><div><dt>System</dt><dd>macOS 14 or later</dd></div><div><dt>Release</dt><dd>Free public beta</dd></div></dl></div></div>
-      <div class="ds-doc-grid"><section><h3>API and classes</h3><dl class="ds-api-list"><div><dt><code>.uz-definition-list</code></dt><dd>Required class on a semantic <code>dl</code>.</dd></div><div><dt><code>dl &gt; div</code></dt><dd>Groups each term and description pair.</dd></div><div><dt><code>dt / dd</code></dt><dd>Native term and description elements.</dd></div></dl></section><section><h3>Token dependencies</h3><p class="ds-token-list"><code>--space-1</code><code>--space-4</code><code>--color-line</code><code>--color-text-secondary</code></p></section><section><h3>Accessibility requirements</h3><ul><li>Use a semantic <code>dl</code>; do not imitate the layout with generic divs.</li><li>Keep each term adjacent to its description in source order.</li><li>The layout stacks below 30rem without changing reading order.</li></ul></section><section class="ds-markup"><div class="ds-markup__head"><h3>Copyable markup</h3><button type="button" class="ds-copy" data-copy="definition-code">Copy markup</button></div><pre><code id="definition-code">&lt;dl class=&quot;uz-definition-list&quot;&gt;
+      <div class="ds-doc-grid"><section><h3>API and classes</h3><dl class="ds-api-list"><div><dt><code>.uz-definition-list</code></dt><dd>Required class on a semantic <code>dl</code>.</dd></div><div><dt><code>dl &gt; div</code></dt><dd>Groups each term and description pair.</dd></div><div><dt><code>dt / dd</code></dt><dd>Semantic term and description elements.</dd></div></dl></section><section><h3>Token dependencies</h3><p class="ds-token-list"><code>--space-1</code><code>--space-4</code><code>--color-line</code><code>--color-text-secondary</code></p></section><section><h3>Accessibility requirements</h3><ul><li>Use a semantic <code>dl</code>; do not imitate the layout with generic divs.</li><li>Keep each term adjacent to its description in source order.</li><li>The layout stacks below 30rem without changing reading order.</li></ul></section><section class="ds-markup"><div class="ds-markup__head"><h3>Copyable markup</h3><button type="button" class="ds-copy" data-copy="definition-code">Copy markup</button></div><pre><code id="definition-code">&lt;dl class=&quot;uz-definition-list&quot;&gt;
   &lt;div&gt;&lt;dt&gt;System&lt;/dt&gt;&lt;dd&gt;macOS 14 or later&lt;/dd&gt;&lt;/div&gt;
 &lt;/dl&gt;</code></pre></section></div>
     </section>
@@ -97,13 +97,13 @@
   &lt;div class=&quot;uz-preset-card__media&quot;&gt;…&lt;/div&gt;
   &lt;figcaption class=&quot;uz-preset-card__caption&quot;&gt;
     &lt;span class=&quot;uz-preset-card__identity&quot;&gt;…&lt;/span&gt;
-    &lt;span class=&quot;uz-preset-card__status&quot;&gt;Certified · 0 flashes/s&lt;/span&gt;
+    &lt;span class=&quot;uz-preset-card__status&quot;&gt;Certified · steady luminance&lt;/span&gt;
   &lt;/figcaption&gt;
 &lt;/figure&gt;</code></pre></section></div>
     </section>
     <p class="sr-only" id="ds-copy-status" role="status" aria-live="polite"></p>
     <footer class="ds-footer"><span>Uzume Design System 1.1</span><a href="../../../DesignSystem/COMPONENTS.md">Component contracts</a><a href="../../../docs/design/PHOSPHENE-COMPONENT-CENSUS.md">App census</a><a href="../../../DESIGN.md">Design guidelines</a></footer>
   </main>
-  <script type="module" src="../catalogue.js?v=16"></script>
+  <script type="module" src="../catalogue.js?v=17"></script>
 </body>
 </html>

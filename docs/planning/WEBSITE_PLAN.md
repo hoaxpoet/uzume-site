@@ -6,7 +6,7 @@
 
 ## 1. Decisions locked
 
-The name is **Uzume** (oo-ZOO-meh); domains to register are **uzume.app** (canonical — a Mac app living on .app is the correct address) and **uzume.io** (301 → .app), with a watch/backorder on uzume.com (held by an active taiko ensemble; expiry 2026-08-27, likely renews). Scope at launch is a **marketing landing page, a docs section, and a preset gallery** (blog deferred). Stack is **Astro 7 with Starlight** for the docs section. Hosting is **Cloudflare** (git-connected builds, preview deploys, free static serving with no bandwidth cap), domain via **Cloudflare Registrar**. The site lives in a **separate repo** from the app. The selected identity is First Opening. **Pythagoras** remains the future in-app onboarding/help persona, and the tagline is Coleridge's public-domain line — *"a light in sound, a sound-like power in light."* The earlier Omoikane/AI-orchestrator framing is retired: machine learning analyzes audio, while the implemented session planner is deterministic and rules-based.
+The name is **Uzume** (oo-ZOO-meh); the domain is **uzume.io** (canonical — registrar-confirmed available at ~$50/yr, 2026-08-12), with watch/backorders on **uzume.app** (registered, parked — parked domains lapse) and **uzume.com** (held by an active taiko ensemble; expiry 2026-08-27, likely renews). The get* variants were available and deliberately declined. Scope at launch is a **marketing landing page, a docs section, and a preset gallery** (blog deferred). Stack is **Astro 7 with Starlight** for the docs section. Hosting is **Cloudflare** (git-connected builds, preview deploys, free static serving with no bandwidth cap), domain via **Cloudflare Registrar**. The site lives in a **separate repo** from the app. The selected identity is First Opening. **Pythagoras** remains the future in-app onboarding/help persona, and the tagline is Coleridge's public-domain line — *“a light in sound, a sound-like power in light.”* The earlier Omoikane/AI-orchestrator framing is retired: machine learning analyzes audio, while the implemented session planner is deterministic and rules-based.
 
 One platform note from current research: Cloudflare now steers new projects toward **Workers with static assets** rather than classic Pages — Pages remains fully supported, but Workers is the invested-in path and has feature parity on everything this site needs (git-connected builds via Workers Builds, preview URLs on by default, custom domains, `_headers`/`_redirects`, free static asset requests). Recommendation: create the project as a Worker with static assets. If any rough edge appears, the same `dist/` output deploys to Pages unchanged.
 
@@ -85,7 +85,7 @@ Scripts/           encode_captures.sh, sync helpers
 ## 7. Hosting and domain setup (one-time checklist)
 
 1. ~~Decide the name~~ — done: Uzume.
-2. Register **uzume.app** and **uzume.io** at Cloudflare Registrar in one sitting, soon (at-cost: ~$14/yr for .app, ~$40–50/yr for .io; free WHOIS redaction; auto-renew on). `.app` is an HSTS-preloaded, HTTPS-only TLD — zero friction since Cloudflare terminates TLS automatically. `.app` is canonical; `.io` gets a 301 redirect. In the same session, place a watch/backorder on **uzume.com** (expires 2026-08-27; the active owner will likely renew, but the watch is nearly free).
+2. Register **uzume.io** (~$50/yr; free WHOIS redaction; auto-renew on) — the canonical domain. In the same session, place watch/backorders on **uzume.app** (registered/parked as of 2026-08-12) and **uzume.com** (expires 2026-08-27; the active owner will likely renew, but the watch is nearly free).
 3. Create the GitHub repo; scaffold (`npm create astro@latest`, add Starlight integration); commit.
 4. Cloudflare dashboard → Workers & Pages → create → connect the GitHub repo. Build: `npm run build`, assets dir `dist/`. Confirm the preview-URL-per-PR behavior on a test PR.
 5. Attach the custom domain (DNS is already in-house since the registrar is Cloudflare); add `www` → apex redirect; set security headers in `public/_headers` (CSP, `X-Content-Type-Options`, referrer policy).
@@ -94,7 +94,7 @@ Scripts/           encode_captures.sh, sync helpers
 
 ## 8. Phases
 
-**Phase 0 — Foundation (≈ a day; unblocked now).** Steps 2–7 above, ending with a "hello world" Astro site live at uzume.app with PR previews working. The pipeline exists before any real page does.
+**Phase 0 — Foundation (≈ a day; unblocked now).** Steps 2–7 above, ending with a "hello world" Astro site live at uzume.io with PR previews working. The pipeline exists before any real page does.
 
 **Phase 1 — Design system + landing (2–3 working sessions).** `tokens.css`, core components, `/design` page, then the landing page built from them, using placeholder capture footage (any preset, rough capture) so layout work isn't blocked on final assets. Ship it — a good landing page alone is a legitimate public site.
 
