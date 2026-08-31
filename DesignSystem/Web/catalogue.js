@@ -319,7 +319,7 @@ function renderDemo(demo, state) {
     const media = state === 'available'
       ? '<img src="../../../brand/icon/Uzume-1024.png" alt="First Opening identity artwork; performance capture pending" width="1024" height="1024" loading="lazy">'
       : `<div>${icons.media}<strong>Preview unavailable</strong><span>The preset remains identifiable without its media.</span></div>`;
-    preview.innerHTML = `<figure class="uz-preset-card"><div class="uz-preset-card__media">${media}</div><figcaption class="uz-preset-card__caption"><span class="uz-preset-card__identity"><strong class="uz-preset-card__title">First Opening</strong><span class="uz-preset-card__author">Uzume</span></span><span class="uz-preset-card__status">Certified · 0 flashes/s<br>${state === 'available' ? 'Identity artwork' : 'Capture pending'}</span></figcaption></figure>`;
+    preview.innerHTML = `<figure class="uz-preset-card"><div class="uz-preset-card__media">${media}</div><figcaption class="uz-preset-card__caption"><span class="uz-preset-card__identity"><strong class="uz-preset-card__title">First Opening</strong><span class="uz-preset-card__author">Uzume</span></span><span class="uz-preset-card__status">Certified · steady luminance<br>${state === 'available' ? 'Identity artwork' : 'Capture pending'}</span></figcaption></figure>`;
   }
 }
 

@@ -1,6 +1,6 @@
 # UzumeDesignSystem
 
-SwiftUI migration prototypes and tokens for the Uzume macOS application. This package is not yet a drop-in replacement for Phosphene’s existing view tree. Integration must follow the source mapping in `../COMPONENTS.md` and `../../docs/design/PHOSPHENE-COMPONENT-CENSUS.md`, preserving current state ownership and behavior while the presentation is refactored in place.
+SwiftUI migration prototypes and tokens for the Uzume macOS application. This package is not yet a drop-in replacement for the Uzume app’s existing view tree. Integration must follow the source mapping in `../COMPONENTS.md` and `../../docs/design/PHOSPHENE-COMPONENT-CENSUS.md`, preserving current state ownership and behavior while the presentation is refactored in place.
 
 The package deliberately keeps controls native. Uzume violet adapts between `#6753D7` in light appearance and `#7F6AFF` in dark appearance; system yellow, red, green, and blue retain their conventional adaptive meanings. Warning symbols use a black detail on the yellow field so the symbol remains legible in light appearance. The full violet/cyan/gold/ember spectrum is reserved for performed-light surfaces such as `PreparationStage`.
 

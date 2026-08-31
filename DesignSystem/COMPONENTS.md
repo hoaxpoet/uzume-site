@@ -1,6 +1,6 @@
 # Uzume Component Library
 
-These are the components justified by the website, the agreed Uzume experience, and the current Phosphene SwiftUI implementation. This document defines target intent, anatomy, variants, states, accessibility, and migration ownership; the source implementations live beside it.
+These are the components justified by the website, the agreed Uzume experience, and the Uzume macOS app's current SwiftUI implementation. This document defines target intent, anatomy, variants, states, accessibility, and migration ownership; the source implementations live beside it.
 
 - Web catalogue home: `DesignSystem/Web/index.html`
 - Web component reference: `DesignSystem/Web/components/index.html`
@@ -8,13 +8,13 @@ These are the components justified by the website, the agreed Uzume experience, 
 - Native reference: `DesignSystem/Web/native/`
 - Web source: `DesignSystem/Web/uzume-components.css` and `uzume-components.js`
 - Native package: `DesignSystem/SwiftUI/`
-- Phosphene source census: `docs/design/PHOSPHENE-COMPONENT-CENSUS.md`
+- App source census (taken pre-rename, when the tree was named Phosphene): `docs/design/PHOSPHENE-COMPONENT-CENSUS.md`
 
 ## Source reconciliation
 
-The SwiftUI package is a migration target, not a parallel replacement application. Existing Phosphene components remain the behavioral source until each migration is implemented and tested.
+The SwiftUI package is a migration target, not a parallel replacement application. The app's existing components remain the behavioral source until each migration is implemented and tested.
 
-| Uzume target | Existing Phosphene source | Migration posture |
+| Uzume target | Existing app source | Migration posture |
 |---|---|---|
 | `SourcePicker` | `ConnectorPickerView`, `AppleMusicConnectionView`, `SpotifyConnectionView`, `LocalSourceConnectionView` | Preserve connector state and task lifetime; redesign the composition |
 | `SourceChoice` | `ConnectorTileView`, private `LocalSourceActionTile` | Consolidate navigation, action, disabled, and recovery variants |
@@ -100,7 +100,7 @@ Composes certified `PresetCard` entries into the full gallery and landing-page t
 
 Standard macOS controls are components in the Uzume system even though Uzume does not redraw them. Their shared contract specifies when to use each native family, which roles and control sizes are allowed, how brand tint is applied, and which accessibility behavior must remain intact.
 
-| Native family | Phosphene evidence | Uzume direction |
+| Native family | App evidence | Uzume direction |
 |---|---:|---|
 | `Button` | 56 construction sites | Preserve native roles/styles; tint primary actions violet; retain system destructive treatment |
 | `Toggle` | 4 construction sites | Immediate binary settings; use native switch or checkbox style by context |
@@ -113,7 +113,7 @@ Standard macOS controls are components in the Uzume system even though Uzume doe
 
 ## Native product component extraction
 
-These are reusable units justified by the current Phosphene source. Extraction happens while their existing consumers are refactored; this document does not authorize parallel replacements.
+These are reusable units justified by the app's current source. Extraction happens while their existing consumers are refactored; this document does not authorize parallel replacements.
 
 ### `SourceChoice`
 
