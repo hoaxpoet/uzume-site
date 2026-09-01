@@ -15,6 +15,7 @@
 | `brand/favicon/favicon.svg` | Scalable favicon wrapper | SVG with embedded approved raster crop | Art-directed crop of First Opening |
 | `brand/wordmark/Uzume.svg` | Primary outlined wordmark | SVG paths, no live text or raster | Outlined from Alumni Sans SemiBold |
 | `brand/wordmark/Uzume-pronunciation.svg` | Introductory pronunciation lockup | SVG paths, no live text or raster | Outlined from Alumni Sans SemiBold |
+| `brand/social/Uzume-GitHub-Social-Preview.png` | GitHub repository social preview (both repos) | PNG, 1280×640 | First Opening artwork with the approved outlined wordmark |
 
 ## System and documentation
 
