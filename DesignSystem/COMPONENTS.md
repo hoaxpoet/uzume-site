@@ -211,9 +211,9 @@ The following own routed product states or assemble multiple components. They be
 
 **Purpose:** Bridge completed preparation to externally controlled playback.
 
-**Anatomy:** “Performance ready” statement, source-specific instruction, listening state, source recovery action when needed.
+**Anatomy:** “Performance ready” statement, source-specific instruction, listening state, a manual way to begin without waiting on detection, source recovery action when needed.
 
-**Behavior:** If authorized integration can start playback, do so and bypass the instruction. Otherwise wait for sustained detected audio. On detection, remove the handoff and cut directly to the first preset.
+**Behavior:** If authorized integration can start playback, do so and bypass the instruction. Otherwise wait for sustained detected audio, or the listener's own manual confirmation. Either trigger fires the same arrival: the camera moves through the opening into the first preset. Not a cut — the opening that widened through preparation is what the listener passes through.
 
 **States:** Waiting for user, listening for audio, audio detected, source unavailable, timeout/retry.
 
