@@ -100,9 +100,47 @@ owns "add the gallery teaser" alongside the real clips.
   without JavaScript the form still posts and Kit shows its own page. The submit
   button reuses `setUzumeBusy` from the catalogue rather than a second spinner.
 
-  `consent.enabled` is `false` on the form — no double opt-in — so the "one
-  message" promise in the copy is accurate. That changes if the incentive email
-  is ever switched on.
+  **What the list is for (Matt, 2026-09-14):** the beta announcement first, then
+  occasional release and feature news. An earlier draft promised "one message,
+  nothing else" — that was not a decision anyone made, it was invented in the
+  writing, and it would have locked every subscriber out of anything but the
+  launch mail. Consent is scoped to what the form says at the moment of
+  collection, so the promise has to cover the widest thing that will ever be
+  sent. It now does. The list was empty when this landed, so no one needed
+  re-permissioning.
+
+  True onboarding mail — triggered when someone installs — is not possible from
+  this list: nothing tells Kit an install happened. What it supports is the
+  launch announcement, a getting-started follow-up after it, and release news.
+
+  The **incentive email** (double opt-in) is Matt's to author in Kit. Its copy
+  must keep the same scope as the form, or the two promises drift apart:
+
+  > **Subject:** Confirm your email for the Uzume beta
+  >
+  > Click below and we'll email you when Uzume is ready to download.
+  >
+  > **[ Confirm my email ]**
+  >
+  > Uzume is a Mac app that listens to whatever music you're already playing and
+  > performs light to it. It reads your playlist first, plans what to show, then
+  > adjusts as the music goes.
+  >
+  > You can't download it yet. The first email you get will be the one that says
+  > you can. After that, occasional notes when there's a new release.
+  > Unsubscribe any time.
+  >
+  > Didn't sign up? Ignore this and you'll hear nothing.
+
+  Written for the **listener** persona, not the contributor: an earlier draft led
+  with GitHub Releases and building from source, which is message 4 of
+  `BRAND.md`'s hierarchy aimed at someone who only wants their music made
+  visible. Pythagoras does not sign it — `BRAND.md` scopes him to future in-app
+  onboarding, explicitly not routine messaging.
+
+  `consent.enabled` is still `false` on the form. Turning the incentive email on
+  makes the inline success copy wrong — "You're on the list" stops being true
+  until they click — so the two must ship together.
 
   `COMPONENTS.md` had removed `Input` as speculative "until a named consumer";
   this is that consumer and the only one, so the field stays local until a
