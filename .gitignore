@@ -5,3 +5,6 @@ dist/
 **/__pycache__/
 *.py[cod]
 .impeccable/config.local.json
+
+# astro
+.astro/

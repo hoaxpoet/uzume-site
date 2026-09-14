@@ -1,0 +1,8 @@
+# Prettier owns the Astro site only. Everything else in this repo is
+# pre-existing content it must not reformat.
+/*
+.*
+!/src
+!/astro.config.mjs
+!/tsconfig.json
+!/package.json

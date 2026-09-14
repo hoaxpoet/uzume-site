@@ -1,0 +1,51 @@
+name: Site
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  site:
+    name: site
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type and content check
+        run: npx astro check
+
+      - name: Build
+        run: npm run build
+
+      - name: Check links in the built site
+        uses: lycheeverse/lychee-action@v2.9.0
+        with:
+          # --root-dir must be absolute; it resolves root-relative hrefs in the
+          # built files. uzume.io is excluded: it is the canonical/sitemap origin,
+          # and a PR's build says nothing about whether production is reachable.
+          args: >-
+            --no-progress
+            --root-dir ${{ github.workspace }}/dist
+            --exclude ^https://uzume\.io
+            --include-fragments
+            'dist/**/*.html'
+          fail: true

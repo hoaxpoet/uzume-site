@@ -1,0 +1,15 @@
+/* Starlight reads its own theme from these; map them onto the Uzume tokens. */
+@import "../../tokens.css";
+
+:root {
+  --sl-color-accent: var(--color-accent);
+  --sl-color-accent-high: var(--color-accent-hover);
+  --sl-color-text: var(--color-text-primary);
+  --sl-color-text-accent: var(--color-accent);
+  --sl-color-bg: var(--color-canvas);
+  --sl-color-bg-nav: var(--color-surface);
+  --sl-color-bg-sidebar: var(--color-surface);
+  --sl-color-hairline: var(--color-line);
+  --sl-color-hairline-shade: var(--color-line-subtle);
+  --sl-font: var(--font-text);
+}
