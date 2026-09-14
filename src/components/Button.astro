@@ -1,0 +1,43 @@
+---
+// DesignSystem/Web: uz-button. The stylesheet is imported per component so the
+// components work under both layouts — Base.astro and Starlight's own.
+import "../../DesignSystem/Web/uzume-components.css";
+
+interface Props {
+  variant?: "primary" | "secondary" | "quiet";
+  href?: string;
+  disabled?: boolean;
+  /** Required when disabled: COMPONENTS.md wants a nearby reason. */
+  reason?: string;
+}
+
+const { variant = "primary", href, disabled = false, reason } = Astro.props;
+const className = `uz-button uz-button--${variant}`;
+// Derived from the text so the build stays deterministic.
+const reasonId = reason
+  ? `reason-${reason
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")}`
+  : undefined;
+---
+
+{href && !disabled ? (
+  <a class={className} href={href}>
+    <slot />
+  </a>
+) : (
+  <button
+    type="button"
+    class={className}
+    disabled={disabled}
+    aria-describedby={reasonId}
+  >
+    <slot />
+  </button>
+)}
+{reason && (
+  <p class="uz-disabled-reason" id={reasonId}>
+    {reason}
+  </p>
+)}

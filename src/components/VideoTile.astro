@@ -1,0 +1,74 @@
+---
+// DesignSystem/Web: uz-media-frame, with the video case filled in.
+import "../../DesignSystem/Web/uzume-components.css";
+
+interface Props {
+  title: string;
+  meta?: string;
+  poster?: string;
+  /** Encoded variants, best first. W.3 ships AV1/WebM + H.264/MP4. */
+  sources?: string[];
+}
+
+const { title, meta, poster, sources = [] } = Astro.props;
+
+const types: Record<string, string> = {
+  webm: "video/webm",
+  mp4: "video/mp4",
+};
+---
+
+<figure class="uz-media-frame">
+  <div class="uz-media-frame__content">
+    {sources.length ? (
+      <video
+        data-uz-loop
+        poster={poster}
+        controls
+        muted
+        loop
+        playsinline
+        preload="none"
+        aria-label={title}
+      >
+        {sources.map((src) => (
+          <source src={src} type={types[src.split(".").pop() ?? ""]} />
+        ))}
+      </video>
+    ) : (
+      <div
+        class="uz-media-frame__fallback"
+        role="img"
+        aria-label={`${title} — preview unavailable`}
+      >
+        <div>
+          <strong>Performance preview unavailable</strong>
+          <span>
+            The title and attribution remain available while media is missing.
+          </span>
+        </div>
+      </div>
+    )}
+  </div>
+  <figcaption class="uz-media-frame__caption">
+    <strong>{title}</strong>
+    {meta && <span class="uz-media-frame__meta">{meta}</span>}
+  </figcaption>
+</figure>
+
+<script>
+  // The site's only client JS. Loops play when visible and motion is welcome;
+  // otherwise the poster stands and the native controls still offer playback.
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const observer = new IntersectionObserver((entries) => {
+      for (const { target, isIntersecting } of entries) {
+        const video = target as HTMLVideoElement;
+        if (isIntersecting) video.play().catch(() => {});
+        else video.pause();
+      }
+    });
+    document
+      .querySelectorAll("video[data-uz-loop]")
+      .forEach((v) => observer.observe(v));
+  }
+</script>

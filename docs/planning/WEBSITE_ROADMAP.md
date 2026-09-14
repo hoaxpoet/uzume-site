@@ -37,11 +37,27 @@ Scaffold Astro + Starlight at the repo root (`src/` layout per plan §6; `brand/
 future nav/footer) must be wired in both `Base.astro` and the Starlight config, not
 one. W.1's component port should assume two integration points, not one.
 
-### W.1 — Tokens and components *(one session)*
+### W.1 — Tokens and components *(done 2026-09-14)*
 
 Port the `DesignSystem/Web` catalogue into `.astro` components: `Nav`, `Footer`, `Button`, `VideoTile` (poster + lazy loop + reduced-motion fallback), `Callout`, `RequirementsList`, `PresetCard`. Zero client JS except where `VideoTile` needs it. Build `/design` from the live components.
 
 **Exit:** `/design` renders every component; `Scripts/check_contrast.py` passes against the served tokens; reduced-motion verified by hand.
+
+**Learned:**
+
+- The two-integration-points problem from W.0 dissolves if each component imports
+  `uzume-components.css` itself. Astro dedupes the import and ships it only to
+  pages that use a component, so the components work under `Base.astro` and under
+  Starlight's layout without either being configured for them.
+- `VideoTile` needs no play/pause cluster: native `controls` on a muted, looping,
+  `preload="none"` video covers the reduced-motion case, and the only client JS on
+  the site is one IntersectionObserver that plays in-viewport loops when motion is
+  welcome. If `play()` is refused for any reason the poster and controls remain.
+- **The brand fonts are not served.** `tokens.css` names "Alumni Sans" and
+  "PT Sans"; nothing declares `@font-face`, so every page renders in the fallback
+  stack. `brand/fonts/PTSans.ttc` is 2.7 MB and `.ttc` is poorly supported in
+  browsers — wiring this properly means subsetting to woff2. It belongs to W.2,
+  where display type first carries weight.
 
 ### W.2 — Landing *(one to two sessions → public launch)*
 

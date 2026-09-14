@@ -1,0 +1,43 @@
+---
+// DesignSystem/Web: uz-preset-card. Identity survives missing media.
+import "../../DesignSystem/Web/uzume-components.css";
+
+interface Props {
+  name: string;
+  author: string;
+  /** Poster still; the gallery's moving previews arrive with W.3 footage. */
+  poster?: string;
+  status?: string;
+}
+
+const {
+  name,
+  author,
+  poster,
+  status = "Certified · steady luminance",
+} = Astro.props;
+---
+
+<figure class="uz-preset-card">
+  <div class="uz-preset-card__media">
+    {poster ? (
+      <img src={poster} alt={`${name} preview still`} loading="lazy" />
+    ) : (
+      <div>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <path d="m8 15 3-3 2 2 3-4 3 5" />
+        </svg>
+        <strong>Preview unavailable</strong>
+        <span>The preset remains identifiable without its media.</span>
+      </div>
+    )}
+  </div>
+  <figcaption class="uz-preset-card__caption">
+    <span class="uz-preset-card__identity">
+      <strong class="uz-preset-card__title">{name}</strong>
+      <span class="uz-preset-card__author">{author}</span>
+    </span>
+    <span class="uz-preset-card__status">{status}</span>
+  </figcaption>
+</figure>

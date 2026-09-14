@@ -1,0 +1,19 @@
+---
+// DesignSystem/Web: uz-definition-list.
+import "../../DesignSystem/Web/uzume-components.css";
+
+interface Props {
+  items: { term: string; description: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<dl class="uz-definition-list">
+  {items.map(({ term, description }) => (
+    <div>
+      <dt>{term}</dt>
+      <dd>{description}</dd>
+    </div>
+  ))}
+</dl>
