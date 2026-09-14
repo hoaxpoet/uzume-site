@@ -27,11 +27,15 @@
 
 Each session is one PR, judged on its Cloudflare preview URL, with the exit criteria below. Lighter ceremony than app increments, per `WEBSITE_PLAN.md` §6.
 
-### W.0 — Foundation *(one session; unblocked now)*
+### W.0 — Foundation *(done 2026-09-14)*
 
 Scaffold Astro + Starlight at the repo root (`src/` layout per plan §6; `brand/`, `design/`, `DesignSystem/`, and the planning docs stay where they are). `.nvmrc` pinned. CI on PR: install, `astro check`, build, `lychee` link check. Cloudflare Worker with static assets, git-connected build, preview URL per PR. Custom domain uzume.io, `www` → apex, security headers in `public/_headers`. Web Analytics on. Wire the existing root `tokens.css` into the build as the single token source (move or import — don't fork it).
 
 **Exit:** hello-world live at uzume.io; a test PR shows its own preview URL; CI green.
+
+**Learned:** Starlight renders its own layout — anything global (tokens, analytics,
+future nav/footer) must be wired in both `Base.astro` and the Starlight config, not
+one. W.1's component port should assume two integration points, not one.
 
 ### W.1 — Tokens and components *(one session)*
 
