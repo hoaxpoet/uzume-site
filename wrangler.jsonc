@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "uzume-site",
+  "compatibility_date": "2026-09-14",
+  // Static site: no Worker script, just the built output. The assets directory
+  // is not a dashboard field in Workers Builds — it is read from here.
+  "assets": {
+    "directory": "./dist"
+  }
+}
