@@ -46,6 +46,14 @@ const beats = [
   <main>
     <section class="hero">
       <img
+        class="hero__icon"
+        src="/uzume-icon.png"
+        alt=""
+        width="256"
+        height="256"
+        fetchpriority="high"
+      />
+      <img
         class="hero__wordmark"
         src="/uzume-wordmark.svg"
         alt="Uzume"
@@ -192,8 +200,17 @@ const beats = [
     }
   }
 
+  /* BRAND.md: the full icon composition at 64px or larger, with clear space of
+     at least an eighth of its width. Empty alt — the wordmark below already
+     names the product, and "Uzume Uzume" is what a reader would otherwise hear. */
+  .hero__icon {
+    width: min(8rem, 30vw);
+    height: auto;
+    border-radius: 22.37%;
+  }
+
   .hero__wordmark {
-    width: min(22rem, 70vw);
+    width: min(20rem, 66vw);
     height: auto;
   }
 

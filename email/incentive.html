@@ -12,7 +12,9 @@
   The card is self-contained dark so it reads correctly on Kit's light ground.
   Alumni Sans cannot load in mail, so the wordmark is an image on the card's own
   #0b0c10 ground and everything else is a system stack. Images are blocked by
-  default in many clients — read this with images off and it still makes sense.
+  default in many clients — read this with images off and it still makes sense,
+  which is why the icon carries an empty alt: it is decoration beside the
+  wordmark, and "Uzume Uzume" is what a screen reader would otherwise announce.
 
   THE CONFIRM BUTTON IS NOT IN HERE. Add Kit's native Button block directly
   below this HTML block so the confirmation URL is Kit's own, then set its
@@ -38,13 +40,25 @@
         style="border-collapse:collapse;max-width:520px;width:100%;background-color:#0b0c10;border-radius:16px;"
       >
         <tr>
-          <td align="center" style="padding:36px 32px 28px 32px;">
+          <td align="center" style="padding:36px 32px 20px 32px;">
+            <img
+              src="https://uzume.io/email/uzume-icon.png"
+              width="88"
+              height="88"
+              alt=""
+              style="display:block;width:88px;max-width:88px;height:auto;border:0;border-radius:20px;"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td align="center" style="padding:0 32px 28px 32px;">
             <img
               src="https://uzume.io/email/uzume-wordmark.png"
-              width="176"
-              height="89"
+              width="160"
+              height="81"
               alt="Uzume"
-              style="display:block;width:176px;max-width:176px;height:auto;border:0;"
+              style="display:block;width:160px;max-width:160px;height:auto;border:0;"
             />
           </td>
         </tr>
