@@ -10,6 +10,8 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "Uzume",
+      // Starlight defaults to /favicon.svg, which this site does not ship.
+      favicon: "/favicon-32.png",
       // Docs live under /docs; the landing page at / is a plain Astro page.
       disable404Route: true,
       customCss: ["./src/styles/docs.css"],

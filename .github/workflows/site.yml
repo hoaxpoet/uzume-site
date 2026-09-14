@@ -39,5 +39,13 @@ jobs:
       - name: Check links in the built site
         uses: lycheeverse/lychee-action@v2.9.0
         with:
-          args: --no-progress --base dist --include-fragments 'dist/**/*.html'
+          # --root-dir must be absolute; it resolves root-relative hrefs in the
+          # built files. uzume.io is excluded: it is the canonical/sitemap origin,
+          # and a PR's build says nothing about whether production is reachable.
+          args: >-
+            --no-progress
+            --root-dir ${{ github.workspace }}/dist
+            --exclude ^https://uzume\.io
+            --include-fragments
+            'dist/**/*.html'
           fail: true
