@@ -1,0 +1,158 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import Button from "../components/Button.astro";
+import Callout from "../components/Callout.astro";
+import RequirementsList from "../components/RequirementsList.astro";
+import PresetCard from "../components/PresetCard.astro";
+import VideoTile from "../components/VideoTile.astro";
+
+const requirements = [
+  { term: "macOS", description: "macOS 15 Sequoia or later" },
+  { term: "Hardware", description: "Apple silicon" },
+  {
+    term: "Audio",
+    description:
+      "Local files today; system audio needs the Screen Recording permission",
+  },
+  { term: "Cost", description: "Open source and buildable from source" },
+];
+---
+
+<Base
+  title="Design reference — Uzume"
+  description="Every Uzume web component rendered from its live implementation."
+>
+  <Nav />
+  <main>
+    <h1>Design reference</h1>
+    <p class="lede">
+      Every component on this page is the same implementation the site ships.
+      The static catalogue in <code>DesignSystem/Web/</code> remains the
+      contract.
+    </p>
+
+    <section>
+      <h2>Button</h2>
+      <div class="row">
+        <Button href="https://github.com/hoaxpoet/uzume">
+          On GitHub today
+        </Button>
+        <Button variant="secondary">Read the docs</Button>
+        <Button variant="quiet">Not now</Button>
+      </div>
+      <Button
+        disabled
+        reason="A signed, notarized build is not on GitHub Releases yet."
+      >
+        Download beta
+      </Button>
+    </section>
+
+    <section>
+      <h2>Callout</h2>
+      <div class="stack">
+        <Callout title="The beta is coming">
+          Uzume is open source and buildable from source today. A notarized
+          build will follow.
+        </Callout>
+        <Callout tone="success" title="Certified for steady luminance">
+          Every certified preset holds its luminance steady across the frame.
+        </Callout>
+        <Callout tone="warning" title="Screen Recording permission">
+          macOS groups system-audio capture with Screen Recording. Uzume uses
+          the audio portion; it does not capture your screen or microphone.
+        </Callout>
+        <Callout tone="danger" title="No audio source">
+          Uzume cannot hear anything. Choose local files, or grant the
+          permission.
+        </Callout>
+      </div>
+    </section>
+
+    <section>
+      <h2>RequirementsList</h2>
+      <RequirementsList items={requirements} />
+    </section>
+
+    <section>
+      <h2>VideoTile</h2>
+      <p class="note">
+        Footage lands in W.3. Without sources the tile renders its explicit
+        fallback and keeps the title and attribution.
+      </p>
+      <VideoTile title="Prepared performance" meta="Capture pending" />
+    </section>
+
+    <section>
+      <h2>PresetCard</h2>
+      <div class="uz-preset-gallery">
+        <PresetCard name="First Opening" author="Uzume" />
+        <PresetCard
+          name="Cave Mouth"
+          author="Uzume"
+          status="Certified · capture pending"
+        />
+      </div>
+    </section>
+
+    <section>
+      <h2>Nav and Footer</h2>
+      <p class="note">Rendered at the top and bottom of this page.</p>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  main {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: var(--space-16) var(--page-gutter);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  h1 {
+    margin: 0;
+    font: var(--font-weight-semibold) var(--text-3xl) / var(--leading-tight)
+      var(--font-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  h2 {
+    margin: 0 0 var(--space-6);
+    font-size: var(--text-xl);
+    line-height: var(--leading-heading);
+  }
+
+  .lede,
+  .note {
+    max-width: var(--measure-copy);
+    margin: 0 0 var(--space-6);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-body);
+  }
+
+  .lede {
+    margin-top: calc(-1 * var(--space-12));
+  }
+
+  .row,
+  .stack {
+    display: flex;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .row {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .stack {
+    flex-direction: column;
+  }
+</style>

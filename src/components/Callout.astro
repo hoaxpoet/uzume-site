@@ -1,0 +1,32 @@
+---
+// DesignSystem/Web: uz-banner. Icon paths lifted from catalogue.js.
+import "../../DesignSystem/Web/uzume-components.css";
+
+interface Props {
+  tone?: "info" | "success" | "warning" | "danger";
+  title: string;
+}
+
+const { tone = "info", title } = Astro.props;
+
+const icons = {
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7h.01"/>',
+  success: '<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+  warning: '<path d="M16 2 30 26H2Z"/><path d="M16 10v7M16 22h.01"/>',
+  danger: '<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6m0-6-6 6"/>',
+};
+const viewBox = tone === "warning" ? "0 0 32 28" : "0 0 24 24";
+---
+
+<section class="uz-banner" data-tone={tone}>
+  <div class="uz-banner__icon">
+    <svg viewBox={viewBox} aria-hidden="true" set:html={icons[tone]} />
+  </div>
+  <div class="uz-banner__content">
+    <strong class="uz-banner__title">{title}</strong>
+    <p class="uz-banner__body">
+      <slot />
+    </p>
+    <slot name="actions" />
+  </div>
+</section>

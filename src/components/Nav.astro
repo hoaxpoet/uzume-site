@@ -1,0 +1,38 @@
+---
+// DesignSystem/Web: uz-site-navigation.
+import "../../DesignSystem/Web/uzume-components.css";
+
+// Only pages that exist — lychee fails the build on dangling internal links.
+// /gallery and /download join at W.2/W.4.
+const links = [
+  { href: "/docs", label: "Docs" },
+  { href: "https://github.com/hoaxpoet/uzume", label: "GitHub" },
+];
+
+// Trailing slash tolerated so /docs/ matches /docs.
+const here = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+
+<nav class="uz-site-navigation" aria-label="Site">
+  <a class="uz-site-navigation__brand" href="/">
+    <img src="/uzume-wordmark.svg" alt="Uzume" width="316" height="160" />
+  </a>
+  {links.map(({ href, label }) => (
+    <a
+      class="uz-site-navigation__link"
+      href={href}
+      aria-current={here === href ? "page" : undefined}
+    >
+      {label}
+    </a>
+  ))}
+</nav>
+
+<style>
+  /* The catalogue sizes the brand slot; the wordmark just fills it. */
+  .uz-site-navigation__brand img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>
