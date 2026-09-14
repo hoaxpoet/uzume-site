@@ -5,7 +5,7 @@
 ## 1. Decisions resolved 2026-09-14
 
 - **Domain.** uzume.io is registered. DNS/custom-domain wiring is W.0 work, not a purchase decision.
-- **Launch posture: ship early.** The site launches before a notarized build exists. `/download` (working label: "Get Uzume") states the honest current shape — open source, clone-and-build today, notarized beta coming — and offers a notify path (GitHub repo watch / release notifications). Beta copy stays in the future tense per `PRODUCT.md` until a Releases artifact exists. The download CTA flip is its own later session (W.7), not a launch gate.
+- **Launch posture: ship early.** The site launches before a notarized build exists. `/download` (working label: "Get Uzume") states the honest current shape — open source, clone-and-build today, notarized beta coming — and offers a notify path. **Revised 2026-09-14:** that path is an email capture, not GitHub watch — a plain form posting to **Kit (ConvertKit)**, so there is a list to mail when the beta lands. No embed script, no cookies on this origin, so the no-consent-banner position holds. Beta copy stays in the future tense per `PRODUCT.md` until a Releases artifact exists. The download CTA flip is its own later session (W.7), not a launch gate.
 - **Capture licensing.** All published footage is captured against self-produced or openly-licensed tracks only, muted or not. The asset manifest records track and license per clip. No exceptions.
 - **Analytics.** Cloudflare Web Analytics (cookieless, free, no consent banner), enabled at W.0 setup.
 
@@ -85,6 +85,34 @@ call the site public is Matt's call.
 **Deferred to W.4 by the roadmap's own sequencing:** the gallery teaser. A teaser
 built now is three "preview unavailable" boxes, which teases nothing; W.4 already
 owns "add the gallery teaser" alongside the real clips.
+
+**Added after review:**
+
+- **Email capture.** `NotifyForm.astro` posts straight to Kit — no JavaScript,
+  no backend. `KIT_FORM_ID` is a build-time variable; **the form does not render
+  until it is set in the Cloudflare project**, falling back to a Releases link,
+  because a field that posts nowhere is worse than a link. `COMPONENTS.md` had
+  removed `Input` as speculative "until a named consumer"; this is that consumer
+  and the only one, so the field stays local until a second earns it a place in
+  the catalogue.
+- **The authored opening.** The first W.2 draft shipped no motion, on a reading
+  of "the engine's output is the brand" that the brand docs do not support.
+  `BRAND.md` §Motion behavior defines the movement — *"content begins legible,
+  darkness yields, and light becomes visible"* — and forbids only decorative
+  motion (looping chrome, parallax, pulsing, synchronized section entrances).
+  The hero now opens once at `--duration-deliberate` on `--ease-out`: light
+  rises behind the wordmark, text legible from the first frame. Reduced motion
+  needs no special case — `tokens.css` already collapses the duration to 1 ms.
+  Contrast over the glow was checked by hand (weakest pairing ≈ 6.5:1); the
+  gate script only covers flat token pairings.
+
+**Blocked — the pronunciation is wrong everywhere.** Matt: it is **oo-ZOO-may**,
+not "oo-ZOO-meh". The site copy now says "may", but the pronunciation lockup
+could not ship: `brand/wordmark/Uzume-pronunciation.svg` spells MEH in vector
+letterforms, as do the three direction lockups. "oo-ZOO-meh" is also in
+`PRODUCT.md`, `BRAND.md`, `CLAUDE.md`, `NAMING_REPORT.md`, `WEBSITE_PLAN.md`,
+both BRAND.1 review pages, and eight files in the app repo. Correcting it means
+regenerating a brand artifact and sweeping two repos — a BRAND-level session.
 
 **Found:** `brand/fonts/licenses/AlumniSans-OFL.txt` is a byte-for-byte copy of
 `Geologica-OFL.txt` and names the wrong copyright holder, so the font ships

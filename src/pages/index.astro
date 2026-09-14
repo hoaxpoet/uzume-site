@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import Button from "../components/Button.astro";
+import NotifyForm from "../components/NotifyForm.astro";
 import Callout from "../components/Callout.astro";
 import RequirementsList from "../components/RequirementsList.astro";
 
@@ -60,10 +61,8 @@ const beats = [
       <p class="hero__lede">{description}</p>
       <div class="hero__actions">
         <Button href={REPO}>On GitHub today — build from source</Button>
-        <Button variant="secondary" href={`${REPO}/releases`}>
-          Watch for the beta
-        </Button>
       </div>
+      <NotifyForm fallbackHref={`${REPO}/releases`} />
       <p class="hero__note">
         Uzume is open source and buildable today. There is no installable build
         yet — the public beta will be free and notarized when it arrives.
@@ -128,7 +127,7 @@ const beats = [
     <section class="band myth" aria-label="The name">
       <h2>Uzume</h2>
       <p>
-        Pronounced <strong>oo-ZOO-meh</strong>. In the <em>Kojiki</em>, the sun
+        Pronounced <strong>oo-ZOO-may</strong>. In the <em>Kojiki</em>, the sun
         shuts herself in a cave and the world goes dark. A plan is made, a
         mirror is hung to catch light that does not yet exist, and Ame-no-Uzume
         stamps out a rhythm and dances until the gods roar. The sun opens the
@@ -151,12 +150,45 @@ const beats = [
   }
 
   .hero {
+    position: relative;
+    isolation: isolate;
+    /* The opening light is wider than the hero; clip only the axis that would
+       otherwise scroll the page. `clip` leaves the other axis visible in a way
+       `hidden` would not. */
+    overflow-x: clip;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--space-6);
     padding: clamp(var(--space-16), 12vh, var(--space-32)) 0;
     text-align: center;
+  }
+
+  /* BRAND.md motion: the brand's authored movement is opening — content begins
+     legible, darkness yields, light becomes visible. One deliberate reveal, on
+     the hero only, never looping. Under reduced motion the global rule in
+     Base.astro collapses the duration and `forwards` leaves the resting state,
+     so the light is simply already there. */
+  .hero::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -20% -10% auto;
+    aspect-ratio: 2 / 1;
+    background: radial-gradient(
+      ellipse at 50% 40%,
+      var(--color-accent-subtle) 0%,
+      transparent 70%
+    );
+    opacity: 0.55;
+    animation: hero-opening var(--duration-deliberate) var(--ease-out) backwards;
+  }
+
+  @keyframes hero-opening {
+    from {
+      opacity: 0;
+      transform: scale(0.94);
+    }
   }
 
   .hero__wordmark {

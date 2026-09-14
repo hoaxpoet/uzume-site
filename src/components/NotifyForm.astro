@@ -1,0 +1,116 @@
+---
+// Kit (ConvertKit) classic form endpoint. A plain POST — no embed script, no
+// client JS, no cookies on this origin, so the site still needs no consent
+// banner. Kit owns the confirmation mail, the thank-you page and unsubscribe.
+//
+// KIT_FORM_ID is a build-time variable set in the Cloudflare project. Without
+// it there is no form: an input posting nowhere is worse than a plain link, so
+// the fallback below is what ships until the id is set.
+import "../../DesignSystem/Web/uzume-components.css";
+import Button from "./Button.astro";
+
+interface Props {
+  /** Shown when no form is configured. */
+  fallbackHref: string;
+}
+
+const { fallbackHref } = Astro.props;
+const formId = import.meta.env.KIT_FORM_ID;
+---
+
+{formId ? (
+  <form
+    class="notify"
+    action={`https://app.kit.com/forms/${formId}/subscriptions`}
+    method="post"
+  >
+    <label class="notify__label" for="notify-email">
+      Email me when the beta is downloadable
+    </label>
+    <div class="notify__row">
+      <input
+        class="notify__input"
+        id="notify-email"
+        type="email"
+        name="email_address"
+        autocomplete="email"
+        placeholder="you@example.com"
+        aria-describedby="notify-terms"
+        required
+      />
+      <button class="uz-button uz-button--primary" type="submit">
+        Notify me
+      </button>
+    </div>
+    <p class="notify__terms" id="notify-terms">
+      One message, when there is something to download. Nothing else, and you
+      can unsubscribe from that message.
+    </p>
+  </form>
+) : (
+  <Button variant="secondary" href={fallbackHref}>
+    Watch for the beta
+  </Button>
+)}
+
+<style>
+  /* COMPONENTS.md removed Input as speculative, to be added "when a future
+     approved surface introduces a named consumer". This is that consumer, and
+     so far the only one — the field lives here until a second one earns it a
+     place in the catalogue. Tokens only, per the same rules. */
+  .notify {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: center;
+    width: min(28rem, 100%);
+  }
+
+  .notify__label {
+    font-weight: 700;
+  }
+
+  .notify__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    width: 100%;
+  }
+
+  .notify__input {
+    flex: 1 1 14rem;
+    min-height: var(--target-min-web);
+    padding: 0 var(--space-4);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-raised);
+    color: var(--color-text-primary);
+    font: var(--font-weight-regular) var(--text-base) / 1.2 var(--font-text);
+  }
+
+  .notify__input::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  .notify__input:focus-visible {
+    outline: 0;
+    border-color: var(--color-focus);
+    box-shadow: var(--focus-ring);
+  }
+
+  .notify__terms {
+    max-width: var(--measure-copy);
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-tertiary);
+    text-align: center;
+  }
+
+  @media (prefers-contrast: more) {
+    .notify__input {
+      border-width: 2px;
+    }
+  }
+</style>
