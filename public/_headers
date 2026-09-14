@@ -1,0 +1,9 @@
+# Served by Workers static assets. Verified 2026-09-14 against Cloudflare's docs:
+# _headers is honored for asset responses, and the www -> apex redirect cannot live
+# here — _redirects does not support domain-level (source hostname) matching, so it
+# is a zone-level Redirect Rule instead.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com/beacon.min.js; connect-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
