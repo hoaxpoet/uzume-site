@@ -1,29 +1,22 @@
 ---
-// Kit (ConvertKit) classic form endpoint. A plain POST — no embed script, no
-// client JS, no cookies on this origin, so the site still needs no consent
-// banner. Kit owns the confirmation mail, the thank-you page and unsubscribe.
+// Kit (ConvertKit). The form id is public — it ships in the HTML either way —
+// so it lives here rather than in an environment variable.
 //
-// KIT_FORM_ID is a build-time variable set in the Cloudflare project. Without
-// it there is no form: an input posting nowhere is worse than a plain link, so
-// the fallback below is what ships until the id is set.
+// The native action/method are real: without JavaScript this posts normally and
+// Kit shows its own confirmation page. With JavaScript the submit is
+// intercepted and answered in place, which is the behaviour we want.
 import "../../DesignSystem/Web/uzume-components.css";
-import Button from "./Button.astro";
 
-interface Props {
-  /** Shown when no form is configured. */
-  fallbackHref: string;
-}
-
-const { fallbackHref } = Astro.props;
-const formId = import.meta.env.KIT_FORM_ID;
+const KIT_FORM = "9918547";
 ---
 
-{formId ? (
-  <form
-    class="notify"
-    action={`https://app.kit.com/forms/${formId}/subscriptions`}
-    method="post"
-  >
+<form
+  class="notify"
+  action={`https://app.kit.com/forms/${KIT_FORM}/subscriptions`}
+  method="post"
+  data-notify
+>
+  <div class="notify__fields" data-fields>
     <label class="notify__label" for="notify-email">
       Email me when the beta is downloadable
     </label>
@@ -46,12 +39,72 @@ const formId = import.meta.env.KIT_FORM_ID;
       One message, when there is something to download. Nothing else, and you
       can unsubscribe from that message.
     </p>
-  </form>
-) : (
-  <Button variant="secondary" href={fallbackHref}>
-    Watch for the beta
-  </Button>
-)}
+  </div>
+
+  <p class="notify__status" role="status" tabindex="-1" data-status hidden></p>
+</form>
+
+<script>
+  import { setUzumeBusy } from "../../DesignSystem/Web/uzume-components.js";
+
+  const form = document.querySelector<HTMLFormElement>("form[data-notify]");
+  const fields = form?.querySelector<HTMLElement>("[data-fields]");
+  const status = form?.querySelector<HTMLElement>("[data-status]");
+
+  function say(message: string, done: boolean) {
+    if (!status) return;
+    status.textContent = message;
+    status.hidden = false;
+    status.dataset.tone = done ? "done" : "error";
+    if (done) {
+      fields!.hidden = true;
+      status.focus();
+    }
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    const button = form.querySelector(
+      "button[type=submit]",
+    ) as HTMLButtonElement;
+    const input = form.querySelector("input[type=email]") as HTMLInputElement;
+    if (!form.reportValidity()) return;
+
+    event.preventDefault();
+    setUzumeBusy(button, true, "Signing you up");
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ email_address: input.value }),
+      });
+      const result = await response.json();
+
+      if (result.status === "success") {
+        say(
+          "You're on the list. We'll write once, when there's a build to download.",
+          true,
+        );
+        return;
+      }
+      // Kit answers a bad address with its own message; prefer it to ours.
+      say(
+        result.errors?.messages?.[0] ?? "That didn't go through. Try again?",
+        false,
+      );
+    } catch {
+      say(
+        "Couldn't reach the mailing list. Try again, or watch the repo on GitHub.",
+        false,
+      );
+    } finally {
+      setUzumeBusy(button, false);
+    }
+  });
+</script>
 
 <style>
   /* COMPONENTS.md removed Input as speculative, to be added "when a future
@@ -66,8 +119,16 @@ const formId = import.meta.env.KIT_FORM_ID;
     width: min(28rem, 100%);
   }
 
+  .notify__fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+  }
+
   .notify__label {
     font-weight: 700;
+    text-align: center;
   }
 
   .notify__row {
@@ -106,6 +167,27 @@ const formId = import.meta.env.KIT_FORM_ID;
     line-height: var(--leading-body);
     color: var(--color-text-tertiary);
     text-align: center;
+  }
+
+  .notify__status {
+    max-width: var(--measure-copy);
+    margin: 0;
+    line-height: var(--leading-body);
+    text-align: center;
+  }
+
+  .notify__status:focus-visible {
+    outline: 0;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--focus-ring);
+  }
+
+  .notify__status[data-tone="done"] {
+    color: var(--color-status-success-foreground);
+  }
+
+  .notify__status[data-tone="error"] {
+    color: var(--color-status-danger-foreground);
   }
 
   @media (prefers-contrast: more) {

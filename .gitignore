@@ -9,7 +9,5 @@ dist/
 # astro
 .astro/
 
-# Kit form id and any other build-time secrets
 .env
 .env.*
-!.env.example
