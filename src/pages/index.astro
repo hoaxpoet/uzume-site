@@ -126,12 +126,13 @@ const beats = [
 
     <section class="band myth" aria-label="The name">
       <h2>Uzume</h2>
+      <p class="myth__pronunciation">oo-ZOO-may</p>
       <p>
-        Pronounced <strong>oo-ZOO-may</strong>. In the <em>Kojiki</em>, the sun
-        shuts herself in a cave and the world goes dark. A plan is made, a
-        mirror is hung to catch light that does not yet exist, and Ame-no-Uzume
-        stamps out a rhythm and dances until the gods roar. The sun opens the
-        door to see what could possibly be worth that much noise.
+        In the <em>Kojiki</em>, the sun shuts herself in a cave and the world
+        goes dark. A plan is made, a mirror is hung to catch light that does not
+        yet exist, and Ame-no-Uzume stamps out a rhythm and dances until the
+        gods roar. The sun opens the door to see what could possibly be worth
+        that much noise.
       </p>
       <p>
         The performance is what brings the light out. That is the whole idea.
@@ -273,6 +274,23 @@ const beats = [
     font: var(--font-weight-semibold) var(--text-3xl) / var(--leading-tight)
       var(--font-display);
     letter-spacing: var(--tracking-display);
+  }
+
+  /* The brand's pronunciation lockup bakes this into vector letterforms, so it
+     cannot be selected, resized with the reader's text settings, or corrected
+     without regenerating the artwork. Live text instead: the heading above
+     already renders in Alumni Sans, which is the wordmark's own face. */
+  .myth__pronunciation {
+    margin: 0 0 var(--space-6);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    /* Not uppercased, unlike the brand lockup: "oo-ZOO-may" carries the stress
+       in its capitals, and OO-ZOO-MAY throws that away. */
+    letter-spacing: var(--tracking-label);
+  }
+
+  .myth h2 {
+    margin-bottom: var(--space-2);
   }
 
   .myth p {

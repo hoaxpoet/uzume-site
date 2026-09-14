@@ -106,13 +106,27 @@ owns "add the gallery teaser" alongside the real clips.
   Contrast over the glow was checked by hand (weakest pairing ≈ 6.5:1); the
   gate script only covers flat token pairings.
 
-**Blocked — the pronunciation is wrong everywhere.** Matt: it is **oo-ZOO-may**,
-not "oo-ZOO-meh". The site copy now says "may", but the pronunciation lockup
-could not ship: `brand/wordmark/Uzume-pronunciation.svg` spells MEH in vector
-letterforms, as do the three direction lockups. "oo-ZOO-meh" is also in
-`PRODUCT.md`, `BRAND.md`, `CLAUDE.md`, `NAMING_REPORT.md`, `WEBSITE_PLAN.md`,
-both BRAND.1 review pages, and eight files in the app repo. Correcting it means
-regenerating a brand artifact and sweeping two repos — a BRAND-level session.
+**The pronunciation is live text, not a lockup.** It reads **oo-ZOO-may** (Matt,
+2026-09-14): English speakers' untutored rendering of a Japanese final /e/ is
+already "-ay", so the respelling agrees with what a reader will do rather than
+fighting it, and it keeps the word "meh" out of the product's own pronunciation.
+Three open syllables still holds, so nothing in `NAMING_REPORT.md`'s rationale
+breaks.
+
+`brand/wordmark/Uzume-pronunciation.svg` is **not used, and should not be**: it
+bakes the respelling into vector letterforms, so it cannot be selected, scaled
+with the reader's text settings, read as text, or corrected without regenerating
+the artwork — which is exactly what stalled this. The myth section renders the
+name as a heading in Alumni Sans (the wordmark's own face, so the look survives)
+with the pronunciation as a plain paragraph beneath. It is deliberately **not**
+uppercased like the lockup: "oo-ZOO-may" carries the stress in its capitals and
+OO-ZOO-MAY throws that away.
+
+Left alone: "oo-ZOO-meh" still stands in `PRODUCT.md`, `BRAND.md`, `CLAUDE.md`,
+`NAMING_REPORT.md`, `WEBSITE_PLAN.md`, the three direction lockups, both BRAND.1
+review pages, and eight files in the app repo. That is internal history, not
+public copy, and this is a style call rather than a defect — sweep it when
+something else touches those files.
 
 **Found:** `brand/fonts/licenses/AlumniSans-OFL.txt` is a byte-for-byte copy of
 `Geologica-OFL.txt` and names the wrong copyright holder, so the font ships
