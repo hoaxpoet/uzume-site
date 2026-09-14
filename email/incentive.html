@@ -1,0 +1,115 @@
+<!--
+  Uzume confirmation (double opt-in) email — for Kit's HTML block.
+
+  This is a FRAGMENT, not a document. Kit owns <body>, the email background,
+  the footer and the "Built with Kit" badge, so there is no <html>, <head> or
+  <style> here: Gmail strips <head> styles and Outlook renders with Word's
+  engine, so every rule is inline and every layout is a table.
+
+  Token values are copied from tokens.css by hand — CSS variables cannot reach
+  a mail client. If a token changes, change it here too.
+
+  The card is self-contained dark so it reads correctly on Kit's light ground.
+  Alumni Sans cannot load in mail, so the wordmark is an image on the card's own
+  #0b0c10 ground and everything else is a system stack. Images are blocked by
+  default in many clients — read this with images off and it still makes sense.
+
+  THE CONFIRM BUTTON IS NOT IN HERE. Add Kit's native Button block directly
+  below this HTML block so the confirmation URL is Kit's own, then set its
+  colour to #7f6aff with #0b0c10 label text.
+-->
+<table
+  role="presentation"
+  width="100%"
+  cellpadding="0"
+  cellspacing="0"
+  border="0"
+  style="border-collapse:collapse;"
+>
+  <tr>
+    <td align="center" style="padding:0;">
+      <table
+        role="presentation"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        bgcolor="#0b0c10"
+        style="border-collapse:collapse;max-width:520px;width:100%;background-color:#0b0c10;border-radius:16px;"
+      >
+        <tr>
+          <td align="center" style="padding:36px 32px 28px 32px;">
+            <img
+              src="https://uzume.io/email/uzume-wordmark.png"
+              width="176"
+              height="89"
+              alt="Uzume"
+              style="display:block;width:176px;max-width:176px;height:auto;border:0;"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            align="center"
+            style="padding:0 32px 28px 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:20px;line-height:1.45;color:#f4f6f1;"
+          >
+            Click below and we'll email you when Uzume is ready to download.
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:0 32px;">
+            <table
+              role="presentation"
+              width="100%"
+              cellpadding="0"
+              cellspacing="0"
+              border="0"
+              style="border-collapse:collapse;"
+            >
+              <tr>
+                <td
+                  height="1"
+                  bgcolor="#34363f"
+                  style="height:1px;line-height:1px;font-size:0;background-color:#34363f;"
+                >
+                  &nbsp;
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="padding:28px 32px 20px 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#c5c9c3;"
+          >
+            Uzume is a Mac app that listens to whatever music you're already
+            playing and performs light to it. It reads your playlist first, plans
+            what to show, then adjusts as the music goes.
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="padding:0 32px 20px 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#c5c9c3;"
+          >
+            You can't download it yet. The first email you get will be the one
+            that says you can. After that, occasional notes when there's a new
+            release.
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="padding:0 32px 36px 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#c5c9c3;"
+          >
+            Didn't sign up? Ignore this and you'll hear nothing &mdash; nothing
+            happens without the button below.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
