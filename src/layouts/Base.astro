@@ -47,6 +47,12 @@ const { title, description } = Astro.props;
     box-sizing: border-box;
   }
 
+  /* A class rule with its own `display` outranks the UA style for [hidden],
+     so toggling el.hidden silently does nothing. Guard it once, here. */
+  [hidden] {
+    display: none !important;
+  }
+
   body {
     margin: 0;
     background: var(--color-canvas);

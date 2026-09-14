@@ -88,13 +88,25 @@ owns "add the gallery teaser" alongside the real clips.
 
 **Added after review:**
 
-- **Email capture.** `NotifyForm.astro` posts straight to Kit — no JavaScript,
-  no backend. `KIT_FORM_ID` is a build-time variable; **the form does not render
-  until it is set in the Cloudflare project**, falling back to a Releases link,
-  because a field that posts nowhere is worse than a link. `COMPONENTS.md` had
-  removed `Input` as speculative "until a named consumer"; this is that consumer
-  and the only one, so the field stays local until a second earns it a place in
-  the catalogue.
+- **Email capture.** `NotifyForm.astro` posts to Kit, form `9918547`. The id is
+  public — it ships in the HTML either way — so it is a constant, not an
+  environment variable, and needs no Cloudflare configuration.
+
+  **The form answers in place and never leaves uzume.io** (Matt, 2026-09-14): a
+  submit handler posts JSON and swaps the fields for a confirmation. Kit's
+  endpoint permits cross-origin requests — verified against the live form — and
+  returns `{"status": "success" | "failed", "errors": {...}}`, so a bad address
+  is reported using Kit's own wording. The native `action`/`method` are real, so
+  without JavaScript the form still posts and Kit shows its own page. The submit
+  button reuses `setUzumeBusy` from the catalogue rather than a second spinner.
+
+  `consent.enabled` is `false` on the form — no double opt-in — so the "one
+  message" promise in the copy is accurate. That changes if the incentive email
+  is ever switched on.
+
+  `COMPONENTS.md` had removed `Input` as speculative "until a named consumer";
+  this is that consumer and the only one, so the field stays local until a
+  second earns it a place in the catalogue.
 - **The authored opening.** The first W.2 draft shipped no motion, on a reading
   of "the engine's output is the brand" that the brand docs do not support.
   `BRAND.md` §Motion behavior defines the movement — *"content begins legible,
@@ -127,6 +139,12 @@ Left alone: "oo-ZOO-meh" still stands in `PRODUCT.md`, `BRAND.md`, `CLAUDE.md`,
 review pages, and eight files in the app repo. That is internal history, not
 public copy, and this is a style call rather than a defect — sweep it when
 something else touches those files.
+
+**Found:** `[hidden]` was inert site-wide. A class rule carrying its own
+`display` outranks the UA style for the attribute, so `el.hidden = true` set the
+attribute and changed nothing — caught only because a screenshot disagreed with
+a DOM assertion that had passed. `Base.astro` now carries
+`[hidden] { display: none !important; }`.
 
 **Found:** `brand/fonts/licenses/AlumniSans-OFL.txt` is a byte-for-byte copy of
 `Geologica-OFL.txt` and names the wrong copyright holder, so the font ships
