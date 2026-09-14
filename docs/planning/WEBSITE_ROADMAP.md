@@ -5,7 +5,7 @@
 ## 1. Decisions resolved 2026-09-14
 
 - **Domain.** uzume.io is registered. DNS/custom-domain wiring is W.0 work, not a purchase decision.
-- **Launch posture: ship early.** The site launches before a notarized build exists. `/download` (working label: "Get Uzume") states the honest current shape — open source, clone-and-build today, notarized beta coming — and offers a notify path (GitHub repo watch / release notifications). Beta copy stays in the future tense per `PRODUCT.md` until a Releases artifact exists. The download CTA flip is its own later session (W.7), not a launch gate.
+- **Launch posture: ship early.** The site launches before a notarized build exists. `/download` (working label: "Get Uzume") states the honest current shape — open source, clone-and-build today, notarized beta coming — and offers a notify path. **Revised 2026-09-14:** that path is an email capture, not GitHub watch — a plain form posting to **Kit (ConvertKit)**, so there is a list to mail when the beta lands. No embed script, no cookies on this origin, so the no-consent-banner position holds. Beta copy stays in the future tense per `PRODUCT.md` until a Releases artifact exists. The download CTA flip is its own later session (W.7), not a launch gate.
 - **Capture licensing.** All published footage is captured against self-produced or openly-licensed tracks only, muted or not. The asset manifest records track and license per clip. No exceptions.
 - **Analytics.** Cloudflare Web Analytics (cookieless, free, no consent banner), enabled at W.0 setup.
 
@@ -59,11 +59,79 @@ Port the `DesignSystem/Web` catalogue into `.astro` components: `Nav`, `Footer`,
   browsers — wiring this properly means subsetting to woff2. It belongs to W.2,
   where display type first carries weight.
 
-### W.2 — Landing *(one to two sessions → public launch)*
+### W.2 — Landing *(page built 2026-09-14; launch pending the hero decision)*
 
 The landing page per plan §3, built with **placeholder footage** (a rough capture of any certified preset) so layout never waits on the capture pipeline. Copy constraints from `PRODUCT.md` are hard: beta in future tense, no AI claims, steady-luminance phrasing (never a flashes-per-second figure), primary CTA "On GitHub today — build from source" plus the notify path.
 
 **Exit: the site is public.** A good landing page alone is a legitimate site; this is launch #1.
+
+**Built:** hero, three beats, requirements, the three trust callouts, contributor
+invitation, and the myth note. Every product claim is checked against the app
+repo's `README.md` and preset sidecars — which caught `macOS 15 Sequoia` in the
+W.1 `/design` sample data; the app requires **macOS 14 Sonoma**. Alumni Sans is
+now served (`src/styles/fonts.css`, wired into both layouts), so display type
+finally renders as designed.
+
+**Open — the hero has no footage.** The plan asks for a full-bleed reel; the
+session shipped a typographic hero instead, which is defensible on its own terms
+(`PRODUCT.md`: "brand chrome is a restrained, dark, typographic frame") but is
+not what the plan describes. No capture exists and none can be produced from this
+repo: the app's `RENDER_VISUAL=1` harness emits **single frames**, not motion,
+and its own notes say single-frame renders do not exercise frame-to-frame
+accumulation. So a rough loop needs someone running the app on a Mac. Until then
+the landing page is footage-ready but footage-free, and whether that is enough to
+call the site public is Matt's call.
+
+**Deferred to W.4 by the roadmap's own sequencing:** the gallery teaser. A teaser
+built now is three "preview unavailable" boxes, which teases nothing; W.4 already
+owns "add the gallery teaser" alongside the real clips.
+
+**Added after review:**
+
+- **Email capture.** `NotifyForm.astro` posts straight to Kit — no JavaScript,
+  no backend. `KIT_FORM_ID` is a build-time variable; **the form does not render
+  until it is set in the Cloudflare project**, falling back to a Releases link,
+  because a field that posts nowhere is worse than a link. `COMPONENTS.md` had
+  removed `Input` as speculative "until a named consumer"; this is that consumer
+  and the only one, so the field stays local until a second earns it a place in
+  the catalogue.
+- **The authored opening.** The first W.2 draft shipped no motion, on a reading
+  of "the engine's output is the brand" that the brand docs do not support.
+  `BRAND.md` §Motion behavior defines the movement — *"content begins legible,
+  darkness yields, and light becomes visible"* — and forbids only decorative
+  motion (looping chrome, parallax, pulsing, synchronized section entrances).
+  The hero now opens once at `--duration-deliberate` on `--ease-out`: light
+  rises behind the wordmark, text legible from the first frame. Reduced motion
+  needs no special case — `tokens.css` already collapses the duration to 1 ms.
+  Contrast over the glow was checked by hand (weakest pairing ≈ 6.5:1); the
+  gate script only covers flat token pairings.
+
+**The pronunciation is live text, not a lockup.** It reads **oo-ZOO-may** (Matt,
+2026-09-14): English speakers' untutored rendering of a Japanese final /e/ is
+already "-ay", so the respelling agrees with what a reader will do rather than
+fighting it, and it keeps the word "meh" out of the product's own pronunciation.
+Three open syllables still holds, so nothing in `NAMING_REPORT.md`'s rationale
+breaks.
+
+`brand/wordmark/Uzume-pronunciation.svg` is **not used, and should not be**: it
+bakes the respelling into vector letterforms, so it cannot be selected, scaled
+with the reader's text settings, read as text, or corrected without regenerating
+the artwork — which is exactly what stalled this. The myth section renders the
+name as a heading in Alumni Sans (the wordmark's own face, so the look survives)
+with the pronunciation as a plain paragraph beneath. It is deliberately **not**
+uppercased like the lockup: "oo-ZOO-may" carries the stress in its capitals and
+OO-ZOO-MAY throws that away.
+
+Left alone: "oo-ZOO-meh" still stands in `PRODUCT.md`, `BRAND.md`, `CLAUDE.md`,
+`NAMING_REPORT.md`, `WEBSITE_PLAN.md`, the three direction lockups, both BRAND.1
+review pages, and eight files in the app repo. That is internal history, not
+public copy, and this is a style call rather than a defect — sweep it when
+something else touches those files.
+
+**Found:** `brand/fonts/licenses/AlumniSans-OFL.txt` is a byte-for-byte copy of
+`Geologica-OFL.txt` and names the wrong copyright holder, so the font ships
+without its licence text until the brand file is corrected. `PTSans.ttc` and
+`STIXTwoText.ttf` have no licence file at all.
 
 ### W.3 — Capture pipeline *(one to two sessions, plus capture time)*
 
