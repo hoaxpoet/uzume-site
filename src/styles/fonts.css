@@ -1,0 +1,18 @@
+/* Alumni Sans is the display face named by --font-display in tokens.css. It is
+   a variable font covering 100–900 in one 133 KB file, copied unmodified from
+   brand/fonts/ (BRAND.md: reference or copy, never regenerate).
+
+   The OFL text is NOT shipped alongside it: brand/fonts/licenses/AlumniSans-OFL.txt
+   is a byte-for-byte copy of Geologica's and names the wrong copyright holder.
+   Alumni Sans is Robert Leuschke's, SIL OFL 1.1. Fix the brand file, then ship it.
+
+   PT Sans, the text face, is deliberately absent: brand/fonts/PTSans.ttc is
+   2.7 MB and .ttc is poorly supported in browsers. Body copy falls back to
+   system-ui until someone subsets it to woff2. */
+@font-face {
+  font-family: "Alumni Sans";
+  src: url("/fonts/AlumniSans.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}

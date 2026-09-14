@@ -1,42 +1,268 @@
 ---
 import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import Button from "../components/Button.astro";
+import Callout from "../components/Callout.astro";
+import RequirementsList from "../components/RequirementsList.astro";
 
 const description =
-  "A macOS music visualizer that performs light to the music you're already playing.";
+  "A native macOS music visualizer that performs light to the music you are already playing.";
+
+const REPO = "https://github.com/hoaxpoet/uzume";
+
+// Every fact here is checked against the app repo's README and PRODUCT_SPEC.
+const requirements = [
+  { term: "Mac", description: "Any Apple silicon Mac" },
+  { term: "macOS", description: "macOS 14 Sonoma or later" },
+  {
+    term: "Music",
+    description:
+      "Local files, or whatever you already play — Uzume listens rather than taking over playback",
+  },
+  { term: "Licence", description: "Free and open source, MIT" },
+];
+
+const beats = [
+  {
+    title: "It listens to the whole playlist first",
+    body: "Before a note is played, Uzume separates each track into stems and measures what is in them. The performance is prepared, not improvised at the last moment.",
+  },
+  {
+    title: "Then it plans the session",
+    body: "A deterministic planner decides which visual accompanies each track, where the transitions land, and how the arc moves across the playlist. Rules, reproducible — and you still don't know what you're about to see.",
+  },
+  {
+    title: "And it keeps listening while you play",
+    body: "Live analysis of the audio refines the plan as the music actually unfolds, so the performance answers the room rather than replaying a script.",
+  },
+];
 ---
 
-<Base title="Uzume" description={description}>
+<Base title="Uzume — a light in sound" description={description}>
+  <Nav />
+
   <main>
-    <img src="/uzume-wordmark.svg" alt="Uzume" width="316" height="160" />
-    <p>{description} Public beta coming.</p>
-    <p>
-      <a href="https://github.com/hoaxpoet/uzume">Source on GitHub</a>
-    </p>
+    <section class="hero">
+      <img
+        class="hero__wordmark"
+        src="/uzume-wordmark.svg"
+        alt="Uzume"
+        width="316"
+        height="160"
+      />
+      <blockquote class="hero__tagline">
+        <p>A light in sound, a sound-like power in light.</p>
+        <cite>
+          Coleridge, <em>The Eolian Harp</em>, 1795
+        </cite>
+      </blockquote>
+      <p class="hero__lede">{description}</p>
+      <div class="hero__actions">
+        <Button href={REPO}>On GitHub today — build from source</Button>
+        <Button variant="secondary" href={`${REPO}/releases`}>
+          Watch for the beta
+        </Button>
+      </div>
+      <p class="hero__note">
+        Uzume is open source and buildable today. There is no installable build
+        yet — the public beta will be free and notarized when it arrives.
+      </p>
+    </section>
+
+    <section class="beats" aria-label="How it works">
+      {beats.map(({ title, body }) => (
+        <article class="beat">
+          <h2>{title}</h2>
+          <p>{body}</p>
+        </article>
+      ))}
+    </section>
+
+    <section class="band" aria-label="What you need">
+      <h2>What you need</h2>
+      <RequirementsList items={requirements} />
+    </section>
+
+    <section class="band" aria-label="Before you install anything">
+      <h2>Before you install anything</h2>
+      <div class="trust">
+        <Callout title="Everything happens on your Mac">
+          Analysis and rendering run locally. Uzume has no account, sends no
+          audio anywhere, and needs no network connection to perform.
+        </Callout>
+        <Callout
+          tone="warning"
+          title="System audio means the Screen Recording permission"
+        >
+          macOS files system-audio capture under Screen Recording. Uzume takes
+          the audio and nothing else — not your screen, not your microphone.
+          Playing local files needs no permission at all.
+        </Callout>
+        <Callout tone="success" title="Certified presets hold steady luminance">
+          Every certified preset is tested for a bounded change in brightness
+          from frame to frame, with beat-locked motion confined to parts of the
+          frame rather than thrown across all of it. Reduced-motion settings are
+          honoured throughout.
+        </Callout>
+      </div>
+    </section>
+
+    <section
+      class="uz-contributor-invitation"
+      aria-label="Contributing presets"
+    >
+      <div>
+        <h3>Contributors write the repertoire</h3>
+        <p>
+          A preset is a Metal shader and a JSON file dropped into the
+          repository. The ones that pass the gates become part of what every
+          listener sees, with their author's name on them.
+        </p>
+      </div>
+      <Button variant="secondary" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
+        Write a preset
+      </Button>
+    </section>
+
+    <section class="band myth" aria-label="The name">
+      <h2>Uzume</h2>
+      <p>
+        Pronounced <strong>oo-ZOO-meh</strong>. In the <em>Kojiki</em>, the sun
+        shuts herself in a cave and the world goes dark. A plan is made, a
+        mirror is hung to catch light that does not yet exist, and Ame-no-Uzume
+        stamps out a rhythm and dances until the gods roar. The sun opens the
+        door to see what could possibly be worth that much noise.
+      </p>
+      <p>
+        The performance is what brings the light out. That is the whole idea.
+      </p>
+    </section>
   </main>
+
+  <Footer />
 </Base>
 
 <style>
   main {
-    min-height: 100dvh;
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0 var(--page-gutter);
+  }
+
+  .hero {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: var(--space-6);
-    padding: var(--space-16) var(--page-gutter);
+    padding: clamp(var(--space-16), 12vh, var(--space-32)) 0;
     text-align: center;
   }
 
-  img {
-    width: min(18rem, 60vw);
+  .hero__wordmark {
+    width: min(22rem, 70vw);
     height: auto;
   }
 
-  p {
+  .hero__tagline {
     margin: 0;
-    max-width: 30rem;
+  }
+
+  .hero__tagline p {
+    margin: 0;
+    font: var(--font-weight-regular) var(--text-3xl) / var(--leading-tight)
+      var(--font-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .hero__tagline cite {
+    display: block;
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    font-style: normal;
+    letter-spacing: var(--tracking-label);
+    color: var(--color-text-tertiary);
+  }
+
+  .hero__lede {
+    max-width: 34rem;
+    margin: 0;
     font-size: var(--text-lg);
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  .hero__note {
+    max-width: 38rem;
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-tertiary);
+    text-wrap: pretty;
+  }
+
+  .beats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-8);
+    padding: var(--space-16) 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .beat h2 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-xl);
+    line-height: var(--leading-heading);
+  }
+
+  .beat p {
+    margin: 0;
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  .band {
+    padding: var(--space-16) 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .band > h2 {
+    margin: 0 0 var(--space-6);
+    font: var(--font-weight-semibold) var(--text-3xl) / var(--leading-tight)
+      var(--font-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .myth p {
+    max-width: var(--measure-copy);
+    margin: 0 0 var(--space-6);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  .trust {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .myth p:last-child {
+    margin-bottom: 0;
+    color: var(--color-text-primary);
+  }
+
+  /* The catalogue's invitation pattern sits inside the page rhythm. */
+  .uz-contributor-invitation {
+    margin: var(--space-16) 0;
   }
 </style>
