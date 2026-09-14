@@ -1,0 +1,42 @@
+---
+import Base from "../layouts/Base.astro";
+
+const description =
+  "A macOS music visualizer that performs light to the music you're already playing.";
+---
+
+<Base title="Uzume" description={description}>
+  <main>
+    <img src="/uzume-wordmark.svg" alt="Uzume" width="316" height="160" />
+    <p>{description} Public beta coming.</p>
+    <p>
+      <a href="https://github.com/hoaxpoet/uzume">Source on GitHub</a>
+    </p>
+  </main>
+</Base>
+
+<style>
+  main {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-6);
+    padding: var(--space-16) var(--page-gutter);
+    text-align: center;
+  }
+
+  img {
+    width: min(18rem, 60vw);
+    height: auto;
+  }
+
+  p {
+    margin: 0;
+    max-width: 30rem;
+    font-size: var(--text-lg);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+</style>
