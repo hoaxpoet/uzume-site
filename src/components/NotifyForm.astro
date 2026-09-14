@@ -36,8 +36,8 @@ const KIT_FORM = "9918547";
       </button>
     </div>
     <p class="notify__terms" id="notify-terms">
-      One message, when there is something to download. Nothing else, and you
-      can unsubscribe from that message.
+      First when there's a build to download, then occasionally about new
+      releases and what's changed. Unsubscribe any time.
     </p>
   </div>
 
@@ -85,7 +85,7 @@ const KIT_FORM = "9918547";
 
       if (result.status === "success") {
         say(
-          "You're on the list. We'll write once, when there's a build to download.",
+          "You're on the list. We'll write when there's a build to download.",
           true,
         );
         return;
