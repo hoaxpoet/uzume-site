@@ -202,6 +202,20 @@ controls. The apex has no SPF record at all, so Email Routing is free to add its
 own. Two different names; they cannot collide. DMARC is `p=none` with Cloudflare
 reporting, and DKIM signs as `uzume.io`, so alignment already passes.
 
+### Status: done (2026-09-15)
+
+Verified in DNS: `MX` → `route1/2/3.mx.cloudflare.net`, apex SPF
+`v=spf1 include:_spf.mx.cloudflare.net ~all`, Kit's `cka._domainkey` and
+`ckespa` CNAMEs intact. Kit's From and Reply-to are `hello@uzume.io`.
+
+Both SPF and DKIM align to `uzume.io` — DKIM signs as the domain, and the
+Return-Path `ckespa.uzume.io` is a subdomain of it. That satisfies the Gmail and
+Microsoft bulk-sender requirements. DMARC is `p=none`, which is monitoring only;
+tightening to `p=quarantine` is a later decision and should wait until the
+Cloudflare DMARC reports have shown clean traffic for a few real sends.
+
+The steps below are kept as the record of how it was set up.
+
 ### Receiving — Cloudflare Email Routing (do this first)
 
 1. Cloudflare → `uzume.io` → **Email** → **Email Routing** → Enable.
