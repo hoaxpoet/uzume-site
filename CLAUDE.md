@@ -56,3 +56,12 @@ swift test --package-path DesignSystem/SwiftUI
 npx astro check
 npm run build
 ```
+
+Working in a `.claude/worktrees/<name>` worktree? Run `npm ci` in the **main
+checkout too**, once. The worktree sits *inside* the repo, so the main checkout's
+`tsconfig.json` is an ancestor directory; Astro's resolver walks up to it and tries
+to resolve its `"extends": "astro/tsconfigs/strict"` from there. With no
+`node_modules` in the main checkout that fails as `Tsconfig not found
+astro/tsconfigs/strict`, which looks like a broken `tsconfig.json` but is not — the
+config is correct, CI (a plain checkout, no ancestor) is unaffected, and editing
+`tsconfig.json` does not help.
