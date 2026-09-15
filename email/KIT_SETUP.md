@@ -241,6 +241,39 @@ are finished removes their reason to go and find the email.
 `NotifyForm.astro` now answers *"Almost — check your email and confirm."*
 That change is on this same branch. Do not enable one without the other.
 
+## The email depends on a deploy — build it in this order
+
+The fragments reference `https://uzume.io/email/...` for both images, so **the
+confirmation email cannot be finished before this branch is on `main` and
+deployed.** Until then Kit renders a broken-image box and falls back to the
+wordmark's alt text. That happened once already, on 2026-09-15, when
+`uzume-wordmark-ink.png` existed only on the branch.
+
+This is the ordering, and the two steps in the middle should be minutes apart:
+
+1. **Merge and deploy.** Both assets go live; the wordmark resolves.
+2. **Turn double opt-in on** in Kit, immediately.
+3. **Re-run the probe** and confirm `consent.enabled` is `true`.
+4. **Finish the confirmation email** and send the test.
+
+Between 1 and 2 the site says "check your email" while Kit sends nothing. That
+window is unavoidable — the site copy and the Kit toggle cannot change in the
+same commit — so keep it short and do not start it unattended.
+
+**Before touching the email in Kit, confirm the assets are actually live:**
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" https://uzume.io/email/uzume-wordmark-ink.png
+curl -s -o /dev/null -w "%{http_code}\n" https://uzume.io/email/uzume-icon.png
+```
+
+Both must be `200`. If either 404s, the deploy has not landed and the email will
+render broken no matter how it is configured.
+
+Renaming or re-deriving an email asset re-opens this every time: the old name
+keeps serving, the new one 404s until deploy, and Kit shows the failure rather
+than the design. Change the file in place where possible.
+
 ## Test send — what a preview cannot tell you
 
 Kit's editor preview is not a rendering engine. Send a real test to at least
