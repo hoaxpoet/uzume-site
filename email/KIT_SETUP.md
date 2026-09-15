@@ -186,25 +186,53 @@ moves off `matt@plaitandpattern`.
 
 ## Email addresses on uzume.io
 
-Two different problems. Cloudflare solves only the first.
+**uzume.io is a verified sending domain in Kit** (confirmed in DNS, 2026-09-15).
+Kit authenticates through CNAMEs, not through anything at the apex:
 
-**Receiving — Cloudflare Email Routing, free.** Dashboard → `uzume.io` → Email
-Routing. Create `hello@uzume.io` and forward it to an existing mailbox.
-Cloudflare writes the MX and SPF records itself. This is **inbound only** — it
-can forward mail, it cannot send it. It is enough to make `hello@uzume.io` a
-working reply-to straight away.
+```
+cka._domainkey.uzume.io  ->  dkim.dm-787ed9e9.sg6.convertkit.com    (DKIM)
+ckespa.uzume.io          ->  spf.dm-a561a56e.sg6.convertkit.com     (Return-Path)
+                              \_ "v=spf1 include:spf.kit.com ~all"
+```
 
-**Sending — Kit, authenticated against the domain.** For Kit to send *as*
-`uzume.io` it must be authorised to. Kit's email-authentication / sending-domain
-setting issues DKIM records (usually plus a CNAME or two) which get pasted into
-Cloudflare DNS. Cloudflare is only the DNS host in that exchange; it is not
-sending anything. **Check whether custom sending-domain authentication is
-included on the current Kit plan before planning around it** — if it is not, the
-From name fix above still stands on its own.
+**There is no SPF conflict with Cloudflare Email Routing, and this is the thing
+worth understanding before touching DNS.** SPF is evaluated against the
+Return-Path domain, which for Kit is `ckespa.uzume.io` — a subdomain Kit
+controls. The apex has no SPF record at all, so Email Routing is free to add its
+own. Two different names; they cannot collide. DMARC is `p=none` with Cloudflare
+reporting, and DKIM signs as `uzume.io`, so alignment already passes.
 
-Until the domain is authenticated, do not spoof `From: hello@uzume.io` — an
-unauthenticated From on a domain that publishes SPF is a deliverability problem,
-not a branding win.
+### Receiving — Cloudflare Email Routing (do this first)
+
+1. Cloudflare → `uzume.io` → **Email** → **Email Routing** → Enable.
+2. Accept the records it adds: three `MX`, plus an apex SPF
+   `v=spf1 include:_spf.mx.cloudflare.net ~all`. Safe, per above.
+3. Create `hello@uzume.io`, forwarding to an existing mailbox.
+4. **Verify the destination address** — Cloudflare emails a link and nothing
+   forwards until it is clicked.
+
+Do this before changing Kit's From address, so the address receives mail from the
+moment it is advertised.
+
+### Sending — Kit
+
+Kit Settings → Email: set **From address** and **Reply-to** to `hello@uzume.io`.
+The domain is already verified, so no new DNS is needed.
+
+### Email Routing cannot send, only forward
+
+Replies to `hello@uzume.io` land in the destination mailbox, but replying from
+there goes out as that mailbox's own address. Gmail's "Send mail as" needs
+outbound SMTP credentials, which Cloudflare does not provide. Acceptable for an
+announcement list; true reply-as needs a real mailbox provider and is not worth
+solving now.
+
+### Optional
+
+Once routing is on, the apex SPF can become
+`v=spf1 include:_spf.mx.cloudflare.net include:spf.kit.com ~all`. Not required —
+Kit's CNAME setup is sufficient on its own — but harmless, and it helps if any
+receiver checks the visible From domain rather than the Return-Path.
 
 ## Double opt-in — how to turn it on, and how to check
 
