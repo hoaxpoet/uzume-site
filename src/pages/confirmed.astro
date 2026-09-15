@@ -1,0 +1,214 @@
+---
+// Where Kit sends a subscriber after they click the confirm link.
+//
+// Kit's own page cannot be edited, and its copy is wrong for this project twice
+// over: "Boom!" is the breathless register BRAND.md forbids, and "expect some
+// great emails headed your way very soon" promises a cadence nothing can keep —
+// the first email is the launch announcement, and there is no build yet.
+//
+// Set it in Kit: the confirmation email's "After confirming, where do you want
+// to send subscribers?" → https://uzume.io/confirmed
+//
+// This is the end of the journey and the one surface where the reader has
+// already committed, so it does not sell anything or ask for anything. It
+// confirms, sets an honest expectation, and offers the only thing that is
+// actually available today.
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import Button from "../components/Button.astro";
+
+const REPO = "https://github.com/hoaxpoet/uzume";
+const description =
+  "Your email is confirmed. The next message will be the one that says Uzume is ready to download.";
+---
+
+<Base title="You're on the list — Uzume" description={description} noindex>
+  <Nav />
+
+  <main>
+    <section class="confirmed">
+      <img
+        class="confirmed__icon"
+        src="/uzume-icon.png"
+        alt=""
+        width="256"
+        height="256"
+        fetchpriority="high"
+      />
+
+      <h1 class="confirmed__title">You're on the list.</h1>
+
+      <p class="confirmed__lede">
+        The next email you get will be the one that says Uzume is ready to
+        download. After that, occasional notes when there's a new release — and
+        nothing in between.
+      </p>
+
+      <p class="confirmed__note">
+        It may be a while. There is no installable build yet; the public beta
+        will be free and notarized when it arrives.
+      </p>
+
+      <div class="confirmed__meanwhile">
+        <h2 class="confirmed__subtitle">In the meantime</h2>
+        <p class="confirmed__body">
+          Uzume is open source today. If you have Xcode and an Apple silicon
+          Mac, you can clone it and build it yourself — that is the same thing
+          the beta will be, without the signature.
+        </p>
+        <div class="confirmed__actions">
+          <Button href={REPO} variant="secondary">
+            Build it from source
+          </Button>
+        </div>
+      </div>
+
+      <blockquote class="confirmed__tagline">
+        <p>A light in sound, a sound-like power in light.</p>
+        <cite>
+          Coleridge, <em>The Eolian Harp</em>, 1795
+        </cite>
+      </blockquote>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  /* The hero's opening light, quieter. BRAND.md's authored movement is the
+     opening; this page is the arrival, so the light is already mostly there and
+     the reveal is gentler than the hero's. Reduced motion collapses the
+     duration globally in Base.astro, which leaves the resting state. */
+  .confirmed {
+    position: relative;
+    isolation: isolate;
+    overflow-x: clip;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+    padding: clamp(var(--space-16), 10vh, var(--space-24)) var(--space-6);
+    text-align: center;
+  }
+
+  .confirmed::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -15% -10% auto;
+    aspect-ratio: 2 / 1;
+    background: radial-gradient(
+      ellipse at 50% 35%,
+      var(--color-accent-subtle) 0%,
+      transparent 70%
+    );
+    opacity: 0.4;
+    animation: confirmed-opening var(--duration-deliberate) var(--ease-out)
+      backwards;
+  }
+
+  @keyframes confirmed-opening {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* BRAND.md: the full icon composition at 64px or larger. Empty alt — the
+     heading below names the product's state, and the wordmark is in the nav. */
+  .confirmed__icon {
+    width: min(6rem, 22vw);
+    height: auto;
+    border-radius: 22.37%;
+  }
+
+  .confirmed__title {
+    margin: 0;
+    max-width: var(--measure-copy);
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+  }
+
+  .confirmed__lede {
+    margin: 0;
+    max-width: var(--measure-copy);
+    font-size: var(--text-lg);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    text-wrap: balance;
+  }
+
+  .confirmed__note {
+    margin: 0;
+    max-width: var(--measure-copy);
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-tertiary);
+    text-wrap: balance;
+  }
+
+  /* The one thing that is actually available today, set apart from the
+     confirmation itself so it reads as an offer rather than a condition. */
+  .confirmed__meanwhile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-line);
+    width: min(36rem, 100%);
+  }
+
+  .confirmed__subtitle {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+  }
+
+  .confirmed__body {
+    margin: 0;
+    max-width: var(--measure-copy);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  .confirmed__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  .confirmed__tagline {
+    margin: var(--space-8) 0 0;
+    max-width: var(--measure-copy);
+  }
+
+  .confirmed__tagline p {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-tertiary);
+    text-wrap: balance;
+  }
+
+  .confirmed__tagline cite {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    font-style: normal;
+    color: var(--color-text-tertiary);
+  }
+</style>

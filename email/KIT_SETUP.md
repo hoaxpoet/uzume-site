@@ -334,6 +334,24 @@ Renaming or re-deriving an email asset re-opens this every time: the old name
 keeps serving, the new one 404s until deploy, and Kit shows the failure rather
 than the design. Change the file in place where possible.
 
+## After confirming, send subscribers to uzume.io/confirmed
+
+In the confirmation email's settings: **"After confirming, where do you want to
+send subscribers?"** → `https://uzume.io/confirmed`.
+
+Kit's default lands them on `app.kit.com/confirm-subscription`, which **cannot be
+edited** and is wrong for this project twice over. "Boom! You're officially
+confirmed" is the breathless register `BRAND.md` forbids, and "expect some great
+emails headed your way very soon" promises a cadence nothing can keep — the next
+email is the launch announcement, and there is no build yet. It also carries a
+Kit upsell block aimed at the reader.
+
+`/confirmed` is the end of the journey and the one surface where the reader has
+already committed, so it sells nothing and asks for nothing: it confirms, sets an
+honest expectation ("it may be a while"), and offers the only thing actually
+available today — building from source. It is `noindex` because a search result
+landing there would be a dead end.
+
 ## Test send — what a preview cannot tell you
 
 Kit's editor preview is not a rendering engine. Send a real test to at least
