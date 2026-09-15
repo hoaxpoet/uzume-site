@@ -221,11 +221,13 @@ The following own routed product states or assemble multiple components. They be
 
 **Purpose:** Compose the existing in-performance information, status, and controls without creating a parallel control tree.
 
-**Existing source:** `PlaybackChromeView`, `TrackInfoCardView`, `PlaybackControlsCluster`, `ListeningBadgeView`, `SessionProgressDotsView`, `LocalFileTransportBar`, `ToastContainerView`.
+**Existing source:** `PlaybackChromeView`, `TrackInfoCardView`, `PlaybackControlsCluster`, `ListeningBadgeView`, `SessionProgressDotsView`, `LocalFileTransportBar`, `ToastRegion`.
 
 **Anatomy:** Listening status, optional current-track information, session position, Settings, End Session, toast region, and source-conditional local transport.
 
-**Behavior:** Present on the Curator display; absent from separated Viewer output. It may reduce to quiet edge controls after inactivity but cannot become undiscoverable.
+**Behavior:** Present on the Curator display; absent from separated Viewer output. **After a brief inactivity it disappears completely** — nothing stays on screen — and mouse movement, a tap, any key press, or a track change bring all of it back; Space toggles it. Discoverability is the mouse and the tap.
+
+This replaces an earlier rule that the chrome "may reduce to quiet edge controls after inactivity but cannot become undiscoverable." Matt decided otherwise for the app (app repo D-241, 2026-09-03: *"Chrome should disappear completely after a brief period of inactivity so that the user can focus on the visuals"*), the app ships it, and the document now says what the product does. If quiet edge controls are ever revisited, note that a low-opacity glyph over a live preset frame cannot meet this document's own 3:1 floor for meaningful icons — a quiet control belongs on the certified backdrop at full opacity, small and alone, not faint.
 
 **States:** Listening, temporarily silent, track information shown/hidden, end confirmation, local-file paused.
 
