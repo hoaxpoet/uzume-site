@@ -146,19 +146,19 @@ owns "add the gallery teaser" alongside the real clips.
   button was configured `#FFFFFF` on `#7f6aff`, **3.88:1**, below AA, when the
   file's own comment already specified the passing `#0b0c10` (5.03:1).
 
-  **The card is now split in two around Kit's Button block** (`incentive-top.html`,
-  Button, `incentive-bottom.html`). The button had been sitting below the card on
-  Kit's light ground at 3.38:1, grouped by common region with the unsubscribe
-  link and the postal address rather than with the message — last in position,
-  size and contrast, in an email whose only job is to get it clicked. That was
-  also a drift from the approved copy above, which put the button directly under
-  its own instruction. Splitting the card restores that order and makes the seam
-  the point: a violet slab of light between two fields of midnight is `BRAND.md`'s
-  First Opening, which the previous card stated as a condition and never as an
-  event. The hairline divider is gone — the button does that work now, which also
-  removes Word's unreliable `font-size:0` row-collapse.
+  **The confirm button is inside the HTML block, not Kit's Button block.** The
+  original fragment left it to Kit on the theory that the confirmation URL had to
+  be Kit's own; it does not — `{{ confirm_url }}` is the merge tag Kit's own
+  Button block uses, visible in that block's URL field, so an `<a>` in the
+  fragment resolves to the same link. A split-card version was tried first, with
+  Kit's Button in the seam between two dark halves. It was wrong, and visibly so:
+  the button's rounded corners cut four pale wedges of Kit's light ground out of
+  the design, and the violet sat at 3.38:1 against that ground. Inside the card
+  the button rounds against midnight, passes at 5.03:1, and belongs to the
+  message rather than to Kit's footer chrome. The label is the approved
+  "Confirm my email".
 
-  **No copy in either fragment refers to the button's position any more.** "Click
+  **No copy refers to the button's position any more.** "Click
   below" and "the button below" both broke the moment the button moved, in a
   medium where you control neither layout nor client. Changes against the
   approved draft, all deliberate: the lede leads with the action rather than a
@@ -175,8 +175,18 @@ owns "add the gallery teaser" alongside the real clips.
   support `max-width`, so the card had nothing constraining it in Outlook and ran
   the measure past 140 characters in a maximised reading pane.
 
-  **Kit's dashboard settings are recorded in `email/KIT_SETUP.md`** — block order,
-  button colour, subject line, sender, and a test-send checklist. They were
+  **The icon was rendering as a square patch.** The artwork is a fully opaque
+  square with no alpha — macOS applies the squircle mask at runtime and the PNG
+  never carries it — so the 20px CSS radius is the mask, not decoration, and
+  dropping it exposed the square. The email asset also carried a #131319 top edge
+  from an earlier compositing step, lighter than the #0b0c10 card, so the icon
+  read as a rectangle sitting on the card. `public/email/uzume-icon.png` is now
+  downscaled straight from `brand/icon/Uzume-1024.png` (lanczos, 192px, no
+  recolouring), whose own edges are #09090e and darker and therefore fade into
+  the card.
+
+  **Kit's dashboard settings are recorded in `email/KIT_SETUP.md`** — the
+  one-block rule, button colour, subject line, sender, and a test-send checklist. They were
   previously carried in an HTML comment that Kit never renders and no gate reads,
   which is how the failing button colour shipped. That file also answers the
   uzume.io address question: Cloudflare Email Routing handles **inbound** mail for

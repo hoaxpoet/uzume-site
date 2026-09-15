@@ -7,40 +7,27 @@ existed only in an HTML comment that Kit never renders.
 
 Form: **9918547** (the id is public — it ships in the page HTML either way).
 
-## Block order — this is not optional
+## Blocks — one, and only one
 
-The card is deliberately split so the confirm button sits *inside* it. Kit's
-block list for this email must read, top to bottom:
+Paste `email/incentive.html` into a **single HTML block**. Add nothing else: no
+Button block, no Divider, no text blocks.
 
-| # | Block | Content |
-|---|-------|---------|
-| 1 | HTML | `email/incentive-top.html` |
-| 2 | **Button** | the confirm button — settings below |
-| 3 | HTML | `email/incentive-bottom.html` |
+**The confirm button is inside the HTML.** `{{ confirm_url }}` is the same merge
+tag Kit's own Button block uses — it is visible in that block's URL field — so an
+`<a href="{{ confirm_url }}">` resolves to exactly the same link with none of the
+constraints. That is what lets the button sit on the card's own dark ground.
 
-The button carries Kit's own confirmation URL, so it cannot be written into the
-HTML: a hand-authored merge tag would be a link that silently goes nowhere.
-Placing it between the halves is the design — the light gap it opens between two
-fields of midnight is `BRAND.md`'s First Opening, and it puts the one action
-this email exists for on the card's own dark ground rather than on Kit's light
-one, where it measured 3.38:1 against the background.
+An earlier version used Kit's Button block below the card. Two things were wrong
+with it, and both are visible rather than theoretical: the violet dropped to
+**3.38:1** against Kit's light background, and the button's rounded corners cut
+four pale wedges out of the design where the light ground showed through. A
+button inside the card rounds against midnight instead, and reads as part of the
+message rather than part of Kit's footer chrome.
 
-If the blocks are ever reordered, the design breaks but the copy still reads:
-no sentence in either fragment refers to the button's position.
-
-## Button block settings
-
-| Field | Value | Why |
-|-------|-------|-----|
-| URL | `{{ confirm_url }}` | Kit's own merge tag |
-| Background colour | `#7f6aff` | `--color-accent` |
-| **Text colour** | **`#0b0c10`** | `--color-on-accent`. **Not `#FFFFFF`** — white on this violet measures **3.88:1** and fails WCAG AA for normal text. `#0b0c10` measures **5.03:1** and passes. |
-| Label | `Tell me when I can download it` | `BRAND.md`: buttons name the reader's outcome, not the sender's. "Confirm your email" names ours. |
-| Size | Large | Medium risks falling under the 44px minimum target `DESIGN.md` requires |
-| Width | **Full width** | "Fit content" renders a chip; the CTA should read as a slab spanning the card |
-| Rounded corners | Large | matches the card's 16px |
-| Alignment | Centre | |
-| Margin | None | the two HTML blocks supply their own padding; extra margin widens the seam |
+The label is **"Confirm my email"** — the approved wording in
+`WEBSITE_ROADMAP.md` W.2. The button's `#0b0c10` on `#7f6aff` measures **5.03:1**
+and passes AA; white on that violet is **3.88:1** and fails. Do not "fix" it to
+white.
 
 ## Subject, sender, reply-to
 
@@ -50,6 +37,9 @@ no sentence in either fragment refers to the button's position.
 | From name | `Uzume` |
 | From address | `hello@uzume.io` once the domain is authenticated — see below |
 | Reply-to | `hello@uzume.io` (routable immediately, see below) |
+
+Kit's own double opt-in setting is what sends this email; the HTML block lives in
+the form's confirmation-email editor, reached from form `9918547`.
 
 **Do not leave Kit's stock subject, `Important: confirm your subscription`.** It
 names no product, and "Important:" is a textbook phishing opener. The recipient
@@ -106,8 +96,12 @@ for Windows, and check:
       it Word ignores `max-width` and the measure runs past 140 characters.
 - [ ] **Outlook corners.** `border-radius` is unsupported in Word's engine, so the
       card will be a hard-cornered slab there. Expected, not a defect.
-- [ ] **The seam.** Confirm the two dark halves meet the button cleanly and that
-      Kit adds no unexpected gap or background between blocks.
+- [ ] **The button.** Confirm `{{ confirm_url }}` resolved to a real link and that
+      clicking it actually confirms the subscriber. This is the one thing that
+      must be proven with a live send before the list is trusted.
+- [ ] **Button in Outlook.** `border-radius` is unsupported there, so expect a
+      square violet block — on the dark card that is fine, and it is why the
+      button is not a rounded pill.
 - [ ] **Kit's preview showed square corners** while a browser renders the 16px
       radius correctly. Unexplained. Confirm which is true in a real send.
 - [ ] **Dark mode.** Gmail's apps and Outlook.com may apply their own colour
