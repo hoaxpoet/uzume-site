@@ -138,9 +138,59 @@ owns "add the gallery teaser" alongside the real clips.
   visible. Pythagoras does not sign it — `BRAND.md` scopes him to future in-app
   onboarding, explicitly not routine messaging.
 
+  **Critiqued and rebuilt, 2026-09-15.** A dual-agent `/impeccable critique` of
+  the shipped fragment scored it 19/40 and found two things a preview could not:
+  with images blocked the wordmark's `alt` text inherited the client's default
+  ink and rendered at **1.07:1** on the midnight card — the product's name was
+  invisible, and the first legible word in the email was "Click" — and Kit's
+  button was configured `#FFFFFF` on `#7f6aff`, **3.88:1**, below AA, when the
+  file's own comment already specified the passing `#0b0c10` (5.03:1).
+
+  **The card is now split in two around Kit's Button block** (`incentive-top.html`,
+  Button, `incentive-bottom.html`). The button had been sitting below the card on
+  Kit's light ground at 3.38:1, grouped by common region with the unsubscribe
+  link and the postal address rather than with the message — last in position,
+  size and contrast, in an email whose only job is to get it clicked. That was
+  also a drift from the approved copy above, which put the button directly under
+  its own instruction. Splitting the card restores that order and makes the seam
+  the point: a violet slab of light between two fields of midnight is `BRAND.md`'s
+  First Opening, which the previous card stated as a condition and never as an
+  event. The hairline divider is gone — the button does that work now, which also
+  removes Word's unreliable `font-size:0` row-collapse.
+
+  **No copy in either fragment refers to the button's position any more.** "Click
+  below" and "the button below" both broke the moment the button moved, in a
+  medium where you control neither layout nor client. Changes against the
+  approved draft, all deliberate: the lede leads with the action rather than a
+  location ("Confirm your email and we'll write the day…"); "Unsubscribe any
+  time." is restored, because `NotifyForm.astro` ends its terms on that sentence
+  and the two promises must stay identical; `BRAND.md`'s message 3 is added
+  verbatim from `index.astro` ("Analysis and rendering run locally…") — for an
+  app whose verb is "listens", its absence was the largest unforced omission; and
+  the button names the reader's outcome ("Tell me when I can download it") rather
+  than ours. `uzume.io` is named in the closing line so a recipient who does not
+  remember signing up has somewhere to check that is not the button they distrust.
+
+  **An MSO conditional now holds the card at 520px.** Word's engine does not
+  support `max-width`, so the card had nothing constraining it in Outlook and ran
+  the measure past 140 characters in a maximised reading pane.
+
+  **Kit's dashboard settings are recorded in `email/KIT_SETUP.md`** — block order,
+  button colour, subject line, sender, and a test-send checklist. They were
+  previously carried in an HTML comment that Kit never renders and no gate reads,
+  which is how the failing button colour shipped. That file also answers the
+  uzume.io address question: Cloudflare Email Routing handles **inbound** mail for
+  free and makes `hello@uzume.io` a working reply-to immediately, but it cannot
+  send — sending as the domain needs Kit's own domain authentication, with the
+  DKIM records hosted in Cloudflare DNS. The From *name* is a free text field on
+  any plan and is the highest-leverage part of the fix.
+
   `consent.enabled` is still `false` on the form. Turning the incentive email on
   makes the inline success copy wrong — "You're on the list" stops being true
-  until they click — so the two must ship together.
+  until they click — so the two must ship together. **The site half has now
+  landed:** the form answers "Almost — check your email and confirm. Nothing
+  happens until you do." Turning `consent.enabled` on is the remaining step, and
+  it is now safe to take.
 
   `COMPONENTS.md` had removed `Input` as speculative "until a named consumer";
   this is that consumer and the only one, so the field stays local until a
