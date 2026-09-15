@@ -10,7 +10,7 @@ colors:
   text-primary: "#f4f6f1"
   text-secondary: "#c5c9c3"
   text-tertiary: "#a4a8a2"
-  text-disabled: "#a4a8a2"
+  text-disabled: "#94988f"
   accent: "#7f6aff"
   accent-hover: "#a99bff"
   accent-pressed: "#7865ee"
