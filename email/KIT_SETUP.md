@@ -184,6 +184,28 @@ The **From name is a plain text field on any plan** and is the single
 highest-leverage fix here. Set it to `Uzume` today, even before the address
 moves off `matt@plaitandpattern`.
 
+## The postal address in the footer
+
+Kit puts the account's postal address in every email's footer, and it cannot be
+removed: [CAN-SPAM](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+requires a valid physical address on commercial mail, whatever the provider.
+
+**Use the private mailbox, not a home address:**
+
+```
+600 1st Ave, Ste 330 PMB 92768, Seattle, WA 98104-2246
+```
+
+The FTC permits a PO Box or a USPS-registered private mailbox, so there is no
+compliance reason to publish a residence. This line reaches every subscriber, on
+every send, and stays in their archives permanently — it is the one piece of
+personal data the design cannot claw back once sent.
+
+This is recorded here because it was briefly changed to a home address on
+2026-09-15 and the original survived only in a scratch render harness, which is
+session-local and would have been cleaned up. Kit's account settings are the
+source of truth; this is the backup.
+
 ## Email addresses on uzume.io
 
 **uzume.io is a verified sending domain in Kit** (confirmed in DNS, 2026-09-15).
