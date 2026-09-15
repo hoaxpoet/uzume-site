@@ -41,7 +41,7 @@ const beats = [
 ---
 
 <Base title="Uzume — a light in sound" description={description}>
-  <Nav />
+  <Nav handOffBrand />
 
   <main id="main">
     <section class="hero">
@@ -217,6 +217,10 @@ const beats = [
 
   .hero__lockup {
     margin: 0;
+    /* Drives the header handoff — see Nav.astro. Anchoring to this element
+       rather than to pixel offsets keeps the timing correct at every viewport,
+       where the lockup's size and position both change. */
+    view-timeline: --uz-hero-lockup block;
   }
 
   .hero__wordmark {
