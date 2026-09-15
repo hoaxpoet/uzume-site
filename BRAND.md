@@ -109,7 +109,7 @@ The brand’s authored movement is **opening**: content begins legible, darkness
 **The website and the app get different budgets.** They are different jobs, and this document previously failed to say so.
 
 - **Website.** A page that has to persuade may carry authored motion the app never would. One deliberate moment is the target, not the ceiling. Avoid looping brand chrome, decorative pulsing, synchronized section entrances, and parallax — the named cases of motion without a cause.
-- **App.** Native timing and native transitions. Alumni Sans moments and authored openings belong to first-run, empty, and About surfaces; elsewhere, motion is what AppKit and SwiftUI already do. Viewer output is the performance and carries no interface motion at all.
+- **App.** Native timing and native transitions. Alumni Sans moments and authored openings belong to first-run, empty, and About surfaces; elsewhere, motion is what AppKit and SwiftUI already do. The app repo is authoritative for its own motion and this document does not restate it: `docs/UX_SPEC.md` carries the per-surface behaviour, `docs/DECISIONS.md` D-241 the decision, and `UzumeApp/DesignSystem/UzumeTokens+App.swift` §`UzumeAppMotion` the values. Its reduced-motion rule is sharper than the general one below and is the one to copy: **opacity only, never spatial.**
 
 Restraint means chrome that does not compete with the engine. It has never meant a still page — `docs/planning/WEBSITE_ROADMAP.md` §W.2 records a first draft that shipped no motion at all on the opposite reading, and had to be corrected.
 
