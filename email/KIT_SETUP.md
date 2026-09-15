@@ -128,13 +128,24 @@ are webfonts, and mail clients do not load webfonts. That is not a loss worth
 fighting — the brand is carried by the wordmark image, the copy, and the colour,
 not by the body face.
 
-**Web fonts → add `Alumni Sans` and `PT Sans`.** These *do* work on Kit's
-web-based pages (landing pages, the newsletter site, the unsubscribe page), and
-both are on Google Fonts, so Kit's picker should have them. This is free, and it
-makes Kit's public pages look like uzume.io instead of like Kit. Keep the roles
-`BRAND.md` assigns: **Alumni Sans for display and headings only** — never for
-paragraphs, form controls, or dense data — and **PT Sans for body, labels and
-navigation**.
+**Web fonts → add `PT Sans`, and nothing else.** Webfonts do work on Kit's
+web-based pages (the unsubscribe page, the update-profile page, any hosted form),
+and PT Sans is in Kit's picker.
+
+**Alumni Sans is not in Kit's list (checked 2026-09-15), and it does not need to
+be.** `BRAND.md` assigns PT Sans "body copy, navigation, labels, forms, help, and
+documentation" and scopes Alumni Sans to "page-level statements, campaign
+headlines, and short editorial moments". Every Kit-hosted surface here is the
+former: functional pages a subscriber passes through. The campaign surfaces are
+uzume.io, which serves the real font itself. So PT Sans alone is the correct
+assignment, not a fallback.
+
+**Do not substitute a lookalike** — Oswald, Archivo Narrow, Barlow Condensed or
+any other condensed grotesque. `BRAND.md`: *"do not typeset a substitute
+lockup."* The first Kit heading that renders the word "Uzume" in a near-miss face
+is a typeset substitute lockup on a public page, and it reads as a slightly wrong
+Uzume rather than an honest one. Plain PT Sans is the better failure mode. Where
+a page genuinely needs the identity, use the wordmark image.
 
 **Custom fonts → skip.** Paid-plan only, and there is nothing to upload: the
 Google-hosted versions of both faces cover every Kit surface that can use them.
