@@ -7,7 +7,7 @@
 // intercepted and answered in place, which is the behaviour we want.
 import "../../DesignSystem/Web/uzume-components.css";
 
-const KIT_FORM = "9918547";
+const KIT_FORM = "9921149";
 ---
 
 <form
@@ -84,8 +84,12 @@ const KIT_FORM = "9918547";
       const result = await response.json();
 
       if (result.status === "success") {
+        // Double opt-in is on, so this is NOT yet a subscription — Kit has sent
+        // a confirmation and nothing happens until they click it. Saying
+        // "you're on the list" here would be false, and it would remove their
+        // reason to go and find the email. See email/incentive-top.html.
         say(
-          "You're on the list. We'll write when there's a build to download.",
+          "Almost — check your email and confirm. Nothing happens until you do.",
           true,
         );
         return;
