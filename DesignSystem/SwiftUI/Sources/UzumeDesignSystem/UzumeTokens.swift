@@ -54,6 +54,32 @@ public enum UzumeRadius {
     public static let prominent: CGFloat = 14
 }
 
+/// Mirrors the `--duration-*` and `--ease-out` tokens in `tokens.css`. Published here
+/// so the app can consume these rather than transcribe them: DS.6 finding 1 recorded
+/// that the design system named three durations and a curve in `DESIGN.md` while
+/// neither token file carried them, so `UzumeAppMotion` had to restate the numbers —
+/// and the curve then drifted from the site's for months without anything noticing.
+public enum UzumeMotion {
+    /// `--duration-immediate` — control feedback.
+    public static let feedback: Double = 0.12
+    /// `--duration-standard` — a standard state change.
+    public static let standard: Double = 0.24
+    /// `--duration-deliberate` — an authored opening.
+    public static let opening: Double = 0.48
+
+    /// Exponential ease-out. SwiftUI has no `easeOutExpo`; this is its usual
+    /// cubic-bezier approximation, the same control points as `--ease-out`.
+    public static func easeOut(_ duration: Double) -> Animation {
+        .timingCurve(0.16, 1, 0.3, 1, duration: duration)
+    }
+
+    /// A state change: the ease-out, or under reduced motion a plain crossfade of the
+    /// same length. Opacity only either way — callers keep spatial transitions out.
+    public static func stateChange(reduceMotion: Bool) -> Animation {
+        reduceMotion ? .easeInOut(duration: standard) : easeOut(standard)
+    }
+}
+
 public extension View {
     func uzumeTint() -> some View { tint(UzumeColor.accent) }
 }
