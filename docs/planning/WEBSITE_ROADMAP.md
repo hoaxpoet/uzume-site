@@ -88,7 +88,7 @@ owns "add the gallery teaser" alongside the real clips.
 
 **Added after review:**
 
-- **Email capture.** `NotifyForm.astro` posts to Kit, form `9918547`. The id is
+- **Email capture.** `NotifyForm.astro` posts to Kit, form `9921149`. The id is
   public — it ships in the HTML either way — so it is a constant, not an
   environment variable, and needs no Cloudflare configuration.
 

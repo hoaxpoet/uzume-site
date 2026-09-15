@@ -5,7 +5,7 @@ down because nothing in CI can reach it: an earlier configuration shipped a
 call-to-action below WCAG AA and Kit's stock subject line, and the correct
 values existed only in an HTML comment Kit never renders.
 
-Form: **9918547** (the id is public — it ships in the page HTML either way).
+Form: **9921149** (the id is public — it ships in the page HTML either way).
 
 ## Why this email is light
 
@@ -206,7 +206,33 @@ Until the domain is authenticated, do not spoof `From: hello@uzume.io` — an
 unauthenticated From on a domain that publishes SPF is a deliverability problem,
 not a branding win.
 
-## Before turning double opt-in on
+## Before turning double opt-in on — now a merge blocker
+
+**`consent.enabled` is `false` on form 9921149**, verified against the live
+endpoint on 2026-09-15. That makes the ordering constraint sharper than it was:
+
+The form's success message used to read *"You're on the list"*, which stops being
+true the moment double opt-in is enabled. `NotifyForm.astro` now answers
+*"Almost — check your email and confirm."* — which is **false while consent is
+off**, because Kit sends no confirmation and no email ever arrives.
+
+The copy was wrong in one direction before and is wrong in the other direction
+now. So this is no longer a follow-up: **turn double opt-in on before this branch
+merges**, or the deployed site tells people to check an inbox nothing was sent
+to. Confirm it flipped by re-running the probe below; `consent.enabled` must read
+`true`.
+
+```bash
+curl -s -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' \
+  --data '{"email_address":""}' https://app.kit.com/forms/9921149/subscriptions
+```
+
+An empty address subscribes no one — Kit rejects it on validation — but the
+response still reports the form's own `consent` state. A form that does not exist
+answers `"consent":null` with "Couldn't find a form for this request", so the
+same probe also distinguishes a live form from a deleted one.
+
+### The original constraint
 
 `consent.enabled` and the site copy must ship together. The form's success
 message used to read *"You're on the list"*, which stops being true the moment
