@@ -160,7 +160,7 @@
 .uz-preset-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); padding: var(--space-5); }
 
 .uz-contributor-invitation { display: grid; grid-template-columns: 1fr auto; gap: var(--space-8); align-items: end; padding: clamp(2rem, 6vw, 4rem); background: var(--color-surface); border-radius: var(--radius-lg); }
-.uz-contributor-invitation h3 { max-width: 12ch; margin: 0 0 var(--space-3); font: var(--font-weight-semibold) var(--text-3xl)/var(--leading-tight) var(--font-display); letter-spacing: var(--tracking-display); }
+.uz-contributor-invitation :is(h2, h3) { max-width: 20ch; margin: 0 0 var(--space-3); font: var(--font-weight-semibold) var(--text-3xl)/var(--leading-tight) var(--font-display); letter-spacing: var(--tracking-display); }
 .uz-contributor-invitation p { max-width: 42rem; margin: 0; color: var(--color-text-secondary); }
 
 @keyframes uz-spin { to { transform: rotate(360deg); } }
