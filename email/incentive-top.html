@@ -1,0 +1,122 @@
+<!--
+  Uzume confirmation (double opt-in) email — Kit HTML block 1 of 2.
+
+  Kit's block order must be:
+
+      1. this file              (HTML block)
+      2. the confirmation button (Kit's OWN Button block — see KIT_SETUP.md)
+      3. incentive-bottom.html  (HTML block)
+
+  Kit REQUIRES its own confirmation button on this email and refuses to publish
+  without one ("A confirmation button is required on this email"), so the button
+  cannot be an <a> in here and cannot be omitted. Everything in these fragments
+  is designed around that block rather than against it.
+
+  WHY THIS EMAIL IS LIGHT. Kit owns <body>, the email background, and a footer
+  carrying the unsubscribe link, the postal address and the "Built with Kit"
+  badge — none of which can be removed or restyled on the free plan, and the
+  first two of which are legally required under CAN-SPAM whatever the provider.
+  Earlier versions put a dark #0b0c10 card on that light ground; the result read
+  as a black slab pasted onto a white page, and every seam showed. So the email
+  now shares Kit's ground instead of fighting it.
+
+  This is the brand's other half, not a retreat from it: tokens.css ships a full
+  light theme, and BRAND.md line 61 names "midnight on ivory" an approved
+  inverse of the wordmark. The one dark element is the app icon, which is meant
+  to read as an app icon.
+
+  There is deliberately NO background colour and NO card. Kit's exact ground
+  colour is not ours to know, so nothing here assumes one: the wordmark PNG is
+  transparent, the icon is masked to its squircle, and every colour declared is
+  ink on whatever Kit supplies. That is what stops the footer from clashing —
+  there is no edge for it to clash with.
+
+  Token values are copied from tokens.css by hand — CSS variables cannot reach a
+  mail client. Light theme: ink-900 #111217, ink-700 #4f525a, ink-600 #64676f,
+  accent #6753d7, line #c9c9c5. Measured against Kit's ground these are
+  16.27:1, 6.80:1 and 4.92:1.
+
+  The <img> tags and their cells both carry colour and a font stack, because
+  images are blocked by default in many clients and alt text otherwise inherits
+  the client's default ink. Webmail reads the style off the <img>, Outlook reads
+  it off the <td>, so both must declare it. Here the alt ink is dark, because
+  the ground is light.
+
+  The icon's 20px radius is the macOS squircle mask, not decoration: the mask is
+  about 22% of the icon's size and the PNG is a fully opaque square that never
+  carries it. Without the radius it renders as a black box. Outlook drops
+  border-radius, so it will be a square there — the one place this design
+  visibly degrades, and the reason the icon is small.
+
+  The MSO conditional holds the content column at 520px; Word does not support
+  max-width.
+-->
+<!--[if mso]>
+<table role="presentation" width="520" align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+  <tr><td>
+<![endif]-->
+<table
+  role="presentation"
+  width="100%"
+  cellpadding="0"
+  cellspacing="0"
+  border="0"
+  style="border-collapse:collapse;"
+>
+  <tr>
+    <td align="center" style="padding:0;">
+      <table
+        role="presentation"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="border-collapse:collapse;max-width:520px;width:100%;"
+      >
+        <tr>
+          <td
+            align="center"
+            style="padding:8px 24px 24px 24px;color:#111217;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;"
+          >
+            <img
+              src="https://uzume.io/email/uzume-icon.png"
+              width="72"
+              height="72"
+              alt=""
+              style="display:block;width:72px;max-width:72px;height:auto;border:0;border-radius:16px;color:#111217;"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            align="center"
+            style="padding:0 24px 28px 24px;color:#111217;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;"
+          >
+            <img
+              src="https://uzume.io/email/uzume-wordmark-ink.png"
+              width="150"
+              height="76"
+              alt="Uzume"
+              style="display:block;width:150px;max-width:150px;height:auto;border:0;color:#111217;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:32px;font-weight:700;line-height:76px;"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            align="center"
+            style="padding:0 24px 8px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:22px;line-height:1.45;color:#111217;"
+          >
+            Confirm your email and we'll write the day Uzume is ready to
+            download.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!--[if mso]>
+  </td></tr>
+</table>
+<![endif]-->

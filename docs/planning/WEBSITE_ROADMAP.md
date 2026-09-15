@@ -146,17 +146,45 @@ owns "add the gallery teaser" alongside the real clips.
   button was configured `#FFFFFF` on `#7f6aff`, **3.88:1**, below AA, when the
   file's own comment already specified the passing `#0b0c10` (5.03:1).
 
-  **The confirm button is inside the HTML block, not Kit's Button block.** The
-  original fragment left it to Kit on the theory that the confirmation URL had to
-  be Kit's own; it does not — `{{ confirm_url }}` is the merge tag Kit's own
-  Button block uses, visible in that block's URL field, so an `<a>` in the
-  fragment resolves to the same link. A split-card version was tried first, with
-  Kit's Button in the seam between two dark halves. It was wrong, and visibly so:
-  the button's rounded corners cut four pale wedges of Kit's light ground out of
-  the design, and the violet sat at 3.38:1 against that ground. Inside the card
-  the button rounds against midnight, passes at 5.03:1, and belongs to the
-  message rather than to Kit's footer chrome. The label is the approved
-  "Confirm my email".
+  **The email is light (Matt, 2026-09-15).** Kit owns the background and a
+  footer carrying the unsubscribe link, the postal address and the "Built with
+  Kit" badge; on the free plan none of it can be removed or restyled. Two dark
+  designs were tried against that and both failed visibly — a dark card below
+  the button left four pale wedges where Kit's light ground showed through the
+  button's rounded corners, and the card itself read as a black slab pasted onto
+  a white page with a seam everywhere the two met.
+
+  Switching provider does not help. MailerLite, Buttondown and Resend all brand
+  their free tiers and charge ~$9–20/month to stop. More to the point, the
+  unsubscribe link and the postal address are **required by CAN-SPAM** whatever
+  sends the mail, so the footer survives self-hosting too; only the "Built with
+  Kit" line is optional. The jank was never the footer — it was the dark card
+  above it.
+
+  So the email shares Kit's ground. This is the brand's other half rather than a
+  retreat from it: `tokens.css` already ships a complete light theme, and
+  `BRAND.md` names "midnight on ivory" an approved inverse of the wordmark. The
+  fragments declare **no background colour at all** — Kit's exact ground is not
+  ours to know, so the wordmark PNG is transparent, the icon is masked to its
+  squircle, and everything declared is ink on whatever Kit supplies. There is no
+  edge left for the footer to clash with. Measured on Kit's ground: body 6.80:1,
+  small print 4.92:1, lede 16.27:1, button 4.81:1.
+
+  **Kit requires its own confirmation button** and refuses to publish without
+  one. An `<a href="{{ confirm_url }}">` in the HTML block does not satisfy it,
+  which killed a single-block version that had put the button inside the card.
+  The block order is HTML, Kit's confirmation button, HTML. On a light ground
+  that is simply a button in a message.
+
+  **New assets.** `public/email/uzume-wordmark-ink.png` is the approved inverse,
+  rendered from the unmodified `brand/wordmark/Uzume.svg` with only its fill
+  changed, on a transparent ground. `public/email/uzume-icon.png` is downscaled
+  straight from `brand/icon/Uzume-1024.png` (lanczos, 192px, no recolouring); an
+  earlier derivation had left a #131319 edge lighter than its own card. The
+  dark-ground `uzume-wordmark.png` is deleted — nothing referenced it, and it
+  bakes #0b0c10 into an email that is no longer dark. The icon's CSS radius is
+  the macOS squircle mask, which the PNG never carries; Outlook drops it and
+  shows a square, the one place this design visibly degrades.
 
   **No copy refers to the button's position any more.** "Click
   below" and "the button below" both broke the moment the button moved, in a

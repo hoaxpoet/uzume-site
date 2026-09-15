@@ -1,33 +1,74 @@
 # Kit setup — the confirmation (double opt-in) email
 
 Every setting here lives in Kit's dashboard, not in this repo. It is written
-down because nothing in CI can reach it: the previous configuration shipped a
-call-to-action below WCAG AA and a stock subject line, and the correct values
-existed only in an HTML comment that Kit never renders.
+down because nothing in CI can reach it: an earlier configuration shipped a
+call-to-action below WCAG AA and Kit's stock subject line, and the correct
+values existed only in an HTML comment Kit never renders.
 
 Form: **9918547** (the id is public — it ships in the page HTML either way).
 
-## Blocks — one, and only one
+## Why this email is light
 
-Paste `email/incentive.html` into a **single HTML block**. Add nothing else: no
-Button block, no Divider, no text blocks.
+Kit owns `<body>`, the email background, and a footer carrying the unsubscribe
+link, the postal address and the "Built with Kit" badge. On the free plan none
+of it can be removed or restyled.
 
-**The confirm button is inside the HTML.** `{{ confirm_url }}` is the same merge
-tag Kit's own Button block uses — it is visible in that block's URL field — so an
-`<a href="{{ confirm_url }}">` resolves to exactly the same link with none of the
-constraints. That is what lets the button sit on the card's own dark ground.
+That is not worth fighting, for three reasons:
 
-An earlier version used Kit's Button block below the card. Two things were wrong
-with it, and both are visible rather than theoretical: the violet dropped to
-**3.38:1** against Kit's light background, and the button's rounded corners cut
-four pale wedges out of the design where the light ground showed through. A
-button inside the card rounds against midnight instead, and reads as part of the
-message rather than part of Kit's footer chrome.
+1. **The unsubscribe link and the postal address are legally required** under
+   [CAN-SPAM](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business),
+   whatever service sends the mail. They are not going away by switching
+   providers or by self-hosting. Only the "Built with Kit" line is optional.
+2. **Every free tier brands its footer.** MailerLite, Buttondown and Resend all
+   put their own badge on free-plan mail and charge roughly $9–20/month to
+   remove it. Switching trades one badge for another.
+3. **The jank was never the footer.** It was a dark `#0b0c10` card dropped onto
+   Kit's light ground — a black slab on a white page, with a seam everywhere the
+   two met. Any footer under that would have looked pasted on.
 
-The label is **"Confirm my email"** — the approved wording in
-`WEBSITE_ROADMAP.md` W.2. The button's `#0b0c10` on `#7f6aff` measures **5.03:1**
-and passes AA; white on that violet is **3.88:1** and fails. Do not "fix" it to
-white.
+So the email shares Kit's ground instead of opposing it. This is the brand's
+other half, not a retreat from it: `tokens.css` ships a complete light theme,
+and `BRAND.md` names **"midnight on ivory"** an approved inverse of the
+wordmark. The one dark element is the app icon, which is supposed to read as an
+app icon.
+
+The fragments declare **no background colour at all**. Kit's exact ground is not
+ours to know, so nothing assumes one — the wordmark PNG is transparent, the icon
+is masked to its squircle, and every colour declared is ink on whatever Kit
+supplies. There is no edge for the footer to clash with.
+
+Measured against Kit's ground: body ink `#4f525a` **6.80:1**, small print
+`#64676f` **4.92:1**, lede `#111217` **16.27:1**, button `#6753d7` **4.81:1**.
+
+## Blocks — three, in this order
+
+| # | Block | Content |
+|---|-------|---------|
+| 1 | HTML | `email/incentive-top.html` |
+| 2 | **Confirmation button** | Kit's own — settings below |
+| 3 | HTML | `email/incentive-bottom.html` |
+
+**Kit requires its own confirmation button** and refuses to publish without one
+("A confirmation button is required on this email"). Use the **Add confirmation
+button** action in that warning banner — do not hand-write an `<a>` with a merge
+tag and expect it to count. An earlier revision tried exactly that and Kit
+rejected it.
+
+Because the whole email is light, the button sitting on Kit's ground between the
+two HTML blocks is simply a button in a message. Nothing shows through its
+corners, which is what went wrong when the same arrangement was tried against a
+dark card.
+
+### Button settings
+
+| Field | Value | Why |
+|-------|-------|-----|
+| Background colour | `#6753d7` | `--color-accent`, light theme. **Not** `#7f6aff`, which is the dark-theme accent and too pale on a light ground. |
+| Text colour | `#ffffff` | `--color-on-accent`, light theme. Measures **5.53:1** and passes AA. |
+| Label | `Confirm my email` | the approved wording in `WEBSITE_ROADMAP.md` W.2 |
+| Size | Large | keeps the target above the 44px minimum `DESIGN.md` requires |
+| Rounded corners | Small | matches the 8px the fragments assume |
+| Alignment | Centre | |
 
 ## Subject, sender, reply-to
 
@@ -37,9 +78,6 @@ white.
 | From name | `Uzume` |
 | From address | `hello@uzume.io` once the domain is authenticated — see below |
 | Reply-to | `hello@uzume.io` (routable immediately, see below) |
-
-Kit's own double opt-in setting is what sends this email; the HTML block lives in
-the form's confirmation-email editor, reached from form `9918547`.
 
 **Do not leave Kit's stock subject, `Important: confirm your subscription`.** It
 names no product, and "Important:" is a textbook phishing opener. The recipient
@@ -62,7 +100,7 @@ can forward mail, it cannot send it. It is enough to make `hello@uzume.io` a
 working reply-to straight away.
 
 **Sending — Kit, authenticated against the domain.** For Kit to send *as*
-`uzume.io` it has to be authorised to. Kit's email-authentication / sending-domain
+`uzume.io` it must be authorised to. Kit's email-authentication / sending-domain
 setting issues DKIM records (usually plus a CNAME or two) which get pasted into
 Cloudflare DNS. Cloudflare is only the DNS host in that exchange; it is not
 sending anything. **Check whether custom sending-domain authentication is
@@ -80,7 +118,7 @@ message used to read *"You're on the list"*, which stops being true the moment
 double opt-in is enabled — the subscriber is pending, and a page that says they
 are finished removes their reason to go and find the email.
 `NotifyForm.astro` now answers *"Almost — check your email and confirm."*
-That change is in this same branch. Do not enable one without the other.
+That change is on this same branch. Do not enable one without the other.
 
 ## Test send — what a preview cannot tell you
 
@@ -88,31 +126,27 @@ Kit's editor preview is not a rendering engine. Send a real test to at least
 Gmail web, the Gmail Android or iOS app, Apple Mail in dark mode, and Outlook
 for Windows, and check:
 
-- [ ] **Images off.** The first legible word must be "Confirm", not "Click", and
-      the wordmark's alt text must read as ivory, not black. This was measured at
-      1.07:1 before the fix; both `<img>` and its `<td>` now declare the colour
-      because webmail reads one and Outlook reads the other.
-- [ ] **Outlook width.** The MSO ghost table should hold the card at 520px. Without
-      it Word ignores `max-width` and the measure runs past 140 characters.
-- [ ] **Outlook corners.** `border-radius` is unsupported in Word's engine, so the
-      card will be a hard-cornered slab there. Expected, not a defect.
-- [ ] **The button.** Confirm `{{ confirm_url }}` resolved to a real link and that
-      clicking it actually confirms the subscriber. This is the one thing that
-      must be proven with a live send before the list is trusted.
-- [ ] **Button in Outlook.** `border-radius` is unsupported there, so expect a
-      square violet block — on the dark card that is fine, and it is why the
-      button is not a rounded pill.
-- [ ] **Kit's preview showed square corners** while a browser renders the 16px
-      radius correctly. Unexplained. Confirm which is true in a real send.
+- [ ] **The button actually confirms.** Click it from a real test subscriber and
+      verify the subscription moves from pending to confirmed. Nothing else in
+      this list matters if that fails.
+- [ ] **Images off.** The wordmark's alt text must read as dark ink, legible.
+      Both the `<img>` and its `<td>` declare the colour, because webmail reads
+      one and Outlook reads the other.
+- [ ] **The icon in Outlook.** Word drops `border-radius`, so the icon becomes a
+      hard black square on a light ground. This is the one place the design
+      visibly degrades and the reason the icon is only 72px. If it looks bad
+      enough to matter, the fix is a pre-masked PNG with transparency, which
+      means deriving a new asset from `brand/icon/Uzume-1024.png`.
+- [ ] **Outlook width.** The MSO ghost table should hold the column at 520px.
+      Word ignores `max-width`.
 - [ ] **Dark mode.** Gmail's apps and Outlook.com may apply their own colour
-      transforms. The fragment cannot declare `color-scheme` — that is a
+      transforms. The fragments cannot declare `color-scheme` — that is a
       `<head>` mechanism and Kit owns the head — so this is a risk to observe,
-      not one that can be fixed from here. Watch for the wordmark PNG becoming a
-      mismatched rectangle: its `#0b0c10` ground is baked in opaquely and cannot
-      follow an inversion.
-- [ ] **Mobile gutter.** The fragment supplies no side padding of its own, so at
-      375px the card may run edge-to-edge depending on whether Kit's wrapper cell
-      pads it. If it does go edge-to-edge, the rounded corners become notches.
+      not one fixable from here. A light email inverted to dark is a much softer
+      failure than the dark card was, but check that the transparent wordmark
+      does not end up dark-on-dark.
+- [ ] **The seams.** Confirm Kit adds no unexpected background or rule between
+      the three blocks.
 
 ## Blocks to leave empty, and why
 
