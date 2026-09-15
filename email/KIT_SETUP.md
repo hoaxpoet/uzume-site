@@ -186,60 +186,120 @@ moves off `matt@plaitandpattern`.
 
 ## Email addresses on uzume.io
 
-Two different problems. Cloudflare solves only the first.
+**uzume.io is a verified sending domain in Kit** (confirmed in DNS, 2026-09-15).
+Kit authenticates through CNAMEs, not through anything at the apex:
 
-**Receiving — Cloudflare Email Routing, free.** Dashboard → `uzume.io` → Email
-Routing. Create `hello@uzume.io` and forward it to an existing mailbox.
-Cloudflare writes the MX and SPF records itself. This is **inbound only** — it
-can forward mail, it cannot send it. It is enough to make `hello@uzume.io` a
-working reply-to straight away.
+```
+cka._domainkey.uzume.io  ->  dkim.dm-787ed9e9.sg6.convertkit.com    (DKIM)
+ckespa.uzume.io          ->  spf.dm-a561a56e.sg6.convertkit.com     (Return-Path)
+                              \_ "v=spf1 include:spf.kit.com ~all"
+```
 
-**Sending — Kit, authenticated against the domain.** For Kit to send *as*
-`uzume.io` it must be authorised to. Kit's email-authentication / sending-domain
-setting issues DKIM records (usually plus a CNAME or two) which get pasted into
-Cloudflare DNS. Cloudflare is only the DNS host in that exchange; it is not
-sending anything. **Check whether custom sending-domain authentication is
-included on the current Kit plan before planning around it** — if it is not, the
-From name fix above still stands on its own.
+**There is no SPF conflict with Cloudflare Email Routing, and this is the thing
+worth understanding before touching DNS.** SPF is evaluated against the
+Return-Path domain, which for Kit is `ckespa.uzume.io` — a subdomain Kit
+controls. The apex has no SPF record at all, so Email Routing is free to add its
+own. Two different names; they cannot collide. DMARC is `p=none` with Cloudflare
+reporting, and DKIM signs as `uzume.io`, so alignment already passes.
 
-Until the domain is authenticated, do not spoof `From: hello@uzume.io` — an
-unauthenticated From on a domain that publishes SPF is a deliverability problem,
-not a branding win.
+### Status: done (2026-09-15)
 
-## Before turning double opt-in on — now a merge blocker
+Verified in DNS: `MX` → `route1/2/3.mx.cloudflare.net`, apex SPF
+`v=spf1 include:_spf.mx.cloudflare.net ~all`, Kit's `cka._domainkey` and
+`ckespa` CNAMEs intact. Kit's From and Reply-to are `hello@uzume.io`.
 
-**`consent.enabled` is `false` on form 9921149**, verified against the live
-endpoint on 2026-09-15. That makes the ordering constraint sharper than it was:
+Both SPF and DKIM align to `uzume.io` — DKIM signs as the domain, and the
+Return-Path `ckespa.uzume.io` is a subdomain of it. That satisfies the Gmail and
+Microsoft bulk-sender requirements. DMARC is `p=none`, which is monitoring only;
+tightening to `p=quarantine` is a later decision and should wait until the
+Cloudflare DMARC reports have shown clean traffic for a few real sends.
 
-The form's success message used to read *"You're on the list"*, which stops being
-true the moment double opt-in is enabled. `NotifyForm.astro` now answers
-*"Almost — check your email and confirm."* — which is **false while consent is
-off**, because Kit sends no confirmation and no email ever arrives.
+The steps below are kept as the record of how it was set up.
 
-The copy was wrong in one direction before and is wrong in the other direction
-now. So this is no longer a follow-up: **turn double opt-in on before this branch
-merges**, or the deployed site tells people to check an inbox nothing was sent
-to. Confirm it flipped by re-running the probe below; `consent.enabled` must read
-`true`.
+### Receiving — Cloudflare Email Routing (do this first)
+
+1. Cloudflare → `uzume.io` → **Email** → **Email Routing** → Enable.
+2. Accept the records it adds: three `MX`, plus an apex SPF
+   `v=spf1 include:_spf.mx.cloudflare.net ~all`. Safe, per above.
+3. Create `hello@uzume.io`, forwarding to an existing mailbox.
+4. **Verify the destination address** — Cloudflare emails a link and nothing
+   forwards until it is clicked.
+
+Do this before changing Kit's From address, so the address receives mail from the
+moment it is advertised.
+
+### Sending — Kit
+
+Kit Settings → Email: set **From address** and **Reply-to** to `hello@uzume.io`.
+The domain is already verified, so no new DNS is needed.
+
+### Email Routing cannot send, only forward
+
+Replies to `hello@uzume.io` land in the destination mailbox, but replying from
+there goes out as that mailbox's own address. Gmail's "Send mail as" needs
+outbound SMTP credentials, which Cloudflare does not provide. Acceptable for an
+announcement list; true reply-as needs a real mailbox provider and is not worth
+solving now.
+
+### Optional
+
+Once routing is on, the apex SPF can become
+`v=spf1 include:_spf.mx.cloudflare.net include:spf.kit.com ~all`. Not required —
+Kit's CNAME setup is sufficient on its own — but harmless, and it helps if any
+receiver checks the visible From domain rather than the Return-Path.
+
+## Double opt-in — how to turn it on, and how to check
+
+The control is **inverted**, which is the usual reason it looks already-on when
+it is not. Form → Settings → **Confirmation email** tab → **uncheck
+"Auto-confirm new subscribers."** Unchecking it is what enables double opt-in.
+Some accounts show the same setting phrased the opposite way, as a "Send
+confirmation email" box you check instead — read the label, not the position.
+
+### Do NOT verify this with the form endpoint's `consent` field
+
+`consent.enabled` in the form-subscriptions response is **Kit's GDPR Subscriber
+Consent Options** — an account-level setting for whether a consent checkbox is
+shown to all subscribers, none, or EU-only. **It is unrelated to double opt-in.**
+
+This was asserted the other way in an earlier revision of this file and in
+`WEBSITE_ROADMAP.md`, and it is wrong. The field read `false` on the old form
+and on the new one, before and after the double opt-in setting was changed,
+which is what exposed it.
+
+### What the probe IS good for
+
+Telling a live form from a deleted one. That part is verified: a form that does
+not exist answers `"consent":null` with "Couldn't find a form for this request",
+while a live one answers with field-level validation errors. An empty address
+subscribes nobody, so this is safe to run any time.
 
 ```bash
 curl -s -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' \
   --data '{"email_address":""}' https://app.kit.com/forms/9921149/subscriptions
 ```
 
-An empty address subscribes no one — Kit rejects it on validation — but the
-response still reports the form's own `consent` state. A form that does not exist
-answers `"consent":null` with "Couldn't find a form for this request", so the
-same probe also distinguishes a live form from a deleted one.
+### How to actually verify double opt-in
 
-### The original constraint
+Subscriber state is the only reliable signal, and it needs a real signup:
 
-`consent.enabled` and the site copy must ship together. The form's success
-message used to read *"You're on the list"*, which stops being true the moment
-double opt-in is enabled — the subscriber is pending, and a page that says they
-are finished removes their reason to go and find the email.
-`NotifyForm.astro` now answers *"Almost — check your email and confirm."*
-That change is on this same branch. Do not enable one without the other.
+1. Subscribe from uzume.io with an address you control.
+2. **Subscribers → filter by "Unconfirmed."** With double opt-in on, the new
+   signup sits there until the link is clicked. Landing straight in Confirmed
+   means auto-confirm is still on.
+3. Check that the confirmation email actually arrives, and that clicking through
+   moves the subscriber from Unconfirmed to Confirmed.
+
+Step 3 is the test send anyway, so this costs nothing extra.
+
+### The ordering constraint still stands
+
+The site's success copy reads *"Almost — check your email and confirm."* That is
+false while auto-confirm is on, because Kit adds the subscriber immediately and
+sends nothing — the visitor is told to check an inbox that will never receive
+anything. It was wrong in the opposite direction before ("You're on the list"),
+so there is no safe resting state with the setting off. Verify by the subscriber
+test above, not by the endpoint.
 
 ## The email depends on a deploy — build it in this order
 

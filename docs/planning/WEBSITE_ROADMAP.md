@@ -223,7 +223,11 @@ owns "add the gallery teaser" alongside the real clips.
   DKIM records hosted in Cloudflare DNS. The From *name* is a free text field on
   any plan and is the highest-leverage part of the fix.
 
-  `consent.enabled` is still `false` on the form. Turning the incentive email on
+  `consent.enabled` is still `false` on the form. **(Corrected 2026-09-15: that
+  field is Kit's GDPR Subscriber Consent Options, not the double opt-in flag —
+  it reads `false` regardless of the double opt-in setting, so it was never
+  evidence of anything here. Verify double opt-in by subscribing a real address
+  and checking Subscribers → Unconfirmed; see `email/KIT_SETUP.md`.)** Turning the incentive email on
   makes the inline success copy wrong — "You're on the list" stops being true
   until they click — so the two must ship together. **The site half has now
   landed:** the form answers "Almost — check your email and confirm. Nothing
