@@ -206,40 +206,58 @@ Until the domain is authenticated, do not spoof `From: hello@uzume.io` — an
 unauthenticated From on a domain that publishes SPF is a deliverability problem,
 not a branding win.
 
-## Before turning double opt-in on — now a merge blocker
+## Double opt-in — how to turn it on, and how to check
 
-**`consent.enabled` is `false` on form 9921149**, verified against the live
-endpoint on 2026-09-15. That makes the ordering constraint sharper than it was:
+The control is **inverted**, which is the usual reason it looks already-on when
+it is not. Form → Settings → **Confirmation email** tab → **uncheck
+"Auto-confirm new subscribers."** Unchecking it is what enables double opt-in.
+Some accounts show the same setting phrased the opposite way, as a "Send
+confirmation email" box you check instead — read the label, not the position.
 
-The form's success message used to read *"You're on the list"*, which stops being
-true the moment double opt-in is enabled. `NotifyForm.astro` now answers
-*"Almost — check your email and confirm."* — which is **false while consent is
-off**, because Kit sends no confirmation and no email ever arrives.
+### Do NOT verify this with the form endpoint's `consent` field
 
-The copy was wrong in one direction before and is wrong in the other direction
-now. So this is no longer a follow-up: **turn double opt-in on before this branch
-merges**, or the deployed site tells people to check an inbox nothing was sent
-to. Confirm it flipped by re-running the probe below; `consent.enabled` must read
-`true`.
+`consent.enabled` in the form-subscriptions response is **Kit's GDPR Subscriber
+Consent Options** — an account-level setting for whether a consent checkbox is
+shown to all subscribers, none, or EU-only. **It is unrelated to double opt-in.**
+
+This was asserted the other way in an earlier revision of this file and in
+`WEBSITE_ROADMAP.md`, and it is wrong. The field read `false` on the old form
+and on the new one, before and after the double opt-in setting was changed,
+which is what exposed it.
+
+### What the probe IS good for
+
+Telling a live form from a deleted one. That part is verified: a form that does
+not exist answers `"consent":null` with "Couldn't find a form for this request",
+while a live one answers with field-level validation errors. An empty address
+subscribes nobody, so this is safe to run any time.
 
 ```bash
 curl -s -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' \
   --data '{"email_address":""}' https://app.kit.com/forms/9921149/subscriptions
 ```
 
-An empty address subscribes no one — Kit rejects it on validation — but the
-response still reports the form's own `consent` state. A form that does not exist
-answers `"consent":null` with "Couldn't find a form for this request", so the
-same probe also distinguishes a live form from a deleted one.
+### How to actually verify double opt-in
 
-### The original constraint
+Subscriber state is the only reliable signal, and it needs a real signup:
 
-`consent.enabled` and the site copy must ship together. The form's success
-message used to read *"You're on the list"*, which stops being true the moment
-double opt-in is enabled — the subscriber is pending, and a page that says they
-are finished removes their reason to go and find the email.
-`NotifyForm.astro` now answers *"Almost — check your email and confirm."*
-That change is on this same branch. Do not enable one without the other.
+1. Subscribe from uzume.io with an address you control.
+2. **Subscribers → filter by "Unconfirmed."** With double opt-in on, the new
+   signup sits there until the link is clicked. Landing straight in Confirmed
+   means auto-confirm is still on.
+3. Check that the confirmation email actually arrives, and that clicking through
+   moves the subscriber from Unconfirmed to Confirmed.
+
+Step 3 is the test send anyway, so this costs nothing extra.
+
+### The ordering constraint still stands
+
+The site's success copy reads *"Almost — check your email and confirm."* That is
+false while auto-confirm is on, because Kit adds the subscriber immediately and
+sends nothing — the visitor is told to check an inbox that will never receive
+anything. It was wrong in the opposite direction before ("You're on the list"),
+so there is no safe resting state with the setting off. Verify by the subscriber
+test above, not by the endpoint.
 
 ## The email depends on a deploy — build it in this order
 
