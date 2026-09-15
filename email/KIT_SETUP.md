@@ -70,6 +70,90 @@ dark card.
 | Rounded corners | Small | matches the 8px the fragments assume |
 | Alignment | Centre | |
 
+## Brand settings (Settings → Brand)
+
+Kit's brand panel feeds its own surfaces — broadcasts, sequences, landing pages,
+forms, the unsubscribe page — and its swatches are a quick-pick palette, not a
+theme. Changing them does not restyle anything already built, and it does not
+touch the HTML blocks, which carry their own inline values.
+
+**One thing here does reach this email: the email-safe font sets the confirmation
+button's label and the footer.** Those are Kit's blocks, not ours.
+
+### Business Name
+
+`Uzume` — already correct. Worth noting it is not cosmetic: Kit puts it on the
+public unsubscribe page, which is a trust surface for someone who has just
+decided they do not trust you.
+
+### Colours
+
+The slot already holding `#7F6AFF` is the **dark-theme** accent. It is the wrong
+primary for anything on a light ground — this email included — so add the light
+accent and keep both, labelled by where they belong.
+
+| Hex | Token | Use |
+|-----|-------|-----|
+| `#6753D7` | `--color-accent` (light) | **primary CTA on light surfaces** — this email's button, Kit landing-page buttons |
+| `#5946C2` | `--color-accent-hover` (light) | link and button hover on Kit pages |
+| `#7F6AFF` | `--color-accent` (dark) | accent on midnight surfaces only *(already set)* |
+| `#0B0C10` | Midnight | the stage; dark grounds and display type |
+| `#F4F6F1` | Ivory | the paired light of the identity pair |
+| `#111217` | `--uzume-ink-900` | headings and lede on light |
+| `#4F525A` | `--uzume-ink-700` | body copy on light |
+| `#64676F` | `--uzume-ink-600` | small print on light |
+| `#C9C9C5` | `--color-line` (light) | rules and dividers on light |
+| `#F7F7F5` | `--uzume-paper-100` | light page ground |
+
+That is ten of the twelve slots. **Leave the last two empty rather than filling
+them with cyan `#37D6C0`, gold `#F5C84C` and ember `#FF6B4A`.** Those are real
+identity colours, but `BRAND.md` scopes them as "the light brought through the
+opening" and `DESIGN.md` explicitly forbids using all identity colours as
+decorative controls. A quick-pick palette is precisely the mechanism that turns
+them into decorative controls — they belong in rendered output, not in a button
+picker.
+
+### Fonts
+
+**Email-safe → add `Arial`.** Kit renders the confirmation button's label and
+the footer in this face, so it is the one font choice that shows up in this
+email. The HTML fragments now declare `Arial, Helvetica, sans-serif` to match;
+they previously led with a system stack (SF on macOS, Segoe UI on Windows),
+which would have set the body in one face and Kit's button in another on the
+same screen. If Kit offers `Helvetica` as a separate entry, either is fine —
+they resolve to each other on almost every client.
+
+Neither brand face is available here and neither can be: Alumni Sans and PT Sans
+are webfonts, and mail clients do not load webfonts. That is not a loss worth
+fighting — the brand is carried by the wordmark image, the copy, and the colour,
+not by the body face.
+
+**Web fonts → add `Alumni Sans` and `PT Sans`.** These *do* work on Kit's
+web-based pages (landing pages, the newsletter site, the unsubscribe page), and
+both are on Google Fonts, so Kit's picker should have them. This is free, and it
+makes Kit's public pages look like uzume.io instead of like Kit. Keep the roles
+`BRAND.md` assigns: **Alumni Sans for display and headings only** — never for
+paragraphs, form controls, or dense data — and **PT Sans for body, labels and
+navigation**.
+
+**Custom fonts → skip.** Paid-plan only, and there is nothing to upload: the
+Google-hosted versions of both faces cover every Kit surface that can use them.
+
+### Favicon
+
+Paid-plan only. When that changes, `brand/favicon/favicon-512.png` is the asset
+to upload — it is the art-directed crop, already square and production-ready.
+Note the upsell also bundles removing Kit branding from subscriber-facing pages,
+which is the same paid tier that would remove "Built with Kit" from the email
+footer.
+
+### Links
+
+Add `https://uzume.io` and the repository, `https://github.com/hoaxpoet/uzume`.
+These appear in Kit's recommendations profile and on subscriber-facing pages,
+and they are the two places a suspicious recipient would go to check that this
+is real. Nothing else exists yet — no social accounts — so add nothing else.
+
 ## Subject, sender, reply-to
 
 | Field | Value |
