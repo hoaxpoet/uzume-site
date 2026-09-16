@@ -31,7 +31,7 @@
       "ACCEPT"
     ],
     "d157_verdict": "Matt, 2026-09-16: \"all three pass steady luminance\"",
-    "notes": "Take stopped at 1:50 of the 4:05 track; 98 s of clean footage made a full-track take unnecessary. Aurora Veil is on screen at 0 s, before the cycle reached this preset. Three single-frame recorder drops after the preset came on (49.4, 54.9, 55.6 s) on an otherwise idle Mac — the symptom of the intermittent SessionRecorderTests capture-mode test; app-repo follow-up. Second clean window: 5.0-49.4 s (44.4 s)."
+    "notes": "Take stopped at 1:50 of the 4:05 track; 98 s of clean footage made a full-track take unnecessary. Aurora Veil is on screen at 0 s, before the cycle reached this preset. The one-frame gaps after the preset came on (49.4, 54.9, 55.6 s) are the renderer running a frame late — they match late frames in the session's features.csv. The recorder wrote every frame after its size lock (6,645 rendered, 6,616 written). Second clean window: 5.0-49.4 s (44.4 s)."
   },
   {
     "preset": "Ferrofluid Ocean",
@@ -65,7 +65,7 @@
       "ACCEPT"
     ],
     "d157_verdict": "Matt, 2026-09-16: \"all three pass steady luminance\"",
-    "notes": "POSSIBLE APP DEFECT: Uzume froze for about half a second switching into this preset — a 100 ms stall at 6.3 s, then 29 identical frames (6.42-6.88 s). This is the app, not the recorder: a viewer would see the same freeze whenever the planner switches to Ferrofluid Ocean. Fata Morgana is on screen at 5 s. Seven recorder hitches after the preset came on (10 frames), including an 83 ms stall at 115.4 s. The first run of the check rejected this take on the file-wide duplicate count; that was a flaw in the check (fixed in 5a2729e), not in the take, which was not re-recorded. Other clean windows: 16.7-47.1 s (30.4 s), 115.9-158.2 s (42.3 s)."
+    "notes": "Fata Morgana is on screen at 5 s. The 29 identical frames at 6.42-6.88 s are FFT Sandbox, passed during the preset cycle: its shader reads neither time nor audio, so it renders a still image. That is not a freeze. Two genuine render stalls appear in features.csv: 98 ms at the switch to FFT Sandbox (17:08:23.205Z) and 86 ms mid-performance at 115.4 s (17:10:12.291Z). The remaining one-frame gaps are late render frames; the recorder wrote every frame after its size lock (9,507 rendered, 9,477 written). The first run of the check rejected this take on the file-wide duplicate count; that was a flaw in the check (fixed in 5a2729e), not in the take, which was not re-recorded. Other clean windows: 16.7-47.1 s (30.4 s), 115.9-158.2 s (42.3 s)."
   },
   {
     "preset": "Murmuration",
@@ -99,6 +99,6 @@
       "ACCEPT"
     ],
     "d157_verdict": "Matt, 2026-09-16: \"all three pass steady luminance\"",
-    "notes": "The cleanest of the three. Its 15 duplicate frames (4.50-4.71 s and 5.61 s) are a freeze while still cycling past other presets, before Murmuration was on screen. One single-frame recorder drop after the preset came on, at 138.5 s. Second clean window: 138.6-181.5 s (about 43 s)."
+    "notes": "The cleanest of the three. Its identical frames at 4.50-4.71 s are Staged Sandbox, a diagnostic preset that draws a still crosshair, passed during the preset cycle; one more at 5.61 s falls in the same cycle, before Murmuration was on screen. The one-frame gap at 138.5 s is a late render frame; the recorder wrote every frame after its size lock (10,916 rendered, 10,886 written). Second clean window: 138.6-181.5 s (about 43 s)."
   }
 ]
