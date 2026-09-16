@@ -12,6 +12,15 @@ encoded, uploaded, or published here; W.3b (site repo) turns the masters into
 This is the increment that unblocks every visual claim on the website. uzume.io today
 argues for a *visualizer* entirely in prose.
 
+> **Blocked on REC.1 (`docs/planning/REC.1-prompt.md`) — do not run as written.**
+> Measured 2026-09-16: Uzume renders a steady 60 fps, but ⌘⇧5 records only 55–58 fps
+> and burns in the pointer and the macOS recording indicator, while the built-in recorder
+> is capped at 30 fps and delivers 24. Once REC.1 lands, capture uses
+> `UZUME_RECORD_VIDEO=capture` instead of ⌘⇧5, and this prompt needs revising before it
+> runs: Tasks 2–3 and pre-flights 6–7 change (no pointer, fades or recording indicator to
+> manage), and ProRes 422 at 1080p60 is ≈ 9 GB per 4-minute master, so the disk
+> pre-flight rises. The decisions below stand.
+
 **Who does what.** **Matt records**, with the macOS screen recorder, and watches every
 clip. The session prepares, verifies each file, judges nothing on Matt's behalf, and
 writes the log. That split is deliberate: Matt has to watch each clip anyway to accept it,
