@@ -1,0 +1,104 @@
+[
+  {
+    "preset": "Cymatic Resonance",
+    "role": "hero",
+    "session": "2026-09-16T16-41-37Z",
+    "file": "~/Movies/Uzume masters/W3a/cymatic-resonance/video.mov",
+    "sha256": "9ba83bd63bf7188721d9d609b7ce81331e45ae02bb7ee3708b5ef7b809d18335",
+    "duration_s": 110.4,
+    "width": 1920,
+    "height": 1080,
+    "codec": "ProRes 422 (Standard), .mov, no audio",
+    "gb_per_min": 1.16,
+    "captured_at": "2026-09-16T16:41:37Z",
+    "app_commit": "682175ad2e59d8bcd6a343418095c16fc3beaf6e",
+    "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+    "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+    "roster_quote": "One of the best to watch. Wish there were more presets like this one. I want to see more variation of the patterns it creates.",
+    "in_point_s": 5,
+    "loop_window_s": [
+      55.6,
+      109.9
+    ],
+    "check": [
+      "frames 6616, 110.4 s, 1.16 GB/min",
+      "gaps in 1/60 s: {0: 3, 1: 6605, 2: 6, 3: 1}",
+      "duplicate consecutive frames in the whole file: 0",
+      "PASS  codec prores Standard",
+      "PASS  size 1920x1080",
+      "PASS  audio streams 0",
+      "PASS  longest clean run, no gaps or duplicates: 54.3 s (55.6-109.9 s)",
+      "ACCEPT"
+    ],
+    "d157_verdict": "Matt, 2026-09-16: \"all three pass steady luminance\"",
+    "notes": "Take stopped at 1:50 of the 4:05 track; 98 s of clean footage made a full-track take unnecessary. Aurora Veil is on screen at 0 s, before the cycle reached this preset. Three single-frame recorder drops after the preset came on (49.4, 54.9, 55.6 s) on an otherwise idle Mac — the symptom of the intermittent SessionRecorderTests capture-mode test; app-repo follow-up. Second clean window: 5.0-49.4 s (44.4 s)."
+  },
+  {
+    "preset": "Ferrofluid Ocean",
+    "role": "gallery",
+    "session": "2026-09-16T17-07-56Z",
+    "file": "~/Movies/Uzume masters/W3a/ferrofluid-ocean/video.mov",
+    "sha256": "6043695360dd4ca0a60a91946886aadca9fc401cba56ee9c2091330a3068ab3e",
+    "duration_s": 158.2,
+    "width": 1920,
+    "height": 1080,
+    "codec": "ProRes 422 (Standard), .mov, no audio",
+    "gb_per_min": 2.26,
+    "captured_at": "2026-09-16T17:07:56Z",
+    "app_commit": "682175ad2e59d8bcd6a343418095c16fc3beaf6e",
+    "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+    "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+    "roster_quote": "Brilliant sync with the music, but everything seems like 4/4 time.",
+    "in_point_s": 10,
+    "loop_window_s": [
+      47.1,
+      115.4
+    ],
+    "check": [
+      "frames 9477, 158.2 s, 2.26 GB/min",
+      "gaps in 1/60 s: {0: 4, 1: 9455, 2: 14, 3: 1, 5: 1, 6: 1}",
+      "duplicate consecutive frames in the whole file: 29",
+      "PASS  codec prores Standard",
+      "PASS  size 1920x1080",
+      "PASS  audio streams 0",
+      "PASS  longest clean run, no gaps or duplicates: 68.2 s (47.1-115.4 s)",
+      "ACCEPT"
+    ],
+    "d157_verdict": "Matt, 2026-09-16: \"all three pass steady luminance\"",
+    "notes": "POSSIBLE APP DEFECT: Uzume froze for about half a second switching into this preset — a 100 ms stall at 6.3 s, then 29 identical frames (6.42-6.88 s). This is the app, not the recorder: a viewer would see the same freeze whenever the planner switches to Ferrofluid Ocean. Fata Morgana is on screen at 5 s. Seven recorder hitches after the preset came on (10 frames), including an 83 ms stall at 115.4 s. The first run of the check rejected this take on the file-wide duplicate count; that was a flaw in the check (fixed in 5a2729e), not in the take, which was not re-recorded. Other clean windows: 16.7-47.1 s (30.4 s), 115.9-158.2 s (42.3 s)."
+  },
+  {
+    "preset": "Murmuration",
+    "role": "gallery",
+    "session": "2026-09-16T17-34-13Z",
+    "file": "~/Movies/Uzume masters/W3a/murmuration/video.mov",
+    "sha256": "f5385409294491b5c43b023b1c1bb77bbc99a36ec714906b50b0afc153d96a46",
+    "duration_s": 181.5,
+    "width": 1920,
+    "height": 1080,
+    "codec": "ProRes 422 (Standard), .mov, no audio",
+    "gb_per_min": 1.14,
+    "captured_at": "2026-09-16T17:34:13Z",
+    "app_commit": "682175ad2e59d8bcd6a343418095c16fc3beaf6e",
+    "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+    "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+    "roster_quote": "Beautiful. Cloud could be bigger, take up more of the screen",
+    "in_point_s": 10,
+    "loop_window_s": [
+      10.0,
+      138.5
+    ],
+    "check": [
+      "frames 10886, 181.5 s, 1.14 GB/min",
+      "gaps in 1/60 s: {0: 6, 1: 10873, 2: 4, 3: 2}",
+      "duplicate consecutive frames in the whole file: 15",
+      "PASS  codec prores Standard",
+      "PASS  size 1920x1080",
+      "PASS  audio streams 0",
+      "PASS  longest clean run, no gaps or duplicates: 130.6 s (7.9-138.5 s)",
+      "ACCEPT"
+    ],
+    "d157_verdict": "Matt, 2026-09-16: \"all three pass steady luminance\"",
+    "notes": "The cleanest of the three. Its 15 duplicate frames (4.50-4.71 s and 5.61 s) are a freeze while still cycling past other presets, before Murmuration was on screen. One single-frame recorder drop after the preset came on, at 138.5 s. Second clean window: 138.6-181.5 s (about 43 s)."
+  }
+]
