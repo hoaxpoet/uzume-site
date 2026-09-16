@@ -11,3 +11,9 @@ dist/
 
 .env
 .env.*
+
+# Media lives in R2 at media.uzume.io, never in git (CLAUDE.md). A 1.4 GB capture
+# once landed untracked in docs/planning/ one `git add .` away from a commit.
+*.mov
+*.mp4
+*.m4v
