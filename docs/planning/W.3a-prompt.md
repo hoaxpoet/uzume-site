@@ -1,191 +1,209 @@
 ## Increment W.3a — Capture: real engine footage for uzume.io
 
-**Type:** infrastructure (**app repo — `hoaxpoet/uzume`**, not this one).
+**Type:** infrastructure (**site repo**). Runs from `uzume-site`; builds and launches the
+app from a sibling `uzume` checkout but never edits it.
 
-**Objective.** After this session, a set of rights-clear, 1080p60 master recordings of
-real Uzume performances exists on disk, one per selected preset plus one hero reel,
-each with a recorded provenance entry (preset, app commit, track, licence, capture
-date). Nothing is encoded, uploaded, or published here — this session produces the
-masters and the log that W.3b (site repo) turns into `media.uzume.io` assets.
+**Objective.** After this session, three accepted master recordings of real Uzume
+performances exist outside both repos — Cymatic Resonance (the website hero loop),
+Ferrofluid Ocean, and Murmuration — each one ProRes 422 at 1920×1080 and 60 fps,
+passed by `Scripts/check_capture.py`, given a steady-luminance verdict by Matt, and
+recorded in `docs/captures/W3a-capture-log.json` with its provenance and the window a
+loop may be cut from. Nothing is encoded, uploaded, or published here; W.3b turns the
+masters into `media.uzume.io` assets.
 
-This is the increment that unblocks every visual claim on the website. uzume.io today
-argues for a *visualizer* entirely in prose: no footage, no stills, no gallery. The
-chrome was built to recede so the engine could lead, and the engine never arrived.
+uzume.io argues for a visualizer entirely in prose today. This is the increment that
+gives it something to show.
 
-**Cross-repo note.** This prompt is authored in the site repo (`docs/planning/` is where
-session prompts live, per its `CLAUDE.md`) because the site repo owns the website
-roadmap. The work runs in the app repo. Copy this file into the app repo's `prompts/`
-if you want it tracked there; the site repo must not modify the application.
+**How capture works now.** Uzume records itself: `UZUME_RECORD_VIDEO=capture` (app repo
+REC.1, merged as `682175ad`) writes every rendered frame straight from the GPU into the
+session folder. Nothing on screen is recorded — not the pointer, not the controls, not
+the preset name, not the macOS recording indicator — so there is no screen recorder to
+set up and nothing to wait out.
+
+**Who does what.** Matt plays the track, cycles to each preset, quits, and gives each
+master its verdict. The session builds and launches the app, checks each recording,
+moves it somewhere safe, and writes the log.
 
 ## Skill invocations
 
-- `closeout` at the end. Mandatory, as for every app-repo increment.
-- **Do not** invoke `preset-session` or `shader-authoring`. No `.metal` file, sidecar,
-  or GPU code is edited in this increment. If capture reveals a preset defect, record
-  it and stop — do not fix it here (see Do NOT).
+None. This repo carries none of the app repo's skills — do not invoke `closeout`,
+`preset-session` or `shader-authoring`. Closeout is inline, below.
 
 ## Read first, in order
 
-1. `docs/PRESET_ROSTER_REVIEW_2026-09-04.md` — Matt's per-preset observations. **Quote
-   these, do not paraphrase.** This is the curation input.
-2. `docs/PRODUCT_SPEC.md` §Primary Use Cases — the session shape being recorded.
-3. `CLAUDE.md` — commit format, push rule, closeout protocol.
-4. Site repo `docs/planning/WEBSITE_ROADMAP.md` §3 W.3 — the encode budget and manifest
-   fields this session's log must satisfy.
-5. Site repo `BRAND.md` §"Imagery" and §"Motion behavior" — published footage must be
-   real or clearly labelled illustrative; no stock imagery, lens flares, or AI shimmer.
+1. `docs/planning/WEBSITE_ROADMAP.md` §3 W.3 — encode budget and manifest fields W.3b will
+   need from this log.
+2. `docs/planning/REC.1-prompt.md` §Evidence — why screen recording was ruled out.
+3. `Scripts/check_capture.py` — the acceptance gate; read its docstring.
+4. `BRAND.md` §Image and footage direction — published footage must be real.
+5. App repo `docs/PRESET_ROSTER_REVIEW_2026-09-04.md` — §Cymatic Resonance, §Ferrofluid
+   Ocean, §Murmuration only. Quote, never paraphrase.
+6. `CLAUDE.md` — commit format and the push rule.
 
 ## Pre-flight invariants — stop if any fails
 
-1. On a clean working tree, up to date with `origin/main`.
-2. `xcodebuild -scheme UzumeApp -destination 'platform=macOS' build` succeeds. Record
-   the resulting commit SHA — it goes in every provenance entry.
-3. `swift test --package-path UzumeEngine` is green, or its failures are already
-   documented as known flakes in `CLAUDE.md`. A red suite means the footage would
-   record unverified behaviour — stop.
-4. At least one **rights-clear** track is on disk, with its licence recorded. Matt's
-   roster review was captured against David Bowie — *Low*, which is **not** usable
-   here. If no rights-clear track exists → stop and ask Matt; this is the one
-   pre-flight he cannot delegate.
-5. Screen Recording permission is granted to the recorder being used. Uzume itself
-   needs no permission for local-file playback, but the *recorder* does.
-6. Disk headroom: ≥ 20 GB. ProRes masters at 1080p60 are large.
+1. Site repo: clean working tree, branched from an up-to-date `main`.
+2. App repo at `../uzume` (or wherever Matt's checkout is): tracked tree clean, **at
+   `origin/main`, and containing `682175ad`** (`git merge-base --is-ancestor 682175ad HEAD`).
+   **Record the SHA** — it goes in every log entry.
+3. `xcodebuild -scheme UzumeApp -destination 'platform=macOS' -configuration Debug build`
+   succeeds, and `swift test --package-path UzumeEngine --filter SessionRecorder` passes.
+   Record the built `Uzume.app` path (`-showBuildSettings` → `BUILT_PRODUCTS_DIR`).
+4. The track decodes:
+   `/Volumes/Extreme SSD/G/The Goddamn Shame/[2006] - Dispatches from the Grey City (EP)/01 Delinquent Frequencies.m4a`
+   (ALAC, 44.1 kHz stereo, 4:05). Confirm with `ffprobe`.
+5. `ffmpeg` and `ffprobe` on `PATH`; `python3 Scripts/check_capture.py --self-test` passes.
+6. **The LG HDR 4K is set to `1920 × 1080 (low resolution)`** — not "(Default)", which is
+   Retina and renders 3840×2160. Uzume records whatever size it renders, and the check
+   rejects anything but 1920×1080.
+7. ≥ 30 GB free on the volume holding `~/Documents/uzume_sessions/`. REC.1 measured
+   1.1 GB/min on Cymatic Resonance; busier presets compress less, so plan ≈ 9 GB per
+   full-track master.
 
 ## Tasks
 
-**1. Branch.** `git checkout -b w3a-capture`.
+**1. Branch.** `git checkout -b w3a-capture` in the site repo.
 
-**2. Select the roster.** Read the roster review. Build a table of every preset with
-Matt's verbatim observation and a capture verdict: **ready**, **defective**, or
-**unseen**. A preset whose observation names an unfixed visual defect (Dragon Bloom
-"washed out, extreme brightness"; Fata Morgana "too dark"; Cytokinesis "hangs for
-seconds before restart") is **defective** and is not captured this session.
+**2. Record, check and secure each master.** For Cymatic Resonance, then Ferrofluid Ocean,
+then Murmuration — one app launch per preset:
 
-*Done-when:* the table exists in the session notes and every one of the 27 roster
-entries has a verdict with its quote attached.
+1. **Launch** with capture on:
+   `open -n --env UZUME_RECORD_VIDEO=capture "<Uzume.app>"`. Confirm the new session's
+   `session.log` reads `video recording: ENABLED — mode=capture`. If it doesn't, stop.
+2. **Matt** adds the **single file**, not its folder — the drive holds macOS `._` files
+   beside every track, which a folder source could list as tracks that fail to analyse.
+   He puts Uzume fullscreen on the LG, starts the track **from the beginning**, cycles to
+   the target preset (a manual cycle holds until the next track, LFPLAN.3), and lets the
+   **whole track** play. The mouse is fine; **no keys** after the cycle — `←`/`→` would
+   change the preset. Then **⌘Q**, which finalises the file.
+3. **Check it:** `python3 Scripts/check_capture.py <session_dir>`. `REJECT` → record again;
+   do not proceed with a rejected master.
+4. **Find the in-point.** The recording starts before the target preset is reached, so its
+   first seconds show the presets cycled past. One frame every 5 s for the first minute,
+   in reading order (0, 5, 10 … 55 s):
 
-**3. STOP — DECISION-NEEDED.** Present the table and the decision below to Matt. Do not
-capture before he answers.
+   ```
+   ffmpeg -v error -t 60 -i <session_dir>/video.mov -vf "fps=1/5,scale=384:-1,tile=4x3" -frames:v 1 -update 1 <scratch>/sheet.png
+   ```
 
-**4. Capture.** For each approved preset: run a real session against the rights-clear
-track, local-file path, and record the Viewer output at **1080p60, 1920×1080**, no
-audio track in the master. Capture **45–60 s** per preset even though the published
-loop is 15–30 s — the surplus is what makes a clean in/out point selectable later.
+   The in-point is the first 5 s mark where the target preset is steadily on screen. The
+   **loop window** is from the later of the in-point and the check's clean-run start, to
+   the clean-run end.
+5. **Move the whole session folder out of `~/Documents/uzume_sessions/` immediately**, to
+   `~/Movies/Uzume masters/W3a/<preset-slug>/` (`cymatic-resonance`, `ferrofluid-ocean`,
+   `murmuration`). Uzume prunes that folder on every launch — the stored retention policy
+   is keep-the-last-10 — and the next launch in this very task could otherwise delete the
+   master just accepted. Same volume, so `mv` is instant; confirm `video.mov` is present at
+   the new path before the next launch.
 
-Requirements per clip:
-- Real audio drive. The performance must be the engine responding to the actual track.
-  Do **not** substitute synthetic `FeatureVector` fixtures (see Do NOT).
-- Viewer output only — no settings, diagnostics, chrome, cursor, or operator controls
-  in frame. `docs/UX_SPEC.md`: viewer output never includes those.
-- Verify the clip against **D-157 steady luminance** by eye before accepting it: no
-  global flashes, beat-locked motion confined to regions. A clip that fails this is
-  rejected and the preset is marked defective, not "fixed in post."
+*Done-when:* three folders under `~/Movies/Uzume masters/W3a/`, each `video.mov` passing
+`check_capture.py`, each with an in-point and loop window.
 
-*Done-when:* one master file per approved preset exists, each ≥ 45 s, 1920×1080, ≥ 59.9
-fps, and each has been watched end-to-end and accepted.
+**3. Matt's verdict.** Matt opens each `video.mov` in QuickTime and watches it from the
+in-point to the end against **D-157 steady luminance** — no global flashes, beat-locked
+motion confined to regions. Record his words verbatim. A failed master is rejected and its
+preset marked defective; it is never "fixed in post."
 
-**5. Hero reel.** One 30–60 s continuous capture spanning at least two preset
-transitions, so the reel shows the thing prose cannot: that the session is *sequenced*,
-not a single looping effect. Same requirements as Task 4.
+*Done-when:* three verbatim verdicts.
 
-*Done-when:* the reel exists, contains ≥ 2 visible transitions, and has been watched.
+**4. Provenance log.** Write `docs/captures/W3a-capture-log.json`, one entry per master:
 
-**6. Provenance log.** Write `docs/captures/W3a-capture-log.json`: an array with one
-entry per master — `preset`, `file`, `sha256`, `duration_s`, `resolution`, `fps`,
-`captured_at` (ISO 8601), `app_commit` (from pre-flight 2), `track`, `track_licence`,
-`roster_quote` (Matt's verbatim line), `notes`.
+| Field | Value |
+|---|---|
+| `preset`, `role` | name; `hero` for Cymatic Resonance, else `gallery` |
+| `session` | original session folder name, e.g. `2026-09-17T15-02-11Z` |
+| `file` | absolute path under `~/Movies/Uzume masters/W3a/` |
+| `sha256` | `shasum -a 256` of `video.mov` |
+| `duration_s`, `width`, `height`, `codec`, `gb_per_min` | from the check |
+| `captured_at` | the session folder's timestamp, ISO 8601 |
+| `app_commit` | pre-flight 2 |
+| `track`, `rights` | as under Decisions, verbatim |
+| `roster_quote` | Matt's note, verbatim |
+| `in_point_s`, `loop_window_s` | Task 2; `loop_window_s` is `[start, end]` |
+| `check` | the check's `ACCEPT` summary lines |
+| `d157_verdict` | Task 3, verbatim |
+| `notes` | anything seen during capture, including any preset defect |
 
-*Done-when:* the file parses as JSON, has one entry per master, and every `app_commit`
-matches pre-flight 2.
+*Done-when:* the file parses as JSON with three entries, and every `app_commit` matches
+pre-flight 2.
 
-**7. Defect report.** Any preset defect observed during capture that is not already in
-the roster review goes into `KNOWN_ISSUES.md` as a new BUG-* entry. Observation only —
-no fixes.
+**5. Defects.** A preset defect seen during capture that is not already in the roster
+review goes in that master's `notes` and in the closeout, and is reported to Matt. Filing
+a BUG-\* entry is an app-repo task; this repo does not write to the app repo.
 
-*Done-when:* either a BUG-* entry exists per new defect, or the report states none were
-observed.
+*Done-when:* each new defect is noted and reported, or the closeout says none were seen.
 
 ## Do NOT
 
-- **Do not fix presets.** Capture is observation. A preset that looks wrong is marked
-  defective and reported; fixing it is a `preset-session` increment with its own
-  reference set and its own prompt. Bundling them is how a capture session becomes a
-  three-week tuning spiral.
-- **Do not use `RENDER_VISUAL=1` output as footage.** That harness renders discrete
-  stills from synthetic `FeatureVector` fixtures at fixed `time` values — it is a
-  fidelity-review tool, not a motion capture, and it cannot produce a sequence. Footage
-  built from synthetic drive would not be the engine responding to music, which is the
-  entire claim the footage exists to support.
-- **Do not build the offline frame-sequence renderer this session.** Extending the
-  visual-review harness to dump timed sequences fed by *recorded* FeatureVectors is the
-  right durable answer — deterministic, re-runnable when presets improve, no screen
-  recording — but it is engine work with its own scope. Note it in closeout as the W.3
-  follow-on and move on.
-- **Do not use `docs/VISUAL_REFERENCES/` images anywhere near this.** Its README says
-  "photographic references preferred over renders, sources are Matt's choice" — those
-  are third-party fidelity targets, not Uzume output. Publishing them would fabricate
-  footage.
-- **Do not encode, upload, or touch R2.** W.3b, site repo.
-- **Do not capture against copyrighted music**, even though masters carry no audio
-  track. Pre-flight 4 is not negotiable at capture time.
-- **Do not push.** Local commits only until Matt says "yes, push," then a branch and a
-  PR — never directly to `main`.
+- **Do not screen-record.** Measured 2026-09-16: ⌘⇧5 captured 54.75–57.77 fps while Uzume
+  rendered 60, and burns in the pointer and the recording indicator (REC.1 §Evidence).
+- **Do not fix presets.** Capture is observation; a fix is its own app-repo increment.
+- **Do not record the multi-preset hero reel.** The only catalogue-narrowing control the app
+  ships is the family blocklist, so a planner-driven reel on one track would draw from the
+  whole roster, including presets with recorded defects; manual nudges would show curator
+  steering, not the planner the reel exists to prove. It needs a multi-track playlist and
+  its own decision.
+- **Do not use `RENDER_VISUAL=1` stills or `docs/VISUAL_REFERENCES/` images.** The first are
+  synthetic-audio stills, not motion; the second are third-party references, not Uzume.
+- **Do not copy a master into either repo.** Masters live under `~/Movies/Uzume masters/`.
+  `.gitignore` blocks `.mov`, `.mp4` and `.m4v` as a backstop, not as permission.
+- **Do not leave a master in `~/Documents/uzume_sessions/`** past Task 2 step 5.
+- **Do not encode, trim, upload or touch R2.** W.3b.
+- **Do not edit the app repo.** Build and launch only.
+- **Do not push.** Commits stay local until Matt says "yes, push."
 
 ## Verification commands — all must pass before closeout
 
 ```
-swiftlint lint --strict --config .swiftlint.yml
-xcodebuild -scheme UzumeApp -destination 'platform=macOS' build 2>&1
-swift test --package-path UzumeEngine 2>&1
-python3 -c "import json;d=json.load(open('docs/captures/W3a-capture-log.json'));print(len(d),'entries')"
-```
-
-Per-master probe (expect 1920×1080, ≥ 59.9 fps, no audio stream):
-
-```
-for f in docs/captures/masters/*.mov; do ffprobe -v error -show_entries stream=codec_type,width,height,avg_frame_rate -of csv "$f"; done
+python3 Scripts/check_capture.py --self-test
+for d in ~/Movies/"Uzume masters"/W3a/*/; do python3 Scripts/check_capture.py "$d"; done
+python3 -c "import json;d=json.load(open('docs/captures/W3a-capture-log.json'));assert len(d)==3;print('3 entries')"
+git status --short   # no video file anywhere in the tree
+npx prettier --check .
+python3 Scripts/check_contrast.py tokens.css
 ```
 
 ## Commits
 
-`[W.3a] capture: <description>` — small commits per logical step. The masters
-themselves are **not committed** (LFS was retired repo-wide at CLEAN.5.8 over billing);
-`.gitignore` them and record their `sha256` in the log instead. The log and the defect
-entries are committed.
+`[W.3a] capture: <description>` — the log and any doc updates. Masters are never committed.
 
-Push only on Matt's explicit "yes, push," then to a branch with a PR.
+## Closeout (inline — this repo has no closeout skill)
 
-## Closeout
+1. Files changed.
+2. Verification output, verbatim.
+3. Per master: path, `ACCEPT` lines, in-point, loop window, Matt's verdict.
+4. App commit captured from.
+5. Anything rejected and re-recorded, and why.
+6. New preset defects seen, or "none."
+7. Handoff to W.3b: the three loop windows and the hero.
 
-Invoke the `closeout` skill; produce the 8-part report with the verbatim
-`Scripts/closeout_evidence.sh` block as §2. Increment-specific additions:
+## Decisions — resolved by Matt, 2026-09-16
 
-- The roster table from Task 2, with verdicts and Matt's quotes.
-- Per-clip acceptance: which presets were captured, which were rejected and why.
-- The D-157 steady-luminance judgement per accepted clip.
-- The W.3 follow-on note: the offline sequence renderer, and why it was deferred.
+Do not stop to re-ask these.
 
-## DECISION-NEEDED (answer before Task 4)
+**Presets.**
 
-**Which presets should the website show, and should we capture now or after uplift?**
+| Preset | Role | Roster note (verbatim) |
+|---|---|---|
+| Cymatic Resonance | **Hero loop** | "One of the best to watch. Wish there were more presets like this one. I want to see more variation of the patterns it creates." |
+| Ferrofluid Ocean | Gallery | "Brilliant sync with the music, but everything seems like 4/4 time." |
+| Murmuration | Gallery | "Beautiful. Cloud could be bigger, take up more of the screen" |
 
-The roster is mid-uplift. Most entries carry a recorded defect in your own words, and a
-clip captured today freezes that defect on the website until someone re-captures.
+Nacre was considered and dropped: its note records a visible defect ("Too fast overall"),
+and a clip would freeze it on the site.
 
-- **A — Capture the few that are already strong, now.** Your notes single out Aurora
-  Veil ("Looks great. Stars blink well with the beat"), Cymatic Resonance ("One of the
-  best to watch"), and Nacre ("Beautiful"). Three or four clips plus a hero reel. The
-  site stops arguing in prose within a week. The gallery is visibly small.
-- **B — Wait for the uplift, then capture 8–12.** The gallery launches full and
-  consistent. The website keeps making the emotional case for a visualizer in
-  paragraphs for as long as that takes.
-- **C — Capture the strong ones now, and re-capture after uplift.** Same start as A,
-  with a deliberate second pass. Costs one extra capture session; the log's
-  `app_commit` and `captured_at` fields already exist to make staleness visible.
+**Timing.** Capture these now, and **re-capture after the preset uplift**. `app_commit` and
+`captured_at` exist to make staleness visible.
 
-**Recommendation: C.** The roadmap's own line is "a gallery of strong clips beats a
-complete one," and the cost of re-capture drops to near zero once the encode script
-exists. An empty visual argument is a worse problem than a short gallery.
+**Frame rate.** 60 fps (Matt, 2026-09-16) — the reason REC.1 exists.
 
-**Default if no reply:** A — capture only the presets your notes praise without
-qualification, and stop. Nothing speculative gets published.
+**Track.** "Delinquent Frequencies" — The Goddamn Shame, *Dispatches from the Grey City*
+(EP, 2006). Matt's own band; one track drives all three masters, which keeps them
+comparable.
+
+**Rights.** Hudac, co-writer, confirmed permission (Matt, 2026-09-16). The `rights` field,
+verbatim:
+
+> "Delinquent Frequencies" — The Goddamn Shame, *Dispatches from the Grey City* (EP, 2006,
+> self-released). Written by Deming/Hudac. Used with the permission of the songwriters and
+> the band. Audio not published.
