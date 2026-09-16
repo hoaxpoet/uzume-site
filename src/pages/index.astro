@@ -41,9 +41,9 @@ const beats = [
 ---
 
 <Base title="Uzume — a light in sound" description={description}>
-  <Nav />
+  <Nav handOffBrand />
 
-  <main>
+  <main id="main">
     <section class="hero">
       <img
         class="hero__icon"
@@ -53,13 +53,15 @@ const beats = [
         height="256"
         fetchpriority="high"
       />
-      <img
-        class="hero__wordmark"
-        src="/uzume-wordmark.svg"
-        alt="Uzume"
-        width="316"
-        height="160"
-      />
+      <h1 class="hero__lockup">
+        <img
+          class="hero__wordmark"
+          src="/uzume-wordmark.svg"
+          alt="Uzume"
+          width="316"
+          height="160"
+        />
+      </h1>
       <blockquote class="hero__tagline">
         <p>A light in sound, a sound-like power in light.</p>
         <cite>
@@ -67,14 +69,17 @@ const beats = [
         </cite>
       </blockquote>
       <p class="hero__lede">{description}</p>
-      <div class="hero__actions">
-        <Button href={REPO}>On GitHub today — build from source</Button>
-      </div>
-      <NotifyForm />
       <p class="hero__note">
         Uzume is open source and buildable today. There is no installable build
         yet — the public beta will be free and notarized when it arrives.
       </p>
+      <NotifyForm />
+      <div class="hero__actions">
+        <Button variant="secondary" href={REPO}>
+          On GitHub today — build from source
+        </Button>
+      </div>
+      <p class="hero__requirements">Apple silicon · macOS 14+ · free, MIT</p>
     </section>
 
     <section class="beats" aria-label="How it works">
@@ -91,8 +96,8 @@ const beats = [
       <RequirementsList items={requirements} />
     </section>
 
-    <section class="band" aria-label="Before you install anything">
-      <h2>Before you install anything</h2>
+    <section class="band" aria-label="What Uzume asks of your Mac">
+      <h2>What Uzume asks of your Mac</h2>
       <div class="trust">
         <Callout title="Everything happens on your Mac">
           Analysis and rendering run locally. Uzume has no account, sends no
@@ -120,11 +125,11 @@ const beats = [
       aria-label="Contributing presets"
     >
       <div>
-        <h3>Contributors write the repertoire</h3>
+        <h2>Contributors write the repertoire</h2>
         <p>
           A preset is a Metal shader and a JSON file dropped into the
-          repository. The ones that pass the gates become part of what every
-          listener sees, with their author's name on them.
+          repository. The ones that pass the gates will become part of what
+          every listener sees, with their author's name on them.
         </p>
       </div>
       <Button variant="secondary" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
@@ -134,7 +139,7 @@ const beats = [
 
     <section class="band myth" aria-label="The name">
       <h2>Uzume</h2>
-      <p class="myth__pronunciation">oo-ZOO-may</p>
+      <p class="myth__pronunciation">oo-ZOO-meh</p>
       <p>
         In the <em>Kojiki</em>, the sun shuts herself in a cave and the world
         goes dark. A plan is made, a mirror is hung to catch light that does not
@@ -168,16 +173,17 @@ const beats = [
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-6);
-    padding: clamp(var(--space-16), 12vh, var(--space-32)) 0;
+    gap: var(--space-4);
+    padding: clamp(var(--space-8), 5vh, var(--space-12)) 0 var(--space-16);
     text-align: center;
   }
 
   /* BRAND.md motion: the brand's authored movement is opening — content begins
      legible, darkness yields, light becomes visible. One deliberate reveal, on
-     the hero only, never looping. Under reduced motion the global rule in
-     Base.astro collapses the duration and `forwards` leaves the resting state,
-     so the light is simply already there. */
+     the hero only, never looping. `backwards` applies the from-state only
+     during the delay and then releases, so the resting state is the rule's own
+     opacity — which is also why, when the global rule in Base.astro collapses
+     the duration under reduced motion, the light is simply already there. */
   .hero::before {
     content: "";
     position: absolute;
@@ -204,48 +210,63 @@ const beats = [
      at least an eighth of its width. Empty alt — the wordmark below already
      names the product, and "Uzume Uzume" is what a reader would otherwise hear. */
   .hero__icon {
-    width: min(8rem, 30vw);
+    width: min(6rem, 22vw);
     height: auto;
     border-radius: 22.37%;
   }
 
+  .hero__lockup {
+    margin: 0;
+    /* Drives the header handoff — see Nav.astro. Anchoring to this element
+       rather than to pixel offsets keeps the timing correct at every viewport,
+       where the lockup's size and position both change. */
+    view-timeline: --uz-hero-lockup block;
+  }
+
   .hero__wordmark {
-    width: min(20rem, 66vw);
+    display: block;
+    width: min(17rem, 60vw);
     height: auto;
   }
 
+  /* Coleridge signs the lockup; he does not headline it. The poem is 231 years
+     old and does not say what the product is, so it sits at caption scale
+     directly under the wordmark and hands the display voice to the lede. */
   .hero__tagline {
     margin: 0;
+    max-width: 30rem;
   }
 
   .hero__tagline p {
     margin: 0;
-    font: var(--font-weight-regular) var(--text-3xl) / var(--leading-tight)
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    text-wrap: balance;
+  }
+
+  .hero__tagline cite {
+    display: block;
+    margin-top: var(--space-1);
+    font-size: var(--text-xs);
+    font-style: normal;
+    letter-spacing: var(--tracking-label);
+    color: var(--color-text-tertiary);
+  }
+
+  /* The one sentence that says what this is, in the brand's own display face. */
+  .hero__lede {
+    max-width: 28ch;
+    margin: 0;
+    font: var(--font-weight-semibold) var(--text-3xl) / var(--leading-heading)
       var(--font-display);
     letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
     text-wrap: balance;
   }
 
-  .hero__tagline cite {
-    display: block;
-    margin-top: var(--space-3);
-    font-size: var(--text-sm);
-    font-style: normal;
-    letter-spacing: var(--tracking-label);
-    color: var(--color-text-tertiary);
-  }
-
-  .hero__lede {
-    max-width: 34rem;
-    margin: 0;
-    font-size: var(--text-lg);
-    line-height: var(--leading-body);
-    color: var(--color-text-secondary);
-    text-wrap: pretty;
-  }
-
   .hero__actions {
+    margin-top: var(--space-2);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -255,10 +276,19 @@ const beats = [
   .hero__note {
     max-width: 38rem;
     margin: 0;
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     line-height: var(--leading-body);
-    color: var(--color-text-tertiary);
+    color: var(--color-text-secondary);
     text-wrap: pretty;
+  }
+
+  /* The eligibility gate, at the moment of the decision rather than 1,300px
+     below it. The full list is still in "What you need". */
+  .hero__requirements {
+    margin: 0;
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-label);
+    color: var(--color-text-tertiary);
   }
 
   .beats {
@@ -301,8 +331,8 @@ const beats = [
     margin: 0 0 var(--space-6);
     color: var(--color-text-secondary);
     font-size: var(--text-sm);
-    /* Not uppercased, unlike the brand lockup: "oo-ZOO-may" carries the stress
-       in its capitals, and OO-ZOO-MAY throws that away. */
+    /* Not uppercased, unlike the brand lockup: "oo-ZOO-meh" carries the stress
+       in its capitals, and OO-ZOO-MEH throws that away. */
     letter-spacing: var(--tracking-label);
   }
 

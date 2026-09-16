@@ -2,6 +2,15 @@
 // DesignSystem/Web: uz-site-navigation.
 import "../../DesignSystem/Web/uzume-components.css";
 
+interface Props {
+  /** Homepage only. The hero carries the lockup as its h1, so the header
+      starts bare and the wordmark arrives as the hero scrolls away — one
+      lockup on screen at a time instead of two within 200px. */
+  handOffBrand?: boolean;
+}
+
+const { handOffBrand = false } = Astro.props;
+
 // Only pages that exist — lychee fails the build on dangling internal links.
 // /gallery and /download join at W.2/W.4.
 const links = [
@@ -13,7 +22,13 @@ const links = [
 const here = Astro.url.pathname.replace(/\/$/, "") || "/";
 ---
 
-<nav class="uz-site-navigation" aria-label="Site">
+<nav
+  class:list={[
+    "uz-site-navigation",
+    { "uz-site-navigation--handoff": handOffBrand },
+  ]}
+  aria-label="Site"
+>
   <a class="uz-site-navigation__brand" href="/">
     <img src="/uzume-wordmark.svg" alt="Uzume" width="316" height="160" />
   </a>
@@ -34,5 +49,90 @@ const here = Astro.url.pathname.replace(/\/$/, "") || "/";
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  .uz-site-navigation {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--color-canvas);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  /* Homepage handoff. Both properties ride ONE scroll timeline, so the header
+     materialising and the wordmark arriving are a single gesture rather than
+     two effects — BRAND.md's "opening" continued, not a second authored moment.
+     Transparent at rest so the hero's opening light is not cut by a bar across
+     the top; opaque by the time anything scrolls under it, which is also what
+     keeps the wordmark off engine footage (BRAND.md: never over competing
+     imagery).
+
+     Zero JavaScript. In a browser without scroll-driven animations the
+     declaration is dropped, the animation runs on the document timeline at 0s,
+     and `both` fill lands it on the end state — an opaque header with a visible
+     wordmark, which is exactly the safe default. */
+  /* Homepage handoff. Both properties ride ONE timeline anchored to the hero
+     lockup, so the header materialising and the wordmark arriving are a single
+     gesture rather than two effects — BRAND.md's "opening" continued, not a
+     second authored moment. Transparent at rest so the hero's opening light is
+     not cut by a bar across the top.
+
+     The range ends at `exit 100%` — the instant the hero lockup has fully left
+     the top — so the two lockups are never both legible at once, which is the
+     duplication this exists to remove.
+
+     Base styles are deliberately the FINISHED state. Zero JavaScript, and in a
+     browser without scroll-driven animations (or without timeline-scope) the
+     timeline is simply inactive, the effect never applies, and what remains is
+     an opaque header with a visible wordmark — today's behaviour. */
+  .uz-site-navigation--handoff {
+    animation: header-settle linear both;
+    animation-timeline: --uz-hero-lockup;
+    animation-range: exit 0% exit 45%;
+  }
+
+  .uz-site-navigation--handoff .uz-site-navigation__brand {
+    animation: brand-arrive linear both;
+    animation-timeline: --uz-hero-lockup;
+    animation-range: exit 55% exit 100%;
+  }
+
+  @keyframes header-settle {
+    from {
+      background-color: transparent;
+      border-bottom-color: transparent;
+    }
+  }
+
+  /* visibility is in the keyframes deliberately: opacity alone would leave a
+     focusable, invisible link as the second tab stop on the page. */
+  @keyframes brand-arrive {
+    from {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-0.5rem);
+    }
+  }
+
+  /* BRAND.md: under reduced motion, remove spatial travel and decorative
+     reveals; preserve content as an immediate state. The global rule in
+     Base.astro cannot do this one — it collapses animation-duration, which a
+     scroll-driven animation ignores. */
+  @media (prefers-reduced-motion: reduce) {
+    .uz-site-navigation--handoff,
+    .uz-site-navigation--handoff .uz-site-navigation__brand {
+      animation: none;
+    }
+
+    .uz-site-navigation--handoff {
+      background: var(--color-canvas);
+      border-bottom-color: var(--color-line);
+    }
+
+    .uz-site-navigation--handoff .uz-site-navigation__brand {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
   }
 </style>

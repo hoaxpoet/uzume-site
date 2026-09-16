@@ -1,0 +1,17 @@
+---
+// Replaces Starlight's ThemeProvider. The stock one reads localStorage, falls
+// back to prefers-color-scheme, and writes data-theme on <html> — which landed
+// /docs in light mode, a white page one click from a site that is dark
+// everywhere else. Setting data-theme from config `head` did not hold: that
+// script is emitted BEFORE this component's, so Starlight simply overwrote it.
+// Replacing the component removes the only writer.
+//
+// StarlightThemeProvider.updatePickers is part of the contract — ThemeSelect is
+// emptied in astro.config.mjs, but Starlight's own scripts still call it.
+---
+
+{/* Inlined, like the original, so there is no flash. */}
+<script is:inline>
+  document.documentElement.dataset.theme = "dark";
+  window.StarlightThemeProvider = { updatePickers() {} };
+</script>

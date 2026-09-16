@@ -15,6 +15,17 @@
 #                                     POST to the same origin. This was 'none',
 #                                     which blocks every form on the site.
 #
+# Media (video loops, posters) is served from R2 at media.uzume.io, so BOTH of
+# these are required or the gallery renders nothing:
+#
+#   media-src https://media.uzume.io   <video>/<source>. There was no media-src
+#                                      directive at all, so this fell through to
+#                                      default-src 'self' and every clip was
+#                                      refused.
+#   img-src   https://media.uzume.io   posters and stills, same reason.
+#
+# Same class of bug as the Kit one below, and it fails the same silent way.
+#
 # Both were blocked from W.2 until 2026-09-15, and it went unnoticed because Kit's
 # endpoint tests clean from curl — CSP exists only in the browser. Test the form in
 # a real browser after touching this file, not with a request tool.
@@ -22,4 +33,4 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: accelerometer=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com/beacon.min.js; connect-src 'self' https://cloudflareinsights.com https://app.kit.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action https://app.kit.com; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com/beacon.min.js; connect-src 'self' https://cloudflareinsights.com https://app.kit.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://media.uzume.io; media-src 'self' https://media.uzume.io; font-src 'self'; object-src 'none'; base-uri 'none'; form-action https://app.kit.com; frame-ancestors 'none'

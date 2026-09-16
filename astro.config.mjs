@@ -23,6 +23,11 @@ export default defineConfig({
           },
         },
       ],
+      components: {
+        // Pins /docs to dark and drops the picker; see each component's comment.
+        ThemeProvider: "./src/components/DocsThemeProvider.astro",
+        ThemeSelect: "./src/components/DocsThemeSelect.astro",
+      },
       // Starlight defaults to /favicon.svg, which this site does not ship.
       favicon: "/favicon-32.png",
       // Docs live under /docs; the landing page at / is a plain Astro page.

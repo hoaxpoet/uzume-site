@@ -1,0 +1,90 @@
+---
+// Starlight's disable404Route leaves the whole site without one, so every
+// mistyped or stale link — /download and /gallery among them, both named as
+// forthcoming in Nav.astro — served an empty 0-byte document until this page.
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import Button from "../components/Button.astro";
+
+const REPO = "https://github.com/hoaxpoet/uzume";
+const description = "That page isn't here.";
+---
+
+<Base title="Not found — Uzume" description={description} noindex>
+  <Nav />
+
+  <main id="main">
+    <section class="notfound">
+      <img
+        class="notfound__icon"
+        src="/uzume-icon.png"
+        alt=""
+        width="256"
+        height="256"
+      />
+
+      <h1 class="notfound__title">That page isn't here.</h1>
+
+      <p class="notfound__lede">
+        It may never have been, or it may be waiting on a later increment — the
+        gallery and the download page are both still to come.
+      </p>
+
+      <div class="notfound__actions">
+        <Button href="/">Back to the start</Button>
+        <Button variant="secondary" href={REPO}>
+          Source on GitHub
+        </Button>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  main {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0 var(--page-gutter);
+  }
+
+  .notfound {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    padding: clamp(var(--space-16), 14vh, var(--space-32)) 0;
+    text-align: center;
+  }
+
+  .notfound__icon {
+    width: min(6rem, 22vw);
+    height: auto;
+    border-radius: 22.37%;
+  }
+
+  .notfound__title {
+    margin: 0;
+    font: var(--font-weight-semibold) var(--text-3xl) / var(--leading-tight)
+      var(--font-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .notfound__lede {
+    max-width: 34rem;
+    margin: 0;
+    font-size: var(--text-lg);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .notfound__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+</style>

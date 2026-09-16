@@ -10,7 +10,7 @@ colors:
   text-primary: "#f4f6f1"
   text-secondary: "#c5c9c3"
   text-tertiary: "#a4a8a2"
-  text-disabled: "#a4a8a2"
+  text-disabled: "#94988f"
   accent: "#7f6aff"
   accent-hover: "#a99bff"
   accent-pressed: "#7865ee"
@@ -251,11 +251,19 @@ The user journey is **Configure → Add music → Prepare → Handoff → Perfor
 - **Curator Control Surface:** Always discoverable on the Curator display and absent from separated Viewer output. It contains listening status, Show/Hide Track Information, and End Session; local-file transport appears only because Uzume owns that playback.
 - **Settings:** Native sidebar and form controls for Audio, Visual Output, Presets, Accessibility, Diagnostics, and About. Session-affecting changes state when they will apply.
 
-### Shared States and Motion
+### States and Motion
 
 Every relevant component handles ready, focus/selection, loading, empty, permission blocked, offline/unavailable, error, disabled, and consequential success. Errors state problem, consequence, and recovery while preserving user work.
 
-Control feedback lasts 120 ms, standard state changes 240 ms, and authored opening 480 ms using exponential ease-out. Reduced motion removes scale, parallax, autoplay, continuous animation, and large spatial transitions; content appears immediately or through a native crossfade.
+**Shared durations.** Control feedback lasts 120 ms, standard state changes 240 ms, and authored opening 480 ms, all on exponential ease-out. These hold on both platforms.
+
+**What motion is for.** Movement reports a change of state. A transition that answers something the person did — a control responding, a surface arriving, a section handing off to the one that replaces it — is information and is welcome. Movement with no state behind it, running on a timer or on raw scroll position, is decoration and is not. That distinction is the rule; the platform limits below are its consequences, not a list to memorise.
+
+**Website (Persuade).** A marketing surface may carry authored motion the app never would, and one deliberate moment is the target rather than the ceiling. Motion stays caused: it accompanies arrival, a control's own state, or a scroll position that corresponds to a real handoff. Never looping brand chrome, decorative pulsing, synchronized section entrances, or parallax — chrome that moves on its own competes with the engine footage it exists to frame.
+
+**macOS app (Operate).** Native structure and native timing. Authored openings and Alumni Sans moments appear only in first-run, empty, and About surfaces; elsewhere motion is what AppKit and SwiftUI already do. The app repo owns the detail and this section defers to it rather than restating it — `docs/UX_SPEC.md` for per-surface behaviour, D-241 for the decision, `UzumeAppMotion` for the values. Note that the performance surface is not motionless: its chrome fades out after inactivity and returns on input (D-241), so "no motion in the Viewer" is wrong; what the separated Viewer display excludes is operator *controls*, not transitions. The app's reduced-motion rule — opacity only, never spatial — is the stricter form of the paragraph below.
+
+**Reduced motion, both platforms.** Remove scale, parallax, autoplay, continuous animation, and large spatial transitions. Content appears immediately or through a crossfade — native on macOS, a plain opacity change on the web. One web caveat: scroll-driven animations ignore `animation-duration`, so a global duration collapse does not reach them and each needs an explicit `prefers-reduced-motion` override.
 
 ## Do's and Don'ts
 

@@ -14,11 +14,13 @@
   --uzume-paper-200: #eeeeeb;
   --uzume-ink-900: #111217;
   --uzume-ink-700: #4f525a;
+  --uzume-ink-650: #5a5d65;
   --uzume-ink-600: #64676f;
   --uzume-ivory-100: #f4f6f1;
   --uzume-ivory-200: #e3e6df;
   --uzume-ivory-300: #c5c9c3;
   --uzume-ivory-400: #a4a8a2;
+  --uzume-ivory-500: #94988f;
   --uzume-violet-400: #a99bff;
   --uzume-violet-500: #7f6aff;
   --uzume-violet-600: #7865ee;
@@ -45,7 +47,7 @@
   --color-text-primary: var(--uzume-ivory-100);
   --color-text-secondary: var(--uzume-ivory-300);
   --color-text-tertiary: var(--uzume-ivory-400);
-  --color-text-disabled: #a4a8a2;
+  --color-text-disabled: var(--uzume-ivory-500);
   --color-control-disabled-background: var(--uzume-midnight-700);
   --color-control-disabled-border: var(--uzume-midnight-600);
   --color-accent: var(--uzume-violet-500);
@@ -139,7 +141,7 @@
   --duration-immediate: 120ms;
   --duration-standard: 240ms;
   --duration-deliberate: 480ms;
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 }
 
@@ -160,8 +162,8 @@
   --color-line-subtle: #deded9;
   --color-text-primary: var(--uzume-ink-900);
   --color-text-secondary: var(--uzume-ink-700);
-  --color-text-tertiary: var(--uzume-ink-600);
-  --color-text-disabled: #64676f;
+  --color-text-tertiary: var(--uzume-ink-650);
+  --color-text-disabled: var(--uzume-ink-600);
   --color-control-disabled-background: var(--uzume-paper-200);
   --color-control-disabled-border: #c9c9c5;
   --color-accent: #6753d7;
@@ -205,8 +207,8 @@
     --color-line-subtle: #deded9;
     --color-text-primary: var(--uzume-ink-900);
     --color-text-secondary: var(--uzume-ink-700);
-    --color-text-tertiary: var(--uzume-ink-600);
-    --color-text-disabled: #64676f;
+    --color-text-tertiary: var(--uzume-ink-650);
+    --color-text-disabled: var(--uzume-ink-600);
     --color-control-disabled-background: var(--uzume-paper-200);
     --color-control-disabled-border: #c9c9c5;
     --color-accent: #6753d7;

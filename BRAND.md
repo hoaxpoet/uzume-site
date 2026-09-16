@@ -102,9 +102,18 @@ Published footage must be real or clearly labeled as illustrative. Show the inte
 
 ## Motion behavior
 
-The brand’s authored movement is **opening**: content begins legible, darkness yields, and light becomes visible. Keep control transitions short (120–240 ms) and authored reveals deliberate (480 ms). Avoid looping brand chrome, synchronized section entrances, parallax, and decorative pulsing.
+The brand’s authored movement is **opening**: content begins legible, darkness yields, and light becomes visible. Keep control transitions short (120–240 ms) and authored reveals deliberate (480 ms).
 
-Under reduced motion, remove spatial travel, scale, looping autoplay, and decorative reveals. Preserve all content as an immediate state or restrained crossfade.
+**Motion reports a change of state.** That is the rule; everything below follows from it. Movement with a cause — a control answering a click, light rising once as a page opens, a lockup handing off as the reader leaves the section that held it — carries information and belongs. Movement with nothing behind it, running on a timer or on raw scroll offset, is decoration and does not. Uzume holds this line harder than most brands for two reasons: the product *is* motion, so anything the chrome does competes with what the engine does; and the app certifies presets on steady luminance, which a page that pulses for effect would quietly contradict.
+
+**The website and the app get different budgets.** They are different jobs, and this document previously failed to say so.
+
+- **Website.** A page that has to persuade may carry authored motion the app never would. One deliberate moment is the target, not the ceiling. Avoid looping brand chrome, decorative pulsing, synchronized section entrances, and parallax — the named cases of motion without a cause.
+- **App.** Native timing and native transitions. Alumni Sans moments and authored openings belong to first-run, empty, and About surfaces; elsewhere, motion is what AppKit and SwiftUI already do. The app repo is authoritative for its own motion and this document does not restate it: `docs/UX_SPEC.md` carries the per-surface behaviour, `docs/DECISIONS.md` D-241 the decision, and `UzumeApp/DesignSystem/UzumeTokens+App.swift` §`UzumeAppMotion` the values. Its reduced-motion rule is sharper than the general one below and is the one to copy: **opacity only, never spatial.**
+
+Restraint means chrome that does not compete with the engine. It has never meant a still page — `docs/planning/WEBSITE_ROADMAP.md` §W.2 records a first draft that shipped no motion at all on the opposite reading, and had to be corrected.
+
+Under reduced motion, on both platforms, remove spatial travel, scale, looping autoplay, and decorative reveals. Preserve all content as an immediate state or restrained crossfade.
 
 ## Pythagoras
 

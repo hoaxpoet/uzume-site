@@ -15,6 +15,12 @@ interface Props {
 }
 
 const { title, description, noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+// brand/social/Uzume-GitHub-Social-Preview.png, copied unmodified (BRAND.md:
+// reference or copy, never regenerate). 1280x640 is inside the 2:1 that both
+// X and Facebook accept for a large card. img-src is 'self', so it is ours.
+const socialCard = new URL("/uzume-social.png", Astro.site);
 ---
 
 <!doctype html>
@@ -26,13 +32,28 @@ const { title, description, noindex = false } = Astro.props;
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, follow" />}
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Without these every share of uzume.io renders as a bare URL string. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Uzume" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialCard} />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="640" />
+    <meta property="og:image:alt" content="Uzume" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png" />
   </head>
   <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
     <slot />
     <!-- Cloudflare Web Analytics; is:inline keeps Astro from bundling it. -->
     <script
@@ -57,7 +78,10 @@ const { title, description, noindex = false } = Astro.props;
     display: none !important;
   }
 
+  /* Lets the sticky header in Nav.astro drive its handoff off the hero lockup
+     in index.astro. They are siblings, so the scope has to live on the ancestor. */
   body {
+    timeline-scope: --uz-hero-lockup;
     margin: 0;
     background: var(--color-canvas);
     color: var(--color-text-primary);
@@ -68,6 +92,26 @@ const { title, description, noindex = false } = Astro.props;
 
   a {
     color: var(--color-accent);
+  }
+
+  /* Visible only once focused — the first tab stop on every page, ahead of the
+     nav's own links. Starlight ships its own on /docs. */
+  .skip-link {
+    position: absolute;
+    left: var(--space-4);
+    top: var(--space-4);
+    z-index: 10;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-raised);
+    color: var(--color-text-primary);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transform: translateY(calc(-100% - var(--space-4)));
+  }
+
+  .skip-link:focus-visible {
+    transform: none;
   }
 
   a:focus-visible {
