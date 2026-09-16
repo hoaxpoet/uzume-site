@@ -12,11 +12,10 @@ against what W.3b needs from it:
     dropped frame under a correct timestamp, which no timing check can see.
 
 The rest of the file is expected to be untidy, and is reported but not judged. Recording
-start-up is irregular for a few seconds (REC.1: five gaps, all in the first 5.7 s), and
-switching presets can freeze the picture — W.3a's Ferrofluid Ocean take held one image
-for half a second while the preset loaded, 29 duplicate frames, all well before the
-preset was on screen. A loop is cut from inside the clean run, so that is what passes
-or fails.
+start-up is irregular for a few seconds (REC.1: five gaps, all in the first 5.7 s), and a
+recording can legitimately hold a still picture — W.3a's Ferrofluid Ocean take shows 29
+identical frames where the preset cycle passed FFT Sandbox, whose shader reads neither time
+nor audio. A loop is cut from inside the clean run, so that is what passes or fails.
 
     python3 Scripts/check_capture.py <session_dir or video.mov>
     python3 Scripts/check_capture.py --self-test
