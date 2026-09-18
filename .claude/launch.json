@@ -6,6 +6,12 @@
       "runtimeExecutable": "/opt/homebrew/opt/node@24/bin/npm",
       "runtimeArgs": ["run", "dev", "--", "--port", "4321"],
       "port": 4321
+    },
+    {
+      "name": "uzume-site-worker",
+      "runtimeExecutable": "/opt/homebrew/opt/node@24/bin/npx",
+      "runtimeArgs": ["wrangler", "dev", "--port", "8788"],
+      "port": 8788
     }
   ]
 }
