@@ -365,24 +365,22 @@ never reads the app repo — verified by building with the checkout renamed away
   is no longer rendered. Each performance carries its loop, poster, name, author
   and family, plus `inspired_by` where a preset has one.
 
-**Found: the footage cannot sit behind the whole hero, only behind the lockup.**
+**Found, then solved by the W.2 pass: a centred hero cannot show the footage.**
 Murmuration's flock drifts between 0.38 and 0.70 of the frame's height over the
-30 s loop (measured frame by frame), and the hero's copy — tagline, lede, note,
-notify form, CTA, requirements — needs the bottom half of the section. Footage
-stretched over the whole hero puts the flock under the copy's scrim, hiding the
-one thing it is there to show. The stage is the upper band instead
-(`min(52svh, 30rem)`), with `object-position: 40% 58%` centring the crop window
-on the flock's travel, and the copy below on its own field. Still full-bleed.
+30 s loop (measured frame by frame), and a full-width copy block — tagline,
+lede, note, notify form, CTA, requirements — needs the bottom half of the
+section, which put the flock under the copy's scrim and hid the one thing it is
+there to show. W.4 shipped a cropped top band as the workaround. The W.2 hero
+pass below removed the cause: a copy *column* on one side leaves the other side
+clear, so the loop now runs the full height of the section at its own scale.
 
 **Found: the scrim can be sized from the footage rather than by eye.** Alpha
 compositing is linear in relative luminance, so a scrim of `--color-canvas` at
 alpha *a* over footage of luminance *L* lands the background at
-`a·0.0037 + (1−a)·L`. The loop's brightest local patch reaches 0.4476. The stage
-scrim runs 0.86 across the top 4.5rem (the navigation's height) and 0.50 through
-the lockup band; the copy field is 0.92. Measured against the brightest pixel any
-row of the footage reaches at any point in the loop: wordmark 4.15:1 (needs 3.0
-as a graphic), tagline 9.57:1, citation 7.13:1, lede 16.72:1, note 11.65:1,
-notify label 17.96:1, notify terms 8.10:1, requirements 8.10:1. All pass.
+`a·0.0037 + (1−a)·L`. The loop's brightest local patch reaches 0.4476. That
+turns "is this legible?" into arithmetic against a measured map of the footage
+rather than a judgement call, and it is how both the W.4 scrim and the W.2
+pass's veil below were sized. It is worth reusing on any future hero.
 
 **Found: none of the three published presets has an `inspired_by`.** Murmuration,
 Cymatic Resonance and Ferrofluid Ocean are all Matt's originals. The generator
@@ -399,11 +397,12 @@ back into the shorthand as `animation: linear both header-settle --uz-hero-locku
 the whole declaration is invalid and dropped. `animation-name` computes to `none`
 and `animation-timeline` to `auto` in the built site. The result is the fallback
 the component's own comment describes as safe: an opaque header with a visible
-wordmark, from the first pixel. It is pre-existing (the same source is on `main`)
-and W.4 left it alone, because turning it on makes the header transparent over
-the new footage — a deliberate look Matt should approve rather than inherit. The
-fix is to write the four longhands instead of the shorthand. The hero's stage
-scrim already carries 0.86 across the navigation's own height for that case.
+wordmark, from the first pixel. It was pre-existing — the same source is on
+`main` — and W.4 left it alone. **The W.2 hero pass below deleted it instead of
+fixing it:** the hero no longer holds a lockup to hand off from, so the feature
+had nothing left to do. `timeline-scope` left `Base.astro` with it. Worth
+remembering if a scroll-driven animation is ever wanted again: write the four
+longhands, never the `animation` shorthand followed by `animation-timeline`.
 
 **Found: Ferrofluid Ocean's poster is the heaviest asset on the site.** 551 kB
 JPEG, 382 kB AVIF, against 48/18 kB for Cymatic Resonance and 93/52 kB for
@@ -426,14 +425,61 @@ which is exactly the trap. Safari therefore selects
 source selection happens before any fetch, so the WebM is not merely abandoned,
 it is never asked for. Chrome selects the WebM.
 
-**Inherited, not done here: `claude/w2-hero-impeccable`.** Two unmerged W.2
-commits (`5562117`, `9b6ec38`) add `src/components/FirstOpening.astro` and
-rewrite the hero. Matt: "hand it to W.4. w.4 should complete and then update hero
-with the desired changes." So it is a separate pass over the finished W.4 hero,
-not part of it. Merging it into `main` conflicts in `src/pages/index.astro` in
-five hunks, all in the hero — a design choice, not a mechanical fix — and the
-merge deletes `public/uzume-icon.png`, which `index.astro`, `404.astro` and
-`confirmed.astro` all reference. Keep `main`'s copy.
+### W.2 hero pass *(done 2026-09-18, on top of W.4)*
+
+Matt: "hand it to W.4. w.4 should complete and then update hero with the desired
+changes." The unmerged branch `claude/w2-hero-impeccable` (`5562117`, `9b6ec38`)
+was never merged — it forks 54 commits back and carries copy that `main` has
+since corrected. Its hero ideas were applied to the finished W.4 hero instead.
+
+**Applied.**
+
+- **The claim is the h1**, in Alumni Sans, and the wordmark moves to the header
+  on every page as live text. BRAND.md's "never set the wordmark in live type"
+  was written before the site served Alumni Sans; the wordmark file is itself
+  outlined Alumni Sans SemiBold, so the real face at 600 is the same drawing —
+  selectable, scaled by the reader's text settings, one asset lighter.
+- **A copy column beside the field**, not a centred stack over it. This is what
+  let the footage take the whole hero rather than a cropped band.
+- **A spec list inside the first viewport**, and the GitHub CTA demoted to the
+  sentence after the form. The notify path is the primary action now.
+- **The Coleridge tagline moved to the footer**, as the atmospheric close
+  BRAND.md describes rather than the second thing a visitor reads.
+- **`NotifyForm` leaves alignment to its container.**
+- **No `vw` in the page frame.** `50vw` counts the scrollbar and `50%` does not,
+  so W.4's `margin-inline: calc(50% - 50vw)` bleed produced real horizontal
+  scroll on classic-scrollbar machines. `main` runs full width and each section
+  centres its own column in percentages, which also makes the hero full-bleed by
+  default rather than by escaping a constraint. Verified after: `scrollWidth`
+  1425 against `innerWidth` 1440, no overflow.
+- **The authored opening moved to the field.** A full-bleed field paints over
+  the violet glow W.2 spent it on, so the reveal is the footage arriving.
+  Opacity only — a scale at the width of the window is a zoom.
+
+**Decision: the footage keeps the field; `FirstOpening.astro` is not merged**
+(Matt, 2026-09-18). The branch's hero art and W.4's footage are the same slot.
+BRAND.md makes engine output the principal image language and W.3 existed to
+produce it, so the SVG stays on the branch.
+
+**The veil is horizontal now** — midnight over the copy, clear over the flock —
+and its stops were solved numerically against a per-cell map of the loop's
+maximum luminance (every frame, every part of the frame) rather than chosen by
+eye. It is shaped as a sampled smoothstep: a two-stop linear ramp kinks at both
+ends, and the kink reads as the edge of a panel rather than as haze. Worst case
+over the whole loop — claim 13.48:1, spec list 8.65:1, notify label 13.23:1,
+notify terms 6.16:1, alt text 6.60:1, alt link 9.55:1 — while the flock keeps
+97% of its light at 0.12 of the window and 25% at 0.40.
+
+**Not carried, all four older than `main`:** the deletion of
+`public/uzume-icon.png` (`404.astro` and `confirmed.astro` still reference it),
+`oo-ZOO-may` for the pronunciation, the present-tense contributor line, and the
+retired Kit form id `9918547`. A branch that far behind `main` is a source of
+ideas, not a merge.
+
+**Left on the branch, not applied:** its closing `Uzume will be free when it
+lands.` section, which repeats the notify form at the foot of the page. That is
+a page addition rather than a hero change; it is a small, easy win whenever
+someone wants it.
 
 ### W.5 — Docs *(about two sessions)*
 
