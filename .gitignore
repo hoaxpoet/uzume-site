@@ -18,5 +18,10 @@ dist/
 *.mp4
 *.m4v
 
+# impeccable ships a 12 MB platform binary per skill copy; the launcher
+# re-fetches or falls back to ~/.impeccable when it is absent.
+.claude/skills/impeccable/scripts/bin/
+.agents/skills/impeccable/scripts/bin/
+
 # wrangler dev's local state, from the preview config in .claude/launch.json
 .wrangler/
