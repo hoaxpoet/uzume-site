@@ -221,7 +221,12 @@ const beats = [
     position: relative;
     isolation: isolate;
     overflow: clip;
-    min-height: 100svh;
+    /* The footage is the argument: it gets the first screen, and then some.
+       The floor is what the parts actually need — the header's own height, the
+       flock at its displayed size, and the copy beneath it — rather than a
+       round number. Below that the swarm runs into the copy's veil and reads as
+       cropped, which is the one thing this hero must not do. */
+    min-height: max(100svh, 64rem);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -235,17 +240,22 @@ const beats = [
      drifts between 0.38 and 0.70 of the frame's height over the 30 s loop
      (measured, not guessed), and a centred copy column needs the lower half —
      footage stretched over the whole hero would put the flock behind the copy's
-     veil and hide the one thing it is here to show. `object-position` centres
-     the crop window on that travel, so the flock lands behind and just below
-     the name. 40% horizontally only matters where the band is taller than 16:9
-     and the crop turns horizontal, which is the phone case. */
+     veil and hide the one thing it is here to show.
+
+     The vertical figure is the one that matters: at 58% the window sat low
+     enough that the flock's lowest drift ran into the copy field's veil and the
+     swarm read as cropped. 75% takes more off the top of the frame — nothing is
+     up there but sky — and lands the whole 0.38–0.70 travel clear of it, with
+     the band itself taller so there is room to do so. 40% horizontally only
+     matters where the band is taller than 16:9 and the crop turns horizontal,
+     which is the phone case. */
   .hero__stage {
     position: absolute;
     inset: 0 0 auto;
-    height: min(52svh, 30rem);
+    height: min(62svh, 34rem);
     overflow: hidden;
     z-index: -1;
-    --uz-loop-position: 40% 58%;
+    --uz-loop-position: 40% 82%;
     /* BRAND.md motion: the brand's authored movement is opening — content
        begins legible, darkness yields, light becomes visible. One deliberate
        reveal, on the hero only, never looping. Opacity only, no scale: this is
@@ -328,16 +338,25 @@ const beats = [
     );
   }
 
-  /* The form leaves alignment to its container, and this container is centred. */
+  /* The form leaves alignment to its container, and this container is centred.
+     It also gets far more room than the rhythm gives anything else here: it is
+     the page's primary action, and the only thing in the hero a visitor can
+     actually complete today. Space is what makes it read that way — the space
+     above and below it is what separates the claim from the build-from-source
+     sentence, so the two asks are not one paragraph of small print. */
   .hero__copy :global(.notify) {
     align-items: center;
     text-align: center;
+    margin-block: var(--space-12);
+    /* Wider than the component's own default, which was sized for a narrow
+       column. This is the page's primary action and it is allowed to look it. */
+    width: min(38rem, 100%);
   }
 
   /* The one sentence that says what this is. It carries the display face but
      not the display size — the name is the headline now. */
   .hero__claim {
-    max-width: 26ch;
+    max-width: 44rem;
     margin: 0;
     font: var(--font-weight-semibold) var(--text-3xl) / var(--leading-heading)
       var(--font-display);
@@ -361,9 +380,9 @@ const beats = [
   }
 
   .hero__alt {
-    max-width: 44ch;
+    max-width: 42rem;
     margin: 0;
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     line-height: var(--leading-body);
     color: var(--color-text-tertiary);
     text-wrap: pretty;
@@ -371,6 +390,22 @@ const beats = [
 
   .hero__alt a {
     color: var(--color-text-secondary);
+  }
+
+  /* Narrow screens get their own band, not the desktop one turned down.
+     Two things change below this width. The copy is much taller relative to
+     the hero, so its field starts higher and the space the footage has is
+     smaller; and once the band is taller than 9/16 of its own width the frame
+     is scaled to fit the height, there is no vertical crop left, and
+     `object-position` has nothing to work with — the flock lands at 0.38–0.70
+     of the band whatever this file asks for. A band tied to the width keeps the
+     swarm whole and clear of the copy at every size here; measured at 375 and
+     768, where it clears the veil by 125px and 88px. */
+  @media (max-width: 60rem) {
+    .hero__stage {
+      height: clamp(13rem, 50vw, 24rem);
+      --uz-loop-position: 40% 50%;
+    }
   }
 
   .beats {
