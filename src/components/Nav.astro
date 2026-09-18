@@ -2,6 +2,16 @@
 // DesignSystem/Web: uz-site-navigation.
 import "../../DesignSystem/Web/uzume-components.css";
 
+interface Props {
+  /** Homepage only. The header floats over the hero's footage instead of
+      sitting above it: transparent while the hero's lockup is on screen, so
+      the clouds run behind it, and opaque with the wordmark in place once the
+      lockup has gone. */
+  overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+
 // Only pages that exist — lychee fails the build on dangling internal links.
 // /download joins at W.7.
 const links = [
@@ -14,7 +24,13 @@ const links = [
 const here = Astro.url.pathname.replace(/\/$/, "") || "/";
 ---
 
-<nav class="uz-site-navigation" aria-label="Site">
+<nav
+  class:list={[
+    "uz-site-navigation",
+    { "uz-site-navigation--overlay": overlay },
+  ]}
+  aria-label="Site"
+>
   <a class="uz-site-navigation__brand" href="/">
     Uzume
   </a>
@@ -34,12 +50,9 @@ const here = Astro.url.pathname.replace(/\/$/, "") || "/";
      served Alumni Sans; the wordmark file is itself outlined Alumni Sans
      SemiBold letterforms, so set in the real face at 600 it is the same
      drawing — and it is selectable, scales with the reader's text settings,
-     and needs no separate asset.
-
-     The header carries the name on every page now, including the homepage.
-     The hero's own lockup is gone — the claim is the h1 there — so there is no
-     longer a second lockup to hand off from, and the scroll-driven handoff
-     this component used to run went with it. */
+     and needs no separate asset. It is also what lets the hero's h1 and this
+     be the same word in the same face, which is the whole point of the
+     handoff below. */
   .uz-site-navigation__brand {
     width: auto;
     font: var(--font-weight-semibold) var(--text-2xl) / 1 var(--font-display);
@@ -60,5 +73,73 @@ const here = Astro.url.pathname.replace(/\/$/, "") || "/";
     z-index: 5;
     background: var(--color-canvas);
     border-bottom: 1px solid var(--color-line);
+  }
+
+  /* Fixed rather than sticky, so the hero starts at the very top of the page
+     and its footage runs behind the header rather than below it. */
+  .uz-site-navigation--overlay {
+    position: fixed;
+    inset-inline: 0;
+  }
+
+  /* Over footage rather than over canvas, so the links carry the primary ink.
+     --color-text-secondary would read at 2.5:1 against the brightest the sky
+     gets under this header; primary reads at 5.1:1. The links keep it once the
+     header fills in, where it is simply a stronger 18:1. */
+  .uz-site-navigation--overlay .uz-site-navigation__link {
+    color: var(--color-text-primary);
+  }
+
+  /* The handoff. Both properties ride ONE timeline anchored to the hero's h1,
+     so the header filling in and the wordmark arriving are a single gesture
+     rather than two effects — BRAND.md's "opening" continued, not a second
+     authored moment. The range ends at `exit 100%`, the instant the hero's
+     Uzume has fully left the top, so the two are never both legible at once.
+
+     The base styles above are deliberately the FINISHED state: opaque header,
+     visible wordmark. A browser without scroll-driven animations runs these on
+     the document timeline at 0s and `both` fill lands on exactly that, which
+     is also the right answer under reduced motion — hence the query.
+
+     Longhands only, and never the `animation` shorthand. The build's CSS
+     minifier folds a shorthand and a following `animation-timeline` into
+     `animation: linear both name --timeline`; animation-timeline is not a
+     component of that shorthand, so the whole declaration is invalid and
+     silently dropped. That is exactly how this feature shipped dead in W.2 and
+     stayed dead until W.4 went looking. If you touch these rules, rebuild and
+     grep dist for `animation-timeline` before believing them. */
+  @media (prefers-reduced-motion: no-preference) {
+    .uz-site-navigation--overlay {
+      animation-name: uz-header-settle;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --uz-hero-lockup;
+      animation-range: exit 0% exit 70%;
+    }
+
+    .uz-site-navigation--overlay .uz-site-navigation__brand {
+      animation-name: uz-brand-arrive;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --uz-hero-lockup;
+      animation-range: exit 35% exit 100%;
+    }
+  }
+
+  @keyframes uz-header-settle {
+    from {
+      background-color: transparent;
+      border-bottom-color: transparent;
+    }
+  }
+
+  /* visibility is in the keyframes deliberately: opacity alone would leave a
+     focusable, invisible link as the second tab stop on the page. */
+  @keyframes uz-brand-arrive {
+    from {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-0.6rem);
+    }
   }
 </style>

@@ -78,7 +78,10 @@ const socialCard = new URL("/uzume-social.png", Astro.site);
     display: none !important;
   }
 
+  /* Lets the fixed header in Nav.astro drive its handoff off the hero's h1 in
+     index.astro. They are siblings, so the scope has to live on the ancestor. */
   body {
+    timeline-scope: --uz-hero-lockup;
     margin: 0;
     background: var(--color-canvas);
     color: var(--color-text-primary);
