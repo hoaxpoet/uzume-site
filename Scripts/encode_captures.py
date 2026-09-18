@@ -1,0 +1,312 @@
+#!/usr/bin/env python3
+"""Encode the W.3a capture masters into the website's loops, measure them, and write the
+asset manifest (W.3b).
+
+For each master in docs/captures/W3a-capture-log.json:
+
+  - cut a loop from the middle of its clean loop window — hero (Murmuration)
+    30 s, gallery 15 s — and
+    join its end to its start with a half-second crossfade (W.3b decisions 1C and 2A).
+    The crossfade blends the loop's last half second into the half second of real
+    footage just before its first frame, so the last frame leads straight into the first;
+  - encode AV1/WebM and H.264/MP4, 1920x1080 at a constant 60 fps, no audio, tagged
+    BT.709, with no filtering beyond the 10-bit 4:2:2 -> 8-bit 4:2:0 conversion;
+  - write an AVIF and a JPEG poster of the loop frame whose mean luma is closest to the
+    loop's median;
+  - measure each rendition (stream, frame timing, size, SSIM/XPSNR against the same
+    loop built from the master, luminance at the seam) and save a contact sheet;
+  - write src/data/media.json, keeping any `encode_verdict` already recorded in it.
+
+Outputs go outside the repo, named by content hash. The posters and the manifest
+reproduce byte for byte, and so does x264 wherever its rate cap does not bind hard;
+Ferrofluid Ocean's H.264 loop, capped throughout, does not, and SVT-AV1 v4.1 does not
+in any thread or rate configuration tried (W.3b). So a plain run keeps the loops the manifest already
+publishes and only re-measures them — the published, reviewed bytes stay the source of
+truth — and `--reencode` encodes every loop afresh.
+
+    python3 Scripts/encode_captures.py [--reencode] [out_dir]
+                                                     default ~/Movies/Uzume masters/W3b
+
+Exit 0 when every rendition meets its bars, 1 when any does not, 2 on a tool error.
+"""
+
+import hashlib
+import json
+import pathlib
+import re
+import statistics
+import subprocess
+import sys
+
+from check_capture import gaps, run
+
+REPO = pathlib.Path(__file__).resolve().parent.parent
+LOG = REPO / "docs/captures/W3a-capture-log.json"
+MANIFEST = REPO / "src/data/media.json"
+BASE_URL = "https://media.uzume.io"
+
+FPS = 60
+# W.3b: Matt moved the hero from Cymatic Resonance (the W.3a log's `role`) to
+# Murmuration, the more atmospheric of the three. The log keeps its W.3a record.
+HERO = "Murmuration"
+SECONDS = {"hero": 30, "gallery": 15}  # decision 1C
+FADE = FPS // 2  # decision 2A, frames
+BUDGET_MB = {"hero": 24, "gallery": 12}  # WEBSITE_PLAN §5: 8-12 MB, hero "somewhat larger"
+
+# Quality-targeted, with a peak-rate cap so a hard stretch cannot blow the budget.
+# Measured on the 15 s loops (W.3b): SVT-AV1's mbr lets the average run ~10 % over the
+# cap, hence 5000 against x264's 6M. Ferrofluid Ocean is near-incompressible — uncapped
+# AV1 at CRF 30 is 48 MB for SSIM 0.949, against 0.937 in budget — so its cap binds.
+# The hero is capped lower (Matt, W.3b): at the gallery cap Murmuration's 30 s loop was
+# 22.5 MB, about 6 Mbit/s, which stalls on a weak connection.
+# ponytail: one setting per role; per-preset rates if one misses its bar.
+CAPS = {"hero": ("3500", "4M"), "gallery": ("5000", "6M")}  # (SVT-AV1 kbps, x264)
+
+
+def video_codec(ext, role):
+    av1, x264 = CAPS[role]
+    return {
+        "webm": ["-c:v", "libsvtav1", "-preset", "4", "-crf", "34",
+                 "-svtav1-params", f"mbr={av1}:lp=4"],
+        "mp4": ["-c:v", "libx264", "-preset", "veryslow", "-profile:v", "high", "-level:v", "4.2",
+                "-crf", "20", "-maxrate", x264, "-bufsize", f"{int(x264[:-1]) * 2}M",
+                "-movflags", "+faststart",
+                # Frame threads under a VBV cap vary run to run; sliced threads fix that
+                # unless the cap binds throughout (Ferrofluid). ponytail: -threads 1 fixes
+                # it too, at ~5x the time; add it if a re-encode must be reproducible.
+                "-x264-params", "sliced-threads=1"],
+    }[ext]
+
+
+MIME = {"webm": "video/webm", "mp4": "video/mp4", "avif": "image/avif", "jpg": "image/jpeg"}
+
+
+def slug(preset):
+    return preset.lower().replace(" ", "-")
+
+
+def loop_input(entry, frames):
+    """ffmpeg input args and filter chain for the loop of `frames` frames, built from the
+    middle of the master's loop window; also returns its span within the master."""
+    master = pathlib.Path(entry["file"]).expanduser()
+    pts = sorted(float(t) for t in run(
+        "ffprobe", "-v", "error", "-select_streams", "v:0",
+        "-show_entries", "packet=pts_time", "-of", "csv=p=0", str(master)).split())
+    lo, hi = entry["loop_window_s"]
+    need = frames + FADE
+    window = [t - pts[0] for t in pts if lo - 1e-3 <= t - pts[0] <= hi + 1e-3]
+    if len(window) < need:
+        sys.exit(f"encode_captures: {entry['preset']}: loop window has {len(window)} frames, "
+                 f"needs {need}")
+    first = (len(window) - need) // 2
+    span = window[first:first + need]
+    if gaps(span) != [1] * (need - 1):
+        sys.exit(f"encode_captures: {entry['preset']}: timing gap inside the loop window")
+    # The loop is span[FADE:]; its last FADE frames fade into span[:FADE], the footage
+    # immediately before its first frame.
+    graph = (
+        f"trim=end_frame={need},setpts=N/{FPS}/TB,split[a][b];"
+        f"[a]trim=start_frame={FADE},setpts=N/{FPS}/TB,split[c][d];"
+        f"[c]trim=end_frame={frames - FADE}[head];"
+        f"[d]trim=start_frame={frames - FADE},setpts=N/{FPS}/TB[tail];"
+        f"[b]trim=end_frame={FADE}[intro];"
+        f"[tail][intro]blend=all_expr='A*(1-(N+1)/{FADE + 1})+B*(N+1)/{FADE + 1}'[seam];"
+        f"[head][seam]concat=n=2:v=1:a=0,setpts=N/{FPS}/TB,"
+        f"scale=in_color_matrix=bt709:in_range=tv:out_color_matrix=bt709:out_range=tv,"
+        f"format=yuv420p,"
+        # Tag the frames: ffmpeg 8 encoders take colour from the frames, and the
+        # -colorspace/-color_* output options alone left every stream untagged.
+        f"setparams=colorspace=bt709:color_primaries=bt709:color_trc=bt709:range=tv"
+    )
+    # Seek to half a frame before the first frame, so float rounding cannot skip it.
+    args = ["-ss", f"{pts[0] + span[0] - 0.5 / FPS:.6f}", "-i", str(master)]
+    return args, graph, (round(span[FADE], 3), round(span[-1] + 1 / FPS, 3))
+
+
+def ffmpeg(*args):
+    return subprocess.run(["ffmpeg", "-v", "error", "-nostdin", "-y", *args],
+                          check=True, capture_output=True, text=True).stderr
+
+
+def publish(tmp, out, stem, ext):
+    """Rename to the content-hashed name; True if that exact file already existed."""
+    digest = hashlib.sha256(tmp.read_bytes()).hexdigest()
+    final = out / f"{stem}.{digest[:8]}.{ext}"
+    existed = final.exists()
+    tmp.replace(final)
+    return final, digest, existed
+
+
+def luma(inputs, graph):
+    """Per-frame mean luma (signalstats YAVG) of the first output of `graph`."""
+    out = subprocess.run(["ffmpeg", "-v", "error", "-nostdin", *inputs, "-filter_complex",
+                          f"{graph},signalstats,metadata=print:file=-", "-f", "null", "-"],
+                         check=True, capture_output=True, text=True).stdout
+    return [float(v) for v in re.findall(r"YAVG=([\d.]+)", out)]
+
+
+def seam_ok(yavg):
+    """(seam change, largest in-loop change, ok): the jump from the last frame back to the
+    first must be no larger than any change the performance itself makes."""
+    seam = abs(yavg[0] - yavg[-1])
+    inner = max(abs(b - a) for a, b in zip(yavg, yavg[1:]))
+    return seam, inner, seam <= inner
+
+
+def codecs_param(path):
+    """RFC 6381 codecs string from the file's own decoder configuration record."""
+    stream = json.loads(run("ffprobe", "-v", "error", "-select_streams", "v:0",
+                            "-show_streams", "-show_data", "-of", "json", str(path)))["streams"][0]
+    data = bytes.fromhex("".join(re.findall(r"^[0-9a-f]+: ((?:[0-9a-f]{2,4} )+)",
+                                            stream["extradata"], re.M)).replace(" ", ""))
+    if stream["codec_name"] == "h264":  # avcC: version, profile, constraints, level
+        return f"avc1.{data[1]:02X}{data[2]:02X}{data[3]:02X}"
+    if stream["codec_name"] == "av1":  # av1C: marker|version, profile|level, tier|depth...
+        depth = 12 if data[2] & 0x20 else 10 if data[2] & 0x40 else 8
+        return f"av01.{data[1] >> 5}.{data[1] & 0x1F:02d}{'H' if data[2] & 0x80 else 'M'}.{depth:02d}"
+    sys.exit(f"encode_captures: no codecs rule for {stream['codec_name']}")
+
+
+def measure(path, ext, entry, inputs, graph, frames):
+    probe = json.loads(run("ffprobe", "-v", "error", "-show_streams", "-show_format",
+                           "-of", "json", str(path)))
+    video = [s for s in probe["streams"] if s["codec_type"] == "video"]
+    v = video[0]
+    times = sorted(float(t) for t in run(
+        "ffprobe", "-v", "error", "-select_streams", "v:0",
+        "-show_entries", "packet=pts_time", "-of", "csv=p=0", str(path)).split())
+    size = path.stat().st_size
+    stats = ffmpeg("-i", str(path), *inputs, "-filter_complex",
+                   f"[1:v]{graph}[ref];[0:v]split[e1][e2];[ref]split[r1][r2];"
+                   f"[e1][r1]ssim;[e2][r2]xpsnr", "-v", "info", "-f", "null", "-")
+    ssim = float(re.findall(r"SSIM Y:([\d.]+)", stats)[-1])
+    ssim_all = float(re.findall(r"All:([\d.]+)", stats)[-1])
+    xpsnr = float(re.findall(r"XPSNR +y: *([\d.]+)", stats)[-1])
+    yavg = luma(["-i", str(path)], "null")
+    seam, inner, seam_pass = seam_ok(yavg)
+    budget = BUDGET_MB[entry["role"]] * 1e6
+    checks = {
+        "stream": (v["codec_name"] == {"webm": "av1", "mp4": "h264"}[ext]
+                   and (v["width"], v["height"]) == (1920, 1080)
+                   and v["avg_frame_rate"] == v["r_frame_rate"] == f"{FPS}/1"
+                   and len(probe["streams"]) == 1
+                   and (v.get("color_space"), v.get("color_primaries"), v.get("color_transfer"),
+                        v.get("color_range")) == ("bt709", "bt709", "bt709", "tv")
+                   and (ext != "mp4" or v["profile"] == "High" and v["pix_fmt"] == "yuv420p")),
+        "frames": len(times) == len(yavg) == frames and set(gaps(times)) == {1},
+        "size": size <= budget,
+        "seam": seam_pass,
+    }
+    return {
+        "ext": ext, "path": path, "bytes": size, "type": f'{MIME[ext]}; codecs="{codecs_param(path)}"',
+        "width": v["width"], "height": v["height"], "frames": len(times),
+        "duration_s": round(len(times) / FPS, 3), "ssim_y": ssim, "ssim_all": ssim_all,
+        "xpsnr_y": xpsnr, "seam": seam, "inner": inner, "checks": checks,
+    }
+
+
+def contact_sheet(out, stem, inputs, graph, renditions, frames):
+    """Rows: four moments in the loop. Columns: master, AV1, H.264."""
+    pick = "+".join(f"eq(n\\,{frames * k // 5})" for k in range(1, 5))
+    column = f"select='{pick}',scale=960:540,format=rgb24,tile=1x4"
+    ffmpeg(*inputs, "-i", str(renditions[0]), "-i", str(renditions[1]), "-filter_complex",
+           f"[0:v]{graph},{column}[m];[1:v]{column}[a];[2:v]{column}[h];[m][a][h]hstack=3",
+           "-frames:v", "1", str(out / f"{stem}.contact.png"))
+
+
+def main():
+    args = sys.argv[1:]
+    reencode = "--reencode" in args
+    args = [a for a in args if a != "--reencode"]
+    out = pathlib.Path(args[0] if args else "~/Movies/Uzume masters/W3b").expanduser()
+    if REPO in out.resolve().parents or out.resolve() == REPO:
+        sys.exit("encode_captures: the output directory must be outside the repo")
+    for sub in ("loops", "posters", "contact"):
+        (out / sub).mkdir(parents=True, exist_ok=True)
+    published = json.loads(MANIFEST.read_text()) if MANIFEST.exists() else []
+    verdicts = {e["slug"]: e["provenance"].get("encode_verdict") for e in published}
+    kept = {r["url"].rsplit("/", 1)[1] for e in published for r in e["renditions"]}
+
+    manifest, all_ok = [], True
+    for entry in json.loads(LOG.read_text()):
+        entry = {**entry, "role": "hero" if entry["preset"] == HERO else "gallery"}
+        name, frames = slug(entry["preset"]), SECONDS[entry["role"]] * FPS
+        inputs, graph, span = loop_input(entry, frames)
+        print(f"{entry['preset']} ({entry['role']}, {frames // FPS} s, master {span[0]}-{span[1]} s)")
+
+        renditions = []
+        for ext in ("webm", "mp4"):
+            keep = [p for p in (out / "loops").glob(f"{name}.*.{ext}") if p.name in kept]
+            if keep and not reencode:
+                path, existed = keep[0], True
+                digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            else:
+                tmp = out / "loops" / f".{name}.tmp.{ext}"
+                ffmpeg(*inputs, "-filter_complex", graph, "-frames:v", str(frames), "-an",
+                       "-map_metadata", "-1", "-fps_mode", "cfr", "-r", str(FPS),
+                       *video_codec(ext, entry["role"]), str(tmp))
+                path, digest, existed = publish(tmp, out / "loops", name, ext)
+            r = measure(path, ext, entry, inputs, graph, frames)
+            r.update(sha256=digest, reproduced=existed)
+            renditions.append(r)
+            all_ok &= all(r["checks"].values())
+            failed = [k for k, ok in r["checks"].items() if not ok]
+            print(f"  {ext:4} {r['type']:38} {r['bytes'] / 1e6:5.2f} MB  {r['frames']} frames  "
+                  f"SSIM Y {r['ssim_y']:.4f} (all {r['ssim_all']:.4f})  XPSNR Y {r['xpsnr_y']:.2f} dB  "
+                  f"seam dY {r['seam']:.2f} <= max in-loop {r['inner']:.2f}  "
+                  f"{'PASS' if not failed else 'FAIL ' + ','.join(failed)}"
+                  f"{'  (kept)' if keep and not reencode else '  (reproduced)' if existed else ''}")
+
+        # Poster: the frame nearest the loop's median luma, from the same 8-bit loop.
+        yavg = luma(inputs, graph)
+        median = statistics.median(yavg)
+        frame = min(range(len(yavg)), key=lambda i: (abs(yavg[i] - median), i))
+        posters = {}
+        for ext, finish, codec in (
+                ("avif", "", ["-c:v", "libsvtav1", "-crf", "20", "-svtav1-params", "lp=4"]),
+                ("jpg", ",scale=out_range=pc,format=yuvj420p", ["-c:v", "mjpeg", "-q:v", "2"])):
+            tmp = out / "posters" / f".{name}.tmp.{ext}"
+            ffmpeg(*inputs, "-filter_complex", f"{graph},select=eq(n\\,{frame}){finish}", "-frames:v", "1",
+                   "-map_metadata", "-1", *codec, "-f", "avif" if ext == "avif" else "image2",
+                   str(tmp))
+            path, digest, existed = publish(tmp, out / "posters", name, ext)
+            posters["jpeg" if ext == "jpg" else ext] = {
+                "url": f"{BASE_URL}/posters/{path.name}", "bytes": path.stat().st_size}
+            print(f"  {ext:4} poster frame {frame} (Y {yavg[frame]:.1f}, median {median:.1f}) "
+                  f"{path.stat().st_size / 1e3:.0f} kB{'  (reproduced)' if existed else ''}")
+
+        contact_sheet(out / "contact", name, inputs, graph, [r["path"] for r in renditions], frames)
+
+        manifest.append({
+            "preset": entry["preset"], "slug": name, "role": entry["role"],
+            "roster_quote": entry["roster_quote"],
+            "renditions": [{
+                "url": f"{BASE_URL}/loops/{r['path'].name}", "type": r["type"], "bytes": r["bytes"],
+                "sha256": r["sha256"], "width": r["width"], "height": r["height"], "fps": FPS,
+                "duration_s": r["duration_s"]} for r in renditions],
+            "posters": posters,
+            "provenance": {
+                "source_master_sha256": entry["sha256"],
+                "loop_window_s": entry["loop_window_s"],
+                "master_span_s": list(span),
+                "crossfade_s": FADE / FPS,
+                **{k: entry[k] for k in ("captured_at", "app_commit", "track", "rights",
+                                         "d157_verdict")},
+                "encode_verdict": verdicts.get(name),
+            },
+        })
+
+    MANIFEST.parent.mkdir(parents=True, exist_ok=True)
+    MANIFEST.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
+    subprocess.run(["npx", "prettier", "--write", "--log-level", "warn", str(MANIFEST)],
+                   cwd=REPO, check=True)  # src/ is Prettier's; match it, or CI fails
+    print(f"wrote {MANIFEST.relative_to(REPO)}")
+    return 0 if all_ok else 1
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except subprocess.CalledProcessError as error:
+        print(error.stderr.strip()[-2000:], file=sys.stderr)
+        sys.exit(2)
