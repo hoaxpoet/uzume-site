@@ -115,11 +115,12 @@ const KIT_FORM = "9921149";
      approved surface introduces a named consumer". This is that consumer, and
      so far the only one — the field lives here until a second one earns it a
      place in the catalogue. Tokens only, per the same rules. */
+  /* Alignment is the container's decision, not this component's — the hero
+     sets it left. */
   .notify {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-    align-items: center;
     width: min(28rem, 100%);
   }
 
@@ -132,7 +133,6 @@ const KIT_FORM = "9921149";
 
   .notify__label {
     font-weight: 700;
-    text-align: center;
   }
 
   .notify__row {
@@ -170,14 +170,12 @@ const KIT_FORM = "9921149";
     font-size: var(--text-sm);
     line-height: var(--leading-body);
     color: var(--color-text-tertiary);
-    text-align: center;
   }
 
   .notify__status {
     max-width: var(--measure-copy);
     margin: 0;
     line-height: var(--leading-body);
-    text-align: center;
   }
 
   .notify__status:focus-visible {
