@@ -1,0 +1,9 @@
+{
+  "slug": "cymatic-resonance",
+  "name": "Cymatic Resonance",
+  "author": "Matt",
+  "description": "A resonant plate covered in glowing sand: the grains shimmer where the plate flexes and collect onto the nodal lines, forming a live Chladni figure. Loudness drives how hard the whole plate vibrates, a beat is a burst that makes the sand jump, brightness (spectral centroid) selects which mode/figure — and when it changes, grains sitting on the old lines are suddenly at antinodes so they scatter and re-collect into the new figure. Harmony rotates the jewel hue. ~400K sand grains do the vibration-driven random walk (Zhou et al. 2017; ported per FA #73) on the plus-basis eigenmode field, depositing onto a diffusing density map. CR.2 rebuild — the sand is the phenomenon, not the static figure.",
+  "family": "geometric",
+  "certified": true,
+  "roster_quote": "One of the best to watch. Wish there were more presets like this one. I want to see more variation of the patterns it creates."
+}
