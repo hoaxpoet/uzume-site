@@ -291,28 +291,44 @@ const beats = [
      luminance L lands the background at a·0.0037 + (1−a)·L, and a per-cell map
      of the loop's maximum luminance says what L is anywhere in the frame.
 
-     0.46, flat, across the whole band. The crop that puts the flock under the
-     name also puts the sky's brighter middle under the header — 0.256 at most
-     over the loop, not the 0.090 the frame's own top would have given — so the
-     header's strip cannot be lighter than the rest without failing. At 0.46 the
-     name clears 3:1 (it is large text at 7rem), the header's links clear 5.1:1
-     in --color-text-primary, and 54% of the cloud's light still reaches the
-     reader through the transparent header, which is the point of it being
-     transparent. The last stretch closes to canvas so the band meets the copy
-     below it without a line across the page — kept short, at 88%, because the
-     flock needs the room above it. */
+     Only two things sit on the footage, and measured that way they need very
+     different amounts:
+
+       the header's links  0.270 behind them, and --color-text-primary needs
+                           4.5:1 -> 40% minimum
+       the name            0.355 behind it, and 7rem is large text, so 3:1
+                           -> 24% minimum
+
+     A flat veil serves the larger number everywhere, which darkened the whole
+     sky — the entire flock with it — for the sake of three links in one corner.
+     But the links are top-right and the flock runs from x=171 to x=884 of 1425,
+     so they never overlap: the strong part can be put only where the links are.
+
+     Hence a corner rather than a band. The radial reaches x=884, exactly where
+     the swarm ends, so none of it is touched. The sky keeps 72% of its light
+     everywhere except under the links, against 54% when this was flat.
+
+     The linear layer also closes to canvas at the foot so the band meets the
+     copy below it without a line across the page — kept short, at 88%, because
+     the flock needs the room above it. */
   .hero__stage::after {
     content: "";
     position: absolute;
     inset: 0;
     /* Decoration. It must never be the thing a click or a drag lands on. */
     pointer-events: none;
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-canvas) 46%, transparent) 0,
-      color-mix(in srgb, var(--color-canvas) 46%, transparent) 88%,
-      var(--color-canvas) 100%
-    );
+    background:
+      radial-gradient(
+        ellipse 38% 60% at 100% 0%,
+        color-mix(in srgb, var(--color-canvas) 42%, transparent) 0%,
+        transparent 100%
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-canvas) 28%, transparent) 0,
+        color-mix(in srgb, var(--color-canvas) 28%, transparent) 88%,
+        var(--color-canvas) 100%
+      );
   }
 
   /* The name, at hero scale, as live text rather than the outlined SVG — so it
