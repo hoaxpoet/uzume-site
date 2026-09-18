@@ -41,73 +41,130 @@ const KIT_FORM = "9921149";
     </p>
   </div>
 
-  <p class="notify__status" role="status" tabindex="-1" data-status hidden></p>
+  <p
+    class="notify__status"
+    id="notify-status"
+    role="status"
+    tabindex="-1"
+    data-status
+    hidden
+  ></p>
+
+  {/* The outcome this whole surface exists to produce. It used to be one line
+      of 16px text left in the hole the fields vacated, which read as an error
+      recovered from rather than as the thing working. */}
+  <div class="notify__done" tabindex="-1" data-done hidden>
+    <svg class="notify__mark" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <path d="m8 12.5 2.5 2.5L16 9.5" />
+    </svg>
+    <p class="notify__done-title">Almost — check your email.</p>
+    <p class="notify__done-body">
+      A confirmation is on its way, and nothing happens until you click it.
+      After that: one email when there is a build to download, then occasionally
+      about new releases and what has changed.
+    </p>
+    <button class="notify__again" type="button" data-again>
+      Used the wrong address?
+    </button>
+  </div>
 </form>
 
 <script>
   import { setUzumeBusy } from "../../DesignSystem/Web/uzume-components.js";
 
-  const form = document.querySelector<HTMLFormElement>("form[data-notify]");
-  const fields = form?.querySelector<HTMLElement>("[data-fields]");
-  const status = form?.querySelector<HTMLElement>("[data-status]");
-
-  function say(message: string, done: boolean) {
-    if (!status) return;
-    status.textContent = message;
-    status.hidden = false;
-    status.dataset.tone = done ? "done" : "error";
-    if (done) {
-      fields!.hidden = true;
-      status.focus();
-    }
+  // Every form on the page, not just the first: /gallery carries one too.
+  for (const form of document.querySelectorAll<HTMLFormElement>(
+    "form[data-notify]",
+  )) {
+    wire(form);
   }
 
-  form?.addEventListener("submit", async (event) => {
-    const button = form.querySelector(
-      "button[type=submit]",
-    ) as HTMLButtonElement;
-    const input = form.querySelector("input[type=email]") as HTMLInputElement;
-    if (!form.reportValidity()) return;
+  function wire(form: HTMLFormElement) {
+    const fields = form.querySelector<HTMLElement>("[data-fields]");
+    const status = form.querySelector<HTMLElement>("[data-status]");
+    const donePanel = form.querySelector<HTMLElement>("[data-done]");
+    const again = form.querySelector<HTMLButtonElement>("[data-again]");
+    const input = form.querySelector<HTMLInputElement>("input[type=email]");
+    // The terms line is the input's description at rest; an error has to join it
+    // rather than replace it, or the error is silent to anyone who tabs back.
+    const describedBy = input?.getAttribute("aria-describedby") ?? "";
 
-    event.preventDefault();
-    setUzumeBusy(button, true, "Signing you up");
-
-    try {
-      const response = await fetch(form.action, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ email_address: input.value }),
-      });
-      const result = await response.json();
-
-      if (result.status === "success") {
-        // Double opt-in is on, so this is NOT yet a subscription — Kit has sent
-        // a confirmation and nothing happens until they click it. Saying
-        // "you're on the list" here would be false, and it would remove their
-        // reason to go and find the email. See email/incentive-top.html.
-        say(
-          "Almost — check your email and confirm. Nothing happens until you do.",
-          true,
-        );
+    function say(message: string, done: boolean) {
+      if (!status) return;
+      if (done) {
+        status.textContent = "";
+        status.hidden = true;
+        fields!.hidden = true;
+        donePanel!.hidden = false;
+        donePanel!.focus();
         return;
       }
-      // Kit answers a bad address with its own message; prefer it to ours.
-      say(
-        result.errors?.messages?.[0] ?? "That didn't go through. Try again?",
-        false,
-      );
-    } catch {
-      say(
-        "Couldn't reach the mailing list. Try again, or watch the repo on GitHub.",
-        false,
-      );
-    } finally {
-      setUzumeBusy(button, false);
+      status.textContent = message;
+      status.hidden = false;
+      status.dataset.tone = "error";
+      input?.setAttribute("aria-invalid", "true");
+      input?.setAttribute("aria-describedby", `${describedBy} notify-status`);
     }
-  });
+
+    // Back to the fields, with the address still there to correct.
+    again?.addEventListener("click", () => {
+      donePanel!.hidden = true;
+      fields!.hidden = false;
+      input?.focus();
+      input?.select();
+    });
+
+    form.addEventListener("submit", async (event) => {
+      const button = form.querySelector(
+        "button[type=submit]",
+      ) as HTMLButtonElement;
+      if (!input) return;
+      // A retry starts clean: the previous error is no longer true.
+      input.removeAttribute("aria-invalid");
+      input.setAttribute("aria-describedby", describedBy);
+      if (!form.reportValidity()) return;
+
+      event.preventDefault();
+      setUzumeBusy(button, true, "Signing you up");
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ email_address: input.value }),
+        });
+        const result = await response.json();
+
+        if (result.status === "success") {
+          // Double opt-in is on, so this is NOT yet a subscription — Kit has sent
+          // a confirmation and nothing happens until they click it. Saying
+          // "you're on the list" here would be false, and it would remove their
+          // reason to go and find the email. See email/incentive-top.html.
+          say(
+            "Almost — check your email and confirm. Nothing happens until you do.",
+            true,
+          );
+          return;
+        }
+        // Kit answers a bad address with its own message; prefer it to ours.
+        say(
+          result.errors?.messages?.[0] ?? "That didn't go through. Try again?",
+          false,
+        );
+      } catch {
+        say(
+          "Couldn't reach the mailing list. Try again, or watch the repo on GitHub.",
+          false,
+        );
+      } finally {
+        setUzumeBusy(button, false);
+      }
+    });
+  }
 </script>
 
 <style>
@@ -176,6 +233,75 @@ const KIT_FORM = "9921149";
     max-width: var(--measure-copy);
     margin: 0;
     line-height: var(--leading-body);
+  }
+
+  /* Sized like an outcome rather than like a footnote. It occupies the space
+     the fields leave, so the surrounding layout does not jump. */
+  .notify__done {
+    display: flex;
+    flex-direction: column;
+    align-items: inherit;
+    gap: var(--space-3);
+  }
+
+  .notify__done:focus-visible {
+    outline: 0;
+    border-radius: var(--radius-md);
+    box-shadow: var(--focus-ring);
+  }
+
+  .notify__mark {
+    width: 2rem;
+    height: 2rem;
+    color: var(--color-success);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .notify__done-title {
+    margin: 0;
+    font: var(--font-weight-semibold) var(--text-3xl) / var(--leading-tight)
+      var(--font-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .notify__done-body {
+    max-width: var(--measure-copy);
+    margin: 0;
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  /* A way back. Kit's double opt-in means a typo is otherwise unrecoverable:
+     no confirmation arrives and nothing on the page says why. */
+  .notify__again {
+    min-height: var(--target-min-web);
+    align-self: inherit;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-size: var(--text-sm);
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+    text-underline-offset: 0.22em;
+    cursor: pointer;
+  }
+
+  .notify__again:hover {
+    color: var(--color-text-primary);
+  }
+
+  .notify__again:focus-visible {
+    outline: 0;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--focus-ring);
   }
 
   .notify__status:focus-visible {
