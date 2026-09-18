@@ -17,3 +17,6 @@ dist/
 *.mov
 *.mp4
 *.m4v
+
+# wrangler dev's local state, from the preview config in .claude/launch.json
+.wrangler/

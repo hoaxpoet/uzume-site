@@ -75,15 +75,11 @@ W.1 `/design` sample data; the app requires **macOS 14 Sonoma**. Alumni Sans is
 now served (`src/styles/fonts.css`, wired into both layouts), so display type
 finally renders as designed.
 
-**Open — the hero has no footage.** The plan asks for a full-bleed reel; the
-session shipped a typographic hero instead, which is defensible on its own terms
-(`PRODUCT.md`: "brand chrome is a restrained, dark, typographic frame") but is
-not what the plan describes. No capture exists and none can be produced from this
-repo: the app's `RENDER_VISUAL=1` harness emits **single frames**, not motion,
-and its own notes say single-frame renders do not exercise frame-to-frame
-accumulation. So a rough loop needs someone running the app on a Mac. Until then
-the landing page is footage-ready but footage-free, and whether that is enough to
-call the site public is Matt's call.
+**Closed at W.4 — the hero has footage.** W.2 shipped a typographic hero because
+no capture existed and none could be produced from this repo (the app's
+`RENDER_VISUAL=1` harness emits **single frames**, not motion). W.3a/W.3b
+captured and published the loops, and W.4 re-cut the hero around Murmuration,
+full-bleed behind the lockup with a scrim. The plan's full-bleed reel now exists.
 
 **Deferred to W.4 by the roadmap's own sequencing:** the gallery teaser. A teaser
 built now is three "preview unavailable" boxes, which teases nothing; W.4 already
@@ -327,7 +323,7 @@ H.264 loops, all six posters, the manifest. So a plain `encode_captures.py` run 
 the loops the manifest already publishes and only re-measures them; `--reencode` forces
 fresh ones. Published, reviewed bytes stay the source of truth.
 
-### W.4 — Gallery *(one session)*
+### W.4 — Gallery *(done 2026-09-18)*
 
 Content collection with a schema congruent with the preset sidecar JSON; a generation script reads the app repo's sidecars and `CREDITS.md` rather than hand-maintaining entries. `/gallery` grid of lazy, in-viewport-only loops with name, author, and `inspired_by` attribution. Re-cut the landing hero with real footage; add the gallery teaser.
 
@@ -346,6 +342,98 @@ Content collection with a schema congruent with the preset sidecar JSON; a gener
   section rather than the hero, where copy would need a scrim over its every pixel.
 - **Poster-only on save-data and phone widths** (agreed with Matt, W.3b). The hero is
   15.4 MB; a phone on cellular should get the poster, which is 52–93 kB.
+
+**Delivered (2026-09-18).** `/gallery` presents the three published performances
+at full width; the landing hero carries Murmuration full-bleed behind the lockup;
+a teaser between the trust band and the contributor invitation points at the
+gallery with posters rather than a second loop. Preset entries are generated, not
+typed: `Scripts/generate_presets.py` reads the app repo's sidecars and writes one
+committed JSON file per preset into the `presets` content collection, whose
+schema in `src/content.config.ts` is congruent with the sidecar fields. The build
+never reads the app repo — verified by building with the checkout renamed away.
+
+**Decisions (W.4).**
+
+- **1 → A, the three, large.** Matt, 2026-09-18: "we should capture more preset
+  videos before launch, but for now i agree with your recommendation." A short
+  page of three full-width performances, which reads as curated rather than
+  unfinished. The wider selection is W.3's open item, not W.4's job.
+- **2 → A, full-bleed behind the lockup with a scrim.** Delivered as a top band
+  of the hero rather than the full section — see the finding below.
+- **The pull quote is out** (Matt, mid-session): "The pull quote is absolutely
+  unnecessary." The roster quote is still generated into each preset entry, and
+  is no longer rendered. Each performance carries its loop, poster, name, author
+  and family, plus `inspired_by` where a preset has one.
+
+**Found: the footage cannot sit behind the whole hero, only behind the lockup.**
+Murmuration's flock drifts between 0.38 and 0.70 of the frame's height over the
+30 s loop (measured frame by frame), and the hero's copy — tagline, lede, note,
+notify form, CTA, requirements — needs the bottom half of the section. Footage
+stretched over the whole hero puts the flock under the copy's scrim, hiding the
+one thing it is there to show. The stage is the upper band instead
+(`min(52svh, 30rem)`), with `object-position: 40% 58%` centring the crop window
+on the flock's travel, and the copy below on its own field. Still full-bleed.
+
+**Found: the scrim can be sized from the footage rather than by eye.** Alpha
+compositing is linear in relative luminance, so a scrim of `--color-canvas` at
+alpha *a* over footage of luminance *L* lands the background at
+`a·0.0037 + (1−a)·L`. The loop's brightest local patch reaches 0.4476. The stage
+scrim runs 0.86 across the top 4.5rem (the navigation's height) and 0.50 through
+the lockup band; the copy field is 0.92. Measured against the brightest pixel any
+row of the footage reaches at any point in the loop: wordmark 4.15:1 (needs 3.0
+as a graphic), tagline 9.57:1, citation 7.13:1, lede 16.72:1, note 11.65:1,
+notify label 17.96:1, notify terms 8.10:1, requirements 8.10:1. All pass.
+
+**Found: none of the three published presets has an `inspired_by`.** Murmuration,
+Cymatic Resonance and Ferrofluid Ocean are all Matt's originals. The generator
+and the gallery both handle the field, and it will render on the first ported
+preset that gets footage. `docs/CREDITS.md` in the app repo was not cited: it
+covers bundled ML weights and reference code and says nothing about presets, so
+the roadmap's earlier line naming it as an attribution source was wrong.
+
+**Found: W.2's header handoff has never run, and the CSS minifier is why.**
+`Nav.astro` sets `animation: header-settle linear both` followed by
+`animation-timeline: --uz-hero-lockup`. The build's minifier folds the longhand
+back into the shorthand as `animation: linear both header-settle --uz-hero-lockup`
+— and `animation-timeline` is not a component of the `animation` shorthand, so
+the whole declaration is invalid and dropped. `animation-name` computes to `none`
+and `animation-timeline` to `auto` in the built site. The result is the fallback
+the component's own comment describes as safe: an opaque header with a visible
+wordmark, from the first pixel. It is pre-existing (the same source is on `main`)
+and W.4 left it alone, because turning it on makes the header transparent over
+the new footage — a deliberate look Matt should approve rather than inherit. The
+fix is to write the four longhands instead of the shorthand. The hero's stage
+scrim already carries 0.86 across the navigation's own height for that case.
+
+**Found: Ferrofluid Ocean's poster is the heaviest asset on the site.** 551 kB
+JPEG, 382 kB AVIF, against 48/18 kB for Cymatic Resonance and 93/52 kB for
+Murmuration — the same near-incompressible dense texture W.3b found in its video.
+The teaser's posters are `loading="lazy"`, so it costs nothing until scrolled to,
+but the gallery loads it eagerly. The AVIF posters are unused site-wide: the
+`<video poster>` attribute takes one URL and cannot negotiate a format. One for
+W.6's Lighthouse pass.
+
+**Page weight, measured.** At phone width a first visit is ~336 kB and fetches no
+video at all — 243 kB of document, CSS, icon and Alumni Sans, plus the 93 kB
+poster. At desktop it is that plus the one loop the browser selects: 15.3 MB
+WebM in Chrome, 15.4 MB MP4 in Safari, and not both.
+
+**Safari, verified on this M-series Mac (Safari 26.5, arm64).** With the
+manifest's `type` emitted verbatim, `canPlayType('video/webm; codecs="av01…"')`
+returns `""` — a definitive no — while the bare `video/webm` returns `"maybe"`,
+which is exactly the trap. Safari therefore selects
+`murmuration.7d8c7572.mp4` as `currentSrc` and never requests the AV1 file;
+source selection happens before any fetch, so the WebM is not merely abandoned,
+it is never asked for. Chrome selects the WebM.
+
+**Inherited, not done here: `claude/w2-hero-impeccable`.** Two unmerged W.2
+commits (`5562117`, `9b6ec38`) add `src/components/FirstOpening.astro` and
+rewrite the hero. Matt: "hand it to W.4. w.4 should complete and then update hero
+with the desired changes." So it is a separate pass over the finished W.4 hero,
+not part of it. Merging it into `main` conflicts in `src/pages/index.astro` in
+five hunks, all in the hero — a design choice, not a mechanical fix — and the
+merge deletes `public/uzume-icon.png`, which `index.astro`, `404.astro` and
+`confirmed.astro` all reference. Keep `main`'s copy.
 
 ### W.5 — Docs *(about two sessions)*
 
