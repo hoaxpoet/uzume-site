@@ -17,7 +17,10 @@
 - BRAND.1 shipped the entire identity layer the plan's Phase 1 assumed would need creating: icon set, wordmark, favicons, fonts (OFL), `tokens.css`, the web component catalogue (`DesignSystem/Web/`), component contracts (`DesignSystem/COMPONENTS.md`), a rendered design reference (`design/index.html`), and contrast/catalogue check scripts. Phase 1 is now a *porting* job, not a design job.
 - **24 of 31 preset sidecars carry `"certified": true`** (grep of `UzumeEngine/Sources/Presets/Shaders/*.json`, app repo, 2026-09-14). The plan's ≥6–8 gallery gate is met several times over; the gallery question is now curation, not supply.
 
-**Not started:** the site itself — no Astro scaffold, no Cloudflare project, no R2 bucket, no pages, no capture footage.
+**Not started (as of 2026-09-14):** the site itself — no Astro scaffold, no Cloudflare
+project, no R2 bucket, no pages, no capture footage. **Superseded:** W.0–W.2 built the
+site, and W.3a/W.3b delivered the footage — the `uzume-media` R2 bucket is live at
+`media.uzume.io` and serves three loops (see W.3 below).
 
 **Deferred by decision:** the notarized build (Apple Developer Program, Developer ID signing, `notarytool`). App-repo work; gates only W.7.
 
@@ -281,15 +284,62 @@ a DOM assertion that had passed. `Base.astro` now carries
 without its licence text until the brand file is corrected. `PTSans.ttc` and
 `STIXTwoText.ttf` have no licence file at all.
 
-### W.3 — Capture pipeline *(one to two sessions, plus capture time)*
+### W.3 — Capture pipeline *(done 2026-09-18: W.3a captured, W.3b encoded and published)*
 
 Source or produce rights-clear tracks. Capture a 15–30 s 1080p60 loop per *selected* preset and one 30–60 s hero reel. `Scripts/encode_captures.sh`: AV1/WebM primary, H.264/MP4 fallback, no audio track, AVIF/JPEG posters, 8–12 MB per loop. R2 bucket served at `media.uzume.io`. Asset manifest (JSON, in-repo) records clip, poster, capture date, app commit, track, and license.
 
 **Curation input:** `docs/PRESET_ROSTER_REVIEW_2026-09-04.md` in the app repo. Capture the roster's best 8–12, not all 24 — a gallery of strong clips beats a complete one.
 
+**Delivered (W.3b, 2026-09-18).** Three loops, each AV1/WebM + H.264/MP4 + AVIF/JPEG
+poster, on `https://media.uzume.io` from the `uzume-media` R2 bucket (custom domain,
+min TLS 1.2). Built by `Scripts/encode_captures.py` — Python, not the `.sh` this line
+first named — from the W.3a masters; manifest at `src/data/media.json`. Matt,
+2026-09-18: "Quality appears strong across all three presets. Brightness is steady.
+Clear to proceed."
+
+**Decisions (W.3b).**
+
+- **Loop length: hero 30 s, gallery 15 s.** Visitors linger on the hero, where the plan
+  already allows a larger file; gallery tiles are glanced at.
+- **Seam: a half-second crossfade**, between the loop's last half second and the real
+  footage immediately preceding its first frame. Every seam's brightness change is far
+  below the largest change the performance itself makes (hero 0.00–0.06 against 0.52).
+- **Hero: Murmuration, not Cymatic Resonance** (the role the W.3a log recorded). The
+  atmospheric footage suits the position, and its calm sky takes copy without a scrim.
+  The capture log keeps its W.3a record; `HERO` in the encoder is the live decision.
+- **Hero rate cap lowered to 4 Mbit/s** after review: at the gallery cap the 30 s loop
+  was 22.5 MB (~6 Mbit/s), which stalls on a weak connection. 15.4 MB for SSIM 0.9892.
+
+**Found: the budget does not bind Ferrofluid Ocean — its content does.** Uncapped AV1 at
+CRF 30 is 48 MB for SSIM 0.949, against 0.937 at 11 MB. Near-incompressible dense
+texture; spending four times the bytes buys nothing a viewer would see.
+
+**Found: the encodes are not reproducible end to end.** SVT-AV1 v4.1 gives different
+bytes every run (tried: single thread, no rate cap), and x264 does too where its cap
+binds throughout — Ferrofluid Ocean's H.264 loop. Everything else reproduces: the other
+H.264 loops, all six posters, the manifest. So a plain `encode_captures.py` run keeps
+the loops the manifest already publishes and only re-measures them; `--reencode` forces
+fresh ones. Published, reviewed bytes stay the source of truth.
+
 ### W.4 — Gallery *(one session)*
 
 Content collection with a schema congruent with the preset sidecar JSON; a generation script reads the app repo's sidecars and `CREDITS.md` rather than hand-maintaining entries. `/gallery` grid of lazy, in-viewport-only loops with name, author, and `inspired_by` attribution. Re-cut the landing hero with real footage; add the gallery teaser.
+
+**From W.3b.** The footage is at `src/data/media.json` — one entry per preset with
+`renditions`, `posters` and `provenance`.
+
+- **`VideoTile` must emit the manifest's full `type`, codecs parameter included.** It
+  builds `type` from the file extension today (`video/webm`), and to that Safari on
+  M1/M2 answers "maybe", tries the AV1 file and fails, instead of falling through to the
+  H.264 source. With `codecs="av01…"` Safari declines the AV1 source outright and plays
+  the MP4. Those Macs have no AV1 hardware decoder, so this is most Mac visitors.
+- **Murmuration is the hero** (30 s); Cymatic Resonance and Ferrofluid Ocean are gallery
+  loops (15 s).
+- **Ferrofluid Ocean wants room, not a headline over it.** It is the busiest of the
+  three and the strongest demonstration of music sync — give it a wide, uncluttered
+  section rather than the hero, where copy would need a scrim over its every pixel.
+- **Poster-only on save-data and phone widths** (agreed with Matt, W.3b). The hero is
+  15.4 MB; a phone on cellular should get the poster, which is 52–93 kB.
 
 ### W.5 — Docs *(about two sessions)*
 

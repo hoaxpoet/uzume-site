@@ -1,0 +1,152 @@
+[
+  {
+    "preset": "Cymatic Resonance",
+    "slug": "cymatic-resonance",
+    "role": "gallery",
+    "roster_quote": "One of the best to watch. Wish there were more presets like this one. I want to see more variation of the patterns it creates.",
+    "renditions": [
+      {
+        "url": "https://media.uzume.io/loops/cymatic-resonance.70229df3.webm",
+        "type": "video/webm; codecs=\"av01.0.09M.08\"",
+        "bytes": 5485664,
+        "sha256": "70229df37cdc5ce99b6be62ff4fc07eb9a2f9ed4a076b093b66404622fa7d9c5",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      },
+      {
+        "url": "https://media.uzume.io/loops/cymatic-resonance.90dfeb68.mp4",
+        "type": "video/mp4; codecs=\"avc1.64002A\"",
+        "bytes": 9745362,
+        "sha256": "90dfeb68d89e42b03497b55c2b9479b801e6d51f693452c1e9023f5ad9131a3c",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      }
+    ],
+    "posters": {
+      "avif": {
+        "url": "https://media.uzume.io/posters/cymatic-resonance.c2dbc23f.avif",
+        "bytes": 18384
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/posters/cymatic-resonance.40f3d150.jpg",
+        "bytes": 47869
+      }
+    },
+    "provenance": {
+      "source_master_sha256": "9ba83bd63bf7188721d9d609b7ce81331e45ae02bb7ee3708b5ef7b809d18335",
+      "loop_window_s": [55.6, 109.9],
+      "master_span_s": [75.51, 90.51],
+      "crossfade_s": 0.5,
+      "captured_at": "2026-09-16T16:41:37Z",
+      "app_commit": "682175ad2e59d8bcd6a343418095c16fc3beaf6e",
+      "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+      "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+      "d157_verdict": "Matt, 2026-09-16: \"all three pass steady luminance\"",
+      "encode_verdict": "Matt, 2026-09-18: \"Quality appears strong across all three presets. Brightness is steady. Clear to proceed.\""
+    }
+  },
+  {
+    "preset": "Ferrofluid Ocean",
+    "slug": "ferrofluid-ocean",
+    "role": "gallery",
+    "roster_quote": "Brilliant sync with the music, but everything seems like 4/4 time.",
+    "renditions": [
+      {
+        "url": "https://media.uzume.io/loops/ferrofluid-ocean.01e48ce5.webm",
+        "type": "video/webm; codecs=\"av01.0.09M.08\"",
+        "bytes": 11128686,
+        "sha256": "01e48ce504db0128ef0652d09839fc85f471ef298e25ff0009eb41cc4ec11f0d",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      },
+      {
+        "url": "https://media.uzume.io/loops/ferrofluid-ocean.62318f47.mp4",
+        "type": "video/mp4; codecs=\"avc1.64002A\"",
+        "bytes": 11831444,
+        "sha256": "62318f47348a9fb0f68e23fa2156a5d44e454801cfb0693b3cb7f7774ff232b6",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      }
+    ],
+    "posters": {
+      "avif": {
+        "url": "https://media.uzume.io/posters/ferrofluid-ocean.38d5ad4d.avif",
+        "bytes": 381667
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/posters/ferrofluid-ocean.caa3e668.jpg",
+        "bytes": 551273
+      }
+    },
+    "provenance": {
+      "source_master_sha256": "6043695360dd4ca0a60a91946886aadca9fc401cba56ee9c2091330a3068ab3e",
+      "loop_window_s": [47.1, 115.4],
+      "master_span_s": [73.988, 88.988],
+      "crossfade_s": 0.5,
+      "captured_at": "2026-09-16T17:07:56Z",
+      "app_commit": "682175ad2e59d8bcd6a343418095c16fc3beaf6e",
+      "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+      "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+      "d157_verdict": "Matt, 2026-09-16: \"all three pass steady luminance\"",
+      "encode_verdict": "Matt, 2026-09-18: \"Quality appears strong across all three presets. Brightness is steady. Clear to proceed.\""
+    }
+  },
+  {
+    "preset": "Murmuration",
+    "slug": "murmuration",
+    "role": "hero",
+    "roster_quote": "Beautiful. Cloud could be bigger, take up more of the screen",
+    "renditions": [
+      {
+        "url": "https://media.uzume.io/loops/murmuration.f66a3fc2.webm",
+        "type": "video/webm; codecs=\"av01.0.09M.08\"",
+        "bytes": 15261362,
+        "sha256": "f66a3fc275a97342838c72c5c9969bef71196c5734a89bb730e0ec21e6315cbc",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 30.0
+      },
+      {
+        "url": "https://media.uzume.io/loops/murmuration.7d8c7572.mp4",
+        "type": "video/mp4; codecs=\"avc1.64002A\"",
+        "bytes": 15418963,
+        "sha256": "7d8c75722be4cba6d222adaa5515683e57c3c4d5bc0c251955d3a17edcc4bbc6",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 30.0
+      }
+    ],
+    "posters": {
+      "avif": {
+        "url": "https://media.uzume.io/posters/murmuration.7d74883d.avif",
+        "bytes": 51692
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/posters/murmuration.67bc5505.jpg",
+        "bytes": 93278
+      }
+    },
+    "provenance": {
+      "source_master_sha256": "f5385409294491b5c43b023b1c1bb77bbc99a36ec714906b50b0afc153d96a46",
+      "loop_window_s": [10.0, 138.5],
+      "master_span_s": [59.502, 89.505],
+      "crossfade_s": 0.5,
+      "captured_at": "2026-09-16T17:34:13Z",
+      "app_commit": "682175ad2e59d8bcd6a343418095c16fc3beaf6e",
+      "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+      "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+      "d157_verdict": "Matt, 2026-09-16: \"all three pass steady luminance\"",
+      "encode_verdict": "Matt, 2026-09-18: \"Quality appears strong across all three presets. Brightness is steady. Clear to proceed.\""
+    }
+  }
+]
