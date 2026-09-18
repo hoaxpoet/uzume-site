@@ -86,6 +86,18 @@ const beats = [
           today. There is no installable build yet; the public beta will be free
           and notarized when it arrives.
         </p>
+
+        {/* The footage was unnamed here, which left a visitor who sees only the
+            poster — reduced motion, a phone, a metered connection — with no way
+            to know it is engine output rather than a photograph, and no route
+            to a version they can actually watch. BRAND.md asks for published
+            footage to be real or clearly labelled; it was the first and not the
+            second. True in every state: it says what the frame is, not what it
+            is doing. */}
+        <p class="hero__credit">
+          {hero.preset}, rendered by Uzume. All three performances play on
+          demand <a href="/gallery">in the gallery</a>.
+        </p>
       </div>
     </section>
 
@@ -339,7 +351,7 @@ const beats = [
     flex-direction: column;
     align-items: center;
     gap: var(--space-5);
-    padding-block: var(--space-12);
+    padding-block: var(--space-8);
     padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
   }
 
@@ -380,6 +392,20 @@ const beats = [
   }
 
   .hero__alt a {
+    color: var(--color-text-secondary);
+  }
+
+  /* A credit, so it sits below the asks rather than competing with them. */
+  .hero__credit {
+    max-width: 42rem;
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-tertiary);
+    text-wrap: pretty;
+  }
+
+  .hero__credit a {
     color: var(--color-text-secondary);
   }
 
