@@ -36,6 +36,15 @@ SIDECARS = "UzumeEngine/Sources/Presets/Shaders/*.json"
 # rewritten from that description and asserting nothing it does not.
 FIELDS = ("name", "author", "description", "family", "certified")
 
+# The sidecars carry the name the author is known by inside the app repo; the
+# site publishes the name they publish under. Same person, same authorship —
+# this renames nobody and invents no credit, it just uses the handle the work
+# appears under in public. An author with no entry here is published verbatim,
+# which is what "Uzume engine" and ports such as "nimitz (ported)" want.
+PUBLISHED_AS = {
+    "Matt": "hoaxpoet",
+}
+
 
 def slugify(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
@@ -88,6 +97,7 @@ def main() -> int:
 
         entry = {"slug": slug}
         entry.update({key: sidecar[key] for key in FIELDS})
+        entry["author"] = PUBLISHED_AS.get(entry["author"], entry["author"])
         if "inspired_by" in sidecar:
             entry["inspired_by"] = sidecar["inspired_by"]
         if slug in captions:
