@@ -12,8 +12,9 @@ interface Props {
 const { handOffBrand = false } = Astro.props;
 
 // Only pages that exist — lychee fails the build on dangling internal links.
-// /gallery and /download join at W.2/W.4.
+// /download joins at W.7.
 const links = [
+  { href: "/gallery", label: "Gallery" },
   { href: "/docs", label: "Docs" },
   { href: "https://github.com/hoaxpoet/uzume", label: "GitHub" },
 ];
