@@ -516,6 +516,71 @@ lands.` section, which repeats the notify form at the foot of the page. That is
 a page addition rather than a hero change; it is a small, easy win whenever
 someone wants it.
 
+### W.4b — The impeccable critique, and what it changed *(2026-09-18)*
+
+A `/impeccable critique` run over the finished landing page and `/gallery`, two
+isolated assessments — a design review and a deterministic scan plus browser
+evidence. **24/40.** Snapshot at
+`.impeccable/critique/2026-09-18T17-54-11Z__src-pages-index-astro.md`.
+
+**What the scan could not fault.** Detector clean across 16 files (and verified
+genuine — a synthetic control fired correctly). Zero CSP violations. Zero
+horizontal overflow at 1440, 768 and 375. The header handoff live on a real
+`ViewTimeline`. Mobile fetching no video at all; desktop selecting the AV1 WebM.
+Every control named, tab order clean, reduced motion correct.
+
+**What it caught that no scan could.** The page never said what it was anywhere
+a machine or a screen reader could find it: the heading outline held the word
+"Uzume" twice and the words macOS, music and visualizer zero times, and `<title>`
+was "Uzume — a light in sound". Fixed in both places.
+
+**Fixed in this pass.**
+
+- **`/gallery` had no headings and no exit.** Its three performances were
+  `<strong>` inside a figcaption — the page whose entire content is those three
+  had two headings. `VideoTile` now takes `titleAs`; the catalogue gets
+  `.uz-media-frame__title` so `strong` and `h2` render identically. And its last
+  focusable element was the footer's GitHub link, so both audiences now get a
+  door: "Write a preset" and the notify form.
+- **A publishable sentence per preset.** `Scripts/preset_captions.json`, merged
+  by the generator. The sidecars already name the drivers; they just carry
+  "CR.2" and "FA #73" and cannot ship. `roster_quote` retired — required,
+  generated, rendered nowhere since the pull quote was cut.
+- **The signup's outcome.** One 16px line in the hole the fields vacated became
+  a panel at display scale with a way back, because Kit's double opt-in made a
+  typo unrecoverable. The error is finally wired to the field with
+  `aria-invalid`/`aria-describedby`; it had lived in a sibling `<p>` nothing
+  pointed at.
+- **The invitation card was padded twice** — 248.5px each side of a 928px card,
+  its body at 33 characters. **A percentage padding resolves against the
+  parent's width, not the element's own**, so the frame rule's centring padding
+  was computed as if the card were still full-bleed. This is the second time
+  that trap has bitten this file; the first was `.hero__copy`.
+- **Two hit targets under the 44x44 floor**: the header brand at 53x28 (it lost
+  the catalogue's `min-height` when it became live text) and the skip link at 43.
+
+**Found, not fixed — open.**
+
+- **The hero image reads as a nature photograph, not software.** Murmuration
+  cropped to a letterbox of dusk sky says nothing about rendered, Metal, Mac or
+  music; swap the h1 and it sells a birdwatching app. The two presets that would
+  read unmistakably as engine output are 2,300px down as inert posters. Options
+  on the table: let the band grow with the viewport, or open on Cymatic
+  Resonance's cyan rings and cut to Murmuration.
+- **The name is the h1 for a product with no recognition.** Matt's explicit
+  decision, and the title and heading fixes close most of the cost. The
+  structural alternative — claim as `h1`, "Uzume" as a `<span>` lockup keeping
+  its 112px and its timeline — remains available and costs the handoff nothing.
+- **The two teaser posters look clickable and are not.** Inert `<figure>`s with
+  `cursor: auto`.
+- **The trust band uses status colour for non-status content** — a warning
+  callout for a permission explanation, a success callout for a luminance
+  policy. Nothing failed and nothing succeeded.
+- **Reduced-motion and phone visitors see no evidence of what Uzume does.** The
+  guards are right; the consequence is that a large share of visitors are asked
+  for an email having seen a static frame. There is no still-image answer to
+  "performs light to music" yet, and OG cards will have the same problem at W.6.
+
 ### W.5 — Docs *(about two sessions)*
 
 Starlight curation, outsider-first, per plan §3: Getting Started (requirements, build-from-source today, the Screen Recording permission explainer, local files vs. streaming), Using Uzume, Contributing Presets (two-file drop-in, hot reload, gates and certification lifecycle). Each page's frontmatter names its upstream app-repo doc; `lychee` checks those references in CI.
