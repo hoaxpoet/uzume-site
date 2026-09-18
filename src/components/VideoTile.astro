@@ -2,64 +2,119 @@
 // DesignSystem/Web: uz-media-frame, with the video case filled in.
 import "../../DesignSystem/Web/uzume-components.css";
 
+/** One entry from `src/data/media.json`'s `renditions`, passed through whole. */
+export interface Rendition {
+  url: string;
+  type: string;
+}
+
 interface Props {
   title: string;
   meta?: string;
   poster?: string;
-  /** Encoded variants, best first. W.3 ships AV1/WebM + H.264/MP4. */
-  sources?: string[];
+  /** Encoded variants, best first: AV1/WebM then H.264/MP4. */
+  sources?: Rendition[];
+  /**
+   * Background footage: the bare <video>, no frame, no caption, no controls,
+   * and hidden from assistive technology. The performance it shows is named
+   * and operable on /gallery; a second, unlabelled tab stop at the top of the
+   * landing page would only be in the way.
+   */
+  bare?: boolean;
 }
 
-const { title, meta, poster, sources = [] } = Astro.props;
-
-const types: Record<string, string> = {
-  webm: "video/webm",
-  mp4: "video/mp4",
-};
+const { title, meta, poster, sources = [], bare = false } = Astro.props;
 ---
 
-<figure class="uz-media-frame">
-  <div class="uz-media-frame__content">
-    {sources.length ? (
-      <video
-        data-uz-loop
-        poster={poster}
-        controls
-        muted
-        loop
-        playsinline
-        preload="none"
-        aria-label={title}
-      >
-        {sources.map((src) => (
-          <source src={src} type={types[src.split(".").pop() ?? ""]} />
-        ))}
-      </video>
-    ) : (
-      <div
-        class="uz-media-frame__fallback"
-        role="img"
-        aria-label={`${title} — preview unavailable`}
-      >
-        <div>
-          <strong>Performance preview unavailable</strong>
-          <span>
-            The title and attribution remain available while media is missing.
-          </span>
+{bare ? (
+  <video
+    data-uz-loop
+    class="uz-bare-loop"
+    poster={poster}
+    muted
+    loop
+    playsinline
+    preload="none"
+    aria-hidden="true"
+    tabindex="-1"
+  >
+    {/*
+      The manifest's `type` verbatim, codecs parameter and all. Built from the
+      extension instead, Safari on M1/M2 — which has no AV1 hardware decoder —
+      answers "maybe" to `video/webm`, commits to the AV1 file and fails rather
+      than falling through to the H.264 source. With `codecs="av01…"` it
+      declines outright and plays the MP4. Never rebuild this from the filename.
+    */}
+    {sources.map(({ url, type }) => (
+      <source src={url} type={type} />
+    ))}
+  </video>
+) : (
+  <figure class="uz-media-frame">
+    <div class="uz-media-frame__content">
+      {sources.length ? (
+        <video
+          data-uz-loop
+          poster={poster}
+          controls
+          muted
+          loop
+          playsinline
+          preload="none"
+          aria-label={title}
+        >
+          {/* The manifest's `type` verbatim — see the note above. */}
+          {sources.map(({ url, type }) => (
+            <source src={url} type={type} />
+          ))}
+        </video>
+      ) : (
+        <div
+          class="uz-media-frame__fallback"
+          role="img"
+          aria-label={`${title} — preview unavailable`}
+        >
+          <div>
+            <strong>Performance preview unavailable</strong>
+            <span>
+              The title and attribution remain available while media is missing.
+            </span>
+          </div>
         </div>
-      </div>
-    )}
-  </div>
-  <figcaption class="uz-media-frame__caption">
-    <strong>{title}</strong>
-    {meta && <span class="uz-media-frame__meta">{meta}</span>}
-  </figcaption>
-</figure>
+      )}
+    </div>
+    <figcaption class="uz-media-frame__caption">
+      <strong>{title}</strong>
+      {meta && <span class="uz-media-frame__meta">{meta}</span>}
+    </figcaption>
+  </figure>
+)}
+
+<style>
+  .uz-bare-loop {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* The page positions the crop; the component only fills its stage. */
+    object-position: var(--uz-loop-position, 50% 50%);
+  }
+</style>
 
 <script>
   // The site's only client JS. Loops play when visible and motion is welcome;
-  // otherwise the poster stands and the native controls still offer playback.
-  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  // otherwise the poster stands and the framed tiles' native controls still
+  // offer playback. Every loop is preload="none", so a loop that is never
+  // played costs its poster and not one byte of video.
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Agreed with Matt at W.3b: the hero loop is 15.4 MB and its poster is 93 kB.
+  // A phone on a metered connection gets the poster. 48rem is the catalogue's
+  // own narrow breakpoint.
+  const metered =
+    (navigator as Navigator & { connection?: { saveData?: boolean } })
+      .connection?.saveData === true;
+  const narrow = matchMedia("(max-width: 48rem)").matches;
+
+  if (!reduced && !metered && !narrow) {
     const observer = new IntersectionObserver((entries) => {
       for (const { target, isIntersecting } of entries) {
         const video = target as HTMLVideoElement;
