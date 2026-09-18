@@ -56,7 +56,7 @@ const beats = [
 ];
 ---
 
-<Base title="Uzume — a light in sound" description={description}>
+<Base title="Uzume — a native macOS music visualizer" description={description}>
   <Nav overlay />
 
   <main id="main">
@@ -167,7 +167,7 @@ const beats = [
     </section>
 
     <section class="band myth" aria-label="The name">
-      <h2>Uzume</h2>
+      <h2>The name</h2>
       <p class="myth__pronunciation">oo-ZOO-meh</p>
       <p>
         In the <em>Kojiki</em>, the sun shuts herself in a cave and the world
@@ -201,11 +201,18 @@ const beats = [
     --page-column: calc(64rem - 2 * var(--page-gutter));
   }
 
-  /* The hero is excluded: it runs the full width and centres its own parts, so
-     the veil under its copy can reach the window's edges. A percentage inside a
-     child of a padded box resolves against that padded box, not the window, so
-     a negative margin cannot undo the padding from within. */
-  main > section:not(.hero) {
+  /* Two exclusions.
+
+     The hero runs the full width and centres its own parts, so the footage can
+     reach the window's edges.
+
+     The contributor invitation is a catalogue card with its own `padding`
+     shorthand and its own `max-width` below. Left in this rule it got padded
+     twice: a percentage padding resolves against the PARENT's width, not the
+     element's own, so the centring padding was computed as if the card were
+     still full-bleed — 248.5px of padding each side of a 928px card, and its
+     body set at 33 characters. */
+  main > section:not(.hero, .uz-contributor-invitation) {
     padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
   }
 
@@ -449,10 +456,9 @@ const beats = [
   }
 
   /* The catalogue's invitation pattern sits inside the page rhythm. */
-  /* The catalogue styles this as a card, with its own `padding` shorthand —
-     which resets the inline padding that centres every other section. Centre
-     it with margins instead, so it stays a card rather than becoming a
-     full-bleed band with rounded corners at the window's edges. */
+  /* The catalogue styles this as a card. It centres itself with margins and is
+     excluded from the frame rule above, so its own padding is the only padding
+     it gets. */
   .uz-contributor-invitation {
     margin-block: var(--space-16);
     margin-inline: auto;

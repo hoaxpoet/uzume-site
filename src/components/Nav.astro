@@ -55,6 +55,12 @@ const here = Astro.url.pathname.replace(/\/$/, "") || "/";
      handoff below. */
   .uz-site-navigation__brand {
     width: auto;
+    /* DESIGN.md: web interactive targets are at least 44x44. The catalogue
+       gives .uz-site-navigation__link a min-height; converting this from an
+       image element to live text lost it, leaving a 53x28 target. */
+    min-height: var(--target-min-web);
+    display: inline-flex;
+    align-items: center;
     font: var(--font-weight-semibold) var(--text-2xl) / 1 var(--font-display);
     letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);

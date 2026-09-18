@@ -98,6 +98,10 @@ const socialCard = new URL("/uzume-social.png", Astro.site);
      nav's own links. Starlight ships its own on /docs. */
   .skip-link {
     position: absolute;
+    /* 44x44 minimum; the padding alone came to 43. */
+    min-height: var(--target-min-web);
+    display: inline-flex;
+    align-items: center;
     left: var(--space-4);
     top: var(--space-4);
     z-index: 10;
