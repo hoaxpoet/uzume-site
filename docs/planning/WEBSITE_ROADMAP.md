@@ -75,15 +75,11 @@ W.1 `/design` sample data; the app requires **macOS 14 Sonoma**. Alumni Sans is
 now served (`src/styles/fonts.css`, wired into both layouts), so display type
 finally renders as designed.
 
-**Open — the hero has no footage.** The plan asks for a full-bleed reel; the
-session shipped a typographic hero instead, which is defensible on its own terms
-(`PRODUCT.md`: "brand chrome is a restrained, dark, typographic frame") but is
-not what the plan describes. No capture exists and none can be produced from this
-repo: the app's `RENDER_VISUAL=1` harness emits **single frames**, not motion,
-and its own notes say single-frame renders do not exercise frame-to-frame
-accumulation. So a rough loop needs someone running the app on a Mac. Until then
-the landing page is footage-ready but footage-free, and whether that is enough to
-call the site public is Matt's call.
+**Closed at W.4 — the hero has footage.** W.2 shipped a typographic hero because
+no capture existed and none could be produced from this repo (the app's
+`RENDER_VISUAL=1` harness emits **single frames**, not motion). W.3a/W.3b
+captured and published the loops, and W.4 re-cut the hero around Murmuration,
+full-bleed behind the lockup with a scrim. The plan's full-bleed reel now exists.
 
 **Deferred to W.4 by the roadmap's own sequencing:** the gallery teaser. A teaser
 built now is three "preview unavailable" boxes, which teases nothing; W.4 already
@@ -327,7 +323,7 @@ H.264 loops, all six posters, the manifest. So a plain `encode_captures.py` run 
 the loops the manifest already publishes and only re-measures them; `--reencode` forces
 fresh ones. Published, reviewed bytes stay the source of truth.
 
-### W.4 — Gallery *(one session)*
+### W.4 — Gallery *(done 2026-09-18)*
 
 Content collection with a schema congruent with the preset sidecar JSON; a generation script reads the app repo's sidecars and `CREDITS.md` rather than hand-maintaining entries. `/gallery` grid of lazy, in-viewport-only loops with name, author, and `inspired_by` attribution. Re-cut the landing hero with real footage; add the gallery teaser.
 
@@ -346,6 +342,244 @@ Content collection with a schema congruent with the preset sidecar JSON; a gener
   section rather than the hero, where copy would need a scrim over its every pixel.
 - **Poster-only on save-data and phone widths** (agreed with Matt, W.3b). The hero is
   15.4 MB; a phone on cellular should get the poster, which is 52–93 kB.
+
+**Delivered (2026-09-18).** `/gallery` presents the three published performances
+at full width; the landing hero carries Murmuration full-bleed behind the lockup;
+a teaser between the trust band and the contributor invitation points at the
+gallery with posters rather than a second loop. Preset entries are generated, not
+typed: `Scripts/generate_presets.py` reads the app repo's sidecars and writes one
+committed JSON file per preset into the `presets` content collection, whose
+schema in `src/content.config.ts` is congruent with the sidecar fields. The build
+never reads the app repo — verified by building with the checkout renamed away.
+
+**Decisions (W.4).**
+
+- **1 → A, the three, large.** Matt, 2026-09-18: "we should capture more preset
+  videos before launch, but for now i agree with your recommendation." A short
+  page of three full-width performances, which reads as curated rather than
+  unfinished. The wider selection is W.3's open item, not W.4's job.
+- **2 → A, full-bleed behind the lockup with a scrim.** Delivered as a top band
+  of the hero rather than the full section — see the finding below.
+- **The pull quote is out** (Matt, mid-session): "The pull quote is absolutely
+  unnecessary." The roster quote is still generated into each preset entry, and
+  is no longer rendered. Each performance carries its loop, poster, name, author
+  and family, plus `inspired_by` where a preset has one.
+
+**Found, then solved by the W.2 pass: a centred hero cannot show the footage.**
+Murmuration's flock drifts between 0.38 and 0.70 of the frame's height over the
+30 s loop (measured frame by frame), and a full-width copy block — tagline,
+lede, note, notify form, CTA, requirements — needs the bottom half of the
+section, which put the flock under the copy's scrim and hid the one thing it is
+there to show. W.4 shipped a cropped top band as the workaround. The W.2 hero
+pass below removed the cause: a copy *column* on one side leaves the other side
+clear, so the loop now runs the full height of the section at its own scale.
+
+**Found: the scrim can be sized from the footage rather than by eye.** Alpha
+compositing is linear in relative luminance, so a scrim of `--color-canvas` at
+alpha *a* over footage of luminance *L* lands the background at
+`a·0.0037 + (1−a)·L`. The loop's brightest local patch reaches 0.4476. That
+turns "is this legible?" into arithmetic against a measured map of the footage
+rather than a judgement call, and it is how both the W.4 scrim and the W.2
+pass's veil below were sized. It is worth reusing on any future hero.
+
+**Found: none of the three published presets has an `inspired_by`.** Murmuration,
+Cymatic Resonance and Ferrofluid Ocean are all Matt's originals. The generator
+and the gallery both handle the field, and it will render on the first ported
+preset that gets footage. `docs/CREDITS.md` in the app repo was not cited: it
+covers bundled ML weights and reference code and says nothing about presets, so
+the roadmap's earlier line naming it as an attribution source was wrong.
+
+**Found and then fixed: W.2's header handoff had never run, and the CSS
+minifier was why.**
+`Nav.astro` sets `animation: header-settle linear both` followed by
+`animation-timeline: --uz-hero-lockup`. The build's minifier folds the longhand
+back into the shorthand as `animation: linear both header-settle --uz-hero-lockup`
+— and `animation-timeline` is not a component of the `animation` shorthand, so
+the whole declaration is invalid and dropped. `animation-name` computes to `none`
+and `animation-timeline` to `auto` in the built site. The result is the fallback
+the component's own comment describes as safe: an opaque header with a visible
+wordmark, from the first pixel. It was pre-existing — the same source is on
+`main` — and W.4 left it alone. **The W.2 hero pass below rebuilt it and it now
+runs.** The fix is to write longhands only and never the `animation` shorthand;
+the check is to grep `dist` for `animation-timeline`, `view-timeline` and
+`timeline-scope` after any build that touches these rules, because the failure
+is completely silent in the source and completely invisible until you look at
+the built CSS.
+
+**Found: Ferrofluid Ocean's poster is the heaviest asset on the site.** 551 kB
+JPEG, 382 kB AVIF, against 48/18 kB for Cymatic Resonance and 93/52 kB for
+Murmuration — the same near-incompressible dense texture W.3b found in its video.
+The teaser's posters are `loading="lazy"`, so it costs nothing until scrolled to,
+but the gallery loads it eagerly. The AVIF posters are unused site-wide: the
+`<video poster>` attribute takes one URL and cannot negotiate a format. One for
+W.6's Lighthouse pass.
+
+**Page weight, measured.** At phone width a first visit is ~336 kB and fetches no
+video at all — 243 kB of document, CSS, icon and Alumni Sans, plus the 93 kB
+poster. At desktop it is that plus the one loop the browser selects: 15.3 MB
+WebM in Chrome, 15.4 MB MP4 in Safari, and not both.
+
+**Safari, verified on this M-series Mac (Safari 26.5, arm64).** With the
+manifest's `type` emitted verbatim, `canPlayType('video/webm; codecs="av01…"')`
+returns `""` — a definitive no — while the bare `video/webm` returns `"maybe"`,
+which is exactly the trap. Safari therefore selects
+`murmuration.7d8c7572.mp4` as `currentSrc` and never requests the AV1 file;
+source selection happens before any fetch, so the WebM is not merely abandoned,
+it is never asked for. Chrome selects the WebM.
+
+### W.2 hero pass *(done 2026-09-18, on top of W.4)*
+
+Matt: "hand it to W.4. w.4 should complete and then update hero with the desired
+changes." The unmerged branch `claude/w2-hero-impeccable` (`5562117`, `9b6ec38`)
+was never merged — it forks 54 commits back and carries copy that `main` has
+since corrected. Its hero ideas were applied to the finished W.4 hero instead.
+
+**Applied.**
+
+- **The wordmark is live text**, in the header and in the hero. BRAND.md's
+  "never set the wordmark in live type" was written before the site served
+  Alumni Sans; the wordmark file is itself outlined Alumni Sans SemiBold, so the
+  real face at 600 is the same drawing — selectable, scaled by the reader's text
+  settings, one asset lighter. It is also what lets the hero's h1 and the
+  header's wordmark be the same word in the same face, which is what makes the
+  handoff read as one lockup moving rather than two swapping.
+- **A spec list inside the first viewport**, and the GitHub CTA demoted to the
+  sentence after the form. The notify path is the primary action now.
+- **The Coleridge tagline moved to the footer**, as the atmospheric close
+  BRAND.md describes rather than the second thing a visitor reads.
+- **`NotifyForm` leaves alignment to its container.**
+- **No `vw` in the page frame.** `50vw` counts the scrollbar and `50%` does not,
+  so W.4's `margin-inline: calc(50% - 50vw)` bleed produced real horizontal
+  scroll on classic-scrollbar machines. `main` runs full width and each section
+  centres its own column in percentages, which also makes the hero full-bleed by
+  default rather than by escaping a constraint. Verified after: `scrollWidth`
+  1425 against `innerWidth` 1440, no overflow.
+- **The authored opening moved to the field.** A full-bleed field paints over
+  the violet glow W.2 spent it on, so the reveal is the footage arriving.
+  Opacity only — a scale at the width of the window is a zoom.
+
+**Decision: the footage keeps the field; `FirstOpening.astro` is not merged**
+(Matt, 2026-09-18). The branch's hero art and W.4's footage are the same slot.
+BRAND.md makes engine output the principal image language and W.3 existed to
+produce it, so the SVG stays on the branch.
+
+**Decision: "Uzume" is the hero headline and the page h1, and it animates into
+the header** (Matt, 2026-09-18), with the header fixed to the top, transparent
+on load so the footage's clouds run behind it, and filled with a brand colour
+once the name has gone. An intermediate draft made the *claim* the h1 and put
+the copy in a column beside the footage; Matt: "two column layout should be dead
+too". The hero is centred again — footage as the upper band, the name over it,
+the copy on its own field below.
+
+**The handoff runs this time**, and the reason it never did is worth keeping:
+the minifier finding above. `Nav.astro` now writes six `animation-*` longhands
+and no shorthand, `Base.astro` carries `timeline-scope`, and the hero's h1
+carries `view-timeline`. All three survive minification — verified in `dist`,
+which is the only place the failure was ever visible. The whole handoff sits
+inside `prefers-reduced-motion: no-preference`, so the reduced-motion state is
+simply the base rule: an opaque header with a visible wordmark from the first
+pixel. On the homepage the header's links take `--color-text-primary`, because
+secondary ink reads at 2.5:1 against the brightest the sky gets under a
+transparent header and primary reads at 5.1:1.
+
+**The band's veil is flat at 0.46 rather than lighter at the top.** The crop
+that puts the flock under the name also puts the sky's brighter middle under the
+header — 0.256 at most over the loop, against the 0.090 the frame's own top
+would have given — so the header's strip cannot be lighter than the rest without
+failing. 54% of the cloud's light still reaches the reader through it.
+
+**Found: a percentage inside a padded box cannot escape that box.** The copy
+field's veil was meant to bleed to the window's edges via a negative margin, but
+`50%` in a child of `main > section`'s inline padding resolves against the padded
+box, not the window, so the veil rendered as a rectangle with visible sides. The
+hero is excluded from the frame's padding and centres its own parts instead.
+
+**Every veil on this page was solved numerically**, against a per-cell map of
+the loop's maximum luminance — every frame, every part of the frame — rather
+than chosen by eye. Worst case over the whole 30 s loop: header links 5.08:1,
+the name 4.17:1 (large text, 3:1 is the bar), claim 16.12:1, spec list 11.65:1,
+notify label 17.96:1, notify terms 8.10:1, alt 8.10:1, alt link 11.65:1.
+
+One technique worth keeping from the discarded two-column draft: where a veil
+has to fall away across footage, sample a smoothstep into stops rather than
+using a two-stop linear ramp. The linear ramp kinks at both ends and the kink
+reads as the edge of a panel rather than as haze.
+
+**Not carried, all four older than `main`:** the deletion of
+`public/uzume-icon.png` (`404.astro` and `confirmed.astro` still reference it),
+`oo-ZOO-may` for the pronunciation, the present-tense contributor line, and the
+retired Kit form id `9918547`. A branch that far behind `main` is a source of
+ideas, not a merge.
+
+**Left on the branch, not applied:** its closing `Uzume will be free when it
+lands.` section, which repeats the notify form at the foot of the page. That is
+a page addition rather than a hero change; it is a small, easy win whenever
+someone wants it.
+
+### W.4b — The impeccable critique, and what it changed *(2026-09-18)*
+
+A `/impeccable critique` run over the finished landing page and `/gallery`, two
+isolated assessments — a design review and a deterministic scan plus browser
+evidence. **24/40.** Snapshot at
+`.impeccable/critique/2026-09-18T17-54-11Z__src-pages-index-astro.md`.
+
+**What the scan could not fault.** Detector clean across 16 files (and verified
+genuine — a synthetic control fired correctly). Zero CSP violations. Zero
+horizontal overflow at 1440, 768 and 375. The header handoff live on a real
+`ViewTimeline`. Mobile fetching no video at all; desktop selecting the AV1 WebM.
+Every control named, tab order clean, reduced motion correct.
+
+**What it caught that no scan could.** The page never said what it was anywhere
+a machine or a screen reader could find it: the heading outline held the word
+"Uzume" twice and the words macOS, music and visualizer zero times, and `<title>`
+was "Uzume — a light in sound". Fixed in both places.
+
+**Fixed in this pass.**
+
+- **`/gallery` had no headings and no exit.** Its three performances were
+  `<strong>` inside a figcaption — the page whose entire content is those three
+  had two headings. `VideoTile` now takes `titleAs`; the catalogue gets
+  `.uz-media-frame__title` so `strong` and `h2` render identically. And its last
+  focusable element was the footer's GitHub link, so both audiences now get a
+  door: "Write a preset" and the notify form.
+- **A publishable sentence per preset.** `Scripts/preset_captions.json`, merged
+  by the generator. The sidecars already name the drivers; they just carry
+  "CR.2" and "FA #73" and cannot ship. `roster_quote` retired — required,
+  generated, rendered nowhere since the pull quote was cut.
+- **The signup's outcome.** One 16px line in the hole the fields vacated became
+  a panel at display scale with a way back, because Kit's double opt-in made a
+  typo unrecoverable. The error is finally wired to the field with
+  `aria-invalid`/`aria-describedby`; it had lived in a sibling `<p>` nothing
+  pointed at.
+- **The invitation card was padded twice** — 248.5px each side of a 928px card,
+  its body at 33 characters. **A percentage padding resolves against the
+  parent's width, not the element's own**, so the frame rule's centring padding
+  was computed as if the card were still full-bleed. This is the second time
+  that trap has bitten this file; the first was `.hero__copy`.
+- **Two hit targets under the 44x44 floor**: the header brand at 53x28 (it lost
+  the catalogue's `min-height` when it became live text) and the skip link at 43.
+
+**Found, not fixed — open.**
+
+- **The hero image reads as a nature photograph, not software.** Murmuration
+  cropped to a letterbox of dusk sky says nothing about rendered, Metal, Mac or
+  music; swap the h1 and it sells a birdwatching app. The two presets that would
+  read unmistakably as engine output are 2,300px down as inert posters. Options
+  on the table: let the band grow with the viewport, or open on Cymatic
+  Resonance's cyan rings and cut to Murmuration.
+- **The name is the h1 for a product with no recognition.** Matt's explicit
+  decision, and the title and heading fixes close most of the cost. The
+  structural alternative — claim as `h1`, "Uzume" as a `<span>` lockup keeping
+  its 112px and its timeline — remains available and costs the handoff nothing.
+- **The two teaser posters look clickable and are not.** Inert `<figure>`s with
+  `cursor: auto`.
+- **The trust band uses status colour for non-status content** — a warning
+  callout for a permission explanation, a success callout for a luminance
+  policy. Nothing failed and nothing succeeded.
+- **Reduced-motion and phone visitors see no evidence of what Uzume does.** The
+  guards are right; the consequence is that a large share of visitors are asked
+  for an email having seen a static frame. There is no still-image answer to
+  "performs light to music" yet, and OG cards will have the same problem at W.6.
 
 ### W.5 — Docs *(about two sessions)*
 

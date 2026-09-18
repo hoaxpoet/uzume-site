@@ -6,11 +6,27 @@ import Button from "../components/Button.astro";
 import NotifyForm from "../components/NotifyForm.astro";
 import Callout from "../components/Callout.astro";
 import RequirementsList from "../components/RequirementsList.astro";
+import VideoTile from "../components/VideoTile.astro";
+import PresetCard from "../components/PresetCard.astro";
+import { getCollection } from "astro:content";
+import media from "../data/media.json";
 
 const description =
   "A native macOS music visualizer that performs light to the music you are already playing.";
 
 const REPO = "https://github.com/hoaxpoet/uzume";
+
+// The manifest names the hero; W.3b's decision lives in the encoder, not here.
+const hero = media.find((clip) => clip.role === "hero")!;
+const presets = await getCollection("presets");
+// Posters only — the hero already spends the page's motion budget. The two
+// presets the hero does not show are the ones worth teasing.
+const teasers = media
+  .filter((clip) => clip.role === "gallery")
+  .map((clip) => ({
+    clip,
+    preset: presets.find((entry) => entry.data.slug === clip.slug)!.data,
+  }));
 
 // Every fact here is checked against the app repo's README and PRODUCT_SPEC.
 const requirements = [
@@ -40,46 +56,37 @@ const beats = [
 ];
 ---
 
-<Base title="Uzume — a light in sound" description={description}>
-  <Nav handOffBrand />
+<Base title="Uzume — a native macOS music visualizer" description={description}>
+  <Nav overlay />
 
   <main id="main">
     <section class="hero">
-      <img
-        class="hero__icon"
-        src="/uzume-icon.png"
-        alt=""
-        width="256"
-        height="256"
-        fetchpriority="high"
-      />
-      <h1 class="hero__lockup">
-        <img
-          class="hero__wordmark"
-          src="/uzume-wordmark.svg"
-          alt="Uzume"
-          width="316"
-          height="160"
+      {/* Murmuration, full-bleed. Decorative here and named on /gallery: the
+          loop is the argument, not a second unlabelled tab stop. It carries no
+          autoplay attribute, so under reduced motion — or on a phone, or on a
+          metered connection — the poster stands and no video byte is fetched. */}
+      <div class="hero__stage">
+        <VideoTile
+          bare
+          title={hero.preset}
+          poster={hero.posters.jpeg.url}
+          sources={hero.renditions}
         />
-      </h1>
-      <blockquote class="hero__tagline">
-        <p>A light in sound, a sound-like power in light.</p>
-        <cite>
-          Coleridge, <em>The Eolian Harp</em>, 1795
-        </cite>
-      </blockquote>
-      <p class="hero__lede">{description}</p>
-      <p class="hero__note">
-        Uzume is open source and buildable today. There is no installable build
-        yet — the public beta will be free and notarized when it arrives.
-      </p>
-      <NotifyForm />
-      <div class="hero__actions">
-        <Button variant="secondary" href={REPO}>
-          On GitHub today — build from source
-        </Button>
       </div>
-      <p class="hero__requirements">Apple silicon · macOS 14+ · free, MIT</p>
+
+      <h1 class="hero__lockup">Uzume</h1>
+
+      <div class="hero__copy">
+        <p class="hero__claim">{description}</p>
+
+        <NotifyForm />
+
+        <p class="hero__alt">
+          Or <a href={REPO}>build it from source</a> — the repository is public
+          today. There is no installable build yet; the public beta will be free
+          and notarized when it arrives.
+        </p>
+      </div>
     </section>
 
     <section class="beats" aria-label="How it works">
@@ -120,6 +127,28 @@ const beats = [
       </div>
     </section>
 
+    <section class="band teaser" aria-label="The gallery">
+      <h2>See it perform</h2>
+      <p class="teaser__lede">
+        Certified presets, captured from the engine and published unedited. The
+        gallery is where a merged preset ends up, with its author's name on it.
+      </p>
+      <div class="uz-preset-gallery">
+        {teasers.map(({ clip, preset }) => (
+          <PresetCard
+            name={preset.name}
+            author={preset.author}
+            poster={clip.posters.jpeg.url}
+          />
+        ))}
+      </div>
+      <div class="teaser__actions">
+        <Button variant="secondary" href="/gallery">
+          See the gallery
+        </Button>
+      </div>
+    </section>
+
     <section
       class="uz-contributor-invitation"
       aria-label="Contributing presets"
@@ -138,7 +167,7 @@ const beats = [
     </section>
 
     <section class="band myth" aria-label="The name">
-      <h2>Uzume</h2>
+      <h2>The name</h2>
       <p class="myth__pronunciation">oo-ZOO-meh</p>
       <p>
         In the <em>Kojiki</em>, the sun shuts herself in a cave and the world
@@ -157,106 +186,182 @@ const beats = [
 </Base>
 
 <style>
+  /* No `vw` in the page frame. `50vw` counts the scrollbar and `50%` does not,
+     so the two together produce a few pixels of real horizontal scroll on
+     classic-scrollbar machines. main runs full width and each section centres
+     its own column in percentages instead — which also means the hero is
+     full-bleed by default rather than by escaping a constraint.
+
+     The inline padding keeps the column exactly the width it was when main
+     carried `max-width: 64rem` with its own gutters: 64rem less two gutters. */
   main {
-    max-width: 64rem;
-    margin: 0 auto;
-    padding: 0 var(--page-gutter);
+    display: flow-root;
+    /* The column every section centres, exactly the width it was when main
+       carried `max-width: 64rem` with its own gutters. */
+    --page-column: calc(64rem - 2 * var(--page-gutter));
   }
 
+  /* Two exclusions.
+
+     The hero runs the full width and centres its own parts, so the footage can
+     reach the window's edges.
+
+     The contributor invitation is a catalogue card with its own `padding`
+     shorthand and its own `max-width` below. Left in this rule it got padded
+     twice: a percentage padding resolves against the PARENT's width, not the
+     element's own, so the centring padding was computed as if the card were
+     still full-bleed — 248.5px of padding each side of a 928px card, and its
+     body set at 33 characters. */
+  main > section:not(.hero, .uz-contributor-invitation) {
+    padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
+  }
+
+  /* The footage bleeds the full width of the window and runs behind the
+     header, which is transparent until the name has left it.
+
+     Two rows, and the footage owns the first one outright. The copy used to be
+     laid over the footage and held off it by a veil, which coupled three things
+     that have no business being coupled — how tall the hero is, how tall the
+     copy happens to be, and where in the frame the flock sits. Every time the
+     copy changed length the swarm got clipped, and the fix each time was more
+     hero height. It is a row now: the band cannot be entered by the copy, so
+     the flock is safe at every size and the hero is back to one screen. */
   .hero {
     position: relative;
     isolation: isolate;
-    /* The opening light is wider than the hero; clip only the axis that would
-       otherwise scroll the page. `clip` leaves the other axis visible in a way
-       `hidden` would not. */
-    overflow-x: clip;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-4);
-    padding: clamp(var(--space-8), 5vh, var(--space-12)) 0 var(--space-16);
+    overflow: clip;
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: auto 1fr;
     text-align: center;
   }
 
-  /* BRAND.md motion: the brand's authored movement is opening — content begins
-     legible, darkness yields, light becomes visible. One deliberate reveal, on
-     the hero only, never looping. `backwards` applies the from-state only
-     during the delay and then releases, so the resting state is the rule's own
-     opacity — which is also why, when the global rule in Base.astro collapses
-     the duration under reduced motion, the light is simply already there. */
-  .hero::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    inset: -20% -10% auto;
-    aspect-ratio: 2 / 1;
-    background: radial-gradient(
-      ellipse at 50% 40%,
-      var(--color-accent-subtle) 0%,
-      transparent 70%
-    );
-    opacity: 0.55;
+  /* 16:9 until it would be taller than the band's ceiling, so the crop stays
+     in the regime where `object-position` has room to work and the flock is
+     inside the band at every width. The ceiling is set so that the band and the
+     copy together come to about one screen on an ordinary laptop: the hero is
+     as tall as its two parts need and not a pixel more. */
+  .hero__stage {
+    grid-area: 1 / 1;
+    /* Not optional: the veil below is absolutely positioned, and without a
+       positioned stage it resolved against .hero instead — covering the whole
+       section, swallowing every click and text selection in the copy beneath
+       it, and stretching the gradient over 900px so the band had no closing
+       ramp at all. */
+    position: relative;
+    height: min(25rem, 56.25vw);
+    overflow: hidden;
+    /* The flock drifts between 0.38 and 0.70 of the frame's height over the
+       30 s loop (measured, not guessed), which is 259px of frame at a 1440px
+       window. 55% centres that travel in the band's clear part — between the
+       header's own height at the top and the veil's closing ramp at the
+       bottom — so no part of the swarm is ever inside either. 40% horizontally keeps it in frame where
+       the crop turns horizontal, which is the narrow case. */
+    --uz-loop-position: 40% 55%;
+    /* BRAND.md motion: the brand's authored movement is opening — content
+       begins legible, darkness yields, light becomes visible. One deliberate
+       reveal, on the hero only, never looping. Opacity only, no scale: this is
+       the width of the window and a scale here is a zoom. `backwards` applies
+       the from-state only during the delay and then releases, which is why,
+       when the global rule in Base.astro collapses the duration under reduced
+       motion, the field is simply already there. */
     animation: hero-opening var(--duration-deliberate) var(--ease-out) backwards;
   }
 
   @keyframes hero-opening {
     from {
       opacity: 0;
-      transform: scale(0.94);
     }
   }
 
-  /* BRAND.md: the full icon composition at 64px or larger, with clear space of
-     at least an eighth of its width. Empty alt — the wordmark below already
-     names the product, and "Uzume Uzume" is what a reader would otherwise hear. */
-  .hero__icon {
-    width: min(6rem, 22vw);
-    height: auto;
-    border-radius: 22.37%;
+  /* The veil, sized from the footage rather than by eye. Alpha compositing is
+     linear in relative luminance, so --color-canvas at alpha a over footage of
+     luminance L lands the background at a·0.0037 + (1−a)·L, and a per-cell map
+     of the loop's maximum luminance says what L is anywhere in the frame.
+
+     0.46, flat, across the whole band. The crop that puts the flock under the
+     name also puts the sky's brighter middle under the header — 0.256 at most
+     over the loop, not the 0.090 the frame's own top would have given — so the
+     header's strip cannot be lighter than the rest without failing. At 0.46 the
+     name clears 3:1 (it is large text at 7rem), the header's links clear 5.1:1
+     in --color-text-primary, and 54% of the cloud's light still reaches the
+     reader through the transparent header, which is the point of it being
+     transparent. The last stretch closes to canvas so the band meets the copy
+     below it without a line across the page — kept short, at 88%, because the
+     flock needs the room above it. */
+  .hero__stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* Decoration. It must never be the thing a click or a drag lands on. */
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-canvas) 46%, transparent) 0,
+      color-mix(in srgb, var(--color-canvas) 46%, transparent) 88%,
+      var(--color-canvas) 100%
+    );
   }
 
+  /* The name, at hero scale, as live text rather than the outlined SVG — so it
+     is the document's h1, it is selectable, and it is the same word in the same
+     face as the header's, which is what makes the handoff read as one lockup
+     moving rather than two lockups swapping.
+
+     It shares the band's grid cell rather than sitting above or below it, so it
+     is centred on the swarm at every size. The top padding is the fixed
+     header's own height: the box is what gets centred, so the padding keeps the
+     word clear of the header on short bands without moving it on tall ones.
+
+     This element is also the timeline the header rides: anchoring to it rather
+     than to a pixel offset keeps the timing right at every viewport, where its
+     size and position both change. See Nav.astro. */
   .hero__lockup {
+    grid-area: 1 / 1;
+    align-self: center;
+    justify-self: center;
+    z-index: 1;
     margin: 0;
-    /* Drives the header handoff — see Nav.astro. Anchoring to this element
-       rather than to pixel offsets keeps the timing correct at every viewport,
-       where the lockup's size and position both change. */
+    padding: 4.5rem var(--page-gutter) 0;
+    font: var(--font-weight-semibold) clamp(4rem, 11vw, 7rem) /
+      var(--leading-tight) var(--font-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
     view-timeline: --uz-hero-lockup block;
   }
 
-  .hero__wordmark {
-    display: block;
-    width: min(17rem, 60vw);
-    height: auto;
+  /* The second row. It sits below the band rather than over it, so it needs
+     no veil — the band's own gradient has already closed to canvas by the time
+     this starts. `1fr` lets it absorb whatever is left of the first screen. */
+  .hero__copy {
+    grid-area: 2 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    padding-block: var(--space-12);
+    padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
   }
 
-  /* Coleridge signs the lockup; he does not headline it. The poem is 231 years
-     old and does not say what the product is, so it sits at caption scale
-     directly under the wordmark and hands the display voice to the lede. */
-  .hero__tagline {
-    margin: 0;
-    max-width: 30rem;
+  /* The form leaves alignment to its container, and this container is centred.
+     It also gets far more room than the rhythm gives anything else here: it is
+     the page's primary action, and the only thing in the hero a visitor can
+     actually complete today. Space is what makes it read that way — the space
+     above and below it is what separates the claim from the build-from-source
+     sentence, so the two asks are not one paragraph of small print. */
+  .hero__copy :global(.notify) {
+    align-items: center;
+    text-align: center;
+    margin-block: var(--space-12);
+    /* Wider than the component's own default, which was sized for a narrow
+       column. This is the page's primary action and it is allowed to look it. */
+    width: min(38rem, 100%);
   }
 
-  .hero__tagline p {
-    margin: 0;
-    font-size: var(--text-sm);
-    line-height: var(--leading-body);
-    color: var(--color-text-secondary);
-    text-wrap: balance;
-  }
-
-  .hero__tagline cite {
-    display: block;
-    margin-top: var(--space-1);
-    font-size: var(--text-xs);
-    font-style: normal;
-    letter-spacing: var(--tracking-label);
-    color: var(--color-text-tertiary);
-  }
-
-  /* The one sentence that says what this is, in the brand's own display face. */
-  .hero__lede {
-    max-width: 28ch;
+  /* The one sentence that says what this is. It carries the display face but
+     not the display size — the name is the headline now. */
+  .hero__claim {
+    max-width: 44rem;
     margin: 0;
     font: var(--font-weight-semibold) var(--text-3xl) / var(--leading-heading)
       var(--font-display);
@@ -265,37 +370,26 @@ const beats = [
     text-wrap: balance;
   }
 
-  .hero__actions {
-    margin-top: var(--space-2);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-3);
-  }
-
-  .hero__note {
-    max-width: 38rem;
+  .hero__alt {
+    max-width: 42rem;
     margin: 0;
     font-size: var(--text-base);
     line-height: var(--leading-body);
-    color: var(--color-text-secondary);
+    color: var(--color-text-tertiary);
     text-wrap: pretty;
   }
 
-  /* The eligibility gate, at the moment of the decision rather than 1,300px
-     below it. The full list is still in "What you need". */
-  .hero__requirements {
-    margin: 0;
-    font-size: var(--text-sm);
-    letter-spacing: var(--tracking-label);
-    color: var(--color-text-tertiary);
+  .hero__alt a {
+    color: var(--color-text-secondary);
   }
 
   .beats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     gap: var(--space-8);
-    padding: var(--space-16) 0;
+    /* padding-block, never the shorthand — the shorthand resets the inline
+       padding that centres every section's column. */
+    padding-block: var(--space-16);
     border-top: 1px solid var(--color-line);
   }
 
@@ -312,7 +406,7 @@ const beats = [
   }
 
   .band {
-    padding: var(--space-16) 0;
+    padding-block: var(--space-16);
     border-top: 1px solid var(--color-line);
   }
 
@@ -358,8 +452,24 @@ const beats = [
     color: var(--color-text-primary);
   }
 
+  .teaser__lede {
+    max-width: var(--measure-copy);
+    margin: 0 0 var(--space-8);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  .teaser__actions {
+    margin-top: var(--space-8);
+  }
+
   /* The catalogue's invitation pattern sits inside the page rhythm. */
+  /* The catalogue styles this as a card. It centres itself with margins and is
+     excluded from the frame rule above, so its own padding is the only padding
+     it gets. */
   .uz-contributor-invitation {
-    margin: var(--space-16) 0;
+    margin-block: var(--space-16);
+    margin-inline: auto;
+    max-width: min(var(--page-column), calc(100% - 2 * var(--page-gutter)));
   }
 </style>

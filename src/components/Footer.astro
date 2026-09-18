@@ -4,25 +4,65 @@ const year = new Date().getFullYear();
 ---
 
 <footer>
-  <p>
-    Uzume · <a href="https://github.com/hoaxpoet/uzume">Source on GitHub</a>
-  </p>
-  <p>&copy; {year} Matt Deming</p>
+  <blockquote class="footer__tagline">
+    <p>A light in sound, a sound-like power in light.</p>
+    <cite>
+      Coleridge, <em>The Eolian Harp</em>, 1795
+    </cite>
+  </blockquote>
+
+  <div class="footer__meta">
+    <p>
+      Uzume · <a href="https://github.com/hoaxpoet/uzume">Source on GitHub</a>
+    </p>
+    <p>&copy; {year} Matt Deming</p>
+  </div>
 </footer>
 
 <style>
   footer {
+    padding: var(--space-12) var(--page-gutter) var(--space-8);
+    border-top: 1px solid var(--color-line);
+  }
+
+  /* BRAND.md: the tagline is an atmospheric close, not the product
+     explanation. This is the close. It used to sit under the hero lockup,
+     where a 231-year-old poem was the second thing on the page and said
+     nothing about what Uzume is. */
+  .footer__tagline {
+    margin: 0 0 var(--space-10);
+    text-align: center;
+  }
+
+  .footer__tagline p {
+    max-width: 40ch;
+    margin: 0 auto;
+    font: var(--font-weight-regular) var(--text-2xl) / var(--leading-tight)
+      var(--font-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-secondary);
+    text-wrap: balance;
+  }
+
+  .footer__tagline cite {
+    display: block;
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    font-style: normal;
+    letter-spacing: var(--tracking-label);
+    color: var(--color-text-tertiary);
+  }
+
+  .footer__meta {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--space-4);
-    padding: var(--space-8) var(--page-gutter);
-    border-top: 1px solid var(--color-line);
     color: var(--color-text-secondary);
     font-size: var(--text-sm);
   }
 
-  p {
+  .footer__meta p {
     margin: 0;
   }
 </style>

@@ -3,17 +3,19 @@
 import "../../DesignSystem/Web/uzume-components.css";
 
 interface Props {
-  /** Homepage only. The hero carries the lockup as its h1, so the header
-      starts bare and the wordmark arrives as the hero scrolls away — one
-      lockup on screen at a time instead of two within 200px. */
-  handOffBrand?: boolean;
+  /** Homepage only. The header floats over the hero's footage instead of
+      sitting above it: transparent while the hero's lockup is on screen, so
+      the clouds run behind it, and opaque with the wordmark in place once the
+      lockup has gone. */
+  overlay?: boolean;
 }
 
-const { handOffBrand = false } = Astro.props;
+const { overlay = false } = Astro.props;
 
 // Only pages that exist — lychee fails the build on dangling internal links.
-// /gallery and /download join at W.2/W.4.
+// /download joins at W.7.
 const links = [
+  { href: "/gallery", label: "Gallery" },
   { href: "/docs", label: "Docs" },
   { href: "https://github.com/hoaxpoet/uzume", label: "GitHub" },
 ];
@@ -25,12 +27,12 @@ const here = Astro.url.pathname.replace(/\/$/, "") || "/";
 <nav
   class:list={[
     "uz-site-navigation",
-    { "uz-site-navigation--handoff": handOffBrand },
+    { "uz-site-navigation--overlay": overlay },
   ]}
   aria-label="Site"
 >
   <a class="uz-site-navigation__brand" href="/">
-    <img src="/uzume-wordmark.svg" alt="Uzume" width="316" height="160" />
+    Uzume
   </a>
   {links.map(({ href, label }) => (
     <a
@@ -44,11 +46,31 @@ const here = Astro.url.pathname.replace(/\/$/, "") || "/";
 </nav>
 
 <style>
-  /* The catalogue sizes the brand slot; the wordmark just fills it. */
-  .uz-site-navigation__brand img {
-    display: block;
-    width: 100%;
-    height: auto;
+  /* Live text, not the outlined SVG. BRAND.md wrote that rule before the site
+     served Alumni Sans; the wordmark file is itself outlined Alumni Sans
+     SemiBold letterforms, so set in the real face at 600 it is the same
+     drawing — and it is selectable, scales with the reader's text settings,
+     and needs no separate asset. It is also what lets the hero's h1 and this
+     be the same word in the same face, which is the whole point of the
+     handoff below. */
+  .uz-site-navigation__brand {
+    width: auto;
+    /* DESIGN.md: web interactive targets are at least 44x44. The catalogue
+       gives .uz-site-navigation__link a min-height; converting this from an
+       image element to live text lost it, leaving a 53x28 target. */
+    min-height: var(--target-min-web);
+    display: inline-flex;
+    align-items: center;
+    font: var(--font-weight-semibold) var(--text-2xl) / 1 var(--font-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .uz-site-navigation__brand:focus-visible {
+    outline: 0;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--focus-ring);
   }
 
   .uz-site-navigation {
@@ -59,45 +81,58 @@ const here = Astro.url.pathname.replace(/\/$/, "") || "/";
     border-bottom: 1px solid var(--color-line);
   }
 
-  /* Homepage handoff. Both properties ride ONE scroll timeline, so the header
-     materialising and the wordmark arriving are a single gesture rather than
-     two effects — BRAND.md's "opening" continued, not a second authored moment.
-     Transparent at rest so the hero's opening light is not cut by a bar across
-     the top; opaque by the time anything scrolls under it, which is also what
-     keeps the wordmark off engine footage (BRAND.md: never over competing
-     imagery).
-
-     Zero JavaScript. In a browser without scroll-driven animations the
-     declaration is dropped, the animation runs on the document timeline at 0s,
-     and `both` fill lands it on the end state — an opaque header with a visible
-     wordmark, which is exactly the safe default. */
-  /* Homepage handoff. Both properties ride ONE timeline anchored to the hero
-     lockup, so the header materialising and the wordmark arriving are a single
-     gesture rather than two effects — BRAND.md's "opening" continued, not a
-     second authored moment. Transparent at rest so the hero's opening light is
-     not cut by a bar across the top.
-
-     The range ends at `exit 100%` — the instant the hero lockup has fully left
-     the top — so the two lockups are never both legible at once, which is the
-     duplication this exists to remove.
-
-     Base styles are deliberately the FINISHED state. Zero JavaScript, and in a
-     browser without scroll-driven animations (or without timeline-scope) the
-     timeline is simply inactive, the effect never applies, and what remains is
-     an opaque header with a visible wordmark — today's behaviour. */
-  .uz-site-navigation--handoff {
-    animation: header-settle linear both;
-    animation-timeline: --uz-hero-lockup;
-    animation-range: exit 0% exit 45%;
+  /* Fixed rather than sticky, so the hero starts at the very top of the page
+     and its footage runs behind the header rather than below it. */
+  .uz-site-navigation--overlay {
+    position: fixed;
+    inset-inline: 0;
   }
 
-  .uz-site-navigation--handoff .uz-site-navigation__brand {
-    animation: brand-arrive linear both;
-    animation-timeline: --uz-hero-lockup;
-    animation-range: exit 55% exit 100%;
+  /* Over footage rather than over canvas, so the links carry the primary ink.
+     --color-text-secondary would read at 2.5:1 against the brightest the sky
+     gets under this header; primary reads at 5.1:1. The links keep it once the
+     header fills in, where it is simply a stronger 18:1. */
+  .uz-site-navigation--overlay .uz-site-navigation__link {
+    color: var(--color-text-primary);
   }
 
-  @keyframes header-settle {
+  /* The handoff. Both properties ride ONE timeline anchored to the hero's h1,
+     so the header filling in and the wordmark arriving are a single gesture
+     rather than two effects — BRAND.md's "opening" continued, not a second
+     authored moment. The range ends at `exit 100%`, the instant the hero's
+     Uzume has fully left the top, so the two are never both legible at once.
+
+     The base styles above are deliberately the FINISHED state: opaque header,
+     visible wordmark. A browser without scroll-driven animations runs these on
+     the document timeline at 0s and `both` fill lands on exactly that, which
+     is also the right answer under reduced motion — hence the query.
+
+     Longhands only, and never the `animation` shorthand. The build's CSS
+     minifier folds a shorthand and a following `animation-timeline` into
+     `animation: linear both name --timeline`; animation-timeline is not a
+     component of that shorthand, so the whole declaration is invalid and
+     silently dropped. That is exactly how this feature shipped dead in W.2 and
+     stayed dead until W.4 went looking. If you touch these rules, rebuild and
+     grep dist for `animation-timeline` before believing them. */
+  @media (prefers-reduced-motion: no-preference) {
+    .uz-site-navigation--overlay {
+      animation-name: uz-header-settle;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --uz-hero-lockup;
+      animation-range: exit 0% exit 70%;
+    }
+
+    .uz-site-navigation--overlay .uz-site-navigation__brand {
+      animation-name: uz-brand-arrive;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --uz-hero-lockup;
+      animation-range: exit 35% exit 100%;
+    }
+  }
+
+  @keyframes uz-header-settle {
     from {
       background-color: transparent;
       border-bottom-color: transparent;
@@ -106,33 +141,11 @@ const here = Astro.url.pathname.replace(/\/$/, "") || "/";
 
   /* visibility is in the keyframes deliberately: opacity alone would leave a
      focusable, invisible link as the second tab stop on the page. */
-  @keyframes brand-arrive {
+  @keyframes uz-brand-arrive {
     from {
       opacity: 0;
       visibility: hidden;
-      transform: translateY(-0.5rem);
-    }
-  }
-
-  /* BRAND.md: under reduced motion, remove spatial travel and decorative
-     reveals; preserve content as an immediate state. The global rule in
-     Base.astro cannot do this one — it collapses animation-duration, which a
-     scroll-driven animation ignores. */
-  @media (prefers-reduced-motion: reduce) {
-    .uz-site-navigation--handoff,
-    .uz-site-navigation--handoff .uz-site-navigation__brand {
-      animation: none;
-    }
-
-    .uz-site-navigation--handoff {
-      background: var(--color-canvas);
-      border-bottom-color: var(--color-line);
-    }
-
-    .uz-site-navigation--handoff .uz-site-navigation__brand {
-      opacity: 1;
-      visibility: visible;
-      transform: none;
+      transform: translateY(-0.6rem);
     }
   }
 </style>
