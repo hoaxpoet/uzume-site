@@ -243,6 +243,12 @@ const beats = [
      as tall as its two parts need and not a pixel more. */
   .hero__stage {
     grid-area: 1 / 1;
+    /* Not optional: the veil below is absolutely positioned, and without a
+       positioned stage it resolved against .hero instead — covering the whole
+       section, swallowing every click and text selection in the copy beneath
+       it, and stretching the gradient over 900px so the band had no closing
+       ramp at all. */
+    position: relative;
     height: min(25rem, 56.25vw);
     overflow: hidden;
     /* The flock drifts between 0.38 and 0.70 of the frame's height over the
@@ -287,6 +293,8 @@ const beats = [
     content: "";
     position: absolute;
     inset: 0;
+    /* Decoration. It must never be the thing a click or a drag lands on. */
+    pointer-events: none;
     background: linear-gradient(
       to bottom,
       color-mix(in srgb, var(--color-canvas) 46%, transparent) 0,
