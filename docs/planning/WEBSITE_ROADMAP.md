@@ -316,6 +316,22 @@ the site before it launches. A second capture-and-encode pass reuses `check_capt
 and `encode_captures.py` unchanged — add presets to the capture log and re-run. Not a
 W.4 dependency.
 
+**Scoped as W.3c** (2026-09-18): `docs/planning/W.3c-prompt.md`. Four presets — Fractal
+Tree, Aurora Veil, Nimbus, Dragon Bloom — taking the gallery to seven. The selection is
+driven by one fact from `docs/PRESET_ROSTER_REVIEW_2026-09-04.md`: **Matt criticises music
+sync on 13 of the 25 certified presets**, and sync is the claim the whole site rests on,
+so the filter is to capture what the review praises and skip what it faults. Those four
+also add the `fractal`, `hypnotic` and `volumetric` families to a gallery that is
+currently `particles`, `geometric`, `geometric`, and Dragon Bloom is the only candidate
+carrying an `inspired_by` block — publishing it would be the first real exercise of the
+gallery's Milkdrop-attribution path.
+
+Only the recording step needs a human at a Mac; everything after it is scripted. The
+prompt's second decision asks whether to capture one preset against a *second*
+rights-clear track, which is the only route anyone has found to demonstrating sync in a
+still image — the thing reduced-motion visitors, phone visitors and OG cards all currently
+lack.
+
 **Found: the encodes are not reproducible end to end.** SVT-AV1 v4.1 gives different
 bytes every run (tried: single thread, no rate cap), and x264 does too where its cap
 binds throughout — Ferrofluid Ocean's H.264 loop. Everything else reproduces: the other
