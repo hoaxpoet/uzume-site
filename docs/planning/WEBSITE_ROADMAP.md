@@ -314,6 +314,12 @@ Clear to proceed."
 CRF 30 is 48 MB for SSIM 0.949, against 0.937 at 11 MB. Near-incompressible dense
 texture; spending four times the bytes buys nothing a viewer would see.
 
+**Open: more footage before launch** (Matt, 2026-09-18). Three performances is what W.3a
+captured and what W.4 builds on; the roster's certified 25 deserve a wider selection on
+the site before it launches. A second capture-and-encode pass reuses `check_capture.py`
+and `encode_captures.py` unchanged — add presets to the capture log and re-run. Not a
+W.4 dependency.
+
 **Found: the encodes are not reproducible end to end.** SVT-AV1 v4.1 gives different
 bytes every run (tried: single thread, no rate cap), and x264 does too where its cap
 binds throughout — Ferrofluid Ocean's H.264 loop. Everything else reproduces: the other

@@ -195,7 +195,15 @@ Small and per logical step. Never media.
 8. **Handoff to W.5:** anything the docs sessions inherit — nav shape, component
    contracts changed, and whether `PresetCard` is still used anywhere.
 
-## DECISION-NEEDED (answer at Task 2)
+## DECISION-NEEDED (answered in advance — Matt, 2026-09-18)
+
+**Both are already answered; Task 2 records them rather than asking again.**
+
+- **1 → A**, the three, large. Matt: "we should capture more preset videos before launch,
+  but for now i agree with your recommendation." The extra capture is a separate session
+  (roadmap W.3, **Open**), not W.4's job.
+- **2 → A**, full-bleed behind the lockup with a scrim.
+
 
 **1. What does `/gallery` show, when only three of 25 certified presets have footage?**
 
