@@ -5,5 +5,5 @@
   "description": "Ocean-portion-scale ferrofluid surface: constant Rosensweig spike lattice over Gerstner swell, lit by mirror-reflects-procedural-sky aurora (D-126 / D-127). Audio routing per round 65 (V.9 Session 4.5c): bass_energy_dev → spike height; arousal → swell amplitude; vocals_pitch_hz → aurora palette; drums_energy_dev_smoothed → aurora intensity; accumulated_audio_time × arousal → aurora drift.",
   "family": "geometric",
   "certified": true,
-  "roster_quote": "Brilliant sync with the music, but everything seems like 4/4 time."
+  "caption": "A ferrofluid ocean under an aurora. Bass raises the spikes, the music's intensity sets the swell beneath them, and the vocal line moves the aurora's colour."
 }

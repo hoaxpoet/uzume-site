@@ -31,7 +31,10 @@ const presets = defineCollection({
         sha256: z.string().optional(),
       })
       .optional(),
-    roster_quote: z.string(),
+    // The published sentence, authored in Scripts/preset_captions.json rather
+    // than lifted from the sidecar's own maintainers-first description.
+    // Optional: a preset with footage but no caption yet still validates.
+    caption: z.string().optional(),
   }),
 });
 

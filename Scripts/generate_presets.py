@@ -22,12 +22,18 @@ from pathlib import Path
 
 SITE = Path(__file__).resolve().parent.parent
 MANIFEST = SITE / "src" / "data" / "media.json"
+CAPTIONS = Path(__file__).resolve().parent / "preset_captions.json"
 OUT_DIR = SITE / "src" / "content" / "presets"
 SIDECARS = "UzumeEngine/Sources/Presets/Shaders/*.json"
 
 # The site publishes these and nothing else: engine-internal sidecar fields
 # (audio routes, pass lists, complexity costs) are not product facts the site
 # asserts. `inspired_by` rides along only when the sidecar carries one.
+#
+# `description` is carried but never rendered: the sidecars are written
+# maintainers-first and theirs contain increment ids and decision numbers. The
+# published sentence is the site-authored `caption` from preset_captions.json,
+# rewritten from that description and asserting nothing it does not.
 FIELDS = ("name", "author", "description", "family", "certified")
 
 
@@ -63,6 +69,12 @@ def main() -> int:
         sidecar = json.loads(path.read_text())
         by_slug[slugify(sidecar["name"])] = sidecar
 
+    captions = {
+        slug: text
+        for slug, text in json.loads(CAPTIONS.read_text()).items()
+        if not slug.startswith("_")
+    }
+
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     stale = set(OUT_DIR.glob("*.json"))
     changed = []
@@ -78,7 +90,8 @@ def main() -> int:
         entry.update({key: sidecar[key] for key in FIELDS})
         if "inspired_by" in sidecar:
             entry["inspired_by"] = sidecar["inspired_by"]
-        entry["roster_quote"] = media["roster_quote"]
+        if slug in captions:
+            entry["caption"] = captions[slug]
 
         out = OUT_DIR / f"{slug}.json"
         stale.discard(out)

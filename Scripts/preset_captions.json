@@ -1,0 +1,6 @@
+{
+  "_comment": "Site-authored, publishable captions for the gallery. The sidecars' own `description` fields are written maintainers-first and carry increment ids and decision numbers (\"MM.6\", \"D-126 / D-127\", \"FA #73\", \"V.9 Session 4.5c\"), so they cannot ship as-is. Each caption below is rewritten from its sidecar and asserts nothing the sidecar does not: first what the visitor is looking at, then what in the music drives it. Verify against the app repo before changing one. generate_presets.py merges these in; a preset with no entry here simply has no caption.",
+  "murmuration": "A flock of starlings against a dusk sky. The music's energy sets how hard the flock churns and how far it drifts, each beat rolls a wave of banking through it, and the vocal line breathes in its density.",
+  "cymatic-resonance": "Glowing sand on a resonating plate, collecting along the lines that stand still. Loudness drives how hard the plate vibrates, a beat makes the sand jump, and a shift in brightness selects a new figure — so the grains scatter and re-form on it.",
+  "ferrofluid-ocean": "A ferrofluid ocean under an aurora. Bass raises the spikes, the music's intensity sets the swell beneath them, and the vocal line moves the aurora's colour."
+}
