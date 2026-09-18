@@ -6,5 +6,25 @@
   // is not a dashboard field in Workers Builds — it is read from here.
   "assets": {
     "directory": "./dist"
-  }
+  },
+  // Every PR gets its own URL to be judged on, which is how this repo works
+  // (CLAUDE.md: "one session = one PR, judged rendered on its Cloudflare
+  // preview URL — not in diff form").
+  //
+  // Workers Builds already builds pull-request branches — the check has been
+  // green on every PR — and a non-production build uploads a *version* rather
+  // than deploying. But `preview_urls` defaults to FALSE, so those versions had
+  // no URL to serve them and there was nothing for Cloudflare to report. PRs
+  // #31 through #34 all built successfully and none of them carried a link.
+  //
+  // With this on, each version is served at
+  // <version>-uzume-site.<subdomain>.workers.dev and Cloudflare posts it to the
+  // pull request. Production is unaffected: it is deployed from `main` and
+  // reached at uzume.io, and preview versions take no traffic from it.
+  //
+  // Note that a preview URL is public to anyone who has it. Everything the site
+  // says is already written for publication, and the beta copy is in the future
+  // tense either way (PRODUCT.md), so this exposes no claim that uzume.io will
+  // not eventually make.
+  "preview_urls": true
 }
