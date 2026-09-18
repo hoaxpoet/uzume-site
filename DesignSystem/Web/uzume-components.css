@@ -103,6 +103,10 @@
 .uz-media-frame__fallback span { margin-top: var(--space-1); font-size: var(--text-sm); }
 .uz-media-frame__caption { display: flex; justify-content: space-between; gap: var(--space-4); min-width: 0; padding: var(--space-4) var(--space-5); }
 .uz-media-frame__caption > * { min-width: 0; overflow-wrap: anywhere; }
+/* The caption's title is a <strong> by default and a heading on pages whose
+   content IS the frames, so the performances reach the heading outline. Both
+   render identically: the element carries the semantics, not the look. */
+.uz-media-frame__title { margin: 0; font: inherit; font-weight: 700; }
 .uz-media-frame__meta { color: var(--color-text-secondary); font-size: var(--text-sm); }
 
 .uz-site-navigation {

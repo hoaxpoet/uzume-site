@@ -4,16 +4,20 @@ import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import VideoTile from "../components/VideoTile.astro";
+import Button from "../components/Button.astro";
+import NotifyForm from "../components/NotifyForm.astro";
 import media from "../data/media.json";
 
 const description =
-  "Three certified presets, performing. Real capture footage from the Uzume engine, with the preset's author and the roster review's own words.";
+  "Three certified presets, performing. Real capture footage from the Uzume engine, unedited and silent, with the preset's author and family.";
 
 // The preset entries are generated from the app repo's sidecars
 // (Scripts/generate_presets.py); the footage is the encoder's manifest. Slug is
 // the join. Manifest order is the gallery's order, hero last — Murmuration
 // already opens the landing page, so the two presets a visitor has not seen go
 // first.
+const REPO = "https://github.com/hoaxpoet/uzume";
+
 const presets = await getCollection("presets");
 const performances = media.map((clip) => {
   const preset = presets.find((entry) => entry.data.slug === clip.slug);
@@ -34,35 +38,50 @@ const performances = media.map((clip) => {
         motion graphics — this is what the application draws.
       </p>
       <p class="intro__note">
-        Three of the roster's certified presets are published here so far. More
-        will join them as they are captured.
+        Three of the certified presets are published here so far; more will join
+        them as they are captured. Every clip is silent — the performances are
+        driven by music, but the footage carries no audio track.
       </p>
     </header>
 
-    {performances.map(({ name, author, family, inspired_by, clip }) => (
-      <article class="performance">
-        <VideoTile
-          title={name}
-          meta={`${author} · ${family}`}
-          poster={clip.posters.jpeg.url}
-          sources={clip.renditions}
-        />
-        {inspired_by && (
-          <p class="performance__lineage">
-            After “{inspired_by.milkdrop_filename}” by{" "}
-            {inspired_by.original_artist}, from {inspired_by.pack}.
-          </p>
-        )}
-      </article>
-    ))}
+    {performances.map(
+      ({ name, author, family, inspired_by, caption, clip }) => (
+        <article class="performance">
+          <VideoTile
+            titleAs="h2"
+            title={name}
+            meta={`${author} · ${family}`}
+            poster={clip.posters.jpeg.url}
+            sources={clip.renditions}
+          />
+          {caption && <p class="performance__caption">{caption}</p>}
+          {inspired_by && (
+            <p class="performance__lineage">
+              After “{inspired_by.milkdrop_filename}” by{" "}
+              {inspired_by.original_artist}, from {inspired_by.pack}.
+            </p>
+          )}
+        </article>
+      ),
+    )}
 
-    <section class="outro" aria-label="Contributing presets">
+    <section class="outro">
       <h2>Your preset could be the next one here</h2>
       <p>
         A preset is a Metal shader and a JSON file dropped into the repository.
         The ones that pass the gates will become part of what every listener
         sees, with their author's name on them — on this page, among these.
       </p>
+      <div class="outro__actions">
+        <Button variant="secondary" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
+          Write a preset
+        </Button>
+      </div>
+
+      <div class="outro__notify">
+        <NotifyForm />
+      </div>
+
       <p class="outro__rights">
         Captured against “Delinquent Frequencies” — The Goddamn Shame,
         <em>Dispatches from the Grey City</em> (EP, 2006, self-released), used
@@ -121,9 +140,22 @@ const performances = media.map((clip) => {
   /* Milkdrop lineage, where a preset has it. None of the three published so
      far does — all are Matt's originals — so this renders on the footage W.3
      still owes. */
-  .performance__lineage {
+  /* What the visitor is looking at, and what in the music drives it. Without
+     it a silent loop cannot demonstrate the one thing this page exists to
+     prove. Authored in Scripts/preset_captions.json, not lifted from the
+     sidecar's own maintainers-first description. */
+  .performance__caption {
     max-width: var(--measure-copy);
     margin: var(--space-6) 0 0;
+    font-size: var(--text-lg);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .performance__lineage {
+    max-width: var(--measure-copy);
+    margin: var(--space-4) 0 0;
     font-size: var(--text-sm);
     line-height: var(--leading-body);
     color: var(--color-text-tertiary);
@@ -146,6 +178,26 @@ const performances = media.map((clip) => {
     margin: 0 0 var(--space-6);
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
+  }
+
+  /* The page that convinces people had no way out of it: its last focusable
+     element was the footer's GitHub link. Both audiences get a door now — the
+     contributor a repository, the listener the same form the landing page
+     offers, because this is where they are persuaded. */
+  .outro__actions {
+    margin-bottom: var(--space-16);
+  }
+
+  .outro__notify {
+    display: flex;
+    justify-content: center;
+    padding-block: var(--space-12);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .outro__notify :global(.notify) {
+    align-items: center;
+    text-align: center;
   }
 
   .outro__rights {

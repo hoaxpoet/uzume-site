@@ -21,9 +21,24 @@ interface Props {
    * landing page would only be in the way.
    */
   bare?: boolean;
+  /**
+   * The element the caption's title renders as. `strong` by default, which is
+   * what a tile inside a larger argument wants. A page whose content *is* the
+   * tiles passes a heading, so the performances reach the heading outline and
+   * a screen reader can navigate between them.
+   */
+  titleAs?: "strong" | "h2" | "h3";
 }
 
-const { title, meta, poster, sources = [], bare = false } = Astro.props;
+const {
+  title,
+  meta,
+  poster,
+  sources = [],
+  bare = false,
+  titleAs = "strong",
+} = Astro.props;
+const TitleTag = titleAs;
 ---
 
 {bare ? (
@@ -84,7 +99,7 @@ const { title, meta, poster, sources = [], bare = false } = Astro.props;
       )}
     </div>
     <figcaption class="uz-media-frame__caption">
-      <strong>{title}</strong>
+      <TitleTag class="uz-media-frame__title">{title}</TitleTag>
       {meta && <span class="uz-media-frame__meta">{meta}</span>}
     </figcaption>
   </figure>
