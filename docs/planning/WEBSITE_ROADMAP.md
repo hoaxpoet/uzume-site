@@ -389,7 +389,8 @@ preset that gets footage. `docs/CREDITS.md` in the app repo was not cited: it
 covers bundled ML weights and reference code and says nothing about presets, so
 the roadmap's earlier line naming it as an attribution source was wrong.
 
-**Found: W.2's header handoff has never run, and the CSS minifier is why.**
+**Found and then fixed: W.2's header handoff had never run, and the CSS
+minifier was why.**
 `Nav.astro` sets `animation: header-settle linear both` followed by
 `animation-timeline: --uz-hero-lockup`. The build's minifier folds the longhand
 back into the shorthand as `animation: linear both header-settle --uz-hero-lockup`
@@ -398,11 +399,12 @@ the whole declaration is invalid and dropped. `animation-name` computes to `none
 and `animation-timeline` to `auto` in the built site. The result is the fallback
 the component's own comment describes as safe: an opaque header with a visible
 wordmark, from the first pixel. It was pre-existing — the same source is on
-`main` — and W.4 left it alone. **The W.2 hero pass below deleted it instead of
-fixing it:** the hero no longer holds a lockup to hand off from, so the feature
-had nothing left to do. `timeline-scope` left `Base.astro` with it. Worth
-remembering if a scroll-driven animation is ever wanted again: write the four
-longhands, never the `animation` shorthand followed by `animation-timeline`.
+`main` — and W.4 left it alone. **The W.2 hero pass below rebuilt it and it now
+runs.** The fix is to write longhands only and never the `animation` shorthand;
+the check is to grep `dist` for `animation-timeline`, `view-timeline` and
+`timeline-scope` after any build that touches these rules, because the failure
+is completely silent in the source and completely invisible until you look at
+the built CSS.
 
 **Found: Ferrofluid Ocean's poster is the heaviest asset on the site.** 551 kB
 JPEG, 382 kB AVIF, against 48/18 kB for Cymatic Resonance and 93/52 kB for
@@ -434,13 +436,13 @@ since corrected. Its hero ideas were applied to the finished W.4 hero instead.
 
 **Applied.**
 
-- **The claim is the h1**, in Alumni Sans, and the wordmark moves to the header
-  on every page as live text. BRAND.md's "never set the wordmark in live type"
-  was written before the site served Alumni Sans; the wordmark file is itself
-  outlined Alumni Sans SemiBold, so the real face at 600 is the same drawing —
-  selectable, scaled by the reader's text settings, one asset lighter.
-- **A copy column beside the field**, not a centred stack over it. This is what
-  let the footage take the whole hero rather than a cropped band.
+- **The wordmark is live text**, in the header and in the hero. BRAND.md's
+  "never set the wordmark in live type" was written before the site served
+  Alumni Sans; the wordmark file is itself outlined Alumni Sans SemiBold, so the
+  real face at 600 is the same drawing — selectable, scaled by the reader's text
+  settings, one asset lighter. It is also what lets the hero's h1 and the
+  header's wordmark be the same word in the same face, which is what makes the
+  handoff read as one lockup moving rather than two swapping.
 - **A spec list inside the first viewport**, and the GitHub CTA demoted to the
   sentence after the form. The notify path is the primary action now.
 - **The Coleridge tagline moved to the footer**, as the atmospheric close
@@ -461,14 +463,47 @@ since corrected. Its hero ideas were applied to the finished W.4 hero instead.
 BRAND.md makes engine output the principal image language and W.3 existed to
 produce it, so the SVG stays on the branch.
 
-**The veil is horizontal now** — midnight over the copy, clear over the flock —
-and its stops were solved numerically against a per-cell map of the loop's
-maximum luminance (every frame, every part of the frame) rather than chosen by
-eye. It is shaped as a sampled smoothstep: a two-stop linear ramp kinks at both
-ends, and the kink reads as the edge of a panel rather than as haze. Worst case
-over the whole loop — claim 13.48:1, spec list 8.65:1, notify label 13.23:1,
-notify terms 6.16:1, alt text 6.60:1, alt link 9.55:1 — while the flock keeps
-97% of its light at 0.12 of the window and 25% at 0.40.
+**Decision: "Uzume" is the hero headline and the page h1, and it animates into
+the header** (Matt, 2026-09-18), with the header fixed to the top, transparent
+on load so the footage's clouds run behind it, and filled with a brand colour
+once the name has gone. An intermediate draft made the *claim* the h1 and put
+the copy in a column beside the footage; Matt: "two column layout should be dead
+too". The hero is centred again — footage as the upper band, the name over it,
+the copy on its own field below.
+
+**The handoff runs this time**, and the reason it never did is worth keeping:
+the minifier finding above. `Nav.astro` now writes six `animation-*` longhands
+and no shorthand, `Base.astro` carries `timeline-scope`, and the hero's h1
+carries `view-timeline`. All three survive minification — verified in `dist`,
+which is the only place the failure was ever visible. The whole handoff sits
+inside `prefers-reduced-motion: no-preference`, so the reduced-motion state is
+simply the base rule: an opaque header with a visible wordmark from the first
+pixel. On the homepage the header's links take `--color-text-primary`, because
+secondary ink reads at 2.5:1 against the brightest the sky gets under a
+transparent header and primary reads at 5.1:1.
+
+**The band's veil is flat at 0.46 rather than lighter at the top.** The crop
+that puts the flock under the name also puts the sky's brighter middle under the
+header — 0.256 at most over the loop, against the 0.090 the frame's own top
+would have given — so the header's strip cannot be lighter than the rest without
+failing. 54% of the cloud's light still reaches the reader through it.
+
+**Found: a percentage inside a padded box cannot escape that box.** The copy
+field's veil was meant to bleed to the window's edges via a negative margin, but
+`50%` in a child of `main > section`'s inline padding resolves against the padded
+box, not the window, so the veil rendered as a rectangle with visible sides. The
+hero is excluded from the frame's padding and centres its own parts instead.
+
+**Every veil on this page was solved numerically**, against a per-cell map of
+the loop's maximum luminance — every frame, every part of the frame — rather
+than chosen by eye. Worst case over the whole 30 s loop: header links 5.08:1,
+the name 4.17:1 (large text, 3:1 is the bar), claim 16.12:1, spec list 11.65:1,
+notify label 17.96:1, notify terms 8.10:1, alt 8.10:1, alt link 11.65:1.
+
+One technique worth keeping from the discarded two-column draft: where a veil
+has to fall away across footage, sample a smoothstep into stops rather than
+using a two-stop linear ramp. The linear ramp kinks at both ends and the kink
+reads as the edge of a panel rather than as haze.
 
 **Not carried, all four older than `main`:** the deletion of
 `public/uzume-icon.png` (`404.astro` and `confirmed.astro` still reference it),
