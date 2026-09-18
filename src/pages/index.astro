@@ -6,11 +6,27 @@ import Button from "../components/Button.astro";
 import NotifyForm from "../components/NotifyForm.astro";
 import Callout from "../components/Callout.astro";
 import RequirementsList from "../components/RequirementsList.astro";
+import VideoTile from "../components/VideoTile.astro";
+import PresetCard from "../components/PresetCard.astro";
+import { getCollection } from "astro:content";
+import media from "../data/media.json";
 
 const description =
   "A native macOS music visualizer that performs light to the music you are already playing.";
 
 const REPO = "https://github.com/hoaxpoet/uzume";
+
+// The manifest names the hero; W.3b's decision lives in the encoder, not here.
+const hero = media.find((clip) => clip.role === "hero")!;
+const presets = await getCollection("presets");
+// Posters only — the hero already spends the page's motion budget. The two
+// presets the hero does not show are the ones worth teasing.
+const teasers = media
+  .filter((clip) => clip.role === "gallery")
+  .map((clip) => ({
+    clip,
+    preset: presets.find((entry) => entry.data.slug === clip.slug)!.data,
+  }));
 
 // Every fact here is checked against the app repo's README and PRODUCT_SPEC.
 const requirements = [
@@ -45,41 +61,61 @@ const beats = [
 
   <main id="main">
     <section class="hero">
-      <img
-        class="hero__icon"
-        src="/uzume-icon.png"
-        alt=""
-        width="256"
-        height="256"
-        fetchpriority="high"
-      />
-      <h1 class="hero__lockup">
-        <img
-          class="hero__wordmark"
-          src="/uzume-wordmark.svg"
-          alt="Uzume"
-          width="316"
-          height="160"
+      {/* Murmuration, full-bleed. Decorative here and named on /gallery: the
+          loop is the argument, not a second unlabelled tab stop. It carries no
+          autoplay attribute, so under reduced motion — or on a phone, or on a
+          metered connection — the poster simply stands and no video byte is
+          fetched. */}
+      <div class="hero__stage">
+        <VideoTile
+          bare
+          title={hero.preset}
+          poster={hero.posters.jpeg.url}
+          sources={hero.renditions}
         />
-      </h1>
-      <blockquote class="hero__tagline">
-        <p>A light in sound, a sound-like power in light.</p>
-        <cite>
-          Coleridge, <em>The Eolian Harp</em>, 1795
-        </cite>
-      </blockquote>
-      <p class="hero__lede">{description}</p>
-      <p class="hero__note">
-        Uzume is open source and buildable today. There is no installable build
-        yet — the public beta will be free and notarized when it arrives.
-      </p>
-      <NotifyForm />
-      <div class="hero__actions">
-        <Button variant="secondary" href={REPO}>
-          On GitHub today — build from source
-        </Button>
       </div>
-      <p class="hero__requirements">Apple silicon · macOS 14+ · free, MIT</p>
+
+      <div class="hero__field">
+        <img
+          class="hero__icon"
+          src="/uzume-icon.png"
+          alt=""
+          width="256"
+          height="256"
+          fetchpriority="high"
+        />
+        <h1 class="hero__lockup">
+          <img
+            class="hero__wordmark"
+            src="/uzume-wordmark.svg"
+            alt="Uzume"
+            width="316"
+            height="160"
+          />
+        </h1>
+      </div>
+
+      <div class="hero__copy">
+        <blockquote class="hero__tagline">
+          <p>A light in sound, a sound-like power in light.</p>
+          <cite>
+            Coleridge, <em>The Eolian Harp</em>, 1795
+          </cite>
+        </blockquote>
+        <p class="hero__lede">{description}</p>
+        <p class="hero__note">
+          Uzume is open source and buildable today. There is no installable
+          build yet — the public beta will be free and notarized when it
+          arrives.
+        </p>
+        <NotifyForm />
+        <div class="hero__actions">
+          <Button variant="secondary" href={REPO}>
+            On GitHub today — build from source
+          </Button>
+        </div>
+        <p class="hero__requirements">Apple silicon · macOS 14+ · free, MIT</p>
+      </div>
     </section>
 
     <section class="beats" aria-label="How it works">
@@ -117,6 +153,28 @@ const beats = [
           frame rather than thrown across all of it. Reduced-motion settings are
           honoured throughout.
         </Callout>
+      </div>
+    </section>
+
+    <section class="band teaser" aria-label="The gallery">
+      <h2>See it perform</h2>
+      <p class="teaser__lede">
+        Certified presets, captured from the engine and published unedited. The
+        gallery is where a merged preset ends up, with its author's name on it.
+      </p>
+      <div class="uz-preset-gallery">
+        {teasers.map(({ clip, preset }) => (
+          <PresetCard
+            name={preset.name}
+            author={preset.author}
+            poster={clip.posters.jpeg.url}
+          />
+        ))}
+      </div>
+      <div class="teaser__actions">
+        <Button variant="secondary" href="/gallery">
+          See the gallery
+        </Button>
       </div>
     </section>
 
@@ -170,12 +228,108 @@ const beats = [
        otherwise scroll the page. `clip` leaves the other axis visible in a way
        `hidden` would not. */
     overflow-x: clip;
+    /* Full-bleed out of main's measure: the footage is the argument, and it
+       makes it at the width of the window (plan §5, decision 2A). */
+    margin-inline: calc(50% - 50vw);
+    padding-inline: var(--page-gutter);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    min-height: min(92svh, 56rem);
+    padding-block: clamp(var(--space-8), 5vh, var(--space-12)) var(--space-16);
+    text-align: center;
+  }
+
+  /* Murmuration, behind everything — but cropped to its subject. The flock
+     sits at 63% of the frame's height, and the hero's copy needs the bottom
+     half of the section, so footage stretched over the whole hero would hide
+     the very thing it is here to show. The stage is the upper band instead,
+     and `object-position` puts the flock inside it. Full-bleed still: the
+     footage runs the width of the window. */
+  .hero__stage {
+    position: absolute;
+    inset: 0 0 auto;
+    height: min(52svh, 30rem);
+    overflow: hidden;
+    z-index: 0;
+    /* Over the 30 s loop the flock drifts between 0.38 and 0.70 of the frame's
+       height (measured, not guessed). 58% centres the crop window on 0.54, so
+       the flock is inside it for the whole loop at every stage height this
+       band takes.
+       Horizontally, 40% rather than the centre: at desktop widths the frame
+       fills the band and the value is inert, and on a phone — where the band
+       is taller than 16:9 and the crop is horizontal — it keeps the flock,
+       which sits left of centre, inside the window. */
+    --uz-loop-position: 40% 58%;
+  }
+
+  /* The scrim. BRAND.md asks for one wherever copy crosses a busy region, and
+     a dusk sky under white type is the case it names. Sized from the footage
+     rather than by eye: over the whole 30 s loop the brightest local patch
+     reaches a relative luminance of 0.447 (0.412 within the copy column), so —
+     alpha compositing being linear in relative luminance — a scrim of
+     --color-canvas at alpha a lands the background at a·0.0037 + (1-a)·0.447.
+
+       0.86 across the top 4.5rem   the navigation's own height. Its links are
+                                    --color-text-secondary: 5.4:1 there.
+       0.50 from 9rem down          the lockup band. The wordmark is #F4F6F1
+                                    on 0.226 — 3.5:1, clear of the 3:1 that
+                                    WCAG 1.4.11 asks of meaningful graphics —
+                                    and three fifths of the footage survives.
+
+     The prose does not sit on 0.50; .hero__copy carries its own field below. */
+  .hero__stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-canvas) 86%, transparent) 0,
+      color-mix(in srgb, var(--color-canvas) 86%, transparent) 4.5rem,
+      color-mix(in srgb, var(--color-canvas) 50%, transparent) 9rem,
+      color-mix(in srgb, var(--color-canvas) 50%, transparent) 72%,
+      var(--color-canvas) 100%
+    );
+  }
+
+  /* Everything the reader looks at sits above the stage and above the opening
+     light; flex children need a position to take a z-index at all. */
+  .hero > :not(.hero__stage) {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero__field {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--space-4);
-    padding: clamp(var(--space-8), 5vh, var(--space-12)) 0 var(--space-16);
-    text-align: center;
+  }
+
+  /* The separate field BRAND.md offers as the alternative to putting copy on
+     footage — here it is both: a scrim, opaque enough to be a field. At 92%
+     over the scrimmed footage the background reaches a relative luminance of
+     0.021, which puts the weakest text on the page (--color-text-tertiary, the
+     Coleridge citation and the requirements line) at 6.1:1. It fades in across
+     its own top padding, where no text sits, and closes to the flat canvas the
+     next section starts on so the hero has no visible bottom edge. */
+  .hero__copy {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    margin-inline: calc(-1 * var(--page-gutter));
+    padding: var(--space-16) var(--page-gutter) var(--space-8);
+    background: linear-gradient(
+      to bottom,
+      transparent 0,
+      color-mix(in srgb, var(--color-canvas) 92%, transparent) var(--space-16),
+      color-mix(in srgb, var(--color-canvas) 92%, transparent) 80%,
+      var(--color-canvas) 100%
+    );
   }
 
   /* BRAND.md motion: the brand's authored movement is opening — content begins
@@ -187,7 +341,8 @@ const beats = [
   .hero::before {
     content: "";
     position: absolute;
-    z-index: -1;
+    /* Above the footage and its scrim, below the copy. */
+    z-index: 1;
     inset: -20% -10% auto;
     aspect-ratio: 2 / 1;
     background: radial-gradient(
@@ -356,6 +511,17 @@ const beats = [
   .myth p:last-child {
     margin-bottom: 0;
     color: var(--color-text-primary);
+  }
+
+  .teaser__lede {
+    max-width: var(--measure-copy);
+    margin: 0 0 var(--space-8);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  .teaser__actions {
+    margin-top: var(--space-8);
   }
 
   /* The catalogue's invitation pattern sits inside the page rhythm. */
