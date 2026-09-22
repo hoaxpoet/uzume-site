@@ -69,7 +69,7 @@ const beats = [
   <Nav overlay />
 
   <p class="mock-flag">
-    Mock of the W.5a homepage brief. Not linked, not indexed, not shipping.
+    Mock — not shipping
   </p>
 
   <main id="main">
@@ -88,52 +88,26 @@ const beats = [
       <div class="hero__copy">
         <p class="hero__claim">{claim}</p>
 
-        {/* Status before the ask. On the live page this sits below the email
-            field in tertiary grey, so the sequence a visitor gets is claim →
-            ask → "actually there's nothing yet". Inverted here, and at body
-            weight: someone who knows what they are waiting for resents the
-            wait less. "Free" and "open source" surface here rather than in
-            row four of the requirements table. */}
-        {/* Names the thing that is coming. "The source is public" is jargon
-            for the listener this page is written to, and the sentence never
-            said what a visitor would eventually get. Two short lines: what is
-            coming, then who can have something today — the second addressed to
-            the people it is actually for, so nobody else reads it as a
-            requirement. */}
-        <p class="hero__status">
-          Uzume hasn't launched yet. The public beta will be free and open
-          source.
-        </p>
-        <p class="hero__meta">
-          For Apple silicon Macs, macOS 14 or later. If you build software, the
-          code is <a href={REPO}>on GitHub</a> today.
-        </p>
-
-        {/* Four pieces of text were saying the same thing: the status line, the
-            label, the terms, and the button. The status line above has already
-            established what there is to wait for, so the label only has to name
-            the ask and the terms only have to say what it costs. */}
+        {/* The label carries the status. "When the public beta is ready" says
+            it is not ready, and the terms line says what it will be — so the
+            two paragraphs that used to say those things separately are gone. */}
         <NotifyForm
-          label="Email me when it's ready"
-          terms="One email when there's a build. Unsubscribe any time."
+          label="Email me when the public beta is ready"
+          terms="Free and open source when it arrives. One email when there's a build — unsubscribe any time."
         />
       </div>
     </section>
-
-    {/* The plant. Somebody reads a word they do not know, set in 112px type,
-        and immediately wants to know what it means — answering that here, in
-        one line, is hospitable and it sets up the ending. The telling itself
-        is held back to the close, where it pays off. */}
-    <p class="plant">
-      Uzume — <span>oo-ZOO-meh</span> — is named after a dancer who brought the
-      light back.
-    </p>
 
     <section class="band beats-band">
       {/* Rows, not a three-up grid. Each claim sits beside the thing that
           proves it, which is also what stops this band and the one after it
           reading as two helpings of the same layout. */}
       <h2>What it does</h2>
+      <p class="lede">
+        Uzume — oo-ZOO-meh — is named for a dancer who drew the light out of a
+        cave. What the app does is less mythic: it listens to your music, works
+        out what is in it, and draws something to go with it.
+      </p>
       <div class="beats">
         {beats.map(({ title, body, capture }) => (
           <article class="beat">
@@ -195,6 +169,11 @@ const beats = [
       </div>
     </section>
 
+    <p class="facts">
+      For Apple silicon Macs, macOS 14 or later. Free and open source, MIT. If
+      you build software, the code is <a href={REPO}>on GitHub</a> today.
+    </p>
+
     {/* Was a band like any other, arriving last and reading as an afterthought
         — which is a waste, because this is the story the whole thing is named
         after and the page otherwise ends on housekeeping. Full width, its own
@@ -236,14 +215,14 @@ const beats = [
   .mock-flag {
     position: fixed;
     z-index: 20;
-    inset-block-start: 0;
-    inset-inline: 0;
+    inset-block-end: var(--space-4);
+    inset-inline-start: var(--space-4);
     margin: 0;
-    padding: var(--space-2) var(--space-4);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
     background: var(--color-status-warning-background);
     color: var(--color-text-primary);
     font-size: var(--text-sm);
-    text-align: center;
   }
 
   /* ---- Frame. Lifted unchanged from index.astro: the hero is untouched. ---- */
@@ -261,9 +240,8 @@ const beats = [
     position: relative;
     isolation: isolate;
     overflow: clip;
-    min-height: 100svh;
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto;
     text-align: center;
   }
 
@@ -335,9 +313,8 @@ const beats = [
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: var(--space-4);
-    padding-block: var(--space-8);
+    padding-block: var(--space-12) var(--space-16);
     padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
   }
 
@@ -359,6 +336,21 @@ const beats = [
     letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
     text-wrap: balance;
+  }
+
+  .facts {
+    margin: 0;
+    padding-block: var(--space-12);
+    padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
+    border-top: 1px solid var(--color-line);
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-tertiary);
+    text-wrap: pretty;
+  }
+
+  .facts a {
+    color: var(--color-text-secondary);
   }
 
   .hero__status {
@@ -520,13 +512,11 @@ const beats = [
      heading — a single line that answers the question the wordmark just raised
      and hands the reader on. */
   .plant {
+    max-width: 38rem;
     margin: 0;
-    padding-block: var(--space-16);
-    padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
-    text-align: center;
     text-wrap: pretty;
   }
 
