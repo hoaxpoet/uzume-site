@@ -48,14 +48,24 @@ const beats = [
   {
     title: "It listens",
     body: "With local files, Uzume hears the whole playlist before it plays a note. With anything else — a streaming app, a browser tab — it listens to what is actually coming out of your Mac.",
-    capture:
-      "Performance Preflight — audio source, display, eligible scenes, quality, accessibility.",
+    shot: {
+      avif: "/app-choose-source.avif",
+      jpeg: "/app-choose-source.jpg",
+      width: 896,
+      height: 689,
+      alt: "Uzume asking where the music comes from: Apple Music, Spotify, or local files, under a line reading “With Apple Music or Spotify, you press play and Uzume listens. Local files it plays for you.”",
+    },
   },
   {
     title: "It analyzes",
     body: "It pulls the music apart — drums, bass, voice, everything else — and follows each one separately, along with where the beats fall and how the harmony moves. On a local file that starts immediately; from a streaming app it takes ten or fifteen seconds, and works from the mix until then.",
-    capture:
-      "Preparation Stage — progress, elapsed time, and the Listening → Separating → Understanding → Composing trace.",
+    shot: {
+      avif: "/app-preparing.avif",
+      jpeg: "/app-preparing.jpg",
+      width: 896,
+      height: 560,
+      alt: "Uzume working through a queue of three local files before playback: the first reads “Separating stems”, the two below it are waiting.",
+    },
   },
   {
     title: "It accompanies",
@@ -111,18 +121,30 @@ const beats = [
         out what is in it, and draws something to go with it.
       </p>
       <div class="beats">
-        {beats.map(({ title, body, capture }) => (
+        {beats.map(({ title, body, shot }) => (
           <article class="beat">
             <div class="beat__copy">
               <h3>{title}</h3>
               <p>{body}</p>
             </div>
             <div class="beat__evidence">
-              {capture ? (
-                <div class="screen__gap">
-                  <strong>Capture needed</strong>
-                  <span>{capture}</span>
-                </div>
+              {/* Real captures of the running application, not mockups —
+                  PRODUCT.md is explicit that this repo must not fabricate them.
+                  AVIF with a JPEG behind it, and both dimensions declared so
+                  the row is reserved before the image arrives. */}
+              {shot ? (
+                <picture>
+                  <source srcset={shot.avif} type="image/avif" />
+                  <img
+                    class="shot"
+                    src={shot.jpeg}
+                    alt={shot.alt}
+                    width={shot.width}
+                    height={shot.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               ) : (
                 <VideoTile
                   title={accompanist.preset.name}
@@ -431,30 +453,16 @@ const beats = [
     border-color: var(--color-accent);
   }
 
-  /* Reads as an empty slot, not as an interface: a dashed frame and a plain
-     sentence, so there is no way to mistake it for a screenshot. */
-  .screen__gap {
-    aspect-ratio: 16 / 9;
-    display: grid;
-    align-content: center;
-    gap: var(--space-2);
-    padding: var(--space-6);
-    border: 1px dashed var(--color-line);
+  /* The window keeps its own rounded corners, so the frame only needs a hairline
+     to sit it on the canvas. Height comes from the file's own dimensions — each
+     capture is cropped to its content, so they do not share a ratio and should
+     not be forced into one. */
+  .shot {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-line);
     border-radius: var(--radius-lg);
-    background: var(--color-surface);
-    text-align: center;
-  }
-
-  .screen__gap strong {
-    font-size: var(--text-sm);
-    letter-spacing: var(--tracking-label);
-    color: var(--color-text-tertiary);
-  }
-
-  .screen__gap span {
-    font-size: var(--text-sm);
-    line-height: var(--leading-body);
-    color: var(--color-text-secondary);
   }
 
   /* ---- The name ---- */
