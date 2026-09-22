@@ -148,5 +148,105 @@
       "d157_verdict": "Matt, 2026-09-16: \"all three pass steady luminance\"",
       "encode_verdict": "Matt, 2026-09-18: \"Quality appears strong across all three presets. Brightness is steady. Clear to proceed.\""
     }
+  },
+  {
+    "preset": "Fractal Tree",
+    "slug": "fractal-tree",
+    "role": "gallery",
+    "roster_quote": "Fun, it just dances along with the music pretty convincingly. Might consider adding additional trees so dancing is synchronized",
+    "renditions": [
+      {
+        "url": "https://media.uzume.io/loops/fractal-tree.61289597.webm",
+        "type": "video/webm; codecs=\"av01.0.09M.08\"",
+        "bytes": 1372997,
+        "sha256": "6128959796e9bf897630b807e2d12af04f7bf85fc6cf5dbc580d657651675ac4",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      },
+      {
+        "url": "https://media.uzume.io/loops/fractal-tree.bcbcb70e.mp4",
+        "type": "video/mp4; codecs=\"avc1.64002A\"",
+        "bytes": 2106133,
+        "sha256": "bcbcb70eac4b2ed186fdf383871875356a24a75bd2b60db4df6f2c1d893ecaca",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      }
+    ],
+    "posters": {
+      "avif": {
+        "url": "https://media.uzume.io/posters/fractal-tree.0b25985e.avif",
+        "bytes": 13245
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/posters/fractal-tree.930f1c54.jpg",
+        "bytes": 45032
+      }
+    },
+    "provenance": {
+      "source_master_sha256": "1d553ada9bd4755d5c1234931ad67f366b1262f82c5f5af41f97d567822d50cd",
+      "loop_window_s": [10.0, 86.2],
+      "master_span_s": [40.858, 55.858],
+      "crossfade_s": 0.5,
+      "captured_at": "2026-09-22T14:13:08Z",
+      "app_commit": "84a5f8897674848fadd8e6bfa412dacd6e347380",
+      "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+      "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+      "d157_verdict": "Matt, 2026-09-22: \"both pass steady luminance\"",
+      "encode_verdict": null
+    }
+  },
+  {
+    "preset": "Skein",
+    "slug": "skein",
+    "role": "gallery",
+    "roster_quote": "Fine enough",
+    "renditions": [
+      {
+        "url": "https://media.uzume.io/loops/skein.4050cf37.webm",
+        "type": "video/webm; codecs=\"av01.0.09M.08\"",
+        "bytes": 3853427,
+        "sha256": "4050cf375f645ce51104811029cdd6610c9626d56129b2b0218b1c1cdbdbfdc9",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      },
+      {
+        "url": "https://media.uzume.io/loops/skein.ef81ed7b.mp4",
+        "type": "video/mp4; codecs=\"avc1.64002A\"",
+        "bytes": 3259786,
+        "sha256": "ef81ed7b412b60debc81418028d1c0e14db80bf3979aa8bf9e00675c5f1e2643",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      }
+    ],
+    "posters": {
+      "avif": {
+        "url": "https://media.uzume.io/posters/skein.e4ef8ac4.avif",
+        "bytes": 439328
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/posters/skein.3454b2a2.jpg",
+        "bytes": 584694
+      }
+    },
+    "provenance": {
+      "source_master_sha256": "a6b569f8c8c539129642ee8548b0bf7e1d324ffeae9cccb6077fdf50814c6da5",
+      "loop_window_s": [115.9, 131.4],
+      "master_span_s": [116.412, 131.41],
+      "crossfade_s": 0.5,
+      "captured_at": "2026-09-22T14:31:40Z",
+      "app_commit": "84a5f8897674848fadd8e6bfa412dacd6e347380",
+      "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+      "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+      "d157_verdict": "Matt, 2026-09-22: \"both pass steady luminance\"",
+      "encode_verdict": null
+    }
   }
 ]

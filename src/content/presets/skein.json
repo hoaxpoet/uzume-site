@@ -1,0 +1,9 @@
+{
+  "slug": "skein",
+  "name": "Skein",
+  "author": "hoaxpoet",
+  "description": "Action-painting / drip-pour preset (Pollock's poured technique, Full Fathom Five lineage). A wandering painter pours continuous lines onto a persistent LOSSLESS canvas-hold (identity mv_warp, no decay — D-142/D-143, sibling of Dragon Bloom); stems own the paint colours (the committed dominant stem pours the line, per-stem onsets flick splatters), wet paint glistens and dries matte (ENGINE.2 wetness alpha + Skein.4 sheen), mood tints at lay time, and the per-track FNV-1a seed makes the same song paint the same painting (§5.7 determinism). Palette library: fathom/poles/nocturne/ember (D-155). See docs/presets/SKEIN_DESIGN.md.",
+  "family": "painterly",
+  "certified": true,
+  "caption": "A painter pours continuous lines onto a canvas that never clears, so the picture builds up for as long as the track runs. Each instrument in the mix owns a colour — the one carrying the moment pours the line while the others flick splatters across it — and fresh paint glistens before it dries matte."
+}

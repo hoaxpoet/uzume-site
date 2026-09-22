@@ -9,21 +9,23 @@ import NotifyForm from "../components/NotifyForm.astro";
 import media from "../data/media.json";
 
 const description =
-  "Three certified presets, performing. Real capture footage from the Uzume engine, unedited and silent, with the preset's author and family.";
+  "Five certified presets, performing. Real capture footage from the Uzume engine, unedited and silent, with the preset's author and family.";
 
 // The preset entries are generated from the app repo's sidecars
 // (Scripts/generate_presets.py); the footage is the encoder's manifest. Slug is
-// the join. Manifest order is the gallery's order, hero last — Murmuration
-// already opens the landing page, so the two presets a visitor has not seen go
-// first.
+// the join. The manifest runs in capture order, so sort the hero to the end —
+// Murmuration already opens the landing page, and the presets a visitor has not
+// seen should come first.
 const REPO = "https://github.com/hoaxpoet/uzume";
 
 const presets = await getCollection("presets");
-const performances = media.map((clip) => {
-  const preset = presets.find((entry) => entry.data.slug === clip.slug);
-  if (!preset) throw new Error(`no preset entry for ${clip.slug}`);
-  return { ...preset.data, clip };
-});
+const performances = media
+  .map((clip) => {
+    const preset = presets.find((entry) => entry.data.slug === clip.slug);
+    if (!preset) throw new Error(`no preset entry for ${clip.slug}`);
+    return { ...preset.data, clip };
+  })
+  .sort((a, b) => Number(a.clip.role === "hero") - Number(b.clip.role === "hero"));
 ---
 
 <Base title="Gallery — Uzume" description={description}>
@@ -38,7 +40,7 @@ const performances = media.map((clip) => {
         motion graphics — this is what the application draws.
       </p>
       <p class="intro__note">
-        Three of the certified presets are published here so far; more will join
+        Five of the certified presets are published here so far; more will join
         them as they are captured. Every clip is silent — the performances are
         driven by music, but the footage carries no audio track.
       </p>
@@ -137,7 +139,7 @@ const performances = media.map((clip) => {
     border-top: 1px solid var(--color-line);
   }
 
-  /* Milkdrop lineage, where a preset has it. None of the three published so
+  /* Milkdrop lineage, where a preset has it. None of the five published so
      far does — all are Matt's originals — so this renders on the footage W.3
      still owes. */
   /* What the visitor is looking at, and what in the music drives it. Without
