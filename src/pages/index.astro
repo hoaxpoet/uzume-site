@@ -148,9 +148,13 @@ const beats = [
         somebody, and their name stays on it. These are some of them, recorded
         from Uzume and published unedited.
       </p>
+      {/* Trailing slash before the fragment. The build emits directory routes,
+          so /gallery is a directory and /gallery/ is the page; lychee resolves
+          the bare form to the directory, finds no fragments in it, and fails.
+          It is the canonical form too, so it costs a redirect hop less. */}
       <div class="uz-preset-gallery">
         {featured.map(({ clip, preset }) => (
-          <a class="preset-link" href={`/gallery#${clip.slug}`}>
+          <a class="preset-link" href={`/gallery/#${clip.slug}`}>
             <PresetCard
               name={preset.name}
               author={preset.author}
