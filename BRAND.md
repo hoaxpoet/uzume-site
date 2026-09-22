@@ -57,11 +57,11 @@ Uzume is **plain, warm, unhurried, and specific**.
 
 ### Wordmark
 
-- Use the outlined files in `brand/wordmark/`; do not typeset a substitute lockup.
+- Use the outlined files in `brand/wordmark/` wherever the brand face cannot be guaranteed — email, third-party embeds, favicons, anything rendered outside a page that serves the fonts. Where Alumni Sans *is* served, set it live: the outlined artefact is itself Alumni Sans SemiBold, so the same letterforms at 600 with `--tracking-display` are the same drawing, and live text is selectable, scales with the reader's text settings, and can be a page's `h1`. Do not typeset a substitute lockup in any other face.
 - Minimum digital width: **96 px** without pronunciation, **144 px** with pronunciation.
 - Clear space: at least the cap height of the initial **U** on every side.
 - Primary treatment: ivory on midnight. Approved inverse: midnight on ivory.
-- Do not place the wordmark directly over engine footage or competing imagery.
+- The wordmark may sit over engine footage, and on the website it does. What it may not do is sit there illegibly: give it a scrim, a separate field, or a halo on the glyphs themselves, and verify the result against the footage rather than against a still. (This rule previously read "do not place the wordmark directly over engine footage or competing imagery." It was written at BRAND.1 from a one-line brief — "don't-set-on-photography" — at a time when no footage existed to test it against, and no rationale for it was ever recorded. Generalised to engine output it contradicted the identity principle that the engine's output *is* the brand, so it was narrowed to the legibility concern it was standing in for.)
 
 ## Typography
 
