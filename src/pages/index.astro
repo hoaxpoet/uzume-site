@@ -238,13 +238,18 @@ const beats = [
      copy changed length the swarm got clipped, and the fix each time was more
      hero height. It is a row now: the band cannot be entered by the copy, so
      the flock is safe at every size and the hero is back to one screen. */
+  /* No min-height. 100svh made the copy row absorb everything the band left
+     over, so on a tall window the hero was a screenful of empty canvas between
+     the form and the section below it — worse the taller the display. The hero
+     is its band plus its copy plus its own padding; the band's own ceiling
+     still keeps the two together to about a screen on a laptop, which is what
+     the 100svh was reaching for by the wrong means. */
   .hero {
     position: relative;
     isolation: isolate;
     overflow: clip;
-    min-height: 100svh;
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto;
     text-align: center;
   }
 
@@ -396,7 +401,8 @@ const beats = [
     flex-direction: column;
     align-items: center;
     gap: var(--space-5);
-    padding-block: var(--space-8);
+    /* Was space-8 when the row was `1fr` and had slack to spare. */
+    padding-block: var(--space-12) var(--space-16);
     padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
   }
 
