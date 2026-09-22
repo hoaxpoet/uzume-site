@@ -42,28 +42,61 @@ const TitleTag = titleAs;
 ---
 
 {bare ? (
-  <video
-    data-uz-loop
-    class="uz-bare-loop"
-    poster={poster}
-    muted
-    loop
-    playsinline
-    preload="none"
-    aria-hidden="true"
-    tabindex="-1"
-  >
-    {/*
-      The manifest's `type` verbatim, codecs parameter and all. Built from the
-      extension instead, Safari on M1/M2 — which has no AV1 hardware decoder —
-      answers "maybe" to `video/webm`, commits to the AV1 file and fails rather
-      than falling through to the H.264 source. With `codecs="av01…"` it
-      declines outright and plays the MP4. Never rebuild this from the filename.
-    */}
-    {sources.map(({ url, type }) => (
-      <source src={url} type={type} />
-    ))}
-  </video>
+  <Fragment>
+    <video
+      data-uz-loop
+      class="uz-bare-loop"
+      poster={poster}
+      muted
+      loop
+      playsinline
+      preload="none"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      {/*
+        The manifest's `type` verbatim, codecs parameter and all. Built from the
+        extension instead, Safari on M1/M2 — which has no AV1 hardware decoder —
+        answers "maybe" to `video/webm`, commits to the AV1 file and fails rather
+        than falling through to the H.264 source. With `codecs="av01…"` it
+        declines outright and plays the MP4. Never rebuild this from the filename.
+      */}
+      {sources.map(({ url, type }) => (
+        <source src={url} type={type} />
+      ))}
+    </video>
+    {/* WCAG 2.2.2: motion that starts by itself and runs past five seconds owes
+        the visitor a way to stop it, and that obligation is not conditioned on
+        prefers-reduced-motion — it covers people with vestibular or attention
+        conditions who have never touched the setting. The framed tiles below
+        carry native controls and are already covered; the bare loop had
+        nothing.
+
+        The comment above argues the hero should not become a second
+        *unlabelled* tab stop. It doesn't, because this is labelled: it names
+        its action, it is the only control in the band, and the script reveals
+        it only when there is motion to stop. Under reduced motion, on a phone,
+        or on a metered connection the poster stands and the button never
+        appears.
+
+        One word, not four. "Pause the performance" was the accessible name
+        written as visible copy — it read as the page explaining itself, and at
+        219px it was the second thing your eye found in a band that exists to
+        show the footage. A media control is the one place a bare verb is the
+        clearest possible label. 44px stays: it is the target floor, not a size
+        choice, so the button shrinks in width and in type weight instead. */}
+    <button
+      class="uz-button uz-button--secondary uz-loop-toggle"
+      type="button"
+      data-uz-loop-toggle
+      hidden
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path data-uz-loop-icon d="M9 5v14M15 5v14" />
+      </svg>
+      <span data-uz-loop-label>Pause</span>
+    </button>
+  </Fragment>
 ) : (
   <figure class="uz-media-frame">
     <div class="uz-media-frame__content">
@@ -113,6 +146,40 @@ const TitleTag = titleAs;
     /* The page positions the crop; the component only fills its stage. */
     object-position: var(--uz-loop-position, 50% 50%);
   }
+
+  /* In the band's own corner, over the footage. z-index 2 clears both the
+     stage's gradient and the lockup, which sits at 1 — they never overlap, but
+     the lockup is centred and this is not, so the order should not depend on
+     that staying true. The stage is the positioned ancestor; `bare` is the
+     hero's mode and only the hero's. */
+  .uz-loop-toggle {
+    position: absolute;
+    z-index: 2;
+    right: var(--space-4);
+    bottom: var(--space-4);
+    /* The catalogue's button is sized for a page's primary action. This is a
+       media control in the corner of the thing it controls: it has to be
+       findable and reach the 44px target floor, and nothing beyond that. */
+    gap: var(--space-2);
+    padding-inline: var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .uz-loop-toggle svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* The play triangle is a filled shape, not a stroked outline. */
+  .uz-loop-toggle[data-playing="false"] svg path {
+    fill: currentColor;
+  }
 </style>
 
 <script>
@@ -130,15 +197,93 @@ const TitleTag = titleAs;
   const narrow = matchMedia("(max-width: 48rem)").matches;
 
   if (!reduced && !metered && !narrow) {
-    const observer = new IntersectionObserver((entries) => {
-      for (const { target, isIntersecting } of entries) {
-        const video = target as HTMLVideoElement;
-        if (isIntersecting) video.play().catch(() => {});
-        else video.pause();
+    const PAUSE_ICON = "M9 5v14M15 5v14";
+    const PLAY_ICON = "M8 5l12 7-12 7Z";
+
+    const toggle = document.querySelector<HTMLButtonElement>(
+      "[data-uz-loop-toggle]",
+    );
+    const icon = toggle?.querySelector("[data-uz-loop-icon]");
+    const label = toggle?.querySelector("[data-uz-loop-label]");
+    // The choice should survive a trip to /gallery and back, not just a scroll
+    // — and it reaches /gallery too, where there is no button but there are
+    // eight loops. Someone who asked the hero to stop has asked the site to
+    // stop; the framed tiles keep their native controls, so a deliberate play
+    // is still one click. Verified: with this set, a dwell on a gallery tile
+    // fetches nothing.
+    let stopped = sessionStorage.getItem("uz-loops") === "stopped";
+
+    const ratios = new Map<HTMLVideoElement, number>();
+    // Tiles the visitor started themselves, through the framed tiles' native
+    // controls. Those are theirs: we neither replace them nor compete with
+    // them, we only stand down until they are done.
+    const manual = new Set<HTMLVideoElement>();
+    let playing: HTMLVideoElement | null = null;
+    let dwell: ReturnType<typeof setTimeout> | undefined;
+
+    function render() {
+      if (!toggle) return;
+      toggle.hidden = false;
+      toggle.dataset.playing = String(!stopped);
+      icon?.setAttribute("d", stopped ? PLAY_ICON : PAUSE_ICON);
+      if (label) {
+        label.textContent = stopped ? "Play" : "Pause";
       }
+    }
+
+    /* One loop at a time, and only the one being looked at.
+
+       `preload="none"` means play() is also the download, so an eight-tile
+       gallery used to spend every byte it had on a single scroll — ~40 MB —
+       and decode two or three 1080p streams at once on the way past. Both were
+       the same bug: intersection is not attention. A tile now has to hold most
+       of the frame and still be there 400 ms later before it costs anything,
+       which is the difference between paying for what you watched and paying
+       for what you scrolled past. */
+    function settle() {
+      const [best] = [...ratios]
+        .filter(([, ratio]) => ratio >= 0.6)
+        .sort((a, b) => b[1] - a[1]);
+      const next = stopped || manual.size ? null : (best?.[0] ?? null);
+      if (next === playing) return;
+      playing?.pause();
+      playing = next;
+      clearTimeout(dwell);
+      if (playing) {
+        dwell = setTimeout(() => playing?.play().catch(() => {}), 400);
+      }
+    }
+
+    toggle?.addEventListener("click", () => {
+      stopped = !stopped;
+      sessionStorage.setItem("uz-loops", stopped ? "stopped" : "playing");
+      render();
+      settle();
     });
-    document
-      .querySelectorAll("video[data-uz-loop]")
-      .forEach((v) => observer.observe(v));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const { target, intersectionRatio } of entries) {
+          const video = target as HTMLVideoElement;
+          ratios.set(video, intersectionRatio);
+          // A tile the visitor started still stops when it leaves the frame.
+          if (intersectionRatio === 0 && manual.has(video)) video.pause();
+        }
+        settle();
+      },
+      { threshold: [0, 0.3, 0.6, 0.9] },
+    );
+
+    for (const video of document.querySelectorAll<HTMLVideoElement>(
+      "video[data-uz-loop]",
+    )) {
+      video.addEventListener("play", () => {
+        if (video !== playing) manual.add(video);
+      });
+      video.addEventListener("pause", () => manual.delete(video));
+      observer.observe(video);
+    }
+
+    render();
   }
 </script>

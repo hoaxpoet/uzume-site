@@ -7,15 +7,16 @@ interface Props {
   author: string;
   /** Poster still; the gallery's moving previews arrive with W.3 footage. */
   poster?: string;
+  /**
+   * Optional third line. No default: the card used to print
+   * "Certified · steady luminance" on every instance, which is a constant
+   * carrying no information, in vocabulary that means nothing to a listener.
+   * A caller with something specific to say about one preset can still say it.
+   */
   status?: string;
 }
 
-const {
-  name,
-  author,
-  poster,
-  status = "Certified · steady luminance",
-} = Astro.props;
+const { name, author, poster, status } = Astro.props;
 ---
 
 <figure class="uz-preset-card">
@@ -38,6 +39,6 @@ const {
       <strong class="uz-preset-card__title">{name}</strong>
       <span class="uz-preset-card__author">{author}</span>
     </span>
-    <span class="uz-preset-card__status">{status}</span>
+    {status && <span class="uz-preset-card__status">{status}</span>}
   </figcaption>
 </figure>

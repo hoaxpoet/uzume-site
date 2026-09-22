@@ -12,6 +12,12 @@
       "runtimeExecutable": "/opt/homebrew/opt/node@24/bin/npx",
       "runtimeArgs": ["wrangler", "dev", "--port", "8788"],
       "port": 8788
+    },
+    {
+      "name": "uzume-site-built",
+      "runtimeExecutable": "/opt/homebrew/opt/node@24/bin/npx",
+      "runtimeArgs": ["astro", "preview"],
+      "autoPort": true
     }
   ]
 }
