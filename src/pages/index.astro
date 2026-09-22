@@ -269,7 +269,7 @@ const beats = [
        header's own height at the top and the veil's closing ramp at the
        bottom — so no part of the swarm is ever inside either. 40% horizontally keeps it in frame where
        the crop turns horizontal, which is the narrow case. */
-    --uz-loop-position: 40% 55%;
+    --uz-loop-position: 40% 70%;
     /* BRAND.md motion: the brand's authored movement is opening — content
        begins legible, darkness yields, light becomes visible. One deliberate
        reveal, on the hero only, never looping. Opacity only, no scale: this is
@@ -300,8 +300,25 @@ const beats = [
      nowhere else. So the sky keeps 100% of its light everywhere but that one
      corner — against 54% when this was a flat band.
 
-     The linear layer now does nothing but close to canvas at the foot, so the
-     band meets the copy below it without a line across the page. */
+     The linear layer closes to canvas at the foot so the band meets the copy
+     without an edge, and before that it takes 8% off the lower sky.
+
+     That 8% is Matt's choice from a measured trade, and the trade is worth
+     recording because it has no clever answer. The lighter band he saw between
+     the flock and the foot of the hero is the sky's own downward brightening —
+     the frame runs 0.080 at the top to 0.448 at the bottom — so anything that
+     removes the band darkens the sky. They are the same knob. Sampled across
+     five frames of the loop:
+
+       no compensation   sky L* 58.6, band +5.3   brightest, band visible
+       8%   (this)       sky L* 57.1, band +3.2   gives up 1.5, cuts it ~40%
+       16%               sky L* 55.6, band +0.9   band gone, too dark
+
+     Twenty combinations of `object-position` and compensation were tested and
+     none reaches L* 57 with the band gone; a flatter crop only shifts the curve.
+     The real fix is footage whose sky does not brighten toward the bottom, which
+     is what W.3c is for — Cymatic Resonance and Dragon Bloom have no sky at all.
+     Until then this is the agreed middle, not a solution. */
   .hero__stage::after {
     content: "";
     position: absolute;
@@ -314,7 +331,19 @@ const beats = [
         color-mix(in srgb, var(--color-canvas) 68%, transparent) 0%,
         transparent 100%
       ),
-      linear-gradient(to bottom, transparent 88%, var(--color-canvas) 100%);
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        color-mix(in srgb, var(--color-canvas) 4%, transparent) 20%,
+        color-mix(in srgb, var(--color-canvas) 8%, transparent) 40%,
+        color-mix(in srgb, var(--color-canvas) 8%, transparent) 78%,
+        color-mix(in srgb, var(--color-canvas) 16%, transparent) 82%,
+        color-mix(in srgb, var(--color-canvas) 32%, transparent) 86%,
+        color-mix(in srgb, var(--color-canvas) 55%, transparent) 90%,
+        color-mix(in srgb, var(--color-canvas) 78%, transparent) 94%,
+        color-mix(in srgb, var(--color-canvas) 94%, transparent) 97%,
+        var(--color-canvas) 100%
+      );
   }
 
   /* The name, at hero scale, as live text rather than the outlined SVG — so it
