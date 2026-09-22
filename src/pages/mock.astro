@@ -49,7 +49,7 @@ const beats = [
     title: "It listens",
     body: "With local files, Uzume hears the whole playlist before it plays a note. With anything else — a streaming app, a browser tab — it listens to what is actually coming out of your Mac.",
     capture:
-      "Performance Preflight — audio source, display, eligible presets, quality, accessibility.",
+      "Performance Preflight — audio source, display, eligible scenes, quality, accessibility.",
   },
   {
     title: "It analyzes",
@@ -59,7 +59,7 @@ const beats = [
   },
   {
     title: "It accompanies",
-    body: "Presets are written to answer particular things in the music — a beat lands here, the harmony moves a colour there — so what you see follows the music instead of twitching at its volume.",
+    body: "Scenes are written to answer particular things in the music — a beat lands here, the harmony moves a colour there — so what you see follows the music instead of twitching at its volume.",
   },
 ];
 
@@ -120,6 +120,15 @@ const beats = [
       </div>
     </section>
 
+    {/* The plant. Somebody reads a word they do not know, set in 112px type,
+        and immediately wants to know what it means — answering that here, in
+        one line, is hospitable and it sets up the ending. The telling itself
+        is held back to the close, where it pays off. */}
+    <p class="plant">
+      Uzume — <span>oo-ZOO-meh</span> — is named after a dancer who brought the
+      light back.
+    </p>
+
     <section class="band beats-band">
       {/* Rows, not a three-up grid. Each claim sits beside the thing that
           proves it, which is also what stops this band and the one after it
@@ -156,9 +165,9 @@ const beats = [
         section explaining what a preset is. The definition comes first now,
         and the people who write them stay with the thing they write. */}
     <section class="band">
-      <h2>Featured presets</h2>
+      <h2>Featured scenes</h2>
       <p class="lede">
-        A preset is one way of drawing the music — its own shapes, its own
+        A scene is one way of drawing the music — its own shapes, its own
         colours, its own way of answering a beat. Each one is written by
         somebody, and their name stays on it. These are some of them, recorded
         from Uzume and published unedited.
@@ -181,7 +190,7 @@ const beats = [
       <div class="band__actions">
         <Button variant="secondary" href="/gallery">See the gallery</Button>
         <Button variant="quiet" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
-          Write a preset
+          Write a scene
         </Button>
       </div>
     </section>
@@ -193,7 +202,6 @@ const beats = [
         name is the display moment; the telling is what earns it. */}
     <section class="myth">
       <h2>The name</h2>
-      <p class="myth__pronunciation">oo-ZOO-meh</p>
       <p>
         In the <em>Kojiki</em>, the sun shuts herself in a cave and the world
         goes dark. A plan is made, a mirror is hung to catch light that does not
@@ -501,19 +509,29 @@ const beats = [
   }
 
   .myth h2 {
-    margin: 0 0 var(--space-3);
+    margin: 0 0 var(--space-10);
     font: var(--font-weight-semibold) clamp(2.5rem, 6vw, 4rem) /
       var(--leading-tight) var(--font-display);
     letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
   }
 
-  /* Under the heading, not above it: the section is named first, then told how
-     it sounds. Above, it was an eyebrow. */
-  .myth__pronunciation {
-    margin: 0 0 var(--space-10);
+  /* The plant, between the hero and the first band. Not a section and not a
+     heading — a single line that answers the question the wordmark just raised
+     and hands the reader on. */
+  .plant {
+    margin: 0;
+    padding-block: var(--space-16);
+    padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
+    font-size: var(--text-lg);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    text-align: center;
+    text-wrap: pretty;
+  }
+
+  .plant span {
     color: var(--color-text-tertiary);
-    font-size: var(--text-sm);
     letter-spacing: var(--tracking-label);
   }
 

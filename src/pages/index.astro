@@ -130,8 +130,8 @@ const beats = [
           the audio and nothing else — not your screen, not your microphone.
           Playing local files needs no permission at all.
         </Callout>
-        <Callout tone="success" title="Presets are tested for steady luminance">
-          Every preset is tested for a bounded change in brightness
+        <Callout tone="success" title="Scenes are tested for steady luminance">
+          Every scene is tested for a bounded change in brightness
           from frame to frame, with beat-locked motion confined to parts of the
           frame rather than thrown across all of it. Reduced-motion settings are
           honoured throughout.
@@ -142,8 +142,8 @@ const beats = [
     <section class="band teaser" aria-label="The gallery">
       <h2>See it perform</h2>
       <p class="teaser__lede">
-        Presets captured from the engine and published unedited. The
-        gallery is where a merged preset ends up, with its author's name on it.
+        Scenes recorded from Uzume and published unedited. The gallery is
+        where a merged scene ends up, with its author's name on it.
       </p>
       <div class="uz-preset-gallery">
         {teasers.map(({ clip, preset }) => (
@@ -163,18 +163,18 @@ const beats = [
 
     <section
       class="uz-contributor-invitation"
-      aria-label="Contributing presets"
+      aria-label="Contributing scenes"
     >
       <div>
-        <h2>Contributors write the repertoire</h2>
+        <h2>Contributors write the scenes</h2>
         <p>
-          A preset is a Metal shader and a JSON file dropped into the
-          repository. The ones that pass the gates will become part of what
-          every listener sees, with their author's name on them.
+          Scenes are written by people, not shipped by a company. Write one,
+          and if it makes it in it becomes part of what every listener sees,
+          with your name on it.
         </p>
       </div>
       <Button variant="secondary" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
-        Write a preset
+        Write a scene
       </Button>
     </section>
 
