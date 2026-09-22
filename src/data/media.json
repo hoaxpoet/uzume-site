@@ -348,5 +348,55 @@
       "d157_verdict": "Matt, 2026-09-22: \"nebula passes steady luminance\"",
       "encode_verdict": null
     }
+  },
+  {
+    "preset": "Aurora Veil",
+    "slug": "aurora-veil",
+    "role": "gallery",
+    "roster_quote": "Looks great. Stars blink well with the beat. Wish there was more colour variation, purple is fleeting.",
+    "renditions": [
+      {
+        "url": "https://media.uzume.io/loops/aurora-veil.c5672583.webm",
+        "type": "video/webm; codecs=\"av01.0.09M.08\"",
+        "bytes": 1483388,
+        "sha256": "c5672583106ea0a44fb71e4ba365696f49a9079656cfab558aac5429782e0fdc",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      },
+      {
+        "url": "https://media.uzume.io/loops/aurora-veil.a4539ec5.mp4",
+        "type": "video/mp4; codecs=\"avc1.64002A\"",
+        "bytes": 4694318,
+        "sha256": "a4539ec5701ad2a64b863fa6cbee75d7431e7e74a6888a5823ea288b7d07e4fa",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      }
+    ],
+    "posters": {
+      "avif": {
+        "url": "https://media.uzume.io/posters/aurora-veil.44adb2ff.avif",
+        "bytes": 43319
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/posters/aurora-veil.ca840169.jpg",
+        "bytes": 132470
+      }
+    },
+    "provenance": {
+      "source_master_sha256": "e84c6c7e65344cfbe30787353eb5ebb007cab67f466c005dbc737e3bdc75b21e",
+      "loop_window_s": [205.0, 220.5],
+      "master_span_s": [205.513, 220.513],
+      "crossfade_s": 0.5,
+      "captured_at": "2026-09-22T16:45:40Z",
+      "app_commit": "84a5f8897674848fadd8e6bfa412dacd6e347380",
+      "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+      "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+      "d157_verdict": "Matt, 2026-09-22: \"aurora veil passes steady luminance\"",
+      "encode_verdict": null
+    }
   }
 ]
