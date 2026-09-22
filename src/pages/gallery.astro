@@ -9,7 +9,7 @@ import NotifyForm from "../components/NotifyForm.astro";
 import media from "../data/media.json";
 
 const description =
-  "Eight certified presets, performing. Real capture footage from the Uzume engine, unedited and silent, with the preset's author and family.";
+  "Eight presets, performing. Real capture footage from the Uzume engine, unedited and silent, with the preset's author and family.";
 
 // The preset entries are generated from the app repo's sidecars
 // (Scripts/generate_presets.py); the footage is the encoder's manifest. Slug is
@@ -35,27 +35,29 @@ const performances = media
     <header class="intro">
       <h1>The engine, performing</h1>
       <p class="intro__lede">
-        Every clip below is the Uzume engine rendering a certified preset
+        Every clip below is the Uzume engine rendering a preset
         against music, captured and published unedited. No reconstruction, no
         motion graphics — this is what the application draws.
       </p>
       <p class="intro__note">
-        Eight of the certified presets are published here so far; more will join
-        them as they are captured. Every clip is silent — the performances are
+        Eight presets are published here so far; more will join them as they
+        are captured. Every clip is silent — the performances are
         driven by music, but the footage carries no audio track.
       </p>
       {/* This is the page that plays eight bright loops, so this is the page
           that owes the commitment. It was stated only on the landing page,
-          which a visitor arriving on a shared /gallery link has never seen —
-          the term "certified" was on every tile here and defined nowhere.
-          Worded as the app actually gates it (D-157): a bounded per-frame
-          change in brightness, never a flashes-per-second figure. */}
+          which a visitor arriving on a shared /gallery link has never seen.
+
+          Said in the reader's words: "certification" is internal vocabulary
+          and means nothing to a listener, so the sentence describes the test
+          instead of naming the badge. The standard itself is still named as
+          the app gates it (D-157) — a bounded per-frame change in brightness,
+          never a flashes-per-second figure. */}
       <p class="intro__note">
-        “Certified” means a preset has passed Uzume's steady-luminance gate: a
-        bounded change in brightness from frame to frame, with beat-locked
-        motion confined to parts of the frame rather than thrown across all of
-        it. If your system asks for reduced motion, nothing on this page moves
-        until you play it.
+        Every preset here is tested for steady luminance: a bounded change in
+        brightness from frame to frame, with beat-locked motion confined to
+        parts of the frame rather than thrown across all of it. If your system
+        asks for reduced motion, nothing on this page moves until you play it.
       </p>
     </header>
 
