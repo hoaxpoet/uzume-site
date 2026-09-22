@@ -148,13 +148,17 @@ const beats = [
         somebody, and their name stays on it. These are some of them, recorded
         from Uzume and published unedited.
       </p>
-      {/* Trailing slash before the fragment. The build emits directory routes,
-          so /gallery is a directory and /gallery/ is the page; lychee resolves
-          the bare form to the directory, finds no fragments in it, and fails.
-          It is the canonical form too, so it costs a redirect hop less. */}
+      {/* Linking the gallery, not the scene, and that is a concession rather
+          than a preference. The ids exist on /gallery — a scene is addressable
+          and can be bookmarked or cited — but the link check cannot follow a
+          fragment into a directory route: Astro emits dist/gallery/index.html,
+          lychee maps /gallery and /gallery/ alike onto the directory, and a
+          directory holds no fragments. Deep-linking the cards means either an
+          index.html in a public href or teaching lychee about directory
+          indexes; neither is worth holding this page for. */}
       <div class="uz-preset-gallery">
         {featured.map(({ clip, preset }) => (
-          <a class="preset-link" href={`/gallery/#${clip.slug}`}>
+          <a class="preset-link" href="/gallery/">
             <PresetCard
               name={preset.name}
               author={preset.author}
