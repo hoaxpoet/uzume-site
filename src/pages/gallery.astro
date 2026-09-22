@@ -64,7 +64,7 @@ const performances = media
 
     {performances.map(
       ({ name, author, family, inspired_by, caption, clip }) => (
-        <article class="performance">
+        <article class="performance" id={clip.slug}>
           <VideoTile
             titleAs="h2"
             title={name}
@@ -153,6 +153,9 @@ const performances = media
   .performance {
     padding: var(--space-12) 0;
     border-top: 1px solid var(--color-line);
+    /* The header on this page is sticky, so an anchor jump would otherwise
+       land the scene's own title underneath it. */
+    scroll-margin-top: calc(4.5rem + var(--space-6));
   }
 
   /* Milkdrop lineage, where a preset has it. All eight published are
