@@ -663,6 +663,52 @@ identical broken control file returns exit 2 as `.html` and exit 0 as `.astro`.
 Every prior detector run over this repo's source was a false all-clear. The
 live-URL target works and is what W.4c used.
 
+### W.5a — The homepage rewritten *(2026-09-22)*
+
+Built as `/mock` so it could be judged rendered rather than in diff form, then
+promoted over `index.astro`. `/mock` is gone; there is one landing page.
+
+**Decisions, all Matt's.**
+
+- **The claim is musicality, not the mechanism.** "A music visualizer for macOS
+  that listens, analyzes, and accompanies." The draft before it led on
+  stem-separated reactivity, which is expensive and largely unavailable on the
+  streaming path — where most visitors will be — so it was false for the
+  majority case. *Still to verify against the app repo: whether stem-separated
+  features reach scene parameters at render time at all. The old beat copy
+  asserted it flatly.*
+- **Presets are scenes, for everyone.** No split vocabulary between listeners
+  and contributors. "Visual" was tested first and failed: it is a mass noun, so
+  it dies in the singular, and "write a visual" — the contributor's whole
+  invitation — is unusable. **The app repo still says "preset"**, so the CTA and
+  its destination disagree until that follows.
+- **No certification language, no jargon, no counts.** "Certified", "Metal
+  shader and a JSON file", "the gates", "the engine", "repertoire" all out. No
+  preset count anywhere: eight was the number of recorded clips, not of scenes
+  that exist, and any real figure is wrong within the month.
+- **Architecture:** the hero is the name and its sentence over the footage; the
+  ask is its own section beneath it, carrying the specs a visitor needs to
+  self-qualify before handing over an address. Then what it does, featured
+  scenes, the name.
+- **The name carries narrative.** It opens the section explaining the app —
+  "what the app does is less mythic" — and the Kojiki telling closes the page.
+- **GitHub is not for everyone.** Out of the nav, kept where scene-writers are.
+- **American spelling throughout.** The site was writing in two dialects, and
+  the British half was live in six gallery captions.
+
+**Cut, with reasons.** The three trust callouts — only the Screen Recording one
+is a real objection-handler and it belongs at install, which is W.7; local
+processing is table stakes for a native Mac app; steady luminance belongs on
+/gallery, where the loops play, and is already there. The requirements band,
+folded into the signup specs. The hero credit line.
+
+**Still open.** Two application captures render as labelled gaps — real captures
+of the Preflight and the Preparation Stage, which PRODUCT.md forbids inventing.
+The claim sits at 18px over live footage on phones; the glyph halo carries it on
+Murmuration's poster but contrast over moving video cannot be measured, and
+unlike the wordmark the claim has no WCAG exemption. W.3c's skyless scenes are
+the real fix.
+
 ### W.5 — Docs *(about two sessions)*
 
 Starlight curation, outsider-first, per plan §3: Getting Started (requirements, build-from-source today, the Screen Recording permission explainer, local files vs. streaming), Using Uzume, Contributing Presets (two-file drop-in, hot reload, gates and certification lifecycle). Each page's frontmatter names its upstream app-repo doc; `lychee` checks those references in CI.
