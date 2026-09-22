@@ -89,11 +89,18 @@ const beats = [
       </div>
     </section>
 
-    {/* The ask, on its own, under the hero rather than inside it. */}
+    {/* The ask, on its own, under the hero rather than inside it. The specs
+        sit above the field because they are what the visitor is deciding
+        against: what it is, and whether it will run on the machine they are
+        reading this on. */}
     <section class="signup">
+      <p class="signup__specs">
+        Free and open source under the MIT licence. For Apple silicon Macs
+        running macOS 14 or later.
+      </p>
       <NotifyForm
         label="Email me when the public beta is ready"
-        terms="Free and open source when it arrives. One email when there's a build — unsubscribe any time."
+        terms="One email when there's a build — unsubscribe any time."
       />
     </section>
 
@@ -168,10 +175,6 @@ const beats = [
         </Button>
       </div>
     </section>
-
-    <p class="facts">
-      For Apple silicon Macs, macOS 14 or later. Free and open source, MIT.
-    </p>
 
     {/* Was a band like any other, arriving last and reading as an afterthought
         — which is a waste, because this is the story the whole thing is named
@@ -335,28 +338,25 @@ const beats = [
     padding-block: var(--space-16);
     padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .signup__specs {
+    max-width: 34rem;
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-tertiary);
+    text-align: center;
+    text-wrap: pretty;
   }
 
   .signup :global(.notify) {
     align-items: center;
     text-align: center;
     width: min(38rem, 100%);
-  }
-
-  .facts {
-    margin: 0;
-    padding-block: var(--space-12);
-    padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
-    border-top: 1px solid var(--color-line);
-    font-size: var(--text-sm);
-    line-height: var(--leading-body);
-    color: var(--color-text-tertiary);
-    text-wrap: pretty;
-  }
-
-  .facts a {
-    color: var(--color-text-secondary);
   }
 
 
