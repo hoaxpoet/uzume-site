@@ -163,6 +163,7 @@ const beats = [
               name={preset.name}
               author={preset.author}
               poster={clip.posters.jpeg.url}
+              posterAvif={clip.posters.avif?.url}
             />
           </a>
         ))}
@@ -343,8 +344,8 @@ const beats = [
 
   .band > h2 {
     margin: 0 0 var(--space-6);
-    font: var(--font-weight-semibold) clamp(1.75rem, 4.5vw, 2.5rem) /
-      var(--leading-tight) var(--font-display);
+    font: var(--font-weight-semibold) var(--text-3xl) / var(--leading-tight)
+      var(--font-display);
     letter-spacing: var(--tracking-display);
   }
 
