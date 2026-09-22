@@ -597,6 +597,72 @@ was "Uzume — a light in sound". Fixed in both places.
   for an email having seen a static frame. There is no still-image answer to
   "performs light to music" yet, and OG cards will have the same problem at W.6.
 
+### W.4c — Second critique: the two P0s and the media spend *(2026-09-22)*
+
+A second `/impeccable critique` over the live `uzume.io` and `/gallery`, same
+dual-assessment shape. **23/40**, down from W.4b's 24 — not a regression in the
+pages, but a harder look at three things the first pass did not reach.
+
+**Decision — engine footage is exempt from the looping-chrome ban.** Matt's
+call, recorded in `BRAND.md` and `DESIGN.md`. The ban exists so that chrome does
+not compete with the output it frames; a loop of real engine output *is* the
+output, and stays exempt even though the page crops, positions and veils it to
+seat type. Two conditions hold the exemption: the footage is real capture,
+published unedited and labelled; and any self-starting loop carries a visible,
+labelled stop control. Fail either and it is chrome again.
+
+**Fixed in this pass.**
+
+- **The hero loop could not be stopped.** WCAG 2.2.2 wants a mechanism for
+  self-starting motion past five seconds and is *not* conditioned on
+  `prefers-reduced-motion` — the reduced-motion work, which is good, never
+  covered it. `VideoTile`'s bare mode now carries a labelled toggle in the
+  band's corner, revealed only when there is motion to stop, with the choice
+  kept in `sessionStorage` so it survives a trip to `/gallery` and back.
+- **The steady-luminance commitment was on the wrong page.** `/gallery` plays
+  eight bright loops and never said the word; "certified" appeared on every tile
+  there and was defined only on the landing page, which a visitor arriving on a
+  shared gallery link has never seen. Now stated in the intro, worded as the app
+  gates it (D-157), never as a flashes-per-second figure.
+- **Scrolling `/gallery` spent every byte it had.** Every tile carried
+  `data-uz-loop`, so the observer played each one it touched; `preload="none"`
+  means `play()` is also the download. Measured on the live site: passing two
+  tiles fetched 15.8 MB, and a full scroll was ~40 MB with two or three 1080p
+  streams decoding at once. The bug in both was the same — intersection is not
+  attention. A tile must now hold 60% of the frame and still be there 400 ms
+  later, and only one plays at a time. Verified: a fast scroll to the bottom
+  fetches nothing; a dwell fetches exactly one clip. Tiles the visitor starts
+  through the native controls are left alone.
+
+**Left for later, deliberately.**
+
+- **AVIF posters are encoded, published and unreferenced.** `media.json` carries
+  an AVIF for all eight (979 kB against 1,554 kB of JPEG); both templates
+  hardcode `posters.jpeg.url`. It is a landing-page saving, not a gallery one —
+  `<video poster>` takes a single URL and cannot fall back — and wiring
+  `<picture>` means changing `.uz-preset-card__media > img` to a descendant
+  selector in the catalogue. Its own increment, and the landing page is about to
+  be rethought anyway.
+- **`murmuration` is 14.55 MB**, over this repo's own ≈8–12 MB per-loop budget.
+  Needs the encoder and an R2 upload, not a template change.
+- **`skein.jpg` (585 kB) and `ferrofluid-ocean.jpg` (551 kB)** are 12× their
+  siblings. Same re-encode job.
+- **The homepage copy, and the homepage itself.** Matt's direction: the hero
+  credit line goes, the copy is revisited completely, and the landing page is
+  rethought rather than replaced by `/gallery`. Its own session.
+
+**Still open from the report** (unchanged here): `/docs` is a nav promise
+resolving to "it arrives in a later increment"; the eight preset `h2`s render at
+16px, smaller than the lede above them, which is what the detector's eight
+`heading-rhythm` hits are measuring; the seven teaser figures are still inert;
+`--text-3xl` is still unclamped; `"The Goddamn Shame,"` and `<em>` render with no
+space between them on the live gallery.
+
+**Tooling finding.** `impeccable detect` silently skips `.astro` — a byte-
+identical broken control file returns exit 2 as `.html` and exit 0 as `.astro`.
+Every prior detector run over this repo's source was a false all-clear. The
+live-URL target works and is what W.4c used.
+
 ### W.5 — Docs *(about two sessions)*
 
 Starlight curation, outsider-first, per plan §3: Getting Started (requirements, build-from-source today, the Screen Recording permission explainer, local files vs. streaming), Using Uzume, Contributing Presets (two-file drop-in, hot reload, gates and certification lifecycle). Each page's frontmatter names its upstream app-repo doc; `lychee` checks those references in CI.
