@@ -83,19 +83,18 @@ const beats = [
         />
       </div>
 
-      <h1 class="hero__lockup">Uzume</h1>
-
-      <div class="hero__copy">
+      <div class="hero__lockup">
+        <h1>Uzume</h1>
         <p class="hero__claim">{claim}</p>
-
-        {/* The label carries the status. "When the public beta is ready" says
-            it is not ready, and the terms line says what it will be — so the
-            two paragraphs that used to say those things separately are gone. */}
-        <NotifyForm
-          label="Email me when the public beta is ready"
-          terms="Free and open source when it arrives. One email when there's a build — unsubscribe any time."
-        />
       </div>
+    </section>
+
+    {/* The ask, on its own, under the hero rather than inside it. */}
+    <section class="signup">
+      <NotifyForm
+        label="Email me when the public beta is ready"
+        terms="Free and open source when it arrives. One email when there's a build — unsubscribe any time."
+      />
     </section>
 
     <section class="band beats-band">
@@ -159,7 +158,8 @@ const beats = [
       </div>
       <p class="presets__note">
         Anyone can write one. The ones that make it in become part of what
-        every listener sees.
+        every listener sees. The code, and the guide to writing a scene, are
+        <a href={REPO}>on GitHub</a>.
       </p>
       <div class="band__actions">
         <Button variant="secondary" href="/gallery">See the gallery</Button>
@@ -170,8 +170,7 @@ const beats = [
     </section>
 
     <p class="facts">
-      For Apple silicon Macs, macOS 14 or later. Free and open source, MIT. If
-      you build software, the code is <a href={REPO}>on GitHub</a> today.
+      For Apple silicon Macs, macOS 14 or later. Free and open source, MIT.
     </p>
 
     {/* Was a band like any other, arriving last and reading as an afterthought
@@ -248,7 +247,7 @@ const beats = [
   .hero__stage {
     grid-area: 1 / 1;
     position: relative;
-    height: min(25rem, 56.25vw);
+    height: clamp(20rem, 56.25vw, 34rem);
     overflow: hidden;
     --uz-loop-position: 40% 70%;
     animation: hero-opening var(--duration-deliberate) var(--ease-out) backwards;
@@ -286,56 +285,63 @@ const beats = [
       );
   }
 
+  /* Name and sentence as one lockup, centred on the band. The top padding is
+     the fixed header's own height, so the group stays clear of it on short
+     bands without moving on tall ones. Still the timeline the header rides. */
   .hero__lockup {
     grid-area: 1 / 1;
     align-self: center;
     justify-self: center;
     z-index: 1;
-    margin: 0;
+    display: grid;
+    justify-items: center;
+    gap: var(--space-4);
     padding: 4.5rem var(--page-gutter) 0;
-    font: var(--font-weight-semibold) clamp(4rem, 11vw, 7rem) /
+    view-timeline: --uz-hero-lockup block;
+  }
+
+  .hero__lockup h1 {
+    margin: 0;
+    font: var(--font-weight-semibold) clamp(3.5rem, 10vw, 7rem) /
       var(--leading-tight) var(--font-display);
     letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
+    /* The scrim is the shape of the letters, so the sky keeps its light
+       everywhere else. Sized in em so it tracks the clamp. */
     text-shadow:
       0 0 0.05em color-mix(in srgb, var(--color-canvas) 70%, transparent),
       0 0 0.18em color-mix(in srgb, var(--color-canvas) 50%, transparent),
       0 0 0.55em color-mix(in srgb, var(--color-canvas) 32%, transparent);
-    view-timeline: --uz-hero-lockup block;
   }
 
-  /* The copy row is `1fr`, so it absorbs whatever the band leaves. Top-aligned
-     it left a hole between the form and the section below — worse now the copy
-     is shorter than it used to be. Centring the column in its own row spends
-     that space on both sides instead of dumping it all underneath. */
-  .hero__copy {
-    grid-area: 2 / 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-4);
-    padding-block: var(--space-12) var(--space-16);
-    padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
-  }
 
-  .hero__copy :global(.notify) {
-    align-items: center;
-    text-align: center;
-    margin-block: var(--space-6) 0;
-    width: min(38rem, 100%);
-  }
+
 
   .hero__claim {
-    max-width: 40rem;
+    max-width: 34rem;
     margin: 0;
-    /* Clamped. --text-3xl is a fixed 2.5rem in tokens.css while --text-4xl
-       beside it is clamped, which is why the live claim runs four lines at
-       375px. Local override here; the token fix is its own change. */
-    font: var(--font-weight-semibold) clamp(1.75rem, 4.5vw, 2.5rem) /
+    font: var(--font-weight-semibold) clamp(1.125rem, 2.4vw, 1.625rem) /
       var(--leading-heading) var(--font-display);
     letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
     text-wrap: balance;
+    text-shadow:
+      0 0 0.08em color-mix(in srgb, var(--color-canvas) 78%, transparent),
+      0 0 0.3em color-mix(in srgb, var(--color-canvas) 60%, transparent),
+      0 0 0.8em color-mix(in srgb, var(--color-canvas) 40%, transparent);
+  }
+
+  .signup {
+    padding-block: var(--space-16);
+    padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
+    display: flex;
+    justify-content: center;
+  }
+
+  .signup :global(.notify) {
+    align-items: center;
+    text-align: center;
+    width: min(38rem, 100%);
   }
 
   .facts {
@@ -353,27 +359,11 @@ const beats = [
     color: var(--color-text-secondary);
   }
 
-  .hero__status {
-    max-width: 38rem;
-    margin: 0;
-    font-size: var(--text-base);
-    line-height: var(--leading-body);
-    color: var(--color-text-secondary);
-    text-wrap: pretty;
-  }
 
-  .hero__meta {
-    max-width: 38rem;
-    margin: 0;
-    font-size: var(--text-sm);
-    line-height: var(--leading-body);
-    color: var(--color-text-tertiary);
-    text-wrap: pretty;
-  }
 
-  .hero__meta a {
-    color: var(--color-text-secondary);
-  }
+
+
+
 
   /* ---- Bands ---- */
 
@@ -429,6 +419,10 @@ const beats = [
     max-width: var(--measure-copy);
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
+  }
+
+  .presets__note a {
+    color: var(--color-text-primary);
   }
 
   .presets__note {
@@ -508,22 +502,8 @@ const beats = [
     color: var(--color-text-primary);
   }
 
-  /* The plant, between the hero and the first band. Not a section and not a
-     heading — a single line that answers the question the wordmark just raised
-     and hands the reader on. */
-  .plant {
-    max-width: 38rem;
-    margin: 0;
-    font-size: var(--text-base);
-    line-height: var(--leading-body);
-    color: var(--color-text-secondary);
-    text-wrap: pretty;
-  }
 
-  .plant span {
-    color: var(--color-text-tertiary);
-    letter-spacing: var(--tracking-label);
-  }
+
 
   .myth p {
     max-width: 38rem;
