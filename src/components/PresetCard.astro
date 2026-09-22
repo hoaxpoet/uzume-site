@@ -8,6 +8,13 @@ interface Props {
   /** Poster still; the gallery's moving previews arrive with W.3 footage. */
   poster?: string;
   /**
+   * The same still as AVIF. The encoder has been producing these all along and
+   * the manifest has been carrying them — 979 kB against 1,554 kB of JPEG —
+   * and nothing referenced them. Optional, and a <source> either way, so a
+   * browser without AVIF still gets the JPEG.
+   */
+  posterAvif?: string;
+  /**
    * Optional third line. No default: the card used to print
    * "Certified · steady luminance" on every instance, which is a constant
    * carrying no information, in vocabulary that means nothing to a listener.
@@ -16,13 +23,16 @@ interface Props {
   status?: string;
 }
 
-const { name, author, poster, status } = Astro.props;
+const { name, author, poster, posterAvif, status } = Astro.props;
 ---
 
 <figure class="uz-preset-card">
   <div class="uz-preset-card__media">
     {poster ? (
-      <img src={poster} alt={`${name} preview still`} loading="lazy" />
+      <picture>
+        {posterAvif && <source srcset={posterAvif} type="image/avif" />}
+        <img src={poster} alt={`${name} preview still`} loading="lazy" />
+      </picture>
     ) : (
       <div>
         <svg viewBox="0 0 24 24" aria-hidden="true">

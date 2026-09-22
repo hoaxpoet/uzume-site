@@ -101,12 +101,17 @@
 .uz-media-frame__fallback { width: 100%; height: 100%; display: grid; place-items: center; padding: var(--space-6); color: var(--color-text-secondary); text-align: center; }
 .uz-media-frame__fallback strong, .uz-media-frame__fallback span { display: block; overflow-wrap: anywhere; }
 .uz-media-frame__fallback span { margin-top: var(--space-1); font-size: var(--text-sm); }
-.uz-media-frame__caption { display: flex; justify-content: space-between; gap: var(--space-4); min-width: 0; padding: var(--space-4) var(--space-5); }
+.uz-media-frame__caption { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); min-width: 0; padding: var(--space-5); }
 .uz-media-frame__caption > * { min-width: 0; overflow-wrap: anywhere; }
 /* The caption's title is a <strong> by default and a heading on pages whose
    content IS the frames, so the performances reach the heading outline. Both
    render identically: the element carries the semantics, not the look. */
 .uz-media-frame__title { margin: 0; font: inherit; font-weight: 700; }
+/* A tile inside a larger argument keeps the caption's own size. A page whose
+   content IS the tiles passes a heading through titleAs — and there the
+   scene's name is the page's content, so it should not render at body size,
+   smaller than the lede above it. */
+.uz-media-frame__title:is(h2, h3) { font: var(--font-weight-semibold) var(--text-2xl)/var(--leading-tight) var(--font-display); letter-spacing: var(--tracking-display); }
 .uz-media-frame__meta { color: var(--color-text-secondary); font-size: var(--text-sm); }
 
 .uz-site-navigation {
@@ -151,8 +156,14 @@
 .uz-trust-explanation p { max-width: var(--measure-copy); margin: 0; color: var(--color-text-secondary); }
 
 .uz-preset-card { margin: 0; overflow: hidden; border-radius: var(--radius-lg); background: var(--color-surface); }
-.uz-preset-card__media { aspect-ratio: 16/9; display: grid; place-items: center; overflow: hidden; padding: var(--space-6); background: var(--color-canvas); color: var(--color-text-secondary); text-align: center; }
-.uz-preset-card__media > img { width: calc(100% + 2 * var(--space-6)); height: calc(100% + 2 * var(--space-6)); max-width: none; object-fit: cover; }
+.uz-preset-card__media { position: relative; aspect-ratio: 16/9; display: grid; place-items: center; overflow: hidden; padding: var(--space-6); background: var(--color-canvas); color: var(--color-text-secondary); text-align: center; }
+/* Out of flow, not sized past the padding box. The image used to be a grid
+   item measuring 100% + both paddings, so once it loaded it drove the row
+   taller than the aspect-ratio reserved and every card jumped ~48px. Absolute
+   means the ratio box holds whatever the image does, and it gives <picture>
+   somewhere to sit without a second layout rule. */
+.uz-preset-card__media > :is(img, picture) { position: absolute; inset: 0; }
+.uz-preset-card__media :is(img) { width: 100%; height: 100%; max-width: none; object-fit: cover; }
 .uz-preset-card__media svg { width: 2rem; margin-bottom: var(--space-3); fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
 .uz-preset-card__media strong, .uz-preset-card__media span { display: block; }
 .uz-preset-card__media span { margin-top: var(--space-1); font-size: var(--text-sm); }
