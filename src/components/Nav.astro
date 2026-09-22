@@ -14,10 +14,13 @@ const { overlay = false } = Astro.props;
 
 // Only pages that exist — lychee fails the build on dangling internal links.
 // /download joins at W.7.
+//
+// GitHub is not here. It is for the people writing scenes, not for every
+// visitor on every page, and it reached a third of the navigation without
+// earning it. The contributor note and the footer both still carry it.
 const links = [
   { href: "/gallery", label: "Gallery" },
   { href: "/docs", label: "Docs" },
-  { href: "https://github.com/hoaxpoet/uzume", label: "GitHub" },
 ];
 
 // Trailing slash tolerated so /docs/ matches /docs.

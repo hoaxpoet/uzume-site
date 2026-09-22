@@ -165,7 +165,7 @@ const beats = [
       </div>
       <p class="presets__note">
         Anyone can write one. The ones that make it in become part of what
-        every listener sees. The code, and the guide to writing a scene, are
+        every listener sees. The code, and the guide to writing a scene, are{" "}
         <a href={REPO}>on GitHub</a>.
       </p>
       <div class="band__actions">
@@ -379,8 +379,13 @@ const beats = [
     letter-spacing: var(--tracking-display);
   }
 
+  /* --measure-copy is 68ch, which is right for sustained body reading and
+     wrong here: these are two- and three-line section openers sitting above
+     content that spans the whole 928px column, so at 593px they read as
+     indented rather than as deliberate. A standfirst takes a wider measure
+     than body copy for exactly this reason. */
   .lede {
-    max-width: var(--measure-copy);
+    max-width: 48rem;
     margin: 0 0 var(--space-8);
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
@@ -426,7 +431,7 @@ const beats = [
   }
 
   .presets__note {
-    max-width: var(--measure-copy);
+    max-width: 48rem;
     margin: var(--space-8) 0 0;
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
