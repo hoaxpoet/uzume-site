@@ -11,7 +11,6 @@ import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Button from "../components/Button.astro";
 import NotifyForm from "../components/NotifyForm.astro";
-import RequirementsList from "../components/RequirementsList.astro";
 import VideoTile from "../components/VideoTile.astro";
 import PresetCard from "../components/PresetCard.astro";
 import { getCollection } from "astro:content";
@@ -36,8 +35,10 @@ const teasers = media
     preset: presets.find((entry) => entry.data.slug === clip.slug)!.data,
   }));
 
-// Evidence of accompaniment, shown rather than asserted.
+// Evidence of accompaniment, shown rather than asserted — and pulled OUT of
+// the featured row below, so the page never shows the same clip twice.
 const accompanist = teasers.find(({ clip }) => clip.slug === "skein")!;
+const featured = teasers.filter(({ clip }) => clip.slug !== "skein");
 
 // Three beats, each with its own evidence. Two await real captures; the third
 // is a preset already published. Rows, not a three-up grid — the grid was the
@@ -62,17 +63,6 @@ const beats = [
   },
 ];
 
-// Every fact checked against the app repo's README and PRODUCT_SPEC.
-const requirements = [
-  { term: "Mac", description: "Any Apple silicon Mac" },
-  { term: "macOS", description: "macOS 14 Sonoma or later" },
-  {
-    term: "Music",
-    description:
-      "Local files, or whatever you already play — Uzume listens rather than taking over playback",
-  },
-  { term: "Licence", description: "Free and open source, MIT" },
-];
 ---
 
 <Base title="MOCK — Uzume homepage" description={claim} noindex>
@@ -104,9 +94,19 @@ const requirements = [
             weight: someone who knows what they are waiting for resents the
             wait less. "Free" and "open source" surface here rather than in
             row four of the requirements table. */}
+        {/* Names the thing that is coming. "The source is public" is jargon
+            for the listener this page is written to, and the sentence never
+            said what a visitor would eventually get. Two short lines: what is
+            coming, then who can have something today — the second addressed to
+            the people it is actually for, so nobody else reads it as a
+            requirement. */}
         <p class="hero__status">
-          It isn't released yet. The source is public and you can{" "}
-          <a href={REPO}>build it today</a>.
+          Uzume hasn't launched yet. The public beta will be free and open
+          source.
+        </p>
+        <p class="hero__meta">
+          For Apple silicon Macs, macOS 14 or later. If you build software, the
+          code is <a href={REPO}>on GitHub</a> today.
         </p>
 
         {/* Four pieces of text were saying the same thing: the status line, the
@@ -156,7 +156,7 @@ const requirements = [
         section explaining what a preset is. The definition comes first now,
         and the people who write them stay with the thing they write. */}
     <section class="band">
-      <h2>Presets</h2>
+      <h2>Featured presets</h2>
       <p class="lede">
         A preset is one way of drawing the music — its own shapes, its own
         colours, its own way of answering a beat. Each one is written by
@@ -164,7 +164,7 @@ const requirements = [
         from Uzume and published unedited.
       </p>
       <div class="uz-preset-gallery">
-        {teasers.map(({ clip, preset }) => (
+        {featured.map(({ clip, preset }) => (
           <a class="preset-link" href={`/gallery#${clip.slug}`}>
             <PresetCard
               name={preset.name}
@@ -186,12 +186,12 @@ const requirements = [
       </div>
     </section>
 
-    <section class="band">
-      <h2>What you need</h2>
-      <RequirementsList items={requirements} />
-    </section>
-
-    <section class="band myth">
+    {/* Was a band like any other, arriving last and reading as an afterthought
+        — which is a waste, because this is the story the whole thing is named
+        after and the page otherwise ends on housekeeping. Full width, its own
+        ground, and the type at reading scale rather than footnote scale. The
+        name is the display moment; the telling is what earns it. */}
+    <section class="myth">
       <h2>The name</h2>
       <p class="myth__pronunciation">oo-ZOO-meh</p>
       <p>
@@ -201,7 +201,9 @@ const requirements = [
         gods roar. The sun opens the door to see what could possibly be worth
         that much noise.
       </p>
-      <p>The dancing is what brings the light out. That is the whole idea.</p>
+      <p class="myth__close">
+        The dancing is what brings the light out. That is the whole idea.
+      </p>
     </section>
   </main>
 
@@ -316,12 +318,17 @@ const requirements = [
     view-timeline: --uz-hero-lockup block;
   }
 
+  /* The copy row is `1fr`, so it absorbs whatever the band leaves. Top-aligned
+     it left a hole between the form and the section below — worse now the copy
+     is shorter than it used to be. Centring the column in its own row spends
+     that space on both sides instead of dumping it all underneath. */
   .hero__copy {
     grid-area: 2 / 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-5);
+    justify-content: center;
+    gap: var(--space-4);
     padding-block: var(--space-8);
     padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
   }
@@ -329,7 +336,7 @@ const requirements = [
   .hero__copy :global(.notify) {
     align-items: center;
     text-align: center;
-    margin-block: var(--space-6) var(--space-12);
+    margin-block: var(--space-6) 0;
     width: min(38rem, 100%);
   }
 
@@ -353,6 +360,19 @@ const requirements = [
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
     text-wrap: pretty;
+  }
+
+  .hero__meta {
+    max-width: 38rem;
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-tertiary);
+    text-wrap: pretty;
+  }
+
+  .hero__meta a {
+    color: var(--color-text-secondary);
   }
 
   /* ---- Bands ---- */
@@ -470,25 +490,43 @@ const requirements = [
 
   /* ---- The name ---- */
 
+  /* Its own ground, full width, so the page closes on the story rather than
+     trailing off into a footer. */
+  .myth {
+    padding-block: var(--space-24);
+    padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
+    border-top: 1px solid var(--color-line);
+    background: var(--color-surface);
+    text-align: center;
+  }
+
+  .myth h2 {
+    margin: 0 0 var(--space-3);
+    font: var(--font-weight-semibold) clamp(2.5rem, 6vw, 4rem) /
+      var(--leading-tight) var(--font-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+  }
+
+  /* Under the heading, not above it: the section is named first, then told how
+     it sounds. Above, it was an eyebrow. */
   .myth__pronunciation {
-    margin: 0 0 var(--space-6);
-    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-10);
+    color: var(--color-text-tertiary);
     font-size: var(--text-sm);
     letter-spacing: var(--tracking-label);
   }
 
-  .myth h2 {
-    margin-bottom: var(--space-2);
-  }
-
   .myth p {
-    max-width: var(--measure-copy);
-    margin: 0 0 var(--space-6);
+    max-width: 38rem;
+    margin: 0 auto var(--space-6);
+    font-size: var(--text-lg);
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
+    text-wrap: pretty;
   }
 
-  .myth p:last-child {
+  .myth__close {
     margin-bottom: 0;
     color: var(--color-text-primary);
   }
