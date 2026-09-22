@@ -300,30 +300,25 @@ const beats = [
      nowhere else. So the sky keeps 100% of its light everywhere but that one
      corner — against 54% when this was a flat band.
 
-     The linear layer does two things, and neither is a scrim.
+     The linear layer closes to canvas at the foot so the band meets the copy
+     without an edge, and before that it takes 8% off the lower sky.
 
-     First it cancels the footage's own gradient. The sky brightens all the way
-     down — 0.080 at the top of the frame to 0.448 at the bottom — so the veil
-     rises from 0% to 16% at the same rate, holding the rendered sky flat.
+     That 8% is Matt's choice from a measured trade, and the trade is worth
+     recording because it has no clever answer. The lighter band he saw between
+     the flock and the foot of the hero is the sky's own downward brightening —
+     the frame runs 0.080 at the top to 0.448 at the bottom — so anything that
+     removes the band darkens the sky. They are the same knob. Sampled across
+     five frames of the loop:
 
-     Then it closes to canvas, and it starts that close at 50% rather than
-     below the flock. That is the whole fix for the horizon line Matt saw. The
-     swarm darkens the sky it sits in, and underneath it the sky recovered to
-     FULL brightness for about eighty pixels before any fade began: a bright
-     sliver pinned between a dark flock and a dark page, which is exactly what
-     a horizon looks like. Measured on the composite it was a climb of 4.4 to
-     7.5 L* depending where the flock had drifted to. Beginning the close while
-     the flock is still in frame means the sky never gets to recover — sampled
-     at five points around the loop the recovery is 0.0 L* at every one of
-     them, and the close is gentler as well, 4.5 L* per 8px against 7.7.
+       no compensation   sky L* 58.6, band +5.3   brightest, band visible
+       8%   (this)       sky L* 57.1, band +3.2   gives up 1.5, cuts it ~40%
+       16%               sky L* 55.6, band +0.9   band gone, too dark
 
-     It cannot be done by holding a ceiling per row, tempting as that is: the
-     flock drifts across the sky, so where it darkens the frame moves with it,
-     and a CSS gradient is static. Starting earlier works at every position.
-
-     Height cannot do it either. Past about 31rem the crop runs out,
-     `object-position` saturates, the fade room caps at 236px, and the close
-     stays equally steep however tall the band gets. */
+     Twenty combinations of `object-position` and compensation were tested and
+     none reaches L* 57 with the band gone; a flatter crop only shifts the curve.
+     The real fix is footage whose sky does not brighten toward the bottom, which
+     is what W.3c is for — Cymatic Resonance and Dragon Bloom have no sky at all.
+     Until then this is the agreed middle, not a solution. */
   .hero__stage::after {
     content: "";
     position: absolute;
@@ -339,13 +334,14 @@ const beats = [
       linear-gradient(
         to bottom,
         transparent 0%,
-        color-mix(in srgb, var(--color-canvas) 8%, transparent) 20%,
-        color-mix(in srgb, var(--color-canvas) 16%, transparent) 40%,
-        color-mix(in srgb, var(--color-canvas) 16%, transparent) 50%,
-        color-mix(in srgb, var(--color-canvas) 25%, transparent) 60%,
-        color-mix(in srgb, var(--color-canvas) 46%, transparent) 70%,
-        color-mix(in srgb, var(--color-canvas) 70%, transparent) 80%,
-        color-mix(in srgb, var(--color-canvas) 91%, transparent) 90%,
+        color-mix(in srgb, var(--color-canvas) 4%, transparent) 20%,
+        color-mix(in srgb, var(--color-canvas) 8%, transparent) 40%,
+        color-mix(in srgb, var(--color-canvas) 8%, transparent) 78%,
+        color-mix(in srgb, var(--color-canvas) 16%, transparent) 82%,
+        color-mix(in srgb, var(--color-canvas) 32%, transparent) 86%,
+        color-mix(in srgb, var(--color-canvas) 55%, transparent) 90%,
+        color-mix(in srgb, var(--color-canvas) 78%, transparent) 94%,
+        color-mix(in srgb, var(--color-canvas) 94%, transparent) 97%,
         var(--color-canvas) 100%
       );
   }
