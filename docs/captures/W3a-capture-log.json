@@ -271,5 +271,70 @@
     "d157_verdict": "Matt, 2026-09-22: \"nacre passes steady luminance\"",
     "notes": "Nacre is a full-frame iridescent sheet, and its hue drifts continuously, so the seam risk here is COLOUR, not luma \u2014 encode_captures' seam gate only measures YAVG and is blind to it. Scoring on luma alone picked 54.5-69.5 s (best motion variation, \u0394Y -3.56) but that span runs teal to green: chroma \u0394 98.1. Rescoring on UAVG/VAVG gives 84.5-99.5 s at chroma \u0394 44.1, consistently yellow-green end to end, keeping motion sd 9.00 against a 11.77 peak. For calibration, raw span drift in the already-published masters: Fractal Tree 0.60, Cymatic 0.98, Murmuration 2.14, Skein 2.61 \u2014 and Ferrofluid Ocean 128.43, whose aurora shifts hue with the vocal line and which shipped with Matt's approval. So 44.1 sits well inside precedent and the 0.5 s crossfade absorbs it. Separately, the roster note that Nacre is 'too fast overall' is measurable: mean interframe difference is 137.6 against Nebula's 9.2, and it barely varies (sd 10.6, 7.7% of mean), so the motion does not track the music. Flash safety is not at issue: per-frame luma change is mean 0.20 / max 4.76 on an 8-bit scale, against Ferrofluid Ocean's 0.13 / 2.56.",
     "hold": "not web-publishable at 15 s. Nacre is a full-frame high-frequency iridescent field with a mean interframe difference of 137.6 (Nebula: 9.2), so it is close to incompressible. In budget at 12 MB it encodes to SSIM Y 0.476 (WebM) and 0.441 (H.264) \u2014 mush, against 0.93 for Ferrofluid Ocean, the hardest preset shipped. Uncapped AV1 at CRF 30 is 299 MB for 15 s and still only SSIM 0.711: 25x the gallery budget for quality below anything published. The H.264 attempt also failed the chroma seam bar at dUV 1.50 against a 0.84 in-loop maximum."
+  },
+  {
+    "preset": "Dragon Bloom",
+    "role": "gallery",
+    "session": "2026-09-22T16-36-17Z",
+    "file": "~/Movies/Uzume masters/W3c/dragon-bloom/video.mov",
+    "sha256": "918269c5506c806e9110841cecac210d06529f87f2d57223931e6f6ab26abd61",
+    "duration_s": 148.2,
+    "width": 1920,
+    "height": 1080,
+    "codec": "ProRes 422 (Standard), .mov, no audio",
+    "gb_per_min": 2.08,
+    "captured_at": "2026-09-22T16:36:17Z",
+    "app_commit": "84a5f8897674848fadd8e6bfa412dacd6e347380",
+    "track": "Delinquent Frequencies \u2014 The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+    "rights": "\u201cDelinquent Frequencies\u201d \u2014 The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+    "roster_quote": "Washed out, extreme brightness. Reds look gorgeous. Would like to see the same saturated color across the visible light spectrum.",
+    "in_point_s": 23,
+    "loop_window_s": null,
+    "check": [
+      "frames 8889, 148.2 s, 2.08 GB/min",
+      "gaps in 1/60 s: {0: 3, 1: 8875, 2: 9, 3: 1}",
+      "duplicate consecutive frames in the whole file: 0",
+      "PASS codec prores Standard",
+      "PASS size 1920x1080",
+      "PASS audio streams 0",
+      "PASS longest clean run, no gaps or duplicates: 75.1 s (4.8-79.9 s)",
+      "ACCEPT"
+    ],
+    "d157_verdict": "BLOCKED \u2014 do not publish without a deliberate flash-safety review. This master shows the general-flash pattern D-157 exists to gate.",
+    "hold": "D-157 flash-safety concern, not an encode problem. Sampling mean frame luminance at 60 fps over 25-145 s and normalising to an 8-bit scale: per-frame change is mean 1.04 / max 10.54, against 0.13/2.56 for Ferrofluid Ocean, the most active preset published. More seriously, sliding a 1/6 s window (one half-cycle at 6 Hz) over the same footage finds 382 windows whose luminance swings more than 10% of full scale, the WCAG 2.3.1 general-flash threshold, with a largest swing of 67.5 (26% of scale); at 1/3 s the largest is 96.0 (38%). The identical measurement on every published loop returns ZERO such windows \u2014 largest swings Skein 0.13, Murmuration 1.10, Nimbus 3.67, Cymatic 4.35, Ferrofluid 7.28. This is a categorical difference, not a marginal one, and it corroborates the roster note 'Washed out, extreme brightness'. Caveat: this is mean luminance of a downscaled frame, a reasonable proxy but not a certified Harding test, and WCAG's general flash threshold also carries an area condition this does not evaluate. No loop window has been selected; none should be until the flash question is settled."
+  },
+  {
+    "preset": "Aurora Veil",
+    "role": "gallery",
+    "session": "2026-09-22T16-45-40Z",
+    "file": "~/Movies/Uzume masters/W3c/aurora-veil/video.mov",
+    "sha256": "e84c6c7e65344cfbe30787353eb5ebb007cab67f466c005dbc737e3bdc75b21e",
+    "duration_s": 236.7,
+    "width": 1920,
+    "height": 1080,
+    "codec": "ProRes 422 (Standard), .mov, no audio",
+    "gb_per_min": 2.09,
+    "captured_at": "2026-09-22T16:45:40Z",
+    "app_commit": "84a5f8897674848fadd8e6bfa412dacd6e347380",
+    "track": "Delinquent Frequencies \u2014 The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+    "rights": "\u201cDelinquent Frequencies\u201d \u2014 The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+    "roster_quote": "Looks great. Stars blink well with the beat. Wish there was more colour variation, purple is fleeting.",
+    "in_point_s": 19,
+    "loop_window_s": [
+      205.0,
+      220.5
+    ],
+    "check": [
+      "frames 14171, 236.7 s, 2.09 GB/min",
+      "gaps in 1/60 s: {0: 2, 1: 14138, 2: 28, 3: 1, 4: 1}",
+      "duplicate consecutive frames in the whole file: 0",
+      "PASS codec prores Standard",
+      "PASS size 1920x1080",
+      "PASS audio streams 0",
+      "PASS longest clean run, no gaps or duplicates: 52.2 s (184.5-236.7 s)",
+      "ACCEPT"
+    ],
+    "d157_verdict": "Matt, 2026-09-22: \"aurora veil passes steady luminance\"",
+    "notes": "Second take. The first (2026-09-22T16-30-01Z, 177.0 s) was REJECTed \u2014 33 dropped frames spread evenly through it left a longest clean run of 24.8 s against the 30 s bar \u2014 and was deleted. This take still drops 28 frames but at a lower rate (0.12/s against 0.19/s) and its length buys a 52.2 s clean run. Six clean runs of 16 s or more; candidates scored on motion first per Matt's rule, but Aurora Veil is a slow preset and motion barely separates them (2.18-2.26 across every candidate), so the seam decided it. 205.5-220.5 s takes motion 2.18 against a 2.26 peak with \u0394Y +2.49 and chroma \u0394 0.54 \u2014 among the tightest colour matches of any window measured in W.3c. Flash safety is not at issue, which was worth checking after Dragon Bloom: largest 1/6 s luminance swing 1.31 with zero windows over 10% of scale, in line with Murmuration (1.10) and Nimbus (3.67)."
   }
 ]
