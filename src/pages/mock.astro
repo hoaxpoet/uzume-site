@@ -1,0 +1,591 @@
+---
+// MOCK — not a shipping page. Noindex, like /design.
+//
+// The W.5a homepage brief rendered at full fidelity: real tokens, real fonts,
+// real posters from R2, real components. It exists to be judged before the
+// real page is rewritten against it, and it is deleted or promoted once that
+// judgement lands. Nothing here is invented: the only gap on the page — the
+// application captures — renders as a labelled gap, because PRODUCT.md says
+// no application assets exist in this repo and must not be fabricated.
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Button from "../components/Button.astro";
+import NotifyForm from "../components/NotifyForm.astro";
+import RequirementsList from "../components/RequirementsList.astro";
+import VideoTile from "../components/VideoTile.astro";
+import PresetCard from "../components/PresetCard.astro";
+import { getCollection } from "astro:content";
+import media from "../data/media.json";
+
+const REPO = "https://github.com/hoaxpoet/uzume";
+
+// The claim, as locked. Every other sentence on the page is calibrated to it.
+const claim =
+  "A music visualizer for macOS. It hears the drums, the bass and the voice separately, and gives each one something to do.";
+
+const hero = media.find((clip) => clip.role === "hero")!;
+const presets = await getCollection("presets");
+const teasers = media
+  .filter((clip) => clip.role === "gallery")
+  .map((clip) => ({
+    clip,
+    preset: presets.find((entry) => entry.data.slug === clip.slug)!.data,
+  }));
+
+// The draw first, the planner last. Reordered from the live page, where the
+// planner led — Matt's note: it is the least developed part of the app, so it
+// should not be the first promise the page makes.
+const beats = [
+  {
+    title: "It hears the parts, not just the volume",
+    body: "Uzume separates each track into its stems before you play it — drums, bass, voice, everything else — and measures what is in them. So the kick can drive one thing on screen while the vocal line drives another.",
+  },
+  {
+    title: "It keeps listening while the track plays",
+    body: "Live analysis follows the music as it actually goes, so it can follow a track that doesn't go where the analysis expected.",
+  },
+  {
+    title: "It works out the sequence ahead of time",
+    body: "Before the first note, Uzume decides which preset goes with each track and where the changes land. Rules, not improvisation — and you still don't know what you're about to see.",
+  },
+];
+
+// Every fact checked against the app repo's README and PRODUCT_SPEC.
+const requirements = [
+  { term: "Mac", description: "Any Apple silicon Mac" },
+  { term: "macOS", description: "macOS 14 Sonoma or later" },
+  {
+    term: "Music",
+    description:
+      "Local files, or whatever you already play — Uzume listens rather than taking over playback",
+  },
+  { term: "Licence", description: "Free and open source, MIT" },
+];
+
+// Was three chromatic status callouts. Nothing here is a status: one is a
+// privacy fact, one explains a permission, one is a safety guarantee. Neutral
+// surface, tone carried by the icon only.
+const assurances = [
+  {
+    title: "Everything happens on your Mac",
+    body: "Analysis and drawing run locally. Uzume has no account, sends no audio anywhere, and needs no network connection to run.",
+  },
+  {
+    title: "System audio needs one permission",
+    body: "macOS files system-audio capture under Screen Recording. Uzume takes the audio and nothing else — not your screen, not your microphone. Playing local files needs no permission at all.",
+  },
+  {
+    title: "Presets are tested for steady luminance",
+    body: "Every certified preset is tested for a bounded change in brightness from frame to frame, with beat-locked motion confined to parts of the frame rather than thrown across all of it. Reduced-motion settings are honoured throughout.",
+  },
+];
+
+// The one gap on the page. These are the three screens worth capturing from a
+// real build; until they exist the section states what is missing rather than
+// showing something that isn't Uzume.
+const screens = [
+  {
+    name: "Before the music starts",
+    note: "Performance Preflight — audio source, display, which presets are eligible, quality, accessibility.",
+  },
+  {
+    name: "While it listens",
+    note: "Preparation Stage — progress, elapsed time, and the Listening → Separating → Understanding → Composing trace.",
+  },
+  {
+    name: "While it plays",
+    note: "Curator Control Surface — listening status, track information, end session.",
+  },
+];
+---
+
+<Base title="MOCK — Uzume homepage" description={claim} noindex>
+  <Nav overlay />
+
+  <p class="mock-flag">
+    Mock of the W.5a homepage brief. Not linked, not indexed, not shipping.
+  </p>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero__stage">
+        <VideoTile
+          bare
+          title={hero.preset}
+          poster={hero.posters.jpeg.url}
+          sources={hero.renditions}
+        />
+      </div>
+
+      <h1 class="hero__lockup">Uzume</h1>
+
+      <div class="hero__copy">
+        <p class="hero__claim">{claim}</p>
+
+        {/* Status before the ask. On the live page this sits below the email
+            field in tertiary grey, so the sequence a visitor gets is claim →
+            ask → "actually there's nothing yet". Inverted here, and at body
+            weight: someone who knows what they are waiting for resents the
+            wait less. "Free" and "open source" surface here rather than in
+            row four of the requirements table. */}
+        <p class="hero__status">
+          It isn't released yet. The source is public and you can{" "}
+          <a href={REPO}>build it today</a>; the beta will be free, open source
+          and notarized when it arrives.
+        </p>
+
+        <NotifyForm />
+      </div>
+    </section>
+
+    <section class="band beats-band">
+      {/* The live page has this as aria-label="How it works" with no visible
+          heading, so the mechanism is never actually named on screen. */}
+      <h2>What it hears</h2>
+      <div class="beats">
+        {beats.map(({ title, body }) => (
+          <article class="beat">
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="band">
+      <h2>What it draws</h2>
+      <p class="lede">
+        Eight presets, captured from the engine and published unedited. Each one
+        was written by somebody, and their name is on it.
+      </p>
+      {/* Links, not inert figures. On the live page these are bare <figure>
+          elements that look exactly like the gallery's clickable tiles — seven
+          dead ends for a sighted visitor and seven read-out names with no
+          action for a screen reader. */}
+      <div class="uz-preset-gallery">
+        {teasers.map(({ clip, preset }) => (
+          <a class="preset-link" href={`/gallery#${clip.slug}`}>
+            <PresetCard
+              name={preset.name}
+              author={preset.author}
+              poster={clip.posters.jpeg.url}
+            />
+          </a>
+        ))}
+      </div>
+      <div class="band__actions">
+        <Button variant="secondary" href="/gallery">See them all</Button>
+      </div>
+    </section>
+
+    <section class="band">
+      <h2>What it looks like to use</h2>
+      <p class="lede">
+        Uzume is an application with a window, not a screensaver. This is what
+        using it looks like.
+      </p>
+      <div class="screens">
+        {screens.map(({ name, note }) => (
+          <figure class="screen">
+            <div class="screen__gap">
+              <strong>Capture needed</strong>
+              <span>{note}</span>
+            </div>
+            <figcaption>{name}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <p class="screens__note">
+        These three frames stay empty until real captures exist. No application
+        interface is drawn here that Uzume does not actually render.
+      </p>
+    </section>
+
+    {/* Two adjacent bands on the live page — "What you need" and "What Uzume
+        asks of your Mac" — at identical weight, covering closely related
+        material. One band, one decision point. */}
+    <section class="band">
+      <h2>What you need</h2>
+      <RequirementsList items={requirements} />
+      <div class="assurances">
+        {assurances.map(({ title, body }) => (
+          <div class="assurance">
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="band">
+      <h2>Who writes the presets</h2>
+      <p class="lede">
+        A preset is a Metal shader and a JSON file dropped into the repository.
+        The ones that pass the tests become part of what every listener sees,
+        with their author's name on them.
+      </p>
+      <div class="band__actions">
+        <Button variant="secondary" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
+          Write a preset
+        </Button>
+      </div>
+    </section>
+
+    <section class="band myth">
+      <h2>The name</h2>
+      <p class="myth__pronunciation">oo-ZOO-meh</p>
+      <p>
+        In the <em>Kojiki</em>, the sun shuts herself in a cave and the world
+        goes dark. A plan is made, a mirror is hung to catch light that does not
+        yet exist, and Ame-no-Uzume stamps out a rhythm and dances until the
+        gods roar. The sun opens the door to see what could possibly be worth
+        that much noise.
+      </p>
+      <p>The dancing is what brings the light out. That is the whole idea.</p>
+    </section>
+  </main>
+
+  {/* Footer with the Coleridge line demoted: small type beside the
+      attribution instead of a centred 2xl blockquote. BRAND.md asks it to be
+      "an atmospheric close, not the product explanation", which is an argument
+      for keeping it and against giving it the last word at display size. */}
+  <footer class="footer">
+    <div class="footer__meta">
+      <p>
+        Uzume · <a href={REPO}>Source on GitHub</a>
+      </p>
+      <p class="footer__tagline">
+        “A light in sound, a sound-like power in light.” — Coleridge, 1795
+      </p>
+      <p>&copy; {new Date().getFullYear()} Matt Deming</p>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  .mock-flag {
+    position: fixed;
+    z-index: 20;
+    inset-block-start: 0;
+    inset-inline: 0;
+    margin: 0;
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-status-warning-background);
+    color: var(--color-text-primary);
+    font-size: var(--text-sm);
+    text-align: center;
+  }
+
+  /* ---- Frame. Lifted unchanged from index.astro: the hero is untouched. ---- */
+
+  main {
+    display: flow-root;
+    --page-column: calc(64rem - 2 * var(--page-gutter));
+  }
+
+  main > section:not(.hero) {
+    padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
+  }
+
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    text-align: center;
+  }
+
+  .hero__stage {
+    grid-area: 1 / 1;
+    position: relative;
+    height: min(25rem, 56.25vw);
+    overflow: hidden;
+    --uz-loop-position: 40% 70%;
+    animation: hero-opening var(--duration-deliberate) var(--ease-out) backwards;
+  }
+
+  @keyframes hero-opening {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .hero__stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse 50% 80% at 100% 0%,
+        color-mix(in srgb, var(--color-canvas) 68%, transparent) 0%,
+        transparent 100%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        color-mix(in srgb, var(--color-canvas) 4%, transparent) 20%,
+        color-mix(in srgb, var(--color-canvas) 8%, transparent) 40%,
+        color-mix(in srgb, var(--color-canvas) 8%, transparent) 78%,
+        color-mix(in srgb, var(--color-canvas) 16%, transparent) 82%,
+        color-mix(in srgb, var(--color-canvas) 32%, transparent) 86%,
+        color-mix(in srgb, var(--color-canvas) 55%, transparent) 90%,
+        color-mix(in srgb, var(--color-canvas) 78%, transparent) 94%,
+        color-mix(in srgb, var(--color-canvas) 94%, transparent) 97%,
+        var(--color-canvas) 100%
+      );
+  }
+
+  .hero__lockup {
+    grid-area: 1 / 1;
+    align-self: center;
+    justify-self: center;
+    z-index: 1;
+    margin: 0;
+    padding: 4.5rem var(--page-gutter) 0;
+    font: var(--font-weight-semibold) clamp(4rem, 11vw, 7rem) /
+      var(--leading-tight) var(--font-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-shadow:
+      0 0 0.05em color-mix(in srgb, var(--color-canvas) 70%, transparent),
+      0 0 0.18em color-mix(in srgb, var(--color-canvas) 50%, transparent),
+      0 0 0.55em color-mix(in srgb, var(--color-canvas) 32%, transparent);
+    view-timeline: --uz-hero-lockup block;
+  }
+
+  .hero__copy {
+    grid-area: 2 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    padding-block: var(--space-8);
+    padding-inline: max(var(--page-gutter), calc(50% - var(--page-column) / 2));
+  }
+
+  .hero__copy :global(.notify) {
+    align-items: center;
+    text-align: center;
+    margin-block: var(--space-6) var(--space-12);
+    width: min(38rem, 100%);
+  }
+
+  .hero__claim {
+    max-width: 40rem;
+    margin: 0;
+    /* Clamped. --text-3xl is a fixed 2.5rem in tokens.css while --text-4xl
+       beside it is clamped, which is why the live claim runs four lines at
+       375px. Local override here; the token fix is its own change. */
+    font: var(--font-weight-semibold) clamp(1.75rem, 4.5vw, 2.5rem) /
+      var(--leading-heading) var(--font-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .hero__status {
+    max-width: 38rem;
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  /* ---- Bands ---- */
+
+  .band {
+    padding-block: var(--space-16);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .band > h2 {
+    margin: 0 0 var(--space-6);
+    font: var(--font-weight-semibold) clamp(1.75rem, 4.5vw, 2.5rem) /
+      var(--leading-tight) var(--font-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .lede {
+    max-width: var(--measure-copy);
+    margin: 0 0 var(--space-8);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  .band__actions {
+    margin-top: var(--space-8);
+  }
+
+  .beats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-8);
+  }
+
+  .beat h3 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-xl);
+    line-height: var(--leading-heading);
+  }
+
+  .beat p {
+    margin: 0;
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  /* Cards are links now. The card's own chrome is unchanged; this only makes
+     the whole tile the target and gives it a focus ring. */
+  .preset-link {
+    display: block;
+    border-radius: var(--radius-lg);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .preset-link:focus-visible {
+    outline: 0;
+    box-shadow: var(--focus-ring);
+  }
+
+  .preset-link:hover :global(.uz-preset-card) {
+    border-color: var(--color-accent);
+  }
+
+  /* ---- The gap ---- */
+
+  .screens {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--space-6);
+  }
+
+  .screen {
+    margin: 0;
+  }
+
+  /* Deliberately reads as an empty slot, not as an interface. A dashed frame
+     and a plain sentence: there is no way to mistake this for a screenshot. */
+  .screen__gap {
+    aspect-ratio: 16 / 10;
+    display: grid;
+    align-content: center;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    border: 1px dashed var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    text-align: center;
+  }
+
+  .screen__gap strong {
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-label);
+    color: var(--color-text-tertiary);
+  }
+
+  .screen__gap span {
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  .screen figcaption {
+    margin-top: var(--space-3);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .screens__note {
+    max-width: var(--measure-copy);
+    margin: var(--space-6) 0 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-tertiary);
+  }
+
+  /* ---- Assurances: neutral surface, no status colour ---- */
+
+  .assurances {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-10);
+  }
+
+  .assurance {
+    padding: var(--space-6);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .assurance h3 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-base);
+    line-height: var(--leading-heading);
+    color: var(--color-text-primary);
+  }
+
+  .assurance p {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  /* ---- The name ---- */
+
+  .myth__pronunciation {
+    margin: 0 0 var(--space-6);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .myth h2 {
+    margin-bottom: var(--space-2);
+  }
+
+  .myth p {
+    max-width: var(--measure-copy);
+    margin: 0 0 var(--space-6);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  .myth p:last-child {
+    margin-bottom: 0;
+    color: var(--color-text-primary);
+  }
+
+  /* ---- Footer ---- */
+
+  .footer {
+    padding: var(--space-10) var(--page-gutter) var(--space-8);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .footer__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+  }
+
+  .footer__meta p {
+    margin: 0;
+  }
+
+  .footer__tagline {
+    color: var(--color-text-tertiary);
+  }
+</style>
