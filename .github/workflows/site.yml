@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check copy spacing
+        run: python3 Scripts/check_copy_spacing.py
+
       - name: Type and content check
         run: npx astro check
 

@@ -51,6 +51,7 @@ node --check DesignSystem/Web/catalogue.js
 node --check DesignSystem/Web/uzume-components.js
 python3 Scripts/check_web_catalogue.py
 python3 Scripts/check_contrast.py tokens.css
+python3 Scripts/check_copy_spacing.py
 swift test --package-path DesignSystem/SwiftUI
 # once scaffolded (W.0+):
 npx astro check
