@@ -8,6 +8,20 @@
 import "../../DesignSystem/Web/uzume-components.css";
 
 const KIT_FORM = "9921149";
+
+interface Props {
+  /** The ask, as a sentence. The landing page says it shorter than the
+      gallery does, because the status line above it has already said what
+      there is to wait for. */
+  label?: string;
+  /** What signing up actually costs, in one line. */
+  terms?: string;
+}
+
+const {
+  label = "Email me when the beta is downloadable",
+  terms = "First when there's a build to download, then occasionally about new releases and what's changed. Unsubscribe any time.",
+} = Astro.props;
 ---
 
 <form
@@ -18,7 +32,7 @@ const KIT_FORM = "9921149";
 >
   <div class="notify__fields" data-fields>
     <label class="notify__label" for="notify-email">
-      Email me when the beta is downloadable
+      {label}
     </label>
     <div class="notify__row">
       <input
@@ -36,8 +50,7 @@ const KIT_FORM = "9921149";
       </button>
     </div>
     <p class="notify__terms" id="notify-terms">
-      First when there's a build to download, then occasionally about new
-      releases and what's changed. Unsubscribe any time.
+      {terms}
     </p>
   </div>
 

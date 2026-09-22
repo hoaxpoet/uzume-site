@@ -19,9 +19,13 @@ import media from "../data/media.json";
 
 const REPO = "https://github.com/hoaxpoet/uzume";
 
-// The claim, as locked. Every other sentence on the page is calibrated to it.
+// Matt's line, and the page's spine: listens, analyzes, accompanies. The
+// previous claim led on stem separation, which is expensive and largely
+// unavailable on the streaming path — where most visitors will be — so it was
+// false for the majority case. Musicality is the umbrella that is true on both
+// paths.
 const claim =
-  "A music visualizer for macOS. It hears the drums, the bass and the voice separately, and gives each one something to do.";
+  "A music visualizer for macOS that listens, analyzes, and accompanies.";
 
 const hero = media.find((clip) => clip.role === "hero")!;
 const presets = await getCollection("presets");
@@ -32,21 +36,29 @@ const teasers = media
     preset: presets.find((entry) => entry.data.slug === clip.slug)!.data,
   }));
 
-// The draw first, the planner last. Reordered from the live page, where the
-// planner led — Matt's note: it is the least developed part of the app, so it
-// should not be the first promise the page makes.
+// Evidence of accompaniment, shown rather than asserted.
+const accompanist = teasers.find(({ clip }) => clip.slug === "skein")!;
+
+// Three beats, each with its own evidence. Two await real captures; the third
+// is a preset already published. Rows, not a three-up grid — the grid was the
+// same shape as the band that followed it, which made the page read as two
+// helpings of the same thing.
 const beats = [
   {
-    title: "It hears the parts, not just the volume",
-    body: "Uzume separates each track into its stems before you play it — drums, bass, voice, everything else — and measures what is in them. So the kick can drive one thing on screen while the vocal line drives another.",
+    title: "It listens",
+    body: "With local files, Uzume hears the whole playlist before it plays a note. With anything else — a streaming app, a browser tab — it listens to what is actually coming out of your Mac.",
+    capture:
+      "Performance Preflight — audio source, display, eligible presets, quality, accessibility.",
   },
   {
-    title: "It keeps listening while the track plays",
-    body: "Live analysis follows the music as it actually goes, so it can follow a track that doesn't go where the analysis expected.",
+    title: "It analyzes",
+    body: "It measures what is in the music rather than how loud it is: where the beats fall, how dense the arrangement is, where the energy sits, how the harmony moves.",
+    capture:
+      "Preparation Stage — progress, elapsed time, and the Listening → Separating → Understanding → Composing trace.",
   },
   {
-    title: "It works out the sequence ahead of time",
-    body: "Before the first note, Uzume decides which preset goes with each track and where the changes land. Rules, not improvisation — and you still don't know what you're about to see.",
+    title: "It accompanies",
+    body: "Presets are written to answer particular things in the music — a beat lands here, the harmony moves a colour there — so what you see follows the music instead of twitching at its volume.",
   },
 ];
 
@@ -60,42 +72,6 @@ const requirements = [
       "Local files, or whatever you already play — Uzume listens rather than taking over playback",
   },
   { term: "Licence", description: "Free and open source, MIT" },
-];
-
-// Was three chromatic status callouts. Nothing here is a status: one is a
-// privacy fact, one explains a permission, one is a safety guarantee. Neutral
-// surface, tone carried by the icon only.
-const assurances = [
-  {
-    title: "Everything happens on your Mac",
-    body: "Analysis and drawing run locally. Uzume has no account, sends no audio anywhere, and needs no network connection to run.",
-  },
-  {
-    title: "System audio needs one permission",
-    body: "macOS files system-audio capture under Screen Recording. Uzume takes the audio and nothing else — not your screen, not your microphone. Playing local files needs no permission at all.",
-  },
-  {
-    title: "Presets are tested for steady luminance",
-    body: "Every certified preset is tested for a bounded change in brightness from frame to frame, with beat-locked motion confined to parts of the frame rather than thrown across all of it. Reduced-motion settings are honoured throughout.",
-  },
-];
-
-// The one gap on the page. These are the three screens worth capturing from a
-// real build; until they exist the section states what is missing rather than
-// showing something that isn't Uzume.
-const screens = [
-  {
-    name: "Before the music starts",
-    note: "Performance Preflight — audio source, display, which presets are eligible, quality, accessibility.",
-  },
-  {
-    name: "While it listens",
-    note: "Preparation Stage — progress, elapsed time, and the Listening → Separating → Understanding → Composing trace.",
-  },
-  {
-    name: "While it plays",
-    note: "Curator Control Surface — listening status, track information, end session.",
-  },
 ];
 ---
 
@@ -130,38 +106,62 @@ const screens = [
             row four of the requirements table. */}
         <p class="hero__status">
           It isn't released yet. The source is public and you can{" "}
-          <a href={REPO}>build it today</a>; the beta will be free, open source
-          and notarized when it arrives.
+          <a href={REPO}>build it today</a>.
         </p>
 
-        <NotifyForm />
+        {/* Four pieces of text were saying the same thing: the status line, the
+            label, the terms, and the button. The status line above has already
+            established what there is to wait for, so the label only has to name
+            the ask and the terms only have to say what it costs. */}
+        <NotifyForm
+          label="Email me when it's ready"
+          terms="One email when there's a build. Unsubscribe any time."
+        />
       </div>
     </section>
 
     <section class="band beats-band">
-      {/* The live page has this as aria-label="How it works" with no visible
-          heading, so the mechanism is never actually named on screen. */}
-      <h2>What it hears</h2>
+      {/* Rows, not a three-up grid. Each claim sits beside the thing that
+          proves it, which is also what stops this band and the one after it
+          reading as two helpings of the same layout. */}
+      <h2>What it does</h2>
       <div class="beats">
-        {beats.map(({ title, body }) => (
+        {beats.map(({ title, body, capture }) => (
           <article class="beat">
-            <h3>{title}</h3>
-            <p>{body}</p>
+            <div class="beat__copy">
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </div>
+            <div class="beat__evidence">
+              {capture ? (
+                <div class="screen__gap">
+                  <strong>Capture needed</strong>
+                  <span>{capture}</span>
+                </div>
+              ) : (
+                <VideoTile
+                  title={accompanist.preset.name}
+                  meta={`${accompanist.preset.author} · ${accompanist.preset.family}`}
+                  poster={accompanist.clip.posters.jpeg.url}
+                  sources={accompanist.clip.renditions}
+                />
+              )}
+            </div>
           </article>
         ))}
       </div>
     </section>
 
+    {/* Was two sections, in the wrong order: seven presets shown, then a
+        section explaining what a preset is. The definition comes first now,
+        and the people who write them stay with the thing they write. */}
     <section class="band">
-      <h2>What it draws</h2>
+      <h2>Presets</h2>
       <p class="lede">
-        Eight presets, captured from the engine and published unedited. Each one
-        was written by somebody, and their name is on it.
+        A preset is a Metal shader and a JSON file. Each one is written by
+        somebody, and their name stays on it. These are a few of the certified
+        ones, captured from the engine and published unedited.
       </p>
-      {/* Links, not inert figures. On the live page these are bare <figure>
-          elements that look exactly like the gallery's clickable tiles — seven
-          dead ends for a sighted visitor and seven read-out names with no
-          action for a screen reader. */}
       <div class="uz-preset-gallery">
         {teasers.map(({ clip, preset }) => (
           <a class="preset-link" href={`/gallery#${clip.slug}`}>
@@ -173,62 +173,21 @@ const screens = [
           </a>
         ))}
       </div>
-      <div class="band__actions">
-        <Button variant="secondary" href="/gallery">See them all</Button>
-      </div>
-    </section>
-
-    <section class="band">
-      <h2>What it looks like to use</h2>
-      <p class="lede">
-        Uzume is an application with a window, not a screensaver. This is what
-        using it looks like.
-      </p>
-      <div class="screens">
-        {screens.map(({ name, note }) => (
-          <figure class="screen">
-            <div class="screen__gap">
-              <strong>Capture needed</strong>
-              <span>{note}</span>
-            </div>
-            <figcaption>{name}</figcaption>
-          </figure>
-        ))}
-      </div>
-      <p class="screens__note">
-        These three frames stay empty until real captures exist. No application
-        interface is drawn here that Uzume does not actually render.
-      </p>
-    </section>
-
-    {/* Two adjacent bands on the live page — "What you need" and "What Uzume
-        asks of your Mac" — at identical weight, covering closely related
-        material. One band, one decision point. */}
-    <section class="band">
-      <h2>What you need</h2>
-      <RequirementsList items={requirements} />
-      <div class="assurances">
-        {assurances.map(({ title, body }) => (
-          <div class="assurance">
-            <h3>{title}</h3>
-            <p>{body}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <section class="band">
-      <h2>Who writes the presets</h2>
-      <p class="lede">
-        A preset is a Metal shader and a JSON file dropped into the repository.
-        The ones that pass the tests become part of what every listener sees,
-        with their author's name on them.
+      <p class="presets__note">
+        Anyone can write one. The ones that pass the tests become part of what
+        every listener sees.
       </p>
       <div class="band__actions">
-        <Button variant="secondary" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
+        <Button variant="secondary" href="/gallery">See the gallery</Button>
+        <Button variant="quiet" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
           Write a preset
         </Button>
       </div>
+    </section>
+
+    <section class="band">
+      <h2>What you need</h2>
+      <RequirementsList items={requirements} />
     </section>
 
     <section class="band myth">
@@ -422,20 +381,46 @@ const screens = [
 
   .beats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: var(--space-8);
+    gap: var(--space-16);
   }
 
-  .beat h3 {
+  .beat {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  /* The evidence changes sides down the band, so three rows of the same
+     anatomy do not read as three identical slabs. */
+  .beat:nth-child(even) .beat__copy {
+    order: 2;
+  }
+
+  .beat__copy h3 {
     margin: 0 0 var(--space-3);
     font-size: var(--text-xl);
     line-height: var(--leading-heading);
   }
 
-  .beat p {
+  .beat__copy p {
     margin: 0;
+    max-width: var(--measure-copy);
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
+  }
+
+  .presets__note {
+    max-width: var(--measure-copy);
+    margin: var(--space-8) 0 0;
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  .band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
   }
 
   /* Cards are links now. The card's own chrome is unchanged; this only makes
@@ -456,22 +441,10 @@ const screens = [
     border-color: var(--color-accent);
   }
 
-  /* ---- The gap ---- */
-
-  .screens {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    gap: var(--space-6);
-  }
-
-  .screen {
-    margin: 0;
-  }
-
-  /* Deliberately reads as an empty slot, not as an interface. A dashed frame
-     and a plain sentence: there is no way to mistake this for a screenshot. */
+  /* Reads as an empty slot, not as an interface: a dashed frame and a plain
+     sentence, so there is no way to mistake it for a screenshot. */
   .screen__gap {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 9;
     display: grid;
     align-content: center;
     gap: var(--space-2);
@@ -489,51 +462,6 @@ const screens = [
   }
 
   .screen__gap span {
-    font-size: var(--text-sm);
-    line-height: var(--leading-body);
-    color: var(--color-text-secondary);
-  }
-
-  .screen figcaption {
-    margin-top: var(--space-3);
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-primary);
-  }
-
-  .screens__note {
-    max-width: var(--measure-copy);
-    margin: var(--space-6) 0 0;
-    font-size: var(--text-sm);
-    line-height: var(--leading-body);
-    color: var(--color-text-tertiary);
-  }
-
-  /* ---- Assurances: neutral surface, no status colour ---- */
-
-  .assurances {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-    gap: var(--space-4);
-    margin-top: var(--space-10);
-  }
-
-  .assurance {
-    padding: var(--space-6);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-lg);
-    background: var(--color-surface);
-  }
-
-  .assurance h3 {
-    margin: 0 0 var(--space-2);
-    font-size: var(--text-base);
-    line-height: var(--leading-heading);
-    color: var(--color-text-primary);
-  }
-
-  .assurance p {
-    margin: 0;
     font-size: var(--text-sm);
     line-height: var(--leading-body);
     color: var(--color-text-secondary);
