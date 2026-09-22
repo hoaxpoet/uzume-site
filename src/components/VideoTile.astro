@@ -77,7 +77,14 @@ const TitleTag = titleAs;
         its action, it is the only control in the band, and the script reveals
         it only when there is motion to stop. Under reduced motion, on a phone,
         or on a metered connection the poster stands and the button never
-        appears. */}
+        appears.
+
+        One word, not four. "Pause the performance" was the accessible name
+        written as visible copy — it read as the page explaining itself, and at
+        219px it was the second thing your eye found in a band that exists to
+        show the footage. A media control is the one place a bare verb is the
+        clearest possible label. 44px stays: it is the target floor, not a size
+        choice, so the button shrinks in width and in type weight instead. */}
     <button
       class="uz-button uz-button--secondary uz-loop-toggle"
       type="button"
@@ -87,7 +94,7 @@ const TitleTag = titleAs;
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path data-uz-loop-icon d="M9 5v14M15 5v14" />
       </svg>
-      <span data-uz-loop-label>Pause the performance</span>
+      <span data-uz-loop-label>Pause</span>
     </button>
   </Fragment>
 ) : (
@@ -150,6 +157,13 @@ const TitleTag = titleAs;
     z-index: 2;
     right: var(--space-4);
     bottom: var(--space-4);
+    /* The catalogue's button is sized for a page's primary action. This is a
+       media control in the corner of the thing it controls: it has to be
+       findable and reach the 44px target floor, and nothing beyond that. */
+    gap: var(--space-2);
+    padding-inline: var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-regular);
   }
 
   .uz-loop-toggle svg {
@@ -213,9 +227,7 @@ const TitleTag = titleAs;
       toggle.dataset.playing = String(!stopped);
       icon?.setAttribute("d", stopped ? PLAY_ICON : PAUSE_ICON);
       if (label) {
-        label.textContent = stopped
-          ? "Play the performance"
-          : "Pause the performance";
+        label.textContent = stopped ? "Play" : "Pause";
       }
     }
 
