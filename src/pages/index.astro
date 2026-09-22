@@ -286,31 +286,22 @@ const beats = [
     }
   }
 
-  /* The veil, sized from the footage rather than by eye. Alpha compositing is
-     linear in relative luminance, so --color-canvas at alpha a over footage of
-     luminance L lands the background at a·0.0037 + (1−a)·L, and a per-cell map
-     of the loop's maximum luminance says what L is anywhere in the frame.
+  /* No veil over the footage at all any more, only a corner.
 
-     Only two things sit on the footage, and measured that way they need very
-     different amounts:
+     Two things sit on the sky and they are answered separately, because a veil
+     across the whole band was paying for both everywhere.
 
-       the header's links  0.270 behind them, and --color-text-primary needs
-                           4.5:1 -> 40% minimum
-       the name            0.355 behind it, and 7rem is large text, so 3:1
-                           -> 24% minimum
+     The header's links are body text at 16px with no exemption, so they keep a
+     scrim — but only in the corner they occupy. The radial reaches x=712 and
+     is effectively spent by the time it meets the flock's tail.
 
-     A flat veil serves the larger number everywhere, which darkened the whole
-     sky — the entire flock with it — for the sake of three links in one corner.
-     But the links are top-right and the flock runs from x=171 to x=884 of 1425,
-     so they never overlap: the strong part can be put only where the links are.
+     The name is answered by a halo on the glyphs themselves (see
+     .hero__lockup), which puts the dark exactly where the letterforms are and
+     nowhere else. So the sky keeps 100% of its light everywhere but that one
+     corner — against 54% when this was a flat band.
 
-     Hence a corner rather than a band. The radial reaches x=884, exactly where
-     the swarm ends, so none of it is touched. The sky keeps 72% of its light
-     everywhere except under the links, against 54% when this was flat.
-
-     The linear layer also closes to canvas at the foot so the band meets the
-     copy below it without a line across the page — kept short, at 88%, because
-     the flock needs the room above it. */
+     The linear layer now does nothing but close to canvas at the foot, so the
+     band meets the copy below it without a line across the page. */
   .hero__stage::after {
     content: "";
     position: absolute;
@@ -319,16 +310,11 @@ const beats = [
     pointer-events: none;
     background:
       radial-gradient(
-        ellipse 38% 60% at 100% 0%,
-        color-mix(in srgb, var(--color-canvas) 42%, transparent) 0%,
+        ellipse 50% 80% at 100% 0%,
+        color-mix(in srgb, var(--color-canvas) 68%, transparent) 0%,
         transparent 100%
       ),
-      linear-gradient(
-        to bottom,
-        color-mix(in srgb, var(--color-canvas) 28%, transparent) 0,
-        color-mix(in srgb, var(--color-canvas) 28%, transparent) 88%,
-        var(--color-canvas) 100%
-      );
+      linear-gradient(to bottom, transparent 88%, var(--color-canvas) 100%);
   }
 
   /* The name, at hero scale, as live text rather than the outlined SVG — so it
@@ -355,6 +341,20 @@ const beats = [
       var(--leading-tight) var(--font-display);
     letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
+    /* The name's own scrim, shaped like the name. A field across the band had
+       to darken the whole sky to seat one word; a halo puts the dark only where
+       the letterforms are, so it buys the same legibility and costs the image
+       nothing. Sized in em so it tracks the clamp rather than a fixed pixel
+       radius, and drawn in --color-canvas so it reads as the dark the letters
+       sit in rather than as a drop shadow.
+
+       WCAG 1.4.3 exempts a brand name from contrast entirely, so this is a
+       legibility decision rather than a compliance one; measured at the glyph
+       edges it lands around 5:1 against a 3:1 bar for large text. */
+    text-shadow:
+      0 0 0.05em color-mix(in srgb, var(--color-canvas) 70%, transparent),
+      0 0 0.18em color-mix(in srgb, var(--color-canvas) 50%, transparent),
+      0 0 0.55em color-mix(in srgb, var(--color-canvas) 32%, transparent);
     view-timeline: --uz-hero-lockup block;
   }
 
