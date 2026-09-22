@@ -148,12 +148,17 @@ def publish(tmp, out, stem, ext):
     return final, digest, existed
 
 
-def luma(inputs, graph):
-    """Per-frame mean luma (signalstats YAVG) of the first output of `graph`."""
+def signal(inputs, graph):
+    """Per-frame mean Y, U and V (signalstats) of the first output of `graph`."""
     out = subprocess.run(["ffmpeg", "-v", "error", "-nostdin", *inputs, "-filter_complex",
                           f"{graph},signalstats,metadata=print:file=-", "-f", "null", "-"],
                          check=True, capture_output=True, text=True).stdout
-    return [float(v) for v in re.findall(r"YAVG=([\d.]+)", out)]
+    return tuple([float(v) for v in re.findall(rf"{c}AVG=([\d.]+)", out)] for c in "YUV")
+
+
+def luma(inputs, graph):
+    """Per-frame mean luma (signalstats YAVG) of the first output of `graph`."""
+    return signal(inputs, graph)[0]
 
 
 def seam_ok(yavg):
@@ -161,6 +166,24 @@ def seam_ok(yavg):
     first must be no larger than any change the performance itself makes."""
     seam = abs(yavg[0] - yavg[-1])
     inner = max(abs(b - a) for a, b in zip(yavg, yavg[1:]))
+    return seam, inner, seam <= inner
+
+
+def chroma_seam_ok(uavg, vavg):
+    """(seam change, largest in-loop change, ok), the same bar as seam_ok but on colour:
+    the hue jump from the last frame back to the first must be no larger than any colour
+    change the performance itself makes. Distance is Euclidean in the U/V plane.
+
+    Luma alone cannot see this. Nacre (W.3c) is a full-frame iridescent sheet whose hue
+    drifts continuously, and its best-scoring span by luma held YAVG to within 3.6 while
+    running teal to green — a chroma distance of 98, which would have snapped at the loop
+    point with every luma bar passing.
+    """
+    def dist(i, j):
+        return ((uavg[i] - uavg[j]) ** 2 + (vavg[i] - vavg[j]) ** 2) ** 0.5
+
+    seam = dist(0, -1)
+    inner = max(dist(i, i + 1) for i in range(len(uavg) - 1))
     return seam, inner, seam <= inner
 
 
@@ -193,8 +216,9 @@ def measure(path, ext, entry, inputs, graph, frames):
     ssim = float(re.findall(r"SSIM Y:([\d.]+)", stats)[-1])
     ssim_all = float(re.findall(r"All:([\d.]+)", stats)[-1])
     xpsnr = float(re.findall(r"XPSNR +y: *([\d.]+)", stats)[-1])
-    yavg = luma(["-i", str(path)], "null")
+    yavg, uavg, vavg = signal(["-i", str(path)], "null")
     seam, inner, seam_pass = seam_ok(yavg)
+    cseam, cinner, cseam_pass = chroma_seam_ok(uavg, vavg)
     budget = BUDGET_MB[entry["role"]] * 1e6
     checks = {
         "stream": (v["codec_name"] == {"webm": "av1", "mp4": "h264"}[ext]
@@ -207,12 +231,14 @@ def measure(path, ext, entry, inputs, graph, frames):
         "frames": len(times) == len(yavg) == frames and set(gaps(times)) == {1},
         "size": size <= budget,
         "seam": seam_pass,
+        "chroma": cseam_pass,
     }
     return {
         "ext": ext, "path": path, "bytes": size, "type": f'{MIME[ext]}; codecs="{codecs_param(path)}"',
         "width": v["width"], "height": v["height"], "frames": len(times),
         "duration_s": round(len(times) / FPS, 3), "ssim_y": ssim, "ssim_all": ssim_all,
-        "xpsnr_y": xpsnr, "seam": seam, "inner": inner, "checks": checks,
+        "xpsnr_y": xpsnr, "seam": seam, "inner": inner,
+        "chroma_seam": cseam, "chroma_inner": cinner, "checks": checks,
     }
 
 
@@ -240,6 +266,11 @@ def main():
 
     manifest, all_ok = [], True
     for entry in json.loads(LOG.read_text()):
+        # A captured master that cannot ship yet stays in the log as a capture record but
+        # out of the manifest; `hold` says why.
+        if entry.get("hold"):
+            print(f"{entry['preset']} — held, not published: {entry['hold']}")
+            continue
         entry = {**entry, "role": "hero" if entry["preset"] == HERO else "gallery"}
         name, frames = slug(entry["preset"]), SECONDS[entry["role"]] * FPS
         inputs, graph, span = loop_input(entry, frames)
@@ -264,7 +295,8 @@ def main():
             failed = [k for k, ok in r["checks"].items() if not ok]
             print(f"  {ext:4} {r['type']:38} {r['bytes'] / 1e6:5.2f} MB  {r['frames']} frames  "
                   f"SSIM Y {r['ssim_y']:.4f} (all {r['ssim_all']:.4f})  XPSNR Y {r['xpsnr_y']:.2f} dB  "
-                  f"seam dY {r['seam']:.2f} <= max in-loop {r['inner']:.2f}  "
+                  f"seam dY {r['seam']:.2f} <= {r['inner']:.2f}  "
+                  f"dUV {r['chroma_seam']:.2f} <= {r['chroma_inner']:.2f}  "
                   f"{'PASS' if not failed else 'FAIL ' + ','.join(failed)}"
                   f"{'  (kept)' if keep and not reencode else '  (reproduced)' if existed else ''}")
 

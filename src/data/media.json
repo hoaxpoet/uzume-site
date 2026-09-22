@@ -248,5 +248,105 @@
       "d157_verdict": "Matt, 2026-09-22: \"both pass steady luminance\"",
       "encode_verdict": null
     }
+  },
+  {
+    "preset": "Nimbus",
+    "slug": "nimbus",
+    "role": "gallery",
+    "roster_quote": "Doesn't do much and yet people seem to really like it and think the ball has a personality",
+    "renditions": [
+      {
+        "url": "https://media.uzume.io/loops/nimbus.06cfd03a.webm",
+        "type": "video/webm; codecs=\"av01.0.09M.08\"",
+        "bytes": 2011280,
+        "sha256": "06cfd03a81a8298f4453f9237aa7c04a5f64c6abf7946a505b795623edaf34ed",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      },
+      {
+        "url": "https://media.uzume.io/loops/nimbus.a60e30d4.mp4",
+        "type": "video/mp4; codecs=\"avc1.64002A\"",
+        "bytes": 5769009,
+        "sha256": "a60e30d4d5de704a6be5cd22042feecfa0796ac8d7be05c74491c3a513556c56",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      }
+    ],
+    "posters": {
+      "avif": {
+        "url": "https://media.uzume.io/posters/nimbus.f73f6629.avif",
+        "bytes": 13912
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/posters/nimbus.c64f85f4.jpg",
+        "bytes": 42971
+      }
+    },
+    "provenance": {
+      "source_master_sha256": "6e2e1fbf3db21e231d3fd78e8617efbd0df7f2c0b3929480da5fb5720b111f56",
+      "loop_window_s": [174.5, 190.0],
+      "master_span_s": [175.012, 190.012],
+      "crossfade_s": 0.5,
+      "captured_at": "2026-09-22T15:16:48Z",
+      "app_commit": "84a5f8897674848fadd8e6bfa412dacd6e347380",
+      "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+      "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+      "d157_verdict": "Matt, 2026-09-22: \"nimbus passes steady luminance\"",
+      "encode_verdict": null
+    }
+  },
+  {
+    "preset": "Nebula",
+    "slug": "nebula",
+    "role": "gallery",
+    "roster_quote": "Needs better sync with music. Spikes are too sporadic. Should look more activated.",
+    "renditions": [
+      {
+        "url": "https://media.uzume.io/loops/nebula.71779972.webm",
+        "type": "video/webm; codecs=\"av01.0.09M.08\"",
+        "bytes": 981751,
+        "sha256": "71779972a33ec16b06c4dff7f4b779df16f12a344096dea4b89ff7b83975f747",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      },
+      {
+        "url": "https://media.uzume.io/loops/nebula.045b09b8.mp4",
+        "type": "video/mp4; codecs=\"avc1.64002A\"",
+        "bytes": 3024467,
+        "sha256": "045b09b8dcd025eed970fc17b0c3abfc67931f10f9f5c783bf897bca329fc85e",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration_s": 15.0
+      }
+    ],
+    "posters": {
+      "avif": {
+        "url": "https://media.uzume.io/posters/nebula.b93b933d.avif",
+        "bytes": 17447
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/posters/nebula.826970ca.jpg",
+        "bytes": 55916
+      }
+    },
+    "provenance": {
+      "source_master_sha256": "3ed1e0070241b07fa04959007332675d9acd096433c62d912fb99233975f5997",
+      "loop_window_s": [31.0, 46.5],
+      "master_span_s": [31.5, 46.5],
+      "crossfade_s": 0.5,
+      "captured_at": "2026-09-22T15:31:20Z",
+      "app_commit": "84a5f8897674848fadd8e6bfa412dacd6e347380",
+      "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+      "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+      "d157_verdict": "Matt, 2026-09-22: \"nebula passes steady luminance\"",
+      "encode_verdict": null
+    }
   }
 ]

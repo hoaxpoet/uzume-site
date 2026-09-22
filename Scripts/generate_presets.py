@@ -98,7 +98,9 @@ def main() -> int:
         entry = {"slug": slug}
         entry.update({key: sidecar[key] for key in FIELDS})
         entry["author"] = PUBLISHED_AS.get(entry["author"], entry["author"])
-        if "inspired_by" in sidecar:
+        # A sidecar without lineage carries `"inspired_by": null`, not an absent key,
+        # and the schema's .optional() takes undefined but not null.
+        if sidecar.get("inspired_by"):
             entry["inspired_by"] = sidecar["inspired_by"]
         if slug in captions:
             entry["caption"] = captions[slug]

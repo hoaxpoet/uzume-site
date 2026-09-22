@@ -168,5 +168,108 @@
     ],
     "d157_verdict": "Matt, 2026-09-22: \"both pass steady luminance\"",
     "notes": "Skein accumulates: mean luminance climbs 146 to ~420 and only goes flat after ~95 s, so the loop window is late in the take. Every 0.1 s start inside the 52.9 s clean run was scanned for the smallest endpoint mismatch; 116.4-131.4 s wins at +0.04 YAVG (0.01%) end-to-start, with a 3.0 YAVG (0.7%) range inside the span. Skein never returns to a prior state, so the seam is a dissolve between two equivalent dense fields, not a true cycle. A first 79 s take was discarded: its only in-plateau span ran off the end of the file."
+  },
+  {
+    "preset": "Nimbus",
+    "role": "gallery",
+    "session": "2026-09-22T15-16-48Z",
+    "file": "~/Movies/Uzume masters/W3c/nimbus/video.mov",
+    "sha256": "6e2e1fbf3db21e231d3fd78e8617efbd0df7f2c0b3929480da5fb5720b111f56",
+    "duration_s": 207.4,
+    "width": 1920,
+    "height": 1080,
+    "codec": "ProRes 422 (Standard), .mov, no audio",
+    "gb_per_min": 0.79,
+    "captured_at": "2026-09-22T15:16:48Z",
+    "app_commit": "84a5f8897674848fadd8e6bfa412dacd6e347380",
+    "track": "Delinquent Frequencies \u2014 The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+    "rights": "\u201cDelinquent Frequencies\u201d \u2014 The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+    "roster_quote": "Doesn't do much and yet people seem to really like it and think the ball has a personality",
+    "in_point_s": 21,
+    "loop_window_s": [
+      174.5,
+      190.0
+    ],
+    "check": [
+      "frames 12436, 207.4 s, 0.79 GB/min",
+      "gaps in 1/60 s: {0: 3, 1: 12420, 2: 12}",
+      "duplicate consecutive frames in the whole file: 18",
+      "PASS codec prores Standard",
+      "PASS size 1920x1080",
+      "PASS audio streams 0",
+      "PASS longest clean run, no gaps or duplicates: 38.2 s (169.2-207.4 s)",
+      "ACCEPT"
+    ],
+    "d157_verdict": "Matt, 2026-09-22: \"nimbus passes steady luminance\"",
+    "notes": "Nimbus does not accumulate: mean luminance oscillates around 168 over a 72.8 YAVG range with no net drift (-7.6 from 30-100 s, -3.0 from 100-200 s), so any clean run will do and the choice is purely the endpoint match. Six clean runs of 16 s or more; every 0.1 s start in each was scanned, and 175.0-190.0 s wins at +0.01 YAVG end-to-start, sitting inside the 38.2 s run with ~5.8 s of margin either side. The engine renders Nimbus at render_scale=0.50 and upscales, so it is softer than Fractal Tree or Skein \u2014 the app's own choice, not a capture fault. A first take was discarded: Uzume was windowed, so the render target was 1920x1018 and the encoder's size assertion would have rejected it."
+  },
+  {
+    "preset": "Nebula",
+    "role": "gallery",
+    "session": "2026-09-22T15-31-20Z",
+    "file": "~/Movies/Uzume masters/W3c/nebula/video.mov",
+    "sha256": "3ed1e0070241b07fa04959007332675d9acd096433c62d912fb99233975f5997",
+    "duration_s": 176.7,
+    "width": 1920,
+    "height": 1080,
+    "codec": "ProRes 422 (Standard), .mov, no audio",
+    "gb_per_min": 1.0,
+    "captured_at": "2026-09-22T15:31:20Z",
+    "app_commit": "84a5f8897674848fadd8e6bfa412dacd6e347380",
+    "track": "Delinquent Frequencies \u2014 The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+    "rights": "\u201cDelinquent Frequencies\u201d \u2014 The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+    "roster_quote": "Needs better sync with music. Spikes are too sporadic. Should look more activated.",
+    "in_point_s": 21,
+    "loop_window_s": [
+      31.0,
+      46.5
+    ],
+    "check": [
+      "frames 10601, 176.7 s, 1.00 GB/min",
+      "gaps in 1/60 s: {0: 3, 1: 10593, 2: 3, 4: 1}",
+      "duplicate consecutive frames in the whole file: 10",
+      "PASS codec prores Standard",
+      "PASS size 1920x1080",
+      "PASS audio streams 0",
+      "PASS longest clean run, no gaps or duplicates: 172.5 s (4.2-176.7 s)",
+      "ACCEPT"
+    ],
+    "d157_verdict": "Matt, 2026-09-22: \"nebula passes steady luminance\"",
+    "notes": "Cleanest take of W.3c: one 172.5 s clean run covering all but the first 4.2 s, full render_scale=1.00. Window chosen on Matt's rule that a gallery loop should showcase the preset's responsivity from an early window of playback, not merely seam the tidiest. Frame-to-frame motion (mean abs interframe difference) is front-loaded here \u2014 9-13 between 21 s and 50 s, settling to 4-6 after ~100 s \u2014 so every 0.5 s start from the in point was scored on motion first and seam second. 31.5-46.5 s takes motion 9.17 against a 9.30 peak with a -0.28 YAVG endpoint match; a seam-only pick would have sat late in the take at motion 4-6. The ring visibly pulses across the span, which also answers the roster note that Nebula 'should look more activated'."
+  },
+  {
+    "preset": "Nacre",
+    "role": "gallery",
+    "session": "2026-09-22T15-42-02Z",
+    "file": "~/Movies/Uzume masters/W3c/nacre/video.mov",
+    "sha256": "f6ff89deb899a17255902aa0c503c06b1d708baffe0d2c9c8675926a0cfa686d",
+    "duration_s": 165.8,
+    "width": 1920,
+    "height": 1080,
+    "codec": "ProRes 422 (Standard), .mov, no audio",
+    "gb_per_min": 2.1,
+    "captured_at": "2026-09-22T15:42:02Z",
+    "app_commit": "84a5f8897674848fadd8e6bfa412dacd6e347380",
+    "track": "Delinquent Frequencies \u2014 The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
+    "rights": "\u201cDelinquent Frequencies\u201d \u2014 The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
+    "roster_quote": "Slow down the speed slightly or make it match the tempo of the music. Too fast overall.",
+    "in_point_s": 25,
+    "loop_window_s": [
+      84.0,
+      99.5
+    ],
+    "check": [
+      "frames 9934, 165.8 s, 2.10 GB/min",
+      "gaps in 1/60 s: {0: 6, 1: 9915, 2: 10, 3: 2}",
+      "duplicate consecutive frames in the whole file: 45",
+      "PASS codec prores Standard",
+      "PASS size 1920x1080",
+      "PASS audio streams 0",
+      "PASS longest clean run, no gaps or duplicates: 93.2 s (11.0-104.2 s)",
+      "ACCEPT"
+    ],
+    "d157_verdict": "Matt, 2026-09-22: \"nacre passes steady luminance\"",
+    "notes": "Nacre is a full-frame iridescent sheet, and its hue drifts continuously, so the seam risk here is COLOUR, not luma \u2014 encode_captures' seam gate only measures YAVG and is blind to it. Scoring on luma alone picked 54.5-69.5 s (best motion variation, \u0394Y -3.56) but that span runs teal to green: chroma \u0394 98.1. Rescoring on UAVG/VAVG gives 84.5-99.5 s at chroma \u0394 44.1, consistently yellow-green end to end, keeping motion sd 9.00 against a 11.77 peak. For calibration, raw span drift in the already-published masters: Fractal Tree 0.60, Cymatic 0.98, Murmuration 2.14, Skein 2.61 \u2014 and Ferrofluid Ocean 128.43, whose aurora shifts hue with the vocal line and which shipped with Matt's approval. So 44.1 sits well inside precedent and the 0.5 s crossfade absorbs it. Separately, the roster note that Nacre is 'too fast overall' is measurable: mean interframe difference is 137.6 against Nebula's 9.2, and it barely varies (sd 10.6, 7.7% of mean), so the motion does not track the music. Flash safety is not at issue: per-frame luma change is mean 0.20 / max 4.76 on an 8-bit scale, against Ferrofluid Ocean's 0.13 / 2.56.",
+    "hold": "not web-publishable at 15 s. Nacre is a full-frame high-frequency iridescent field with a mean interframe difference of 137.6 (Nebula: 9.2), so it is close to incompressible. In budget at 12 MB it encodes to SSIM Y 0.476 (WebM) and 0.441 (H.264) \u2014 mush, against 0.93 for Ferrofluid Ocean, the hardest preset shipped. Uncapped AV1 at CRF 30 is 299 MB for 15 s and still only SSIM 0.711: 25x the gallery budget for quality below anything published. The H.264 attempt also failed the chroma seam bar at dUV 1.50 against a 0.84 in-loop maximum."
   }
 ]
