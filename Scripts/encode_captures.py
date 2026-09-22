@@ -62,14 +62,25 @@ BUDGET_MB = {"hero": 24, "gallery": 12}  # WEBSITE_PLAN §5: 8-12 MB, hero "some
 # ponytail: one setting per role; per-preset rates if one misses its bar.
 CAPS = {"hero": ("3500", "4M"), "gallery": ("5000", "6M")}  # (SVT-AV1 kbps, x264)
 
+CRF = {"webm": "34", "mp4": "20"}
+# Per-preset CRF, where a role's default puts a rendition outside a bar. Skein's canvas
+# is so luminance-stable that AV1's quantization noise at CRF 34 is larger than the
+# motion the loop itself makes: the source loop seams at 0.004 YAVG against a 0.137
+# in-loop maximum, but the AV1 encode of it seams at 0.08 against 0.07 and fails the
+# seam bar — on noise, not on the cut. CRF 26 puts the noise back under the signal, and
+# Skein's WebM is 2.8 MB against a 12 MB budget, so the bits are free.
+# ponytail: one override, not a per-preset table; widen it only if another preset needs one.
+CRF_OVERRIDE = {("skein", "webm"): "26"}
 
-def video_codec(ext, role):
+
+def video_codec(ext, role, name):
     av1, x264 = CAPS[role]
+    crf = CRF_OVERRIDE.get((name, ext), CRF[ext])
     return {
-        "webm": ["-c:v", "libsvtav1", "-preset", "4", "-crf", "34",
+        "webm": ["-c:v", "libsvtav1", "-preset", "4", "-crf", crf,
                  "-svtav1-params", f"mbr={av1}:lp=4"],
         "mp4": ["-c:v", "libx264", "-preset", "veryslow", "-profile:v", "high", "-level:v", "4.2",
-                "-crf", "20", "-maxrate", x264, "-bufsize", f"{int(x264[:-1]) * 2}M",
+                "-crf", crf, "-maxrate", x264, "-bufsize", f"{int(x264[:-1]) * 2}M",
                 "-movflags", "+faststart",
                 # Frame threads under a VBV cap vary run to run; sliced threads fix that
                 # unless the cap binds throughout (Ferrofluid). ponytail: -threads 1 fixes
@@ -244,7 +255,7 @@ def main():
                 tmp = out / "loops" / f".{name}.tmp.{ext}"
                 ffmpeg(*inputs, "-filter_complex", graph, "-frames:v", str(frames), "-an",
                        "-map_metadata", "-1", "-fps_mode", "cfr", "-r", str(FPS),
-                       *video_codec(ext, entry["role"]), str(tmp))
+                       *video_codec(ext, entry["role"], name), str(tmp))
                 path, digest, existed = publish(tmp, out / "loops", name, ext)
             r = measure(path, ext, entry, inputs, graph, frames)
             r.update(sha256=digest, reproduced=existed)

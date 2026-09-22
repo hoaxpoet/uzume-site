@@ -19,8 +19,8 @@ const REPO = "https://github.com/hoaxpoet/uzume";
 // The manifest names the hero; W.3b's decision lives in the encoder, not here.
 const hero = media.find((clip) => clip.role === "hero")!;
 const presets = await getCollection("presets");
-// Posters only — the hero already spends the page's motion budget. The two
-// presets the hero does not show are the ones worth teasing.
+// Posters only — the hero already spends the page's motion budget. The presets
+// the hero does not show are the ones worth teasing.
 const teasers = media
   .filter((clip) => clip.role === "gallery")
   .map((clip) => ({
@@ -95,7 +95,7 @@ const beats = [
             second. True in every state: it says what the frame is, not what it
             is doing. */}
         <p class="hero__credit">
-          {hero.preset}, rendered by Uzume. All three performances play on
+          {hero.preset}, rendered by Uzume. Every performance plays on
           demand <a href="/gallery">in the gallery</a>.
         </p>
       </div>
