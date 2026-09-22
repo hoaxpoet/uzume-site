@@ -269,7 +269,7 @@ const beats = [
        header's own height at the top and the veil's closing ramp at the
        bottom — so no part of the swarm is ever inside either. 40% horizontally keeps it in frame where
        the crop turns horizontal, which is the narrow case. */
-    --uz-loop-position: 40% 70%;
+    --uz-loop-position: 40% 55%;
     /* BRAND.md motion: the brand's authored movement is opening — content
        begins legible, darkness yields, light becomes visible. One deliberate
        reveal, on the hero only, never looping. Opacity only, no scale: this is
@@ -300,30 +300,8 @@ const beats = [
      nowhere else. So the sky keeps 100% of its light everywhere but that one
      corner — against 54% when this was a flat band.
 
-     The linear layer does two things, and neither is a scrim.
-
-     First it cancels the footage's own gradient. The sky brightens all the way
-     down — 0.080 at the top of the frame to 0.448 at the bottom — so the veil
-     rises from 0% to 16% at the same rate, holding the rendered sky flat.
-
-     Then it closes to canvas, and it starts that close at 50% rather than
-     below the flock. That is the whole fix for the horizon line Matt saw. The
-     swarm darkens the sky it sits in, and underneath it the sky recovered to
-     FULL brightness for about eighty pixels before any fade began: a bright
-     sliver pinned between a dark flock and a dark page, which is exactly what
-     a horizon looks like. Measured on the composite it was a climb of 4.4 to
-     7.5 L* depending where the flock had drifted to. Beginning the close while
-     the flock is still in frame means the sky never gets to recover — sampled
-     at five points around the loop the recovery is 0.0 L* at every one of
-     them, and the close is gentler as well, 4.5 L* per 8px against 7.7.
-
-     It cannot be done by holding a ceiling per row, tempting as that is: the
-     flock drifts across the sky, so where it darkens the frame moves with it,
-     and a CSS gradient is static. Starting earlier works at every position.
-
-     Height cannot do it either. Past about 31rem the crop runs out,
-     `object-position` saturates, the fade room caps at 236px, and the close
-     stays equally steep however tall the band gets. */
+     The linear layer now does nothing but close to canvas at the foot, so the
+     band meets the copy below it without a line across the page. */
   .hero__stage::after {
     content: "";
     position: absolute;
@@ -336,18 +314,7 @@ const beats = [
         color-mix(in srgb, var(--color-canvas) 68%, transparent) 0%,
         transparent 100%
       ),
-      linear-gradient(
-        to bottom,
-        transparent 0%,
-        color-mix(in srgb, var(--color-canvas) 8%, transparent) 20%,
-        color-mix(in srgb, var(--color-canvas) 16%, transparent) 40%,
-        color-mix(in srgb, var(--color-canvas) 16%, transparent) 50%,
-        color-mix(in srgb, var(--color-canvas) 25%, transparent) 60%,
-        color-mix(in srgb, var(--color-canvas) 46%, transparent) 70%,
-        color-mix(in srgb, var(--color-canvas) 70%, transparent) 80%,
-        color-mix(in srgb, var(--color-canvas) 91%, transparent) 90%,
-        var(--color-canvas) 100%
-      );
+      linear-gradient(to bottom, transparent 88%, var(--color-canvas) 100%);
   }
 
   /* The name, at hero scale, as live text rather than the outlined SVG — so it
