@@ -793,6 +793,38 @@ phones — where reduced motion, a metered connection or a narrow screen means t
 poster is the only image a visitor ever sees. That is a manifest-shape change
 and its own increment.
 
+### W.5n — The landing page's cards stop borrowing the gallery's stills *(2026-09-23)*
+
+Six `PresetCard` images were loading full 1920x1080 posters to draw a few
+hundred pixels wide, because `<video poster>` takes one URL and the cards reused
+the manifest key that served it. They now load a 960-wide rendition: the six
+featured cards go **306 → 123 kB** of AVIF.
+
+**Why 960, and why only one size.** Measured rather than assumed: the widest a
+card ever draws is **438 CSS px**, at a 1100 px viewport — where the column is
+already capped at `--content-reading` but the gutter has not yet grown to its
+`clamp` ceiling, so it is wider there than at 1920. The one-column layout at
+375 px draws 303 CSS px, which a DPR 3 phone turns into 909 device px. 960
+clears both with headroom, so one rendition covers every case and the cards need
+no `srcset` or `sizes` at all.
+
+**Manifest shape.** A `thumbs` key beside `posters`, same shape, plus a `width`
+on both. Additive on purpose: `posters` is now read by the W.6 JSON-LD as well
+as by the tiles, and changing its shape would have changed what search engines
+are told as a side effect of a layout fix.
+
+**The thumb budget is not the poster's divided by four.** That is what it was at
+first, and it put Skein — the densest frame on the site — off the bottom of the
+ladder at CRF 42, which is not an alarm worth hearing but a budget no encode of
+that frame can meet. At 80 kB AVIF / 100 kB JPEG the two heavy frames land
+mid-ladder (Ferrofluid CRF 26, Skein CRF 38) and still more than halve.
+
+**Still full-size: the `<video poster>` on phones.** Where reduced motion, a
+metered connection or a narrow screen stops the loop from ever playing, the
+poster is the only image a visitor sees — and it is still the 1920 one, because
+`VideoTile` assigns it in JS and would have to choose by width as well as by
+format. The rendition it would need now exists; wiring it is a separate change.
+
 ### W.5 — Docs *(about two sessions)*
 
 Starlight curation, outsider-first, per plan §3: Getting Started (requirements, build-from-source today, the Screen Recording permission explainer, local files vs. streaming), Using Uzume, Contributing Presets (two-file drop-in, hot reload, gates and certification lifecycle). Each page's frontmatter names its upstream app-repo doc; `lychee` checks those references in CI.
