@@ -18,6 +18,22 @@ theme picker. The sidebar has exactly one entry: `{ label: "Docs", items: [{ lab
 `/design/`, `/confirmed/`. There is no `/download` and no `/credits`; plan §3 lists both,
 and neither is this session's job.
 
+**W.6 landed underneath this page (`0e2cb40`, PR #57).** Three things now bear on the
+docs. First, `Base.astro` grew an optional `schema` prop that renders JSON-LD, used by `/`
+(`SoftwareApplication`) and `/gallery` (a `VideoObject` per clip) — **it cannot reach
+`/docs`**, which renders through Starlight's own layout, so a docs page needs a different
+route to structured data (Task 4, and the Do-NOT below). Second, there is now a sitemap
+listing `/`, `/docs/` and `/gallery/`, and a `robots.txt` pointing at it; whatever routes
+this session adds join the sitemap automatically, and any page that should *not* be
+indexed needs `Base.astro`'s `noindex` — which Starlight pages also cannot reach. Third,
+`src/content/docs/docs/index.md`'s description was changed from a placeholder naming an
+increment ID to an outsider-facing sentence; this session overwrites it anyway.
+
+`/docs` is deliberately **indexed today**, thin placeholder and all, on the reasoning that
+this session lands shortly and a `noindex` would be added and removed having accomplished
+nothing between. That reasoning expires if this session slips; the fix is one line in the
+page's frontmatter, and W.6's roadmap entry says so.
+
 **One fact that shapes the whole session.** W.5a rewrote the landing page and changed the
 vocabulary: the visitor-facing noun is now **scene**, not "preset". Verified on the current
 build — `dist/gallery/index.html` has eight visible "scene" and zero "preset"; `dist/index.html`
@@ -48,7 +64,10 @@ None. This repo carries none of the app repo's skills. Closeout is inline, below
    `src/components/DocsThemeProvider.astro`, `src/components/DocsThemeSelect.astro`.
 6. `.github/workflows/site.yml` — the existing `lychee` step, including why `uzume.io` and
    `/dist/gallery#` are excluded. DECISION-NEEDED 4 builds on it.
-7. App repo, read-only, at `~/Documents/Projects/uzume`:
+7. `src/layouts/Base.astro` (the `schema` prop and its escaping comment) and
+   `src/pages/gallery.astro` (the `VideoObject` block) — the shape this session's own
+   JSON-LD should echo, and the reason it cannot simply reuse the prop.
+8. App repo, read-only, at `~/Documents/Projects/uzume`:
    `README.md` (§Requirements, §Getting started, §Running it, §Contributing presets,
    §Documentation map), `CONTRIBUTING.md`, `docs/PRODUCT_SPEC.md`, `docs/ARCHITECTURE.md`,
    `docs/GLOSSARY.md`, `docs/Preset_Development_Protocol.md`,
@@ -56,7 +75,9 @@ None. This repo carries none of the app repo's skills. Closeout is inline, below
 
 ## Pre-flight invariants — stop if any fails
 
-1. Clean working tree, branched from an up-to-date `main` containing W.5k (`b93a7e4`).
+1. Clean working tree, branched from an up-to-date `main` containing W.5l (`97e4cd3`).
+   Two increments landed after this prompt was drafted: W.6's SEO pass (`0e2cb40`, PR #57)
+   and the hero re-encode (`97e4cd3`, PR #58). Both touch files this session reads.
 2. `npm ci` has been run in this worktree *and* in the main checkout (CLAUDE.md's
    `tsconfig` note). `npx astro check` and `npm run build` pass **before any edit**.
 3. The app repo is readable locally. It is a **source to verify against, never a build
@@ -95,7 +116,8 @@ what the first two must set up, but it is the next session's to write.
 - **Getting Started** — requirements; building from source (the only install story today,
   written in the future tense for the beta per PRODUCT.md); the Screen Recording permission
   explainer, saying plainly what it is for and that local files need no permission at all;
-  local files versus streaming.
+  local files versus streaming. **Write this page question-shaped** — see the sub-task
+  below; it changes the headings, not the scope.
 - **Using Uzume** — what the app does while it runs, in a listener's terms. The
   troubleshooting the plan calls for, including the silent-tap gotcha, if the app repo
   documents it well enough to state.
@@ -107,8 +129,54 @@ what the first two must set up, but it is the next session's to write.
 Write outsider-first prose. No increment IDs, no `D-###`, no "M7", no internal shorthand —
 that is exactly what makes the repo docs unsuitable to mirror. American spelling (W.5a).
 
-*Done-when:* each page builds, reads as written for someone who has never seen the project,
-and contains no claim absent from the Task 3 table.
+**4a. Getting Started is also the site's FAQ.** Nothing on the site is currently phrased
+as a question, which is the form answer engines extract — and the answers a stranger
+actually arrives with are exactly this page's scope. Matt's call (2026-09-23) was to fold
+them in here rather than build a `/faq` page, because a second page would duplicate this
+one's content within weeks and split the source of truth on precisely the product facts
+the `README.md` boundary exists to hold still. So the **headings carry the questions** and
+this page carries the markup.
+
+The seven, drawn from what the landing page already argues — phrase them as a reader would
+ask, not as a section label:
+
+1. Does it work with Apple Music and Spotify?
+2. Does it need the Screen Recording permission?
+3. Is it free?
+4. Does it run on Intel Macs?
+5. Which version of macOS?
+6. Is it safe to watch if I am sensitive to flashing light?
+7. How do I write a scene? *(a pointer; the page itself is the next session's)*
+
+Answer 6 is the one with a trap. **Reuse the wording already on `/gallery`** — currently
+`src/pages/gallery.astro:105`, "Every scene here is tested for steady luminance: a bounded
+change in brightness from frame to frame…" — rather than composing a new sentence. That
+phrasing survived a copy-law review specifically on the D-157 point, and any fresh attempt
+risks drifting toward a flashes-per-second figure. Every other answer still owes its row in
+the Task 3 claims table; a question is not a license to assert something unsourced.
+
+Then `FAQPage` JSON-LD on the same page, one `mainEntity` per heading, each `acceptedAnswer`
+carrying the answer as written. **Do not reach for `Base.astro`'s `schema` prop** — it never
+reaches Starlight's layout. The route is Starlight's own frontmatter `head`:
+
+```yaml
+head:
+  - tag: script
+    attrs: { type: application/ld+json }
+    content: '{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[…]}'
+```
+
+`content` is emitted **raw**, unlike `Base.astro`'s prop, which escapes for you. Escape `<`
+as `\u003c` by hand in that string — a literal `</script>` anywhere in an answer closes the
+element early and the rest of the page parses as markup. `<` cannot occur outside a string
+in a JSON text, so the escape is always legal where it lands.
+
+*Done-when:* the page's headings read as questions; answer 6 matches `/gallery` verbatim;
+`dist/docs/**/index.html` carries one `FAQPage` block that parses as JSON, holds seven
+`mainEntity` entries, and contains no raw `<`.
+
+*Done-when (Task 4):* each page builds, reads as written for someone who has never seen the
+project, and contains no claim absent from the Task 3 table.
 
 **5. Upstream references, and make CI check them.** Every page carries frontmatter naming
 its upstream app-repo doc. Note the wiring problem: frontmatter is not emitted into the
@@ -144,7 +212,14 @@ by whom, and what was cut with reasons.
   This is the one rule in CLAUDE.md with its own table in `README.md`.
 - **Do not write the beta in the present tense**, and do not imply the app is installable.
   There is no signed artifact; `/download` and the CTA flip are W.7 and blocked app-side.
-- **Do not state a flashes-per-second figure.** "Steady luminance" is the phrasing.
+- **Do not state a flashes-per-second figure.** "Steady luminance" is the phrasing, and
+  for answer 6 it is the *existing* sentence on `/gallery`, reused verbatim.
+- **Do not render the FAQ JSON-LD through `Base.astro`'s `schema` prop.** Starlight pages
+  never see it, and a page that silently emits nothing looks identical to one that works.
+  Frontmatter `head`, and escape `<` yourself — that prop's automatic escaping does not
+  come with you.
+- **Do not build a `/faq` page.** The questions live on Getting Started; a second copy is
+  the split this decision exists to prevent.
 - **Do not reintroduce "certified", jargon, or any count of scenes** — W.5a removed all
   three deliberately, and a count is wrong within the month.
 - **Do not add client-side JS.** Zero by default; components earn it.
@@ -177,6 +252,17 @@ Then, on the built output:
 grep -roi 'certified\|flashes per second' dist/docs/ | sort | uniq -c
 # Every docs page carries a visible upstream reference (per DECISION-NEEDED 4).
 grep -rlo 'github.com/hoaxpoet/uzume' dist/docs/*/index.html | wc -l
+# The FAQ markup parses, holds seven questions, and leaked no raw '<' (Task 4a).
+python3 - <<'EOF'
+import json, re, pathlib
+hits = [m for f in pathlib.Path("dist/docs").rglob("index.html")
+        for m in re.findall(r'<script type="application/ld\+json">(.*?)</script>',
+                            f.read_text(), re.S)]
+faq = [h for h in hits if json.loads(h).get("@type") == "FAQPage"]
+assert len(faq) == 1, f"expected one FAQPage, found {len(faq)}"
+assert "<" not in faq[0], "raw '<' leaked into the script element"
+print("FAQPage entries:", len(json.loads(faq[0])["mainEntity"]))
+EOF
 ```
 
 `lychee` runs in CI on the PR and must be green.
@@ -197,8 +283,12 @@ here. **Push only on Matt's explicit "yes, push."**
 5. Proof the upstream-reference check actually fails when a reference breaks.
 6. Contrast and reduced-motion results, with numbers.
 7. The four decisions, as answered.
-8. **Handoff:** what the second docs session inherits, and anything W.6 (launch polish)
-   or W.7 (download flip) now depends on.
+8. The FAQ: the seven questions as finally phrased, and confirmation that answer 6 matches
+   `/gallery` verbatim rather than paraphrasing it.
+9. **Handoff:** what the second docs session inherits, and anything W.6 (launch polish)
+   or W.7 (download flip) now depends on. Name explicitly whether `/docs` should stay
+   indexed — W.6 left it so on the assumption this session would land, and that assumption
+   is now spent either way.
 
 ## DECISION-NEEDED (answered in advance — Matt, 2026-09-23)
 
