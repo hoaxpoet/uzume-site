@@ -45,6 +45,45 @@ PUBLISHED_AS = {
     "Matt": "hoaxpoet",
 }
 
+# The app repo writes British spelling; this site writes American (W.5a). Before
+# this, regenerating re-imported "colour" and `--check` was permanently red — a
+# gate nobody could act on, which is worse than no gate. Normalizing on import
+# fixes it here rather than asking the app repo to change its house style.
+#
+# Only words that actually occur in the sidecars are listed: each entry is a fact
+# about the corpus, not a general en-GB → en-US dictionary. Add one when a new
+# sidecar brings a new word, not in anticipation.
+BRITISH_TO_AMERICAN = {
+    "behaviour": "behavior",
+    "centre": "center",
+    "colour": "color",
+    "colours": "colors",
+    "normalised": "normalized",
+}
+# Longest first: a plain alternation matches "colour" inside "colours" and leaves
+# a stranded "s".
+_BRITISH = re.compile(
+    r"\b(" + "|".join(sorted(BRITISH_TO_AMERICAN, key=len, reverse=True)) + r")\b",
+    re.IGNORECASE,
+)
+
+
+def americanize(text: str) -> str:
+    """Rewrite the sidecar's British spellings, preserving a leading capital."""
+
+    def swap(match: re.Match[str]) -> str:
+        word = BRITISH_TO_AMERICAN[match.group(0).lower()]
+        return word.capitalize() if match.group(0)[0].isupper() else word
+
+    return _BRITISH.sub(swap, text)
+
+
+def _selftest() -> None:
+    """The plural and the capital are the two ways this silently goes wrong."""
+    assert americanize("its colours") == "its colors"
+    assert americanize("Colour and behaviour") == "Color and behavior"
+    assert americanize("discolouration") == "discolouration"  # not a word boundary
+
 
 def slugify(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
@@ -64,6 +103,7 @@ def main() -> int:
         help="fail instead of writing if any entry would change",
     )
     args = parser.parse_args()
+    _selftest()
 
     app_repo = args.app_repo.expanduser()
     sidecars = sorted(app_repo.glob(SIDECARS))
@@ -98,6 +138,7 @@ def main() -> int:
         entry = {"slug": slug}
         entry.update({key: sidecar[key] for key in FIELDS})
         entry["author"] = PUBLISHED_AS.get(entry["author"], entry["author"])
+        entry["description"] = americanize(entry["description"])
         # A sidecar without lineage carries `"inspired_by": null`, not an absent key,
         # and the schema's .optional() takes undefined but not null.
         if sidecar.get("inspired_by"):

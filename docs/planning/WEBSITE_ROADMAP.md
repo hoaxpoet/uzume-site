@@ -1168,6 +1168,15 @@ playlists only in v1") is **stale**; `docs/RUNBOOK.md` §U.11 is current.
 **For Matt to file app-side:** UX_SPEC §4.4 needs correcting to match the
 shipped OAuth PKCE connector. This repo does not edit the app repo.
 
+**Closed (2026-09-23, after the session).** `generate_presets.py` now
+Americanizes on import — a five-word map of the spellings that actually occur in
+the sidecars, longest-first so `colours` does not lose its `s`, with a
+three-assert self-check that runs on every invocation. The app repo keeps its
+house style, the site keeps its, and `--check` is green for the first time since
+W.5a. Regenerating imported the Ferrofluid Ocean description below; the rendered
+caption is site-authored and did not change (and is, if anything, more accurate
+against the new text than the old). The account of the problem follows.
+
 **The unrelated red gate moved, and the prompt's pre-flight caught it.**
 `Scripts/generate_presets.py --check` was recorded as red on four sidecars for
 W.5a's American-spelling reason. It is now red on **five**. Four are the
