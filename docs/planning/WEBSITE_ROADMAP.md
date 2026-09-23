@@ -713,6 +713,33 @@ the real fix.
 
 Starlight curation, outsider-first, per plan §3: Getting Started (requirements, build-from-source today, the Screen Recording permission explainer, local files vs. streaming), Using Uzume, Contributing Presets (two-file drop-in, hot reload, gates and certification lifecycle). Each page's frontmatter names its upstream app-repo doc; `lychee` checks those references in CI.
 
+**Getting Started is also the site's FAQ — write it question-shaped.** Nothing
+on the site is currently phrased as a question, which is the form answer engines
+extract; the answers all exist, as prose, spread across the landing page. Rather
+than a second copy of them on a `/faq` page — which would duplicate this page's
+content within weeks and split the source of truth on exactly the facts the
+`README.md` boundary protects — the headings here carry the questions and this
+page carries the markup. The seven worth answering, from what the landing page
+already argues: does it work with Apple Music and Spotify; does it need the
+Screen Recording permission; is it free; does it run on Intel Macs; which macOS
+version; is it safe to watch if light-sensitive (steady luminance, per the
+D-157 wording on /gallery — never a flashes-per-second figure); how do I write
+a scene.
+
+`FAQPage` JSON-LD on the same page, one `mainEntity` per heading. **Not** via
+`Base.astro`'s `schema` prop — /docs renders through Starlight's own layout,
+which that prop never reaches. Starlight's frontmatter `head` is the route:
+
+```yaml
+head:
+  - tag: script
+    attrs: { type: application/ld+json }
+    content: '{"@context":"https://schema.org","@type":"FAQPage",...}'
+```
+
+`content` is emitted raw, so escape `<` as `\u003c` in it by hand — the same
+hazard `Base.astro` handles for the pages it does own.
+
 ### W.6 — Launch polish *(one session)*
 
 OG/social images from hero frames, favicons from `brand/favicon/`, 404 page, sitemap and basic SEO, `prefers-reduced-motion` audit across all pages, Lighthouse pass on throttled mobile.
@@ -729,14 +756,22 @@ visualizer. JSON-LD renders through one optional `schema` prop on `Base.astro`:
 clips were otherwise invisible — cross-origin `<video>` behind lazy posters
 indexes as nothing.
 
-**Still open, in priority order.** /docs is indexed and says only that the docs
-are not written — `noindex` it or let W.5 fix it. Nothing on the site is
-question-shaped, which is what answer engines extract; the answers exist, as
-prose. "Spotify" and "Apple Music" appear only inside an image `alt`, and
-"MilkDrop" nowhere, though `inspired_by` is schema'd and renders the moment a
-preset carries one. Per-preset pages are the largest possible surface increase
-and the largest cost; they cut against the one-page gallery, so they are a W.7
-question, not a W.6 one.
+**Phrasing, done.** "Spotify" and "Apple Music" existed on the site only inside
+an image `alt`; they are in the landing page's prose now, and /gallery and /docs
+say in their titles what they are about. "MilkDrop" is still absent, but
+`inspired_by` is schema'd and renders the moment a preset carries one, so that
+one costs nothing and waits on the roster rather than on this repo.
+
+**Handed to W.5.** The question-shaped content and its `FAQPage` markup — see
+W.5 above. /docs is indexed today saying only that the docs are not written; it
+is deliberately not `noindex`-ed, because W.5 lands shortly and the tag would be
+added and removed to accomplish nothing in between.
+
+**Still open.** Per-preset pages (`/gallery/<slug>/`) are the largest available
+increase in indexable surface — eight pages, each with a video, a description
+and a named author — and the largest cost. They cut against the one-page
+gallery, so they are a W.7 question, not a W.6 one. With them: per-page OG
+images, `max-image-preview:large`, and Search Console verification.
 
 ### W.7 — Download flip *(blocked on app-side work; no site work wasted meanwhile)*
 
