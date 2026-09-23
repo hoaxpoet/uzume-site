@@ -344,45 +344,17 @@ const beats = [
   }
 
   .hero__claim {
-    max-width: 40rem;
+    max-width: 34rem;
     margin: 0;
-    /* 20px floor, not 18. Bold text counts as "large" at 18.66px and above,
-       where the contrast bar is 3:1; below it the bar is 4.5:1. At 18px over
-       footage this measured 3.0:1 — a clear WCAG 1.4.3 failure at phone width,
-       and invisible to DOM contrast checks because the background is a video
-       frame rather than a colour. */
-    font: var(--font-weight-semibold) clamp(1.25rem, 2.4vw, 1.625rem) /
+    font: var(--font-weight-semibold) clamp(1.125rem, 2.4vw, 1.625rem) /
       var(--leading-heading) var(--font-display);
     letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
     text-wrap: balance;
-    /* A field, not just a halo. BRAND.md offers three ways to seat type over
-       footage — scrim, separate field, or a halo on the glyphs — and asks that
-       the result be verified against the footage rather than a still. The halo
-       alone was verified and failed: pixel sampling put it at 2.9:1 on desktop
-       against a 3:1 bar and 3.0:1 at phone width against 4.5:1, because a
-       blur-only shadow spreads its darkness too thinly over a bright sky.
-       A radial field fades to nothing well before its edges, so it reads as
-       the dark the line sits in rather than as a box on the picture, and it
-       costs the sky nothing outside this one line. The halo stays underneath
-       it, doing what it is good at: holding the glyph edges. */
-    padding: var(--space-10) var(--space-6);
-    /* Radii are percentages of the box, so anything at or above 50% horizontal
-       or vertical reaches the edge and the fade gets clipped into a visible
-       rectangle — which is what the first attempt did. Kept under half in both
-       axes, with padding to give it somewhere to fade into. */
-    background: radial-gradient(
-      ellipse 48% 32% at 50% 50%,
-      color-mix(in srgb, var(--color-canvas) 86%, transparent) 0%,
-      color-mix(in srgb, var(--color-canvas) 78%, transparent) 40%,
-      color-mix(in srgb, var(--color-canvas) 44%, transparent) 70%,
-      transparent 100%
-    );
     text-shadow:
-      0 0 0.05em color-mix(in srgb, var(--color-canvas) 92%, transparent),
-      0 0 0.16em color-mix(in srgb, var(--color-canvas) 80%, transparent),
-      0 0 0.45em color-mix(in srgb, var(--color-canvas) 58%, transparent),
-      0 0 1em color-mix(in srgb, var(--color-canvas) 34%, transparent);
+      0 0 0.08em color-mix(in srgb, var(--color-canvas) 78%, transparent),
+      0 0 0.3em color-mix(in srgb, var(--color-canvas) 60%, transparent),
+      0 0 0.8em color-mix(in srgb, var(--color-canvas) 40%, transparent);
   }
 
   .signup {
