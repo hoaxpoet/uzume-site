@@ -119,8 +119,9 @@ const beats = [
           height="256"
         />
         <p class="signup__specs">
-          Free and open source, MIT-licensed. For Apple silicon Macs, macOS 14
-          or later.
+          No build to download yet: the source is public and you can{" "}
+          <a href={REPO}>build it today</a>. The beta will be free and open
+          source, MIT-licensed, for Apple silicon Macs on macOS 14 or later.
         </p>
       </div>
       <NotifyForm
@@ -270,7 +271,12 @@ const beats = [
   .hero__stage {
     grid-area: 1 / 1;
     position: relative;
-    height: clamp(20rem, 56.25vw, 34rem);
+    /* 34rem on a tall window; on a short one the band yields rather than
+       pushing the ask off the screen. At 1366x700 the primary action sat at
+       top: 737 — below the fold — while the platform requirement sat above it,
+       which is the inversion DESIGN.md:202 legislates against. */
+    height: min(34rem, 56.25vw, 60svh);
+    min-height: 18rem;
     overflow: hidden;
     --uz-loop-position: 40% 70%;
     animation: hero-opening var(--duration-deliberate) var(--ease-out) backwards;
@@ -364,7 +370,7 @@ const beats = [
     display: flex;
     align-items: center;
     gap: var(--space-4);
-    max-width: 34rem;
+    max-width: 40rem;
   }
 
   .signup__icon {
