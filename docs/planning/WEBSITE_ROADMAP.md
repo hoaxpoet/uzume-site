@@ -824,6 +824,121 @@ head:
 `content` is emitted raw, so escape `<` as `\u003c` in it by hand — the same
 hazard `Base.astro` handles for the pages it does own.
 
+### W.5 — Docs, first session *(2026-09-23)*
+
+`/docs` is a section rather than a placeholder: **Getting started** and **Using
+Uzume**, plus an overview that routes between them. Contributing is the second
+session's (decision 3). The commit prefix is `[W.5]`, which the homepage rewrite
+also holds — `git log --grep '\[W\.5'` now returns two unrelated bodies of work
+(decision 1, and this is the flag it asked for).
+
+**The four decisions, all Matt's, all on their defaults (2026-09-23).**
+
+- **1 → A.** Keep **W.5** for docs, as the roadmap has it; the homepage keeps
+  `W.5a`–`W.5m`. Collision noted above rather than relabelled.
+- **2 → A.** **"Scene" throughout**, naming the repo's term once, early. It is
+  said twice, deliberately: on the overview, and inside the answer to "how do I
+  write a scene?" — the two places a reader is one click from app-repo filenames.
+- **3 → A.** **Getting Started + Using Uzume now, Contributing next.** The
+  listener path ships whole.
+- **4 → A.** **Upstream references render visibly**, as a "Drawn from" line of
+  links to the files on GitHub. `lychee` checks them with no CI change. Proven:
+  renaming one reference to `docs/RUNBOOK_RENAMED.md` turned the link check red
+  with a 404 on `dist/docs/using-uzume/index.html`; reverted. The frontmatter
+  field the plan describes is deliberately **not** also carried — it would be a
+  second copy of the same fact, checked by nothing, free to drift.
+
+**Getting Started is the site's FAQ.** Seven question-shaped headings, one
+`FAQPage` `mainEntity` each, emitted through Starlight's frontmatter `head`
+because `Base.astro`'s `schema` prop never reaches a Starlight layout. All seven
+`acceptedAnswer` texts were checked to appear verbatim in the rendered prose.
+Answer six is `/gallery`'s steady-luminance sentence with exactly one word
+changed — "here" → "in the gallery" — because the sentence moved off the page
+its deixis pointed at; the D-157 clause is untouched, and no flashes-per-second
+figure appears anywhere.
+
+**The claims table.** Every product fact these pages assert, and where it comes
+from in `hoaxpoet/uzume`:
+
+| Claim | Source |
+|---|---|
+| Apple silicon only, M1 or newer; a few features reserved for M3+ | `README.md` §Requirements; `docs/PRODUCT_SPEC.md` §Target Platform (Tier 1 / Tier 2) |
+| macOS 14 Sonoma or later | `README.md` §Requirements; `docs/RUNBOOK.md` §Preconditions |
+| Xcode 26.5, pinned | `README.md` §Requirements; `.xcode-version` |
+| Clone, `Scripts/fetch_weights.sh` (~167 MB, a release asset), `xcodebuild -scheme UzumeApp` | `README.md` §Getting started |
+| Source public, MIT-licensed | `README.md` §License; `LICENSE` |
+| Uzume does not control your player; it listens to system audio | `README.md` §Running it; `docs/PRODUCT_SPEC.md` §What Uzume Is |
+| System-audio capture needs Screen Recording; audio only is captured | `README.md` §Running it; `docs/GLOSSARY.md` "Tap"; `docs/UX_SPEC.md` §3.2 |
+| macOS bundles system-audio capture with screen recording | `docs/UX_SPEC.md` §3.2 (the app's own explainer) |
+| Nothing leaves the Mac | `docs/PRODUCT_SPEC.md` §Non-Goals (no cloud processing, no telemetry) |
+| Local files need no permission and no account | `README.md` §Running it; `CONTRIBUTING.md` §The development loop |
+| File → Open Local File (⌘O) | `README.md` §Running it; `UzumeApp/UzumeApp.swift:184` |
+| `.m4a` / `.mp3` / `.flac`, folders, M3U | `docs/UX_SPEC.md` §2 (file association, unsupported-format alerts) |
+| Apple Music playlists read from the running app, with a permission prompt | `docs/UX_SPEC.md` §4.3 (`.permissionDenied` → Automation) |
+| A Spotify session needs your own client ID against the copy you built | `docs/RUNBOOK.md` §Spotify connector setup (`Uzume.local.xcconfig`) |
+| Preparation shows either the widening opening or the track list; "Show track info" toggles | `docs/UX_SPEC.md` §5.2 |
+| Start before preparation finishes; it continues behind the session | `docs/UX_SPEC.md` §5.4 |
+| Nothing upcoming is ever shown | `docs/UX_SPEC.md` §5.2, §7.3 (D-238) |
+| Local files: a 3–2–1 count, then it begins | `docs/UX_SPEC.md` §6.2 |
+| Streaming: ready screen, "Begin now", auto-start on first audio, 90 s prompt | `docs/UX_SPEC.md` §6.1, §6.3, §6.4 |
+| Chrome shows ~3 s then hides; returns on mouse, click, any key | `docs/UX_SPEC.md` §7.2 (D-241) |
+| Top-left track card with the current scene's name; top-right dots, toggle, settings, end | `docs/UX_SPEC.md` §7.3 |
+| Transport bar for local files only | `docs/UX_SPEC.md` §7.3 (LF.5.fix carve-out) |
+| The keystroke table as published | `UzumeApp/Services/PlaybackShortcutRegistry.swift` (verified against source, not only the spec) |
+| Reduced motion: feedback blur off, slower palette shifts, beat pulse at half | `docs/UX_SPEC.md` §7.10 |
+| Scenes stay alive at silence; "Listening…" badge after ~3 s | `docs/UX_SPEC.md` §7.5 |
+| A card after ~10 s of no audio, with fixes | `docs/UX_SPEC.md` §7.5 (D-165) |
+| Output-device change or rebuild silently invalidates the grant | `docs/RUNBOOK.md` §Audio levels too low; §Signal health monitor (`deadTap`); `README.md` §Running it |
+| Scrubbing kills the tap; it reinstalls automatically | `docs/RUNBOOK.md` §App captures silence |
+| Protected tracks deliver silence; expected, degrades and recovers | `docs/RUNBOOK.md` §App captures silence |
+| Normalize volume / Sound Check off; 48 kHz output | `docs/RUNBOOK.md` §Audio levels too low |
+| A scene is a Metal shader plus a JSON file beside it, picked up automatically | `CONTRIBUTING.md` §What a preset is |
+| Photosensitivity: steady luminance; the app's first-run notice and Reduce motion | `CONTRIBUTING.md` §Gates; `docs/UX_SPEC.md` §3.3; D-157 wording already live on `/gallery` |
+
+**Gaps — what a page wanted to say and the app repo could not support.**
+
+1. **What a shipped build does about Spotify.** The only documented setup is a
+   developer one (bring your own client ID in a gitignored xcconfig). No upstream
+   doc says what a released build will do, so the page states the requirement as
+   it stands today and promises nothing.
+2. **The two Spotify accounts of the truth disagree.** `docs/UX_SPEC.md` §4.4
+   says v1 is URL-paste only, public playlists, "No OAuth"; `docs/RUNBOOK.md`
+   §U.11 documents a full OAuth PKCE login with Keychain storage. The docs
+   therefore describe *that* you hand Uzume a playlist, never *how* the connect
+   flow looks. Worth resolving upstream before the Contributing session.
+3. **How long preparation takes.** No upstream figure exists — only the 90 s and
+   2 min fallback thresholds. These pages state no timing. (The landing page's
+   "ten or fifteen seconds" for the streaming path predates this session and is
+   still unsourced.)
+4. **Which features are the M3 tier.** `PRODUCT_SPEC.md` names an enhanced tier
+   and never enumerates it, so the page can only say "a few features".
+5. **The stall card's words.** `UX_SPEC.md` §7.5 says its copy is
+   developer-facing and must be softened before a public build, so the page
+   describes that a card appears, not what it says.
+6. **Certification without the word.** The Contributing session inherits a real
+   problem: the lifecycle a submitted scene goes through is called certification
+   upstream, and W.5a removed that word from the site. The mechanism is sourced
+   (`CONTRIBUTING.md` §Gates, §Certification lifecycle); the vocabulary is not.
+7. **Install.** Unchanged and app-side: no signed, notarized artifact exists, so
+   every page stays in the future tense about the beta (W.7).
+
+**A gate that is red for an unrelated reason.** `Scripts/generate_presets.py
+--check` reports four sidecars as drifted. The drift is W.5a's American-spelling
+pass: regenerating would re-import "colour" from the app repo's sidecars. The
+script runs nowhere in CI (it reads a local app checkout), so nothing is failing
+on the PR, but it is red on a clean tree and will stay red until either the app
+repo follows the spelling decision or the generator Americanizes on import.
+
+**Indexing.** `/docs` should **stay indexed**, and now earns it: W.6 left the tag
+off on the assumption this session would land, and it has. All three docs pages
+join the sitemap automatically; none needs `noindex`.
+
+**Handed to the second docs session.** Contributing: what a scene is as two
+files, the hot-reload loop (`~/Library/Application Support/Uzume/Presets/`,
+documented upstream and unverified here), a first walkthrough, what the gates
+check, and what happens after a merge — with the gallery as the payoff, and with
+gap 6 above to decide first. GitHub belongs in that page's body, not the nav.
+
 ### W.6 — Launch polish *(one session)*
 
 OG/social images from hero frames, favicons from `brand/favicon/`, 404 page, sitemap and basic SEO, `prefers-reduced-motion` audit across all pages, Lighthouse pass on throttled mobile.

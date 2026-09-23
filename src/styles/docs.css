@@ -25,3 +25,18 @@ a.site-title {
   line-height: var(--leading-heading);
   letter-spacing: var(--tracking-display);
 }
+
+/* Base.astro carries this for every page it owns; Starlight renders its own
+   layout and never sees it. The docs pages add no motion of their own, but
+   Starlight's chrome does (the sidebar caret transitions at 0.2 s), and
+   "honored absolutely" is the repo's rule, not a per-component judgement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
