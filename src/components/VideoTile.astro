@@ -18,6 +18,15 @@ interface Props {
    * block at the foot of this file.
    */
   posterAvif?: string;
+  /**
+   * The same still at 960 wide, JPEG and AVIF. Offered to screens that cannot
+   * show the full one's pixels — which is every phone, and phones are exactly
+   * where the poster is not a placeholder but the whole image, because a narrow
+   * screen never plays the loop. Optional: without it the full poster is used
+   * at every size, which is the old behaviour.
+   */
+  thumb?: string;
+  thumbAvif?: string;
   /** Encoded variants, best first: AV1/WebM then H.264/MP4. */
   sources?: Rendition[];
   /**
@@ -41,6 +50,8 @@ const {
   meta,
   poster,
   posterAvif,
+  thumb,
+  thumbAvif,
   sources = [],
   bare = false,
   titleAs = "strong",
@@ -55,6 +66,8 @@ const TitleTag = titleAs;
       class="uz-bare-loop"
       data-poster={poster}
       data-poster-avif={posterAvif}
+      data-thumb={thumb}
+      data-thumb-avif={thumbAvif}
       muted
       loop
       playsinline
@@ -113,6 +126,8 @@ const TitleTag = titleAs;
           data-uz-loop
           data-poster={poster}
           data-poster-avif={posterAvif}
+          data-thumb={thumb}
+          data-thumb-avif={thumbAvif}
           controls
           muted
           loop
@@ -223,10 +238,34 @@ const TitleTag = titleAs;
      reduced motion, on a phone, or on a metered connection never plays a
      loop — the poster is the whole tile for them, and it is the one thing
      they must still get. */
+
+  /* Which of the two renditions, once the element has been laid out and its
+     real drawn width is known. The narrow one is 960 (W.5n); `need` is what the
+     screen could actually resolve.
+
+     The 1.25 is a judgement and it has a cost worth stating. A DPR 3 phone at
+     393 CSS px needs about 1180 device pixels and gets 960 — roughly 82 % —
+     so the densest frames soften slightly on exactly the screens where the
+     poster is the final image rather than a placeholder. It is deliberate:
+     those are also the screens most likely to be metered, and the alternative
+     is 199 kB instead of 78 for Ferrofluid Ocean. A 1280-wide rendition would
+     remove the compromise; add one if this ever reads as soft on a real phone.
+
+     A zero width means the element is not laid out, and a guess would be worse
+     than the full file. */
+  const NARROW_WIDTH = 960;
+  function rendition(video: HTMLVideoElement) {
+    const need = video.clientWidth * (window.devicePixelRatio || 1);
+    const narrow = need > 0 && need <= NARROW_WIDTH * 1.25;
+    const { poster, posterAvif, thumb, thumbAvif } = video.dataset;
+    return narrow && (thumb || thumbAvif)
+      ? { jpeg: thumb, avif: thumbAvif }
+      : { jpeg: poster, avif: posterAvif };
+  }
+
   function showPoster(video: HTMLVideoElement) {
     if (video.poster) return;
-    const jpeg = video.dataset.poster;
-    const avif = video.dataset.posterAvif;
+    const { jpeg, avif } = rendition(video);
     if (!jpeg && !avif) return;
     if (!avif) {
       video.poster = jpeg!;
