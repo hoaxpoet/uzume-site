@@ -14,9 +14,9 @@ something for it to play.
   questions most people arrive with.
 - **[Using Uzume](/docs/using-uzume/)** — what happens while a session runs,
   how to steer it, and what to do when it goes quiet.
-
-A page on writing a scene comes next. Until then the walkthrough is in the app
-repository's [contributing guide](https://github.com/hoaxpoet/uzume/blob/main/CONTRIBUTING.md).
+- **[Contributing a scene](/docs/contributing/)** — what a scene is on disk, how
+  to get one rendering on your own Mac, what the gates check, and what happens
+  after you open a pull request.
 
 ## One word, two spellings
 
