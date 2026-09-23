@@ -110,14 +110,19 @@ const beats = [
           64px is the floor BRAND.md sets for the full composition — the 16-32px
           artwork is a separate art-directed crop, not this one scaled down —
           and the gap clears the required one-eighth. Decorative: the sentence
-          beside it already carries the meaning. */}
+          beside it already carries the meaning.
+
+          The file is brand/icon/Uzume.iconset/icon_128x128.png copied
+          unmodified, which is the production artwork at exactly the size a
+          64px slot needs on a 2x display. The 256px uzume-icon.png it replaced
+          shipped 69.5 KB to draw 64 points. */}
       <div class="signup__what">
         <img
           class="signup__icon"
-          src="/uzume-icon.png"
+          src="/uzume-icon-128.png"
           alt=""
-          width="256"
-          height="256"
+          width="128"
+          height="128"
         />
         <p class="signup__specs">
           No build to download yet: the source is public and you can{" "}
@@ -125,10 +130,12 @@ const beats = [
           source, MIT-licensed, for Apple silicon Macs on macOS 14 or later.
         </p>
       </div>
-      <NotifyForm
-        label="Email me when the public beta is ready"
-        terms="One email when there's a build — unsubscribe any time."
-      />
+      {/* No `terms` override. This page and /gallery mount the same component
+          and must make the same promise — and the success panel the form swaps
+          in on submit renders the component's default regardless, so an
+          override here only changes the promise up to the moment it is
+          accepted. */}
+      <NotifyForm label="Email me when the public beta is ready" />
     </section>
 
     <section class="band beats-band">
@@ -192,17 +199,13 @@ const beats = [
         somebody, and their name stays on it. These are some of them, recorded
         from Uzume and published unedited.
       </p>
-      {/* Linking the gallery, not the scene, and that is a concession rather
-          than a preference. The ids exist on /gallery — a scene is addressable
-          and can be bookmarked or cited — but the link check cannot follow a
-          fragment into a directory route: Astro emits dist/gallery/index.html,
-          lychee maps /gallery and /gallery/ alike onto the directory, and a
-          directory holds no fragments. Deep-linking the cards means either an
-          index.html in a public href or teaching lychee about directory
-          indexes; neither is worth holding this page for. */}
+      {/* Six cards named six scenes and all six went to the same place. The
+          ids exist on /gallery, so the fix is the href — see the lychee
+          exclusion in .github/workflows/site.yml for why the link check cannot
+          verify these six and why that is safe. */}
       <div class="uz-preset-gallery">
         {featured.map(({ clip, preset }) => (
-          <a class="preset-link" href="/gallery/">
+          <a class="preset-link" href={`/gallery/#${clip.slug}`}>
             <PresetCard
               name={preset.name}
               author={preset.author}
@@ -218,7 +221,7 @@ const beats = [
         <a href={REPO}>on GitHub</a>.
       </p>
       <div class="band__actions">
-        <Button variant="secondary" href="/gallery">See the gallery</Button>
+        <Button variant="secondary" href="/gallery/">See the gallery</Button>
         <Button variant="quiet" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
           Write a scene
         </Button>
@@ -250,11 +253,11 @@ const beats = [
 
 <style>
 
-  /* ---- Frame. Lifted unchanged from index.astro: the hero is untouched. ---- */
+  /* ---- Frame ---- */
 
   main {
     display: flow-root;
-    --page-column: calc(64rem - 2 * var(--page-gutter));
+    --page-column: calc(var(--content-reading) - 2 * var(--page-gutter));
   }
 
   main > section:not(.hero) {
@@ -392,7 +395,7 @@ const beats = [
   .signup :global(.notify) {
     align-items: center;
     text-align: center;
-    width: min(38rem, 100%);
+    width: min(40rem, 100%);
   }
 
   /* ---- Bands ---- */

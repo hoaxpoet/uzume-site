@@ -31,7 +31,13 @@ const { name, author, poster, posterAvif, status } = Astro.props;
     {poster ? (
       <picture>
         {posterAvif && <source srcset={posterAvif} type="image/avif" />}
-        <img src={poster} alt={`${name} preview still`} loading="lazy" />
+        <img
+          src={poster}
+          alt={`${name} preview still`}
+          loading="lazy"
+          width="1920"
+          height="1080"
+        />
       </picture>
     ) : (
       <div>

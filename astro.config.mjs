@@ -11,8 +11,8 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "Uzume",
-      // Starlight renders its own layout, so Base.astro's beacon never reaches
-      // these pages. Inject it here too.
+      // Starlight renders its own layout, so Base.astro's beacon and
+      // theme-color never reach these pages. Inject them here too.
       head: [
         {
           tag: "script",
@@ -21,6 +21,10 @@ export default defineConfig({
             src: CF_BEACON_SRC,
             "data-cf-beacon": CF_BEACON_DATA,
           },
+        },
+        {
+          tag: "meta",
+          attrs: { name: "theme-color", content: "#0B0C10" },
         },
       ],
       components: {

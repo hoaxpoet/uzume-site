@@ -29,6 +29,10 @@ const socialCard = new URL("/uzume-social.png", Astro.site);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <!-- The page is midnight at every width; without this the mobile browser
+         chrome paints a light bar above it. Midnight literal rather than
+         var(--color-canvas): a meta value cannot read a custom property. -->
+    <meta name="theme-color" content="#0B0C10" />
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, follow" />}
