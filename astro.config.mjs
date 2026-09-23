@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import sitemap from "@astrojs/sitemap";
 import { CF_BEACON_SRC, CF_BEACON_DATA } from "./src/beacon.mjs";
 
 // https://astro.build/config
@@ -9,6 +10,14 @@ export default defineConfig({
   // This site ships zero client JS by default.
   prefetch: false,
   integrations: [
+    // The three pages Base.astro marks `noindex` must not appear here either —
+    // a sitemap entry is a request to index, which contradicts the tag on the
+    // page and is the kind of mixed signal that gets a whole sitemap ignored.
+    // /404 is excluded by the integration itself; named anyway so the set of
+    // pages kept out of search lives in one readable place.
+    sitemap({
+      filter: (page) => !/\/(404|design|confirmed)\/$/.test(page),
+    }),
     starlight({
       title: "Uzume",
       // Starlight renders its own layout, so Base.astro's beacon and

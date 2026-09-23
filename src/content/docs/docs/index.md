@@ -1,6 +1,6 @@
 ---
 title: Documentation
-description: Placeholder — Uzume's documentation is written in W.5.
+description: Documentation for Uzume, the macOS music visualizer. Not written yet — the source is on GitHub in the meantime.
 ---
 
 Documentation is not written yet. It arrives in a later increment.

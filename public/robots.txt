@@ -1,0 +1,17 @@
+# Allow-all is the status quo this file inherits: with no robots.txt at all,
+# every crawler — search and AI alike — was already free to read the site. This
+# file does not change that. Its job is the Sitemap line, which is the only way
+# a crawler learns the sitemap exists without waiting to stumble on it.
+#
+# The AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended) are
+# deliberately not named. Naming them to allow them changes nothing; naming them
+# to block them is Matt's call, not a default, and blocking them would also
+# forfeit being named when someone asks an assistant for a Mac music visualizer.
+#
+# The three noindex pages are not listed here. Disallow stops a crawler from
+# fetching the page, which stops it from ever reading the noindex tag — the two
+# directives work against each other. The tag alone is correct.
+User-agent: *
+Allow: /
+
+Sitemap: https://uzume.io/sitemap-index.xml
