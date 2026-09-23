@@ -48,8 +48,7 @@ version keeps running, and the compiler's actual complaint goes to the log:
 log stream --predicate 'subsystem == "io.uzume.presets"'
 ```
 
-To watch your own scene, turn on **Settings → Visuals → Show uncertified
-scenes**, then open a music file with **File → Open Local File** (⌘O) and arrow
+To watch it, open a music file with **File → Open Local File** (⌘O) and arrow
 across to it. None of this needs an account, a streaming service, or the Screen
 Recording permission — a file on your disk is enough to develop against.
 

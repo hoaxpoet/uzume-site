@@ -1064,18 +1064,25 @@ names. The sidebar is four entries; `/docs` stays indexed and pinned dark.
   directory; no shader source. **C** is a sixty-line file the app repo
   gate-verifies to compile and this repo could not.
 
-**Two literal `certified` strings survive on the page, and neither is a status
-the site names.** Decision 1 allowed one — `"certified": false`, the line a
-contributor types into their own sidecar. The page carries a second:
-**Settings → Visuals → Show uncertified scenes**, the menu item that has to be
-switched on before a scene under development is reachable at all
-(`CONTRIBUTING.md` §The development loop, step 5). Omitting it leaves the
-walkthrough broken at the step where the reader looks for their own work, which
-is worse than quoting a menu label. Consequence: the built-output grep the
-session prompt expects to return nothing returns **two hits, both on
-`/docs/contributing/`**. Both are product surfaces the reader will read on their
-own screen — a JSON key and a menu item — not the site describing a scene's
-standing. If the second one is unwanted, it is one sentence to cut.
+**One literal `certified` string survives on the page** — `"certified": false`,
+the line a contributor types into their own sidecar, which decision 1 allowed.
+
+The page shipped at #67 with a second: **Settings → Visuals → Show uncertified
+scenes**, the menu item that has to be switched on before a scene under
+development is reachable (`CONTRIBUTING.md` §The development loop, step 5). It
+was included on the argument that a walkthrough which breaks where the reader
+looks for their own work is worse than quoting a menu label. **Matt cut it
+(2026-09-23):** decision 1 → A is the site's one vocabulary and a menu label is
+not an exception to it. The built-output grep now returns **one hit**, as the
+session prompt specified.
+
+That leaves a real gap, recorded below rather than papered over: the page's
+hot-reload walkthrough now stops one step short of the reader seeing their own
+scene, and the missing step cannot be paraphrased — *Show uncertified scenes* is
+the literal control, and inventing a different name for it would be an unsourced
+product claim, which is the worse failure. The route out is app-side: if that
+menu item is ever relabeled in listener-facing terms, this page can carry it.
+Until then the reader finds it in `CONTRIBUTING.md`, which the page links.
 
 **What was cut.** No question-shaped headings and no second `FAQPage` — the FAQ
 stays on Getting Started (W.5 session 1 decision). No restatement of the sidecar
@@ -1148,8 +1155,12 @@ and where it comes from in `hoaxpoet/uzume`:
 4. **The hot-reload loop is sourced, not run.** This repo has no Mac build and
    cannot execute the loop it describes; every step traces to
    `CONTRIBUTING.md` §The development loop. Session 1 carried the same caveat.
-5. **Certification vocabulary** — closed by decision 1 → A, with the two literal
-   strings declared above.
+5. **Certification vocabulary** — closed by decision 1 → A, with the one literal
+   string declared above.
+6. **The step that makes a scene under development visible.** Cut with the menu
+   label (above), because naming it means naming the badge and paraphrasing it
+   means inventing a control that does not exist. The walkthrough is one step
+   short until the app relabels that setting.
 
 **The disagreement in gap 2 of session 1 is settled, and the site now relies on
 the answer.** `docs/UX_SPEC.md` §4.4 ("URL-paste only, no OAuth, public
