@@ -24,14 +24,16 @@ is exactly where this page picks the reader up. `[W.5]` stays the commit prefix.
 spelling. GitHub stays out of the top nav and belongs on this page, where scene-writers
 are (W.5a).
 
-**One fact that shapes the whole session.** The lifecycle a submitted scene goes through
-is called **certification** upstream — `certified: false` is how you ship, a maintainer
+**One fact that shapes the whole session** — now answered, but it is why the page is
+shaped the way it is. The lifecycle a submitted scene goes through is called
+**certification** upstream — `certified: false` is how you ship, a maintainer
 runs a live review with real music, and on sign-off the flag flips and the scene joins the
 rotation the planner draws from. W.5a removed the word "certified" from this site
 deliberately: it is the project's internal badge and means nothing to a listener. The
 mechanism is fully sourced (`CONTRIBUTING.md` §Gates, §Certification lifecycle;
-`docs/GLOSSARY.md`); the vocabulary for it is not. This is DECISION-NEEDED 1 and it
-governs roughly a third of the page. Do not improvise it.
+`docs/GLOSSARY.md`); the vocabulary for it is not. That was DECISION-NEEDED 1, answered
+**A** below: the site names no badge and describes the step. It governs roughly a third of
+the page — follow the answer rather than re-deriving it.
 
 **A disagreement resolved before this prompt was written — do not re-derive it.** Session
 1 flagged that `docs/UX_SPEC.md` §4.4 ("URL-paste only, no OAuth, public playlists only in
@@ -93,9 +95,10 @@ None. This repo carries none of the app repo's skills. Closeout is inline, below
 
 **1. Branch.** `git checkout -b w5-contributing`.
 
-**2. Answer DECISION-NEEDED 1 before writing a word of the lifecycle section**, and record
-all three decisions in the roadmap entry. If Matt has not answered, take the defaults
-below and say so in closeout.
+**2. Record the decisions.** All three are answered below (Matt, 2026-09-23) — every one
+on its recommendation. This task records them in the roadmap entry; it does not ask again.
+If anything in the repo contradicts an answer, stop and raise it rather than
+reinterpreting.
 
 *Done-when:* all three recorded.
 
@@ -113,21 +116,25 @@ row.
 increment IDs, no `D-###`, no "M7", no internal shorthand. The shape the plan asks for:
 
 - **What a scene is** — two files, a shader and a JSON file beside it, discovered
-  automatically. The vocabulary disclosure already exists twice; do not make a third
-  meal of it, but this is the page where the reader will actually meet `presets/` in a
-  path, so one clause acknowledging that is right.
+  automatically. Decision 3 → B sets how far this goes: the two filenames side by side
+  and the directory a hot-reloaded pair lives in, and no shader source. The vocabulary
+  disclosure already exists twice, so do not make a third meal of it — but this is the
+  page where the reader actually meets `presets/` in a path, and one clause
+  acknowledging that is right.
 - **Getting one rendering** — the hot-reload directory and the in-repo path; what happens
   on a save that does not compile; that none of this needs an account, a streaming
   service, or the Screen Recording permission.
-- **The one design rule**, per DECISION-NEEDED 2 — the thing the app repo calls the most
+- **The one design rule** (decision 2 → B) — the thing the app repo calls the most
   important rule it learned empirically: drive from continuous energy rather than raw beat
   detections. In plain words, not the primitives' names.
 - **What the gates check** — in the reader's terms: that every audio route the scene
   declares is exercised by real music; that it clears the project's visual floor; the
   photosensitivity gate (**"steady luminance"**, never a flashes-per-second figure); lint
   and the test suite.
-- **What happens after you open the pull request** — per decision 1. Do not promise a
-  turnaround time; no upstream doc states one.
+- **What happens after you open the pull request** — per decision 1 → A: the gates run,
+  then a maintainer plays the scene against real music, and if it holds up it joins the
+  rotation every listener sees. No badge is named. Do not promise a turnaround time; no
+  upstream doc states one.
 - **The payoff** — a merged scene joins what every listener sees and keeps its author's
   name, and `/gallery` is where it shows up. Link it.
 - **Porting a Milkdrop idea** — welcome, authored from scratch on Uzume's own primitives,
@@ -170,8 +177,9 @@ extended claims table, and the gaps.
   same headings in the same order, the page is wrong. Upstream stays canonical and is one
   click away.
 - **Do not assert a product fact the app repo does not support**, however obvious.
-- **Do not use "certified"** unless DECISION-NEEDED 1 comes back as B, and do not
-  reintroduce jargon or any count of scenes.
+- **Do not use "certified" as a status the site names** (decision 1 → A). The literal
+  `certified: false` appears exactly once, as a line the reader types into their own
+  sidecar. Do not reintroduce jargon or any count of scenes.
 - **Do not state a flashes-per-second figure.** "Steady luminance" is the phrasing; the
   sentence already exists on `/gallery` and on Getting Started.
 - **Do not add a second `FAQPage` block.** The verification asserts exactly one across
@@ -258,7 +266,11 @@ sentence, and the roadmap entry are three. **Push only on Matt's explicit "yes, 
    whether `/docs` should stay indexed (it should, unless something on this page argues
    otherwise).
 
-## DECISION-NEEDED
+## DECISION-NEEDED (answered in advance — Matt, 2026-09-23)
+
+**All three went to their recommendations: 1 → A, 2 → B, 3 → B.** Task 2 records them
+rather than asking again. The options are kept below, because the reasoning is the part
+worth re-reading if one of them starts to hurt.
 
 **1. What does the site call the step between a merged scene and a scene listeners
 actually see?** Upstream calls it certification: a maintainer plays the scene against real
@@ -274,7 +286,7 @@ music, and on sign-off it joins the rotation the planner draws from. W.5a delete
 - **C — Coin a site word** ("accepted", "in rotation") and use it everywhere, including a
   future gallery caption.
 
-*Recommendation and default:* **A**, with the literal `certified: false` line shown once as
+**Answered: A.** With the literal `certified: false` line shown once as
 what you type in the file rather than as a status the site names. It keeps W.5a's decision
 intact and still puts the word in front of the reader at the moment they need it.
 
@@ -288,7 +300,7 @@ discipline and a quality bar behind it.
   exists to prevent.
 - **C — A full quickstart**, restating the sidecar schema and the authoring checklist.
 
-*Recommendation and default:* **B**. **C** becomes a second copy of a document that changes
+**Answered: B.** **C** becomes a second copy of a document that changes
 app-side, which is the drift the boundary exists to prevent.
 
 **3. Does the page show code?**
@@ -298,6 +310,6 @@ app-side, which is the drift the boundary exists to prevent.
   hot-reloaded pair goes in. No shader source.
 - **C — The whole working pair inline**, as the upstream first-preset walkthrough has it.
 
-*Recommendation and default:* **B**. It answers "what am I actually making" in four lines
+**Answered: B.** It answers "what am I actually making" in four lines
 and cannot go stale the way a copied shader would; **C** is a sixty-line file that the app
 repo gate-verifies to compile and this repo could not.
