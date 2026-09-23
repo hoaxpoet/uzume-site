@@ -18,13 +18,18 @@ const { overlay = false } = Astro.props;
 // GitHub is not here. It is for the people writing scenes, not for every
 // visitor on every page, and it reached a third of the navigation without
 // earning it. The contributor note and the footer both still carry it.
+//
+// Slashed, because the host 307s /gallery to /gallery/ and every visitor who
+// uses the nav pays that redirect.
 const links = [
-  { href: "/gallery", label: "Gallery" },
-  { href: "/docs", label: "Docs" },
+  { href: "/gallery/", label: "Gallery" },
+  { href: "/docs/", label: "Docs" },
 ];
 
-// Trailing slash tolerated so /docs/ matches /docs.
-const here = Astro.url.pathname.replace(/\/$/, "") || "/";
+// Compare unslashed on both sides, so the aria-current match survives whichever
+// form the visitor arrived on.
+const trim = (path: string) => path.replace(/\/$/, "") || "/";
+const here = trim(Astro.url.pathname);
 ---
 
 <nav
@@ -41,7 +46,7 @@ const here = Astro.url.pathname.replace(/\/$/, "") || "/";
     <a
       class="uz-site-navigation__link"
       href={href}
-      aria-current={here === href ? "page" : undefined}
+      aria-current={here === trim(href) ? "page" : undefined}
     >
       {label}
     </a>

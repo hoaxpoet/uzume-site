@@ -137,6 +137,11 @@
   --control-height-lg: 3rem;
   --target-min-web: 2.75rem;
   --content-narrow: 48rem;
+  /* Prose-led pages. Narrower than --content-default on purpose: a page read
+     top to bottom wants a reading measure, a page of footage wants the frames
+     as large as the viewport allows. The landing page is the first, /gallery
+     the second. */
+  --content-reading: 64rem;
   --content-default: 72rem;
   --content-wide: 90rem;
   --page-gutter: clamp(1rem, 4vw, 3rem);
