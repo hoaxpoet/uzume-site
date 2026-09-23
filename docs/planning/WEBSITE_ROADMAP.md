@@ -858,6 +858,37 @@ so posters stay unassigned and the lazy path looks broken when it is not. This
 cost a wrong conclusion once already (W.5i). Front the tab before believing a
 poster measurement.
 
+### W.5p — The stacked beat that led with its evidence *(2026-09-23)*
+
+Matt, on a phone: in "What it does", only "It analyzes" put its screenshot
+above its own heading. A reader met the evidence before the claim it was
+evidence for, in one beat of three.
+
+**Two rules that were meant to be one.** `.beat` sized its columns with
+`auto-fit, minmax(20rem, 1fr)`, which collapses to a single column on its own,
+while `.beat:nth-child(even) .beat__copy { order: 2 }` — the alternation that
+keeps three identical rows from reading as slabs — stayed on at every width.
+Side by side the order swap changes which side the picture is on; stacked, it
+changes which comes first. The second was never intended and nothing tied the
+two rules together.
+
+Both now sit inside `@media (min-width: 46rem)`, so the columns and the
+alternation cannot drift apart again. 46rem is where `auto-fit` used to break
+on its own: two 20rem tracks plus a 2rem gap is 42rem of content, with the
+gutter at 4vw until its 3rem ceiling. Verified rendered — 720 px stacks all
+three copy-first, 750 px and 1280 px both give left / right / left.
+
+*Measurement note: the obvious check — are the copy and the image at the same
+top? — is wrong here, because `align-items: center` puts blocks of different
+heights at different tops inside the same row. It reported "image above" for
+all three at 1280 px, where the layout was correct. Compare the boxes' vertical
+overlap, not their tops.*
+
+**Murmuration's `encode_verdict` filled in,** on Matt's instruction, closing the
+gap W.5l opened. Recorded with an explicit note that it is not a quotation:
+every other verdict in the manifest is Matt's own wording, and this one is a
+clearance rather than a review, so the file says which it is.
+
 ### W.5 — Docs *(about two sessions)*
 
 Starlight curation, outsider-first, per plan §3: Getting Started (requirements, build-from-source today, the Screen Recording permission explainer, local files vs. streaming), Using Uzume, Contributing Presets (two-file drop-in, hot reload, gates and certification lifecycle). Each page's frontmatter names its upstream app-repo doc; `lychee` checks those references in CI.
