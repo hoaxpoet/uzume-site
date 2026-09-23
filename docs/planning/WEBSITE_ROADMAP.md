@@ -901,11 +901,20 @@ from in `hoaxpoet/uzume`:
    developer one (bring your own client ID in a gitignored xcconfig). No upstream
    doc says what a released build will do, so the page states the requirement as
    it stands today and promises nothing.
-2. **The two Spotify accounts of the truth disagree.** `docs/UX_SPEC.md` §4.4
-   says v1 is URL-paste only, public playlists, "No OAuth"; `docs/RUNBOOK.md`
-   §U.11 documents a full OAuth PKCE login with Keychain storage. The docs
-   therefore describe *that* you hand Uzume a playlist, never *how* the connect
-   flow looks. Worth resolving upstream before the Contributing session.
+2. **The two Spotify accounts of the truth disagreed — now resolved.**
+   `docs/UX_SPEC.md` §4.4 says v1 is URL-paste only, public playlists, "No
+   OAuth"; `docs/RUNBOOK.md` §U.11 documents a full OAuth PKCE login with
+   Keychain storage. The implementation settles it, checked 2026-09-23:
+   `ConnectorPickerView.swift:235` wires `SpotifyOAuthPlaylistConnector` around
+   `SpotifyWebAPIConnector(tokenProvider: oauth)`, `SpotifyOAuthTokenProvider`
+   implements PKCE with scopes `playlist-read-private
+   playlist-read-collaborative`, and `SpotifyConnectionViewModel` opens "U.11:
+   OAuth Authorization Code + PKCE replaces client-credentials". **RUNBOOK is
+   current; UX_SPEC §4.4 is stale**, and private and collaborative playlists do
+   work. These pages stated nothing either way, so nothing shipped wrong; the
+   second docs session adds the login step to Getting Started's Spotify
+   sentence. **For Matt to file app-side:** UX_SPEC §4.4 needs correcting — this
+   repo does not edit the app repo.
 3. **How long preparation takes.** No upstream figure exists — only the 90 s and
    2 min fallback thresholds. These pages state no timing. (The landing page's
    "ten or fifteen seconds" for the streaming path predates this session and is
