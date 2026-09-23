@@ -12,9 +12,12 @@ interface Props {
   /** Keeps a page out of search results. For pages reached only by a link in an
       email — /confirmed — where a search result would be a dead end. */
   noindex?: boolean;
+  /** schema.org JSON-LD for this page, already shaped — see index.astro and
+      gallery.astro. Omitted on pages with nothing structured to say. */
+  schema?: object;
 }
 
-const { title, description, noindex = false } = Astro.props;
+const { title, description, noindex = false, schema } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 // brand/social/Uzume-GitHub-Social-Preview.png, copied unmodified (BRAND.md:
@@ -37,6 +40,17 @@ const socialCard = new URL("/uzume-social.png", Astro.site);
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
+    {/* A literal </script> anywhere in the data — a preset description is
+        free text from the app repo — would close this element early and the
+        rest would parse as markup. Escaping the angle bracket is the fix the
+        JSON spec allows: \u003c is the same string to a JSON parser. */}
+    {schema && (
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={JSON.stringify(schema).replace(/</g, "\\u003c")}
+      ></script>
+    )}
 
     <!-- Without these every share of uzume.io renders as a bare URL string. -->
     <meta property="og:type" content="website" />

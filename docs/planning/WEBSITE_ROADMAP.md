@@ -717,9 +717,30 @@ Starlight curation, outsider-first, per plan §3: Getting Started (requirements,
 
 OG/social images from hero frames, favicons from `brand/favicon/`, 404 page, sitemap and basic SEO, `prefers-reduced-motion` audit across all pages, Lighthouse pass on throttled mobile.
 
+**Discovery and structured data, done.** `@astrojs/sitemap` emits the three
+indexable pages; the three `noindex` ones are filtered out, because a sitemap
+entry asks for indexing and contradicts the tag on the page. `robots.txt` exists
+for its `Sitemap:` line only — it keeps the allow-all that having no file already
+meant, and names no AI crawler in either direction, since blocking them is Matt's
+call and would forfeit being cited when someone asks an assistant for a Mac music
+visualizer. JSON-LD renders through one optional `schema` prop on `Base.astro`:
+`SoftwareApplication` on the landing page, and a `VideoObject` per clip on
+/gallery, built from the manifest fields the encoder already writes. The eight
+clips were otherwise invisible — cross-origin `<video>` behind lazy posters
+indexes as nothing.
+
+**Still open, in priority order.** /docs is indexed and says only that the docs
+are not written — `noindex` it or let W.5 fix it. Nothing on the site is
+question-shaped, which is what answer engines extract; the answers exist, as
+prose. "Spotify" and "Apple Music" appear only inside an image `alt`, and
+"MilkDrop" nowhere, though `inspired_by` is schema'd and renders the moment a
+preset carries one. Per-preset pages are the largest possible surface increase
+and the largest cost; they cut against the one-page gallery, so they are a W.7
+question, not a W.6 one.
+
 ### W.7 — Download flip *(blocked on app-side work; no site work wasted meanwhile)*
 
-When a signed, notarized artifact is on GitHub Releases: `/download` gains the real CTA, the landing CTA flips, beta copy moves to present tense. Prerequisite track (app repo, parallel, start whenever): ADP membership → Developer ID signing → `notarytool` in the release pipeline → tagged Release.
+When a signed, notarized artifact is on GitHub Releases: `/download` gains the real CTA, the landing CTA flips, beta copy moves to present tense. The landing page's `SoftwareApplication` schema gains `offers`, `downloadUrl` and `softwareVersion` at the same moment — all three assert an installable artifact, so they are omitted until one exists. Prerequisite track (app repo, parallel, start whenever): ADP membership → Developer ID signing → `notarytool` in the release pipeline → tagged Release.
 
 ## 4. Order
 

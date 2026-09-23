@@ -73,9 +73,35 @@ const beats = [
   },
 ];
 
+// What the page already says, in the form a search engine and an answer engine
+// can read without parsing prose. Every field is checked against PRODUCT.md:
+// there is deliberately no `offers`, `downloadUrl` or `softwareVersion`, because
+// each of those asserts an installable artifact and none exists yet. Add them in
+// W.7, when a signed, notarized build is on GitHub Releases and the claim is
+// true. `isAccessibleForFree` is the claim that IS true today — the source is
+// public and MIT-licensed.
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Uzume",
+  alternateName: "Uzume music visualizer",
+  applicationCategory: "MultimediaApplication",
+  operatingSystem: "macOS 14 or later, Apple silicon",
+  description: claim,
+  url: "https://uzume.io/",
+  image: "https://uzume.io/uzume-social.png",
+  isAccessibleForFree: true,
+  license: "https://opensource.org/licenses/MIT",
+  codeRepository: REPO,
+  author: { "@type": "Person", name: "hoaxpoet" },
+};
 ---
 
-<Base title="Uzume — a music visualizer for macOS" description={claim}>
+<Base
+  title="Uzume — a music visualizer for macOS"
+  description={claim}
+  schema={schema}
+>
   <Nav overlay />
 
   <main id="main">
@@ -216,12 +242,14 @@ const beats = [
         ))}
       </div>
       <p class="presets__note">
-        Anyone can write one. The ones that make it in become part of what
-        every listener sees. The code, and the guide to writing a scene, are{" "}
+        Anyone can write one. The ones that make it in become part of what every
+        listener sees. The code, and the guide to writing a scene, are{" "}
         <a href={REPO}>on GitHub</a>.
       </p>
       <div class="band__actions">
-        <Button variant="secondary" href="/gallery/">See the gallery</Button>
+        <Button variant="secondary" href="/gallery/">
+          See the gallery
+        </Button>
         <Button variant="quiet" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
           Write a scene
         </Button>
@@ -252,7 +280,6 @@ const beats = [
 </Base>
 
 <style>
-
   /* ---- Frame ---- */
 
   main {
@@ -541,5 +568,4 @@ const beats = [
   }
 
   /* ---- Footer ---- */
-
 </style>

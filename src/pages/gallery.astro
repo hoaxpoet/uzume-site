@@ -25,10 +25,49 @@ const performances = media
     if (!preset) throw new Error(`no preset entry for ${clip.slug}`);
     return { ...preset.data, clip };
   })
-  .sort((a, b) => Number(a.clip.role === "hero") - Number(b.clip.role === "hero"));
+  .sort(
+    (a, b) => Number(a.clip.role === "hero") - Number(b.clip.role === "hero"),
+  );
+
+// The eight clips, described in the one form a crawler can read them. Without
+// this the page is eight <video> elements behind lazy posters on another origin
+// — it indexes as a paragraph of intro copy and nothing else, and the scenes
+// themselves are invisible.
+//
+// The H.264/MP4 rendition is the one named as contentUrl: it is the rendition
+// every crawler can actually decode, and @id points at the anchor the page
+// already gives each performance, so a video result lands on the right scene.
+//
+// The published caption is the description, never the preset's own — that text
+// is written for the app's maintainers and names internal design sections.
+// content.config.ts makes caption optional for a preset without footage; every
+// preset ON this page has one, so a missing one is a bug and stops the build.
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": performances.map(({ name, author, caption, clip }) => {
+    const mp4 = clip.renditions.find((r) => r.type.startsWith("video/mp4"));
+    if (!mp4) throw new Error(`no MP4 rendition for ${clip.slug}`);
+    if (!caption) throw new Error(`no published caption for ${clip.slug}`);
+    return {
+      "@type": "VideoObject",
+      "@id": `https://uzume.io/gallery/#${clip.slug}`,
+      name: `${name} — a scene from Uzume`,
+      description: caption,
+      thumbnailUrl: clip.posters.jpeg.url,
+      contentUrl: mp4.url,
+      uploadDate: clip.provenance.captured_at,
+      // Whole seconds: ISO 8601 permits the decimal, Google's video
+      // documentation asks for the integer.
+      duration: `PT${Math.round(mp4.duration_s)}S`,
+      width: mp4.width,
+      height: mp4.height,
+      creator: { "@type": "Person", name: author },
+    };
+  }),
+};
 ---
 
-<Base title="Gallery — Uzume" description={description}>
+<Base title="Gallery — Uzume" description={description} schema={schema}>
   <Nav />
 
   <main id="main">
@@ -88,8 +127,7 @@ const performances = media
       <h2>Your scene could be the next one here</h2>
       <p>
         Scenes are written by people, not shipped by a company. Write one, and
-        if it makes it in it joins this page with your name on it, among
-        these.
+        if it makes it in it joins this page with your name on it, among these.
       </p>
       <div class="outro__actions">
         <Button variant="secondary" href={`${REPO}/blob/main/CONTRIBUTING.md`}>
