@@ -47,7 +47,13 @@ const featured = teasers.filter(({ clip }) => clip.slug !== "skein");
 const beats = [
   {
     title: "It listens",
-    body: "With local files, Uzume hears the whole playlist before it plays a note. With anything else — a streaming app, a browser tab — it listens to what is actually coming out of your Mac.",
+    // "a streaming app" was the only way this sentence referred to Apple Music
+    // and Spotify, and they were named nowhere on the site except inside the
+    // alt text of the screenshot below — where a reader looking for exactly
+    // that answer will not find them, and where a search engine weighs them at
+    // close to nothing. The capture itself is the source: the application's own
+    // picker names all three.
+    body: "With local files, Uzume hears the whole playlist before it plays a note. With anything else — Apple Music, Spotify, a browser tab — it listens to what is actually coming out of your Mac.",
     shot: {
       avif: "/app-choose-source.avif",
       jpeg: "/app-choose-source.jpg",

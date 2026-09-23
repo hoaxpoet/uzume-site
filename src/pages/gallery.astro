@@ -8,8 +8,12 @@ import Button from "../components/Button.astro";
 import NotifyForm from "../components/NotifyForm.astro";
 import media from "../data/media.json";
 
+// Neither the old title ("Gallery — Uzume") nor the old description said what
+// the page held a gallery of, so a result for it read as a gallery of nothing
+// in particular. The h1 on the page stays as it is; this is the line a reader
+// sees before they decide whether to open it.
 const description =
-  "Scenes recorded from Uzume, unedited and silent, each with the name of the person who wrote it.";
+  "Scenes recorded from Uzume, the macOS music visualizer — unedited and silent, each with the name of the person who wrote it.";
 
 // The preset entries are generated from the app repo's sidecars
 // (Scripts/generate_presets.py); the footage is the encoder's manifest. Slug is
@@ -67,7 +71,11 @@ const schema = {
 };
 ---
 
-<Base title="Gallery — Uzume" description={description} schema={schema}>
+<Base
+  title="Gallery — scenes from the Uzume music visualizer"
+  description={description}
+  schema={schema}
+>
   <Nav />
 
   <main id="main">
