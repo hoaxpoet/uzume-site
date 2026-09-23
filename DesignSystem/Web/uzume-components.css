@@ -96,6 +96,24 @@
 .uz-definition-list dd { min-width: 0; margin: 0; overflow-wrap: anywhere; color: var(--color-text-secondary); }
 
 .uz-media-frame { margin: 0; overflow: hidden; border-radius: var(--radius-lg); background: var(--color-surface); }
+/* The framed <video> keeps the browser's own focus ring, and that is deliberate.
+   It is the only control on the site not using --focus-ring, so it looks like an
+   oversight; giving it the house treatment would be an accessibility regression.
+
+   Chrome paints `outline: auto` — its default focus ring — so that it escapes an
+   ancestor's overflow clipping, precisely so focus stays visible. A box-shadow
+   ring gets no such exemption. The video fills this box exactly (100%/100%
+   below), so the usual idiom
+
+       video:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
+
+   removes a ring that works and installs one this rule clips to nothing. Verified
+   2026-09-23 by tabbing to a gallery tile and then, as a control, applying a
+   magenta box-shadow ring to the same element: the outline is visible, the
+   box-shadow is not. Every gate in the repo passes either way.
+
+   If the rings must match, put it on .uz-media-frame — outside this clip — with
+   :has(video:focus-visible), and never on the video itself. */
 .uz-media-frame__content { aspect-ratio: 16 / 9; overflow: hidden; background: var(--color-canvas); }
 .uz-media-frame__content > img, .uz-media-frame__content > video { width: 100%; height: 100%; object-fit: cover; }
 .uz-media-frame__fallback { width: 100%; height: 100%; display: grid; place-items: center; padding: var(--space-6); color: var(--color-text-secondary); text-align: center; }
