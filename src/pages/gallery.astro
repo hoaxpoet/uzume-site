@@ -70,6 +70,7 @@ const performances = media
             title={name}
             meta={`${author} · ${family}`}
             poster={clip.posters.jpeg.url}
+            posterAvif={clip.posters.avif?.url}
             sources={clip.renditions}
           />
           {caption && <p class="performance__caption">{caption}</p>}

@@ -85,6 +85,7 @@ const beats = [
           bare
           title={hero.preset}
           poster={hero.posters.jpeg.url}
+          posterAvif={hero.posters.avif?.url}
           sources={hero.renditions}
         />
       </div>
@@ -170,6 +171,7 @@ const beats = [
                   title={accompanist.preset.name}
                   meta={`${accompanist.preset.author} · ${accompanist.preset.family}`}
                   poster={accompanist.clip.posters.jpeg.url}
+                  posterAvif={accompanist.clip.posters.avif?.url}
                   sources={accompanist.clip.renditions}
                 />
               )}

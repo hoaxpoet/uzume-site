@@ -12,6 +12,12 @@ interface Props {
   title: string;
   meta?: string;
   poster?: string;
+  /**
+   * The same still as AVIF. `<video poster>` takes one URL and cannot
+   * content-negotiate, so the format is chosen in script — see the poster
+   * block at the foot of this file.
+   */
+  posterAvif?: string;
   /** Encoded variants, best first: AV1/WebM then H.264/MP4. */
   sources?: Rendition[];
   /**
@@ -34,6 +40,7 @@ const {
   title,
   meta,
   poster,
+  posterAvif,
   sources = [],
   bare = false,
   titleAs = "strong",
@@ -46,7 +53,8 @@ const TitleTag = titleAs;
     <video
       data-uz-loop
       class="uz-bare-loop"
-      poster={poster}
+      data-poster={poster}
+      data-poster-avif={posterAvif}
       muted
       loop
       playsinline
@@ -103,7 +111,8 @@ const TitleTag = titleAs;
       {sources.length ? (
         <video
           data-uz-loop
-          poster={poster}
+          data-poster={poster}
+          data-poster-avif={posterAvif}
           controls
           muted
           loop
@@ -195,6 +204,76 @@ const TitleTag = titleAs;
     (navigator as Navigator & { connection?: { saveData?: boolean } })
       .connection?.saveData === true;
   const narrow = matchMedia("(max-width: 48rem)").matches;
+
+  /* Posters, lazily and in the best format the browser will take.
+
+     `<video poster>` is the one image on the page that can do neither by
+     itself: it takes a single URL, so no <picture> negotiation, and it has no
+     loading="lazy", so every poster on a page fetches at load. /gallery was
+     paying 1,553,503 B of JPEG before a single frame played — 95% of the
+     page's weight, the same on a phone as on a desktop — while 978,994 B of
+     AVIF sat published and unreachable.
+
+     No feature detection: the AVIF is simply fetched, and the handler that
+     fires decides. A browser that cannot decode it errors and gets the JPEG,
+     which is per-image and self-correcting rather than a capability guess.
+     The fetched AVIF is already in cache when `poster` is assigned.
+
+     This runs outside the motion gate below on purpose. A visitor under
+     reduced motion, on a phone, or on a metered connection never plays a
+     loop — the poster is the whole tile for them, and it is the one thing
+     they must still get. */
+  function showPoster(video: HTMLVideoElement) {
+    if (video.poster) return;
+    const jpeg = video.dataset.poster;
+    const avif = video.dataset.posterAvif;
+    if (!jpeg && !avif) return;
+    if (!avif) {
+      video.poster = jpeg!;
+      return;
+    }
+    const probe = new Image();
+    probe.addEventListener("load", () => {
+      video.poster = avif;
+    });
+    probe.addEventListener("error", () => {
+      if (jpeg) video.poster = jpeg;
+    });
+    probe.src = avif;
+  }
+
+  /* A poster that never arrives is a black rectangle where a scene should be,
+     so laziness is the optimisation and showing the image is the requirement.
+     Without IntersectionObserver every poster is assigned at once: the old
+     behaviour, which was merely wasteful rather than broken. */
+  if (!("IntersectionObserver" in window)) {
+    for (const video of document.querySelectorAll<HTMLVideoElement>(
+      "video[data-poster], video[data-poster-avif]",
+    )) {
+      showPoster(video);
+    }
+  } else {
+  const posterObserver = new IntersectionObserver(
+    (entries, observer) => {
+      for (const { target, isIntersecting } of entries) {
+        if (!isIntersecting) continue;
+        showPoster(target as HTMLVideoElement);
+        observer.unobserve(target);
+      }
+    },
+    // Enough lead that a tile is never blank by the time it is looked at.
+    { rootMargin: "400px" },
+  );
+
+  for (const video of document.querySelectorAll<HTMLVideoElement>(
+    "video[data-poster], video[data-poster-avif]",
+  )) {
+    // The hero is the first thing on screen; waiting on an observer to notice
+    // that would be a slower first paint, not a saving.
+    if (video.classList.contains("uz-bare-loop")) showPoster(video);
+    else posterObserver.observe(video);
+  }
+  }
 
   if (!reduced && !metered && !narrow) {
     const PAUSE_ICON = "M9 5v14M15 5v14";
