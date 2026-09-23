@@ -60,6 +60,7 @@ export default defineConfig({
             { label: "Overview", slug: "docs" },
             { label: "Getting started", slug: "docs/getting-started" },
             { label: "Using Uzume", slug: "docs/using-uzume" },
+            { label: "Contributing", slug: "docs/contributing" },
           ],
         },
       ],
