@@ -100,10 +100,29 @@ const beats = [
         against: what it is, and whether it will run on the machine they are
         reading this on. */}
     <section class="signup">
-      <p class="signup__specs">
-        Free and open source, MIT-licensed. For Apple silicon Macs, macOS 14
-        or later.
-      </p>
+      {/* The icon earns its place here rather than in the closing section.
+          This is the line that means "a Mac app you will have in your Dock",
+          which is what an app icon says; beside the myth it would have invited
+          the Negative Dance reading BRAND.md archived, since First Opening is
+          shadow and light rather than a figure.
+
+          64px is the floor BRAND.md sets for the full composition — the 16-32px
+          artwork is a separate art-directed crop, not this one scaled down —
+          and the gap clears the required one-eighth. Decorative: the sentence
+          beside it already carries the meaning. */}
+      <div class="signup__what">
+        <img
+          class="signup__icon"
+          src="/uzume-icon.png"
+          alt=""
+          width="256"
+          height="256"
+        />
+        <p class="signup__specs">
+          Free and open source, MIT-licensed. For Apple silicon Macs, macOS 14
+          or later.
+        </p>
+      </div>
       <NotifyForm
         label="Email me when the public beta is ready"
         terms="One email when there's a build — unsubscribe any time."
@@ -341,14 +360,25 @@ const beats = [
     gap: var(--space-8);
   }
 
+  .signup__what {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    max-width: 34rem;
+  }
+
+  .signup__icon {
+    flex: none;
+    width: 4rem;
+    height: 4rem;
+  }
+
   .signup__specs {
-    max-width: 42rem;
     margin: 0;
     font-size: var(--text-sm);
     line-height: var(--leading-body);
     color: var(--color-text-tertiary);
-    text-align: center;
-    text-wrap: balance;
+    text-wrap: pretty;
   }
 
   .signup :global(.notify) {
