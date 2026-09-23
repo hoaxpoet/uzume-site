@@ -1013,6 +1013,142 @@ documented upstream and unverified here), a first walkthrough, what the gates
 check, and what happens after a merge — with the gallery as the payoff, and with
 gap 6 above to decide first. GitHub belongs in that page's body, not the nav.
 
+### W.5 — Docs, second session: Contributing *(2026-09-23)*
+
+`/docs` carries the fourth page the plan asks for, and the contributor path is
+whole: `contributing.md` takes a reader from "what am I actually making" to
+"what happens after I open the pull request", and `/gallery` is the payoff it
+names. The sidebar is four entries; `/docs` stays indexed and pinned dark.
+
+**The three decisions, all Matt's, all on their recommendations (2026-09-23).**
+
+- **1 → A. The site names no badge and describes the step.** "A maintainer plays
+  it against real music. If it holds up, it joins the rotation every listener
+  sees." W.5a's deletion of "certified" as a site vocabulary stands.
+- **2 → B. One craft rule, in plain words** — drive the visuals from the music's
+  continuous energy rather than from individual beats as they are detected —
+  plus links to the two upstream authoring documents. **C** was rejected as a
+  second copy of a document that changes app-side.
+- **3 → B. The file shape only.** The two filenames and the hot-reload
+  directory; no shader source. **C** is a sixty-line file the app repo
+  gate-verifies to compile and this repo could not.
+
+**Two literal `certified` strings survive on the page, and neither is a status
+the site names.** Decision 1 allowed one — `"certified": false`, the line a
+contributor types into their own sidecar. The page carries a second:
+**Settings → Visuals → Show uncertified scenes**, the menu item that has to be
+switched on before a scene under development is reachable at all
+(`CONTRIBUTING.md` §The development loop, step 5). Omitting it leaves the
+walkthrough broken at the step where the reader looks for their own work, which
+is worse than quoting a menu label. Consequence: the built-output grep the
+session prompt expects to return nothing returns **two hits, both on
+`/docs/contributing/`**. Both are product surfaces the reader will read on their
+own screen — a JSON key and a menu item — not the site describing a scene's
+standing. If the second one is unwanted, it is one sentence to cut.
+
+**What was cut.** No question-shaped headings and no second `FAQPage` — the FAQ
+stays on Getting Started (W.5 session 1 decision). No restatement of the sidecar
+schema. No review turnaround, no release date, no count of scenes. No mirror of
+`CONTRIBUTING.md`'s heading order.
+
+**Two sentences elsewhere went stale the moment this page existed, and were
+changed with it.** The overview's "a page on writing a scene comes next" is now
+the third routing bullet, and Getting Started's seventh answer pointed at the
+app repository "today, and a page here comes next" — it now points at
+`/docs/contributing/`. The `FAQPage` `acceptedAnswer` for that question changed
+verbatim with the prose, which is the only edit the JSON-LD took. Still one
+block, still seven entries, all seven answers still verbatim in the rendered
+prose. **The apostrophe in the replacement broke the build once**: `content:` is
+a single-quoted YAML scalar, the original string happened to contain no
+apostrophe, and `the project's gates check` has to be written `''` — worth
+knowing before the next edit to that field.
+
+**Getting Started's Spotify sentence gains the login step.** It said a session
+needs a client ID of your own registered against the copy you built, which is
+true and incomplete. It now adds the one-time browser login and that private and
+collaborative playlists are readable — the U.11 reality, per the disagreement
+resolved below. The sentence sits outside any `acceptedAnswer`, so the FAQ was
+untouched by it.
+
+**The claims table, extended.** Every product fact `contributing.md` asserts,
+and where it comes from in `hoaxpoet/uzume`:
+
+| Claim | Source |
+|---|---|
+| Contributions focus on scenes; engine and app changes go as an issue first | `CONTRIBUTING.md` opening |
+| A scene is two files sharing a name — a Metal shader and a JSON sidecar — auto-discovered, nothing registered | `CONTRIBUTING.md` §What a scene is |
+| The sidecar holds display name, family, duration, density, motion intensity, and `audio_routes` | `docs/SHADER_CRAFT.md` §17 field table |
+| The directory is `Presets` — the code's word for a scene | `CONTRIBUTING.md` §A note on names; `docs/VOCABULARY.md` |
+| Hot-reload from `~/Library/Application Support/Uzume/Presets/`, created on first launch | `CONTRIBUTING.md` §The development loop, step 1 |
+| Every save recompiles and swaps the scene in live | ditto |
+| A save that does not compile shows a toast and keeps the previous version running | ditto |
+| `log stream --predicate 'subsystem == "io.uzume.presets"'` carries the compiler diagnostics | ditto |
+| Settings → Visuals → *Show uncertified scenes*, then File → Open Local File (⌘O) | `CONTRIBUTING.md` §The development loop, step 5 |
+| Developing needs no account, no streaming service, no Screen Recording permission | `CONTRIBUTING.md` §The development loop (heading and step 5) |
+| In-repo the pair goes in `UzumeEngine/Sources/Presets/Shaders/`, picked up at build | `CONTRIBUTING.md` §The development loop, step 2; `docs/presets/NEW_PRESET_CHECKLIST.md` §1 |
+| A shader that fails to compile in-repo is logged and skipped, never crashes the app | `CONTRIBUTING.md` §The development loop, step 2 |
+| The one design rule: continuous energy over raw live beat detections; beat-locked motion belongs on the cached beat grid | `CONTRIBUTING.md` §Before you write a shader |
+| The authoring discipline is upstream | `docs/PRESET_SESSION_CHECKLIST.md`; `docs/SHADER_CRAFT.md` |
+| Gates run locally with `swift test --package-path UzumeEngine` | `CONTRIBUTING.md` §Gates |
+| Route coverage: every declared route exercised by committed real-music fixtures; a red route is the gate working, never the floor to lower | `CONTRIBUTING.md` §Gates; `docs/presets/NEW_PRESET_CHECKLIST.md` §3 |
+| Fidelity rubric: an automated visual floor scored against a documented bar | `CONTRIBUTING.md` §Gates |
+| Photosensitivity gate measures frame-to-frame brightness under a harness — stated as **steady luminance**, no figure | `CONTRIBUTING.md` §Gates; D-157 wording already live on `/gallery` |
+| Every gallery scene has already cleared that floor | `docs/presets/NEW_PRESET_CHECKLIST.md` §4 (the flash harness gates the flag `/gallery` is generated from) |
+| `swiftlint lint --strict` plus a green engine suite; file length relaxed for `.metal` | `CONTRIBUTING.md` §Gates |
+| A submission carries the two files with `certified: false`, the `audio_routes`, and a reference folder under `docs/VISUAL_REFERENCES/<name>/` copied from the template, with provenance and licensing | `CONTRIBUTING.md` §Certification lifecycle step 1; `docs/presets/NEW_PRESET_CHECKLIST.md` §2 |
+| After the PR the gates run, then a maintainer plays it against real music; that review decides and the automated gates are the floor beneath it | `CONTRIBUTING.md` §Certification lifecycle steps 2–3; `docs/GLOSSARY.md` "M7" |
+| On sign-off the scene joins the rotation the planner draws from | `docs/GLOSSARY.md` "Certification"; `CONTRIBUTING.md` §Certification lifecycle |
+| The sidecar's author field is what the gallery reads | `docs/SHADER_CRAFT.md` §17 (`author`); this repo's `Scripts/generate_presets.py` and `src/content.config.ts` |
+| Milkdrop: the idea ports, authored from scratch on Uzume's primitives; `inspired_by` names the original visualizer, its artist and the pack; a matching credits row; never commit a `.milk` | `CONTRIBUTING.md` §Milkdrop-inspired scenes; `docs/CREDITS.md` §Milkdrop-inspired scene attribution |
+| "Preset" is Milkdrop's own word and stays that way when naming one | `CONTRIBUTING.md` §Milkdrop-inspired scenes |
+| Questions go to a GitHub issue; a confusing contributor path is a docs bug | `CONTRIBUTING.md` §Questions |
+| Spotify: a one-time browser login, the refresh token in the Keychain, private and collaborative playlists in scope | `docs/RUNBOOK.md` §Spotify connector setup (U.11 — OAuth PKCE); `SpotifyOAuthTokenProvider.swift` scopes; `ConnectorPickerView.swift:235` |
+
+**Gaps — what the page wanted to say and the app repo could not support.**
+
+1. **How long a review takes.** No upstream document states a turnaround, so the
+   page states none and says so plainly rather than leaving a silence a reader
+   fills with an assumption.
+2. **What the broken-save toast actually says.** Upstream documents that a toast
+   appears, not its wording, so the page describes the behavior only.
+3. **How the fidelity rubric scores.** `SHADER_CRAFT.md` carries the ladder and
+   the profiles; restating any of it here is decision 2's **C** by the back door,
+   so the page says "a documented bar" and links.
+4. **The hot-reload loop is sourced, not run.** This repo has no Mac build and
+   cannot execute the loop it describes; every step traces to
+   `CONTRIBUTING.md` §The development loop. Session 1 carried the same caveat.
+5. **Certification vocabulary** — closed by decision 1 → A, with the two literal
+   strings declared above.
+
+**The disagreement in gap 2 of session 1 is settled, and the site now relies on
+the answer.** `docs/UX_SPEC.md` §4.4 ("URL-paste only, no OAuth, public
+playlists only in v1") is **stale**; `docs/RUNBOOK.md` §U.11 is current.
+**For Matt to file app-side:** UX_SPEC §4.4 needs correcting to match the
+shipped OAuth PKCE connector. This repo does not edit the app repo.
+
+**The unrelated red gate moved, and the prompt's pre-flight caught it.**
+`Scripts/generate_presets.py --check` was recorded as red on four sidecars for
+W.5a's American-spelling reason. It is now red on **five**. Four are the
+recorded spelling drift (`aurora-veil`, `fractal-tree`, `nimbus`, `skein` — each
+a single `color` → `colour`). The fifth is new and is not a spelling matter:
+the app repo rewrote Ferrofluid Ocean's sidecar description at `c9ca18f6`
+(`[BUG138.1] Ferrofluid Ocean: the sidecar description stops being a routing
+table`, 2026-09-22), so `ferrofluid-ocean.json` now drifts on content. Nothing
+was touched — the drift is in `src/content/presets/`, which this session does
+not own, and the script runs in no workflow. **Regenerating is a decision for
+whoever owns the spelling question**, and it is now two decisions rather than
+one: the Ferrofluid description is an improvement worth importing, and importing
+it re-imports "colour" with the other four unless the generator Americanizes.
+
+**Indexing.** `/docs` stays indexed. Nothing on this page argues otherwise —
+it is the most linkable page in the section, and the one a search for "write a
+Milkdrop-style visualizer for macOS" should be able to find.
+
+**Handed forward.** W.6 (launch polish) gains a fourth docs page for its
+reduced-motion and Lighthouse sweeps and needs no new decision from it. W.7
+(download flip) is untouched: this page makes no install claim and stays in the
+future tense about the beta, so nothing here has to change when the CTA flips.
+
 ### W.6 — Launch polish *(one session)*
 
 OG/social images from hero frames, favicons from `brand/favicon/`, 404 page, sitemap and basic SEO, `prefers-reduced-motion` audit across all pages, Lighthouse pass on throttled mobile.
