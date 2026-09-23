@@ -54,7 +54,14 @@ export default defineConfig({
         },
       ],
       sidebar: [
-        { label: "Docs", items: [{ label: "Overview", slug: "docs" }] },
+        {
+          label: "Docs",
+          items: [
+            { label: "Overview", slug: "docs" },
+            { label: "Getting started", slug: "docs/getting-started" },
+            { label: "Using Uzume", slug: "docs/using-uzume" },
+          ],
+        },
       ],
     }),
   ],
