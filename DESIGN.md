@@ -199,7 +199,7 @@ The shared spatial rhythm is four points: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 
 
 Website content widths are 48 rem for reading, 72 rem by default, and 90 rem for immersive media. Page gutters scale from 16 to 48 px. Sections use 64–128 px of vertical separation based on viewport and content change. Marketing composition may be asymmetric; documentation retains a stable reading column and persistent wayfinding. Web interactive targets are at least 44×44 px.
 
-The first website viewport must let the visitor understand the product and act, without first reading the icon, myth, open-source model, or architecture. That requires real performance footage, a plain product sentence, and the primary action — and the primary action is whatever the visitor can actually complete today. Until a signed build exists there is nothing to download, so it is the notify form, and the requirements belong further down beside “What you need” rather than above the fold: Apple Silicon and macOS 14 gate an install, and nothing gates giving an email address. When the download lands (W.7), the CTA becomes “Download the beta” and the requirements move back up beside it, because at that point they gate the action. The remaining landing sequence is: prepared-performance difference, trust, certified preset gallery, brief myth and identity, then contributor invitation.
+The first website viewport must let the visitor understand the product and act, without first reading the icon, myth, open-source model, or architecture. That requires real performance footage, a plain product sentence, and the primary action — and the primary action is whatever the visitor can actually complete today. Until a signed build exists there is nothing to download, so it is the notify form, and the requirements sit with that ask rather than above the fold or in a band of their own: Apple Silicon and macOS 14 gate an install, and nothing gates giving an email address — but somebody on an Intel Mac should learn that before they subscribe, not after. When the download lands (W.7), the CTA becomes “Download the beta” and the full requirements move up beside it, because at that point they gate the action. The remaining landing sequence is: what it does, featured scenes with their authors, and the name.
 
 macOS layouts are task-shaped: sidebar for durable destinations, toolbar for window-level actions, split view for selection/detail, inspector for editable secondary attributes, sheets for focused tasks, and popovers for transient choices. With two displays, the external display receives clean full-screen output and the Mac receives a compact Curator surface; mirrored full-screen output is the fallback.
 
@@ -246,10 +246,30 @@ The user journey is **Configure → Add music → Prepare → Handoff → Perfor
 
 - **Performance Preflight:** Before music is added, summarizes audio source, visual output/display, eligible repertoire, quality, and accessibility. Deep durable preferences open the native Settings scene.
 - **Source Picker:** Names the actual capabilities of local files, folders, playlists, Apple Music, Spotify, and any retained reactive source. Streaming never promises playback control the integration cannot honor.
-- **Preset Eligibility Picker:** Includes or excludes families and individual presets with author and certification metadata. It never exposes track assignments, future selections, ordering, transition placement, or plan editing.
+- **Scene Eligibility Picker:** Includes or excludes families and individual scenes with author and certification metadata. It never exposes track assignments, future selections, ordering, transition placement, or plan editing.
 - **Permission Explanation:** Before the macOS Screen Recording dialog, explains that Uzume uses system audio, captures neither screen nor microphone, processes locally, and does not need the permission for local-file playback.
-- **Preparation Stage:** A signature dark surface with progress-linked abstract light, a plain-language stage, completed/total count, elapsed time, credible estimate, and Listening → Separating → Understanding → Composing trace. It never reveals track names/order, artwork, selected presets/families, transitions, moods, or plan structure. “Start now” is exceptional-only while whole-session equivalence remains unvalidated.
-- **Streaming Handoff:** Authorized integrations may start legitimately. Otherwise it gives a source-specific instruction such as “Start the playlist in Spotify,” waits for sustained audio, then cuts directly to the first preset without a plan preview or Ready ceremony.
+- **Preparation Stage:** Two views behind a preference (app-side D-238), not one.
+  **Mysterious** is the default: a cave whose opening starts shut and widens as
+  Uzume hears the playlist. It reveals nothing about the music — no track names,
+  no order, no artwork, no chosen scenes or families, no transitions, moods or
+  plan structure. One opening, no per-track marks: a track landing surges the
+  light rather than leaving a mark, and the opening tracks the engine's four
+  readiness stops rather than the fraction complete, so eight tracks and forty
+  are the same object. Failures surface as a count line that opens the other
+  view. **Detailed** is opt-in and reports what Uzume heard in each track once it
+  has heard it — which necessarily names tracks and their order. Neither view has
+  a header or a progress bar; there is no elapsed-time readout, and the only
+  estimate is per-track, in the detailed list. “Start now” is exceptional-only
+  while whole-session equivalence remains unvalidated.
+
+  *This entry described only the mysterious view, and described it as the whole
+  surface — stated absolutely, with a “completed/total count, elapsed time,
+  credible estimate, and Listening → Separating → Understanding → Composing
+  trace” the app does not render. A caption on the landing page was written from
+  it and had to be corrected against a screenshot. Verified against
+  `PreparationProgressView.swift`, `PreparationAperture.swift` and
+  `PreparationTrackRow.swift`, 2026-09-23.*
+- **Streaming Handoff:** Authorized integrations may start legitimately. Otherwise it gives a source-specific instruction such as “Start the playlist in Spotify,” waits for sustained audio, then cuts directly to the first scene without a plan preview or Ready ceremony.
 - **Curator Control Surface:** Always discoverable on the Curator display and absent from separated Viewer output. It contains listening status, Show/Hide Track Information, and End Session; local-file transport appears only because Uzume owns that playback.
 - **Settings:** Native sidebar and form controls for Audio, Visual Output, Presets, Accessibility, Diagnostics, and About. Session-affecting changes state when they will apply.
 
@@ -282,7 +302,7 @@ Every relevant component handles ready, focus/selection, loading, empty, permiss
 ### Don't:
 
 - **Don't** describe Uzume as AI-powered or claim AI orchestration. Machine learning analyzes audio; deterministic rules plan the session.
-- **Don't** reveal the planned track sequence, preset choices, transitions, or moods before performance.
+- **Don't** reveal the planned track sequence, scene choices, transitions, or moods before performance.
 - **Don't** make the native app look like the marketing website; brand it through tint, display moments, language, and the performance itself.
 - **Don't** draw a camera iris, lens, eye, prism object, cave, door, or religious object as the core identity.
 - **Don't** redraw the spectrum as hard parallel rainbow stripes or use all identity colors as decorative controls.
