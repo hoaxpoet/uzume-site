@@ -475,15 +475,31 @@ const schema = {
 
   .beat {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     gap: var(--space-8);
     align-items: center;
   }
 
-  /* The evidence changes sides down the band, so three rows of the same
-     anatomy do not read as three identical slabs. */
-  .beat:nth-child(even) .beat__copy {
-    order: 2;
+  /* Two columns and the alternation are one decision, so they share one
+     breakpoint. They were separate: `auto-fit, minmax(20rem, 1fr)` collapsed
+     the grid on its own while `order: 2` stayed on at every width, so once the
+     beats stacked, the second one — "It analyzes" — put its screenshot above
+     its own heading. A reader met the evidence before the claim it was evidence
+     for, and only in that one beat.
+
+     46rem is where `auto-fit` used to break: two 20rem tracks plus a 2rem gap
+     is 42rem of content, and the gutter is 4vw until it reaches its 3rem
+     ceiling. Stated as a query rather than inferred from track sizes, the two
+     rules cannot drift apart again. */
+  @media (min-width: 46rem) {
+    .beat {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* The evidence changes sides down the band, so three rows of the same
+       anatomy do not read as three identical slabs. */
+    .beat:nth-child(even) .beat__copy {
+      order: 2;
+    }
   }
 
   .beat__copy h3 {
