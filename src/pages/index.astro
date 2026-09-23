@@ -238,11 +238,14 @@ const schema = {
       <div class="uz-preset-gallery">
         {featured.map(({ clip, preset }) => (
           <a class="preset-link" href={`/gallery/#${clip.slug}`}>
+            {/* thumbs, not posters. A card draws 438 CSS px at its widest and the
+                full poster is 1920 wide — the <video poster> size, which these cards
+                only ever borrowed because both came from the same manifest key. */}
             <PresetCard
               name={preset.name}
               author={preset.author}
-              poster={clip.posters.jpeg.url}
-              posterAvif={clip.posters.avif?.url}
+              poster={clip.thumbs.jpeg.url}
+              posterAvif={clip.thumbs.avif?.url}
             />
           </a>
         ))}

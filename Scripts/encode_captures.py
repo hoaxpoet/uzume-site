@@ -93,9 +93,23 @@ CRF_OVERRIDE = {("skein", "webm"): "26"}
 # posters already use, so they encode once and reproduce byte for byte; only a poster
 # over budget walks further down.
 # ponytail: a flat ceiling, not a per-preset table; the ladder is the escape hatch.
-POSTER_BUDGET = {"avif": 220_000, "jpg": 250_000}
 POSTER_LADDER = {"avif": ("20", "26", "30", "34", "38", "42"),
                  "jpg": ("2", "4", "6", "8", "10")}
+
+# Two sizes of still. The full one is what `<video poster>` shows, which is sized for a
+# gallery frame. The narrow one is for the landing page's cards, which were drawing a few
+# hundred pixels wide out of a 1920x1080 file. Measured at W.5n: the widest a card ever
+# draws is 438 CSS px (at a 1100 px viewport, where the column is capped but the gutter
+# has not yet grown), and the one-column phone layout at 375 px asks 303 CSS px, which a
+# DPR 3 screen turns into 909 device px. 960 clears both with headroom and carries a
+# quarter of the pixels, so one narrow rendition covers every case and the cards need no
+# srcset. Budgets scale with the area.
+# The thumb budget is not the poster's scaled by area. A quarter of it put Skein — the
+# densest frame on the site — off the bottom of the ladder at CRF 42, which is a budget
+# no encode of that frame can meet rather than an alarm worth hearing. These let it land
+# mid-ladder and still cut the heaviest card by more than half.
+POSTER_SIZES = (("posters", 1920, {"avif": 220_000, "jpg": 250_000}),
+                ("thumbs", 960, {"avif": 80_000, "jpg": 100_000}))
 
 
 def video_codec(ext, role, name):
@@ -284,7 +298,7 @@ def main():
     out = pathlib.Path(args[0] if args else "~/Movies/Uzume masters/W3b").expanduser()
     if REPO in out.resolve().parents or out.resolve() == REPO:
         sys.exit("encode_captures: the output directory must be outside the repo")
-    for sub in ("loops", "posters", "contact"):
+    for sub in ("loops", "posters", "thumbs", "contact"):
         (out / sub).mkdir(parents=True, exist_ok=True)
     published = json.loads(MANIFEST.read_text()) if MANIFEST.exists() else []
     verdicts = {e["slug"]: e["provenance"].get("encode_verdict") for e in published}
@@ -336,27 +350,38 @@ def main():
         yavg = luma(inputs, graph)
         median = statistics.median(yavg)
         frame = min(range(len(yavg)), key=lambda i: (abs(yavg[i] - median), i))
-        posters = {}
-        for ext, finish, codec in (
-                ("avif", "", lambda q: ["-c:v", "libsvtav1", "-crf", q, "-svtav1-params", "lp=4"]),
-                ("jpg", ",scale=out_range=pc,format=yuvj420p",
-                 lambda q: ["-c:v", "mjpeg", "-q:v", q])):
-            tmp = out / "posters" / f".{name}.tmp.{ext}"
-            for q in POSTER_LADDER[ext]:
-                ffmpeg(*inputs, "-filter_complex", f"{graph},select=eq(n\\,{frame}){finish}",
-                       "-frames:v", "1", "-map_metadata", "-1", *codec(q),
-                       "-f", "avif" if ext == "avif" else "image2", str(tmp))
-                if tmp.stat().st_size <= POSTER_BUDGET[ext]:
-                    break
-            else:
-                print(f"  {ext:4} poster: {tmp.stat().st_size / 1e3:.0f} kB at the bottom of the "
-                      f"ladder, over the {POSTER_BUDGET[ext] / 1e3:.0f} kB budget")
-            path, digest, existed = publish(tmp, out / "posters", name, ext)
-            posters["jpeg" if ext == "jpg" else ext] = {
-                "url": f"{BASE_URL}/posters/{path.name}", "bytes": path.stat().st_size}
-            print(f"  {ext:4} poster frame {frame} (Y {yavg[frame]:.1f}, median {median:.1f}) "
-                  f"q {q:>2}  {path.stat().st_size / 1e3:.0f} kB"
-                  f"{'  (reproduced)' if existed else ''}")
+        stills = {}
+        for kind, width, budget in POSTER_SIZES:
+            stills[kind] = {}
+            # Lanczos rather than the default bilinear: this is a one-off downscale of a
+            # still, so the sharper filter costs nothing and keeps the fine detail that
+            # makes these frames worth showing.
+            resize = "" if width == 1920 else f",scale={width}:-2:flags=lanczos"
+            for ext, finish, codec in (
+                    ("avif", "",
+                     lambda q: ["-c:v", "libsvtav1", "-crf", q, "-svtav1-params", "lp=4"]),
+                    ("jpg", ",scale=out_range=pc,format=yuvj420p",
+                     lambda q: ["-c:v", "mjpeg", "-q:v", q])):
+                tmp = out / kind / f".{name}.tmp.{ext}"
+                for q in POSTER_LADDER[ext]:
+                    ffmpeg(*inputs, "-filter_complex",
+                           f"{graph},select=eq(n\\,{frame}){resize}{finish}",
+                           "-frames:v", "1", "-map_metadata", "-1", *codec(q),
+                           "-f", "avif" if ext == "avif" else "image2", str(tmp))
+                    if tmp.stat().st_size <= budget[ext]:
+                        break
+                else:
+                    print(f"  {ext:4} {kind[:-1]}: {tmp.stat().st_size / 1e3:.0f} kB at the "
+                          f"bottom of the ladder, over the {budget[ext] / 1e3:.0f} kB budget")
+                path, digest, existed = publish(tmp, out / kind, name, ext)
+                stills[kind]["jpeg" if ext == "jpg" else ext] = {
+                    "url": f"{BASE_URL}/{kind}/{path.name}", "bytes": path.stat().st_size,
+                    "width": width}
+                print(f"  {ext:4} {kind[:-1]:6} frame {frame} (Y {yavg[frame]:.1f}, "
+                      f"median {median:.1f}) {width}w q {q:>2}  "
+                      f"{path.stat().st_size / 1e3:.0f} kB"
+                      f"{'  (reproduced)' if existed else ''}")
+        posters = stills["posters"]
 
         contact_sheet(out / "contact", name, inputs, graph, [r["path"] for r in renditions], frames)
 
@@ -368,6 +393,7 @@ def main():
                 "sha256": r["sha256"], "width": r["width"], "height": r["height"], "fps": FPS,
                 "duration_s": r["duration_s"]} for r in renditions],
             "posters": posters,
+            "thumbs": stills["thumbs"],
             "provenance": {
                 "source_master_sha256": entry["sha256"],
                 "loop_window_s": entry["loop_window_s"],

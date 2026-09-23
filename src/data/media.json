@@ -29,11 +29,25 @@
     "posters": {
       "avif": {
         "url": "https://media.uzume.io/posters/cymatic-resonance.c2dbc23f.avif",
-        "bytes": 18384
+        "bytes": 18384,
+        "width": 1920
       },
       "jpeg": {
         "url": "https://media.uzume.io/posters/cymatic-resonance.40f3d150.jpg",
-        "bytes": 47869
+        "bytes": 47869,
+        "width": 1920
+      }
+    },
+    "thumbs": {
+      "avif": {
+        "url": "https://media.uzume.io/thumbs/cymatic-resonance.562c4af4.avif",
+        "bytes": 8165,
+        "width": 960
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/thumbs/cymatic-resonance.500f6fb5.jpg",
+        "bytes": 20594,
+        "width": 960
       }
     },
     "provenance": {
@@ -79,11 +93,25 @@
     "posters": {
       "avif": {
         "url": "https://media.uzume.io/posters/ferrofluid-ocean.97162ba8.avif",
-        "bytes": 199315
+        "bytes": 199315,
+        "width": 1920
       },
       "jpeg": {
         "url": "https://media.uzume.io/posters/ferrofluid-ocean.a1f05e6c.jpg",
-        "bytes": 249592
+        "bytes": 249592,
+        "width": 1920
+      }
+    },
+    "thumbs": {
+      "avif": {
+        "url": "https://media.uzume.io/thumbs/ferrofluid-ocean.95e7a433.avif",
+        "bytes": 78328,
+        "width": 960
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/thumbs/ferrofluid-ocean.6742e932.jpg",
+        "bytes": 84393,
+        "width": 960
       }
     },
     "provenance": {
@@ -129,11 +157,25 @@
     "posters": {
       "avif": {
         "url": "https://media.uzume.io/posters/murmuration.7d74883d.avif",
-        "bytes": 51692
+        "bytes": 51692,
+        "width": 1920
       },
       "jpeg": {
         "url": "https://media.uzume.io/posters/murmuration.67bc5505.jpg",
-        "bytes": 93278
+        "bytes": 93278,
+        "width": 1920
+      }
+    },
+    "thumbs": {
+      "avif": {
+        "url": "https://media.uzume.io/thumbs/murmuration.27725eeb.avif",
+        "bytes": 15003,
+        "width": 960
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/thumbs/murmuration.f0086872.jpg",
+        "bytes": 28997,
+        "width": 960
       }
     },
     "provenance": {
@@ -179,11 +221,25 @@
     "posters": {
       "avif": {
         "url": "https://media.uzume.io/posters/fractal-tree.0b25985e.avif",
-        "bytes": 13245
+        "bytes": 13245,
+        "width": 1920
       },
       "jpeg": {
         "url": "https://media.uzume.io/posters/fractal-tree.930f1c54.jpg",
-        "bytes": 45032
+        "bytes": 45032,
+        "width": 1920
+      }
+    },
+    "thumbs": {
+      "avif": {
+        "url": "https://media.uzume.io/thumbs/fractal-tree.4b9689f3.avif",
+        "bytes": 6120,
+        "width": 960
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/thumbs/fractal-tree.d6bd1507.jpg",
+        "bytes": 18302,
+        "width": 960
       }
     },
     "provenance": {
@@ -229,11 +285,25 @@
     "posters": {
       "avif": {
         "url": "https://media.uzume.io/posters/skein.2643c2cc.avif",
-        "bytes": 213198
+        "bytes": 213198,
+        "width": 1920
       },
       "jpeg": {
         "url": "https://media.uzume.io/posters/skein.f5ff9abe.jpg",
-        "bytes": 240166
+        "bytes": 240166,
+        "width": 1920
+      }
+    },
+    "thumbs": {
+      "avif": {
+        "url": "https://media.uzume.io/thumbs/skein.8f31e9c9.avif",
+        "bytes": 74879,
+        "width": 960
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/thumbs/skein.59a3ee90.jpg",
+        "bytes": 98084,
+        "width": 960
       }
     },
     "provenance": {
@@ -279,11 +349,25 @@
     "posters": {
       "avif": {
         "url": "https://media.uzume.io/posters/nimbus.f73f6629.avif",
-        "bytes": 13912
+        "bytes": 13912,
+        "width": 1920
       },
       "jpeg": {
         "url": "https://media.uzume.io/posters/nimbus.c64f85f4.jpg",
-        "bytes": 42971
+        "bytes": 42971,
+        "width": 1920
+      }
+    },
+    "thumbs": {
+      "avif": {
+        "url": "https://media.uzume.io/thumbs/nimbus.331a4090.avif",
+        "bytes": 6161,
+        "width": 960
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/thumbs/nimbus.1ac7c7a5.jpg",
+        "bytes": 17735,
+        "width": 960
       }
     },
     "provenance": {
@@ -329,11 +413,25 @@
     "posters": {
       "avif": {
         "url": "https://media.uzume.io/posters/nebula.b93b933d.avif",
-        "bytes": 17447
+        "bytes": 17447,
+        "width": 1920
       },
       "jpeg": {
         "url": "https://media.uzume.io/posters/nebula.826970ca.jpg",
-        "bytes": 55916
+        "bytes": 55916,
+        "width": 1920
+      }
+    },
+    "thumbs": {
+      "avif": {
+        "url": "https://media.uzume.io/thumbs/nebula.31994988.avif",
+        "bytes": 7179,
+        "width": 960
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/thumbs/nebula.973e8bc0.jpg",
+        "bytes": 21996,
+        "width": 960
       }
     },
     "provenance": {
@@ -379,11 +477,25 @@
     "posters": {
       "avif": {
         "url": "https://media.uzume.io/posters/aurora-veil.44adb2ff.avif",
-        "bytes": 43319
+        "bytes": 43319,
+        "width": 1920
       },
       "jpeg": {
         "url": "https://media.uzume.io/posters/aurora-veil.ca840169.jpg",
-        "bytes": 132470
+        "bytes": 132470,
+        "width": 1920
+      }
+    },
+    "thumbs": {
+      "avif": {
+        "url": "https://media.uzume.io/thumbs/aurora-veil.43dc667f.avif",
+        "bytes": 17108,
+        "width": 960
+      },
+      "jpeg": {
+        "url": "https://media.uzume.io/thumbs/aurora-veil.b60f4db3.jpg",
+        "bytes": 49732,
+        "width": 960
       }
     },
     "provenance": {
