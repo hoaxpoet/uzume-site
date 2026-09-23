@@ -118,6 +118,8 @@ const schema = {
             meta={`${author} · ${family}`}
             poster={clip.posters.jpeg.url}
             posterAvif={clip.posters.avif?.url}
+            thumb={clip.thumbs.jpeg.url}
+            thumbAvif={clip.thumbs.avif?.url}
             sources={clip.renditions}
           />
           {caption && <p class="performance__caption">{caption}</p>}

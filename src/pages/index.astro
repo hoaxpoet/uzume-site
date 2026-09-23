@@ -118,6 +118,8 @@ const schema = {
           title={hero.preset}
           poster={hero.posters.jpeg.url}
           posterAvif={hero.posters.avif?.url}
+          thumb={hero.thumbs.jpeg.url}
+          thumbAvif={hero.thumbs.avif?.url}
           sources={hero.renditions}
         />
       </div>
@@ -211,6 +213,8 @@ const schema = {
                   meta={`${accompanist.preset.author} · ${accompanist.preset.family}`}
                   poster={accompanist.clip.posters.jpeg.url}
                   posterAvif={accompanist.clip.posters.avif?.url}
+                  thumb={accompanist.clip.thumbs.jpeg.url}
+                  thumbAvif={accompanist.clip.thumbs.avif?.url}
                   sources={accompanist.clip.renditions}
                 />
               )}

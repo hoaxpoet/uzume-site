@@ -825,6 +825,39 @@ poster is the only image a visitor sees — and it is still the 1920 one, becaus
 `VideoTile` assigns it in JS and would have to choose by width as well as by
 format. The rendition it would need now exists; wiring it is a separate change.
 
+### W.5o — The poster a phone actually gets *(2026-09-23)*
+
+`VideoTile` now chooses between the full still and W.5n's 960-wide one by the
+width the element is actually drawn at. A phone loading `/gallery` fetches
+**571 → 213 kB** of AVIF, 63 % less, and the hero's still goes 52 → 15 kB.
+
+**This is the half of W.5n that mattered more.** The cards were a waste; this is
+not. A narrow screen never plays a loop — `VideoTile` gates playback on reduced
+motion, `saveData` and a 48rem breakpoint — so on a phone the poster is not a
+placeholder waiting for video, it is the entire image. It was being served at
+1920 to a screen that cannot resolve it, over the connection most likely to be
+metered.
+
+**Chosen at assignment time, not by a media query.** `<video poster>` cannot
+negotiate, which is why the format is already picked in script; the size joins
+it there, from `clientWidth × devicePixelRatio` once the element is laid out.
+Both cases verified rendered: at 375 px / DPR 2 the need is 686 and the thumbs
+are assigned, at 1440 px / DPR 2 it is 2112 and the full posters are.
+
+**The 1.25 factor is a judgement with a stated cost.** The narrow rendition is
+taken when the need is within 1.25 × 960. A DPR 3 phone at 393 CSS px needs
+about 1180 and gets 960 — roughly 82 % — so the densest frames soften slightly
+on exactly the screens where the poster is final. That is the trade: those
+screens are also the metered ones, and the alternative is 199 kB rather than 78
+for Ferrofluid Ocean. A 1280-wide rendition would remove the compromise, and the
+comment in `VideoTile` says to add one if it ever reads as soft on a real phone.
+
+**Testing note.** The Browser pane reports `visibilityState: "hidden"` when it
+is not fronted, and `IntersectionObserver` does not fire in a hidden document —
+so posters stay unassigned and the lazy path looks broken when it is not. This
+cost a wrong conclusion once already (W.5i). Front the tab before believing a
+poster measurement.
+
 ### W.5 — Docs *(about two sessions)*
 
 Starlight curation, outsider-first, per plan §3: Getting Started (requirements, build-from-source today, the Screen Recording permission explainer, local files vs. streaming), Using Uzume, Contributing Presets (two-file drop-in, hot reload, gates and certification lifecycle). Each page's frontmatter names its upstream app-repo doc; `lychee` checks those references in CI.
