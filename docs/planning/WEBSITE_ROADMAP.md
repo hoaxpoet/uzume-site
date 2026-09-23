@@ -709,6 +709,51 @@ Murmuration's poster but contrast over moving video cannot be measured, and
 unlike the wordmark the claim has no WCAG exemption. W.3c's skyless scenes are
 the real fix.
 
+### W.5l — The hero's encode weight *(2026-09-23)*
+
+Murmuration re-encoded at a lower rate cap: **15.26 → 11.45 MB** (AV1/WebM) and
+**15.42 → 11.57 MB** (H.264/MP4), 4.07 → 3.05 Mbit/s, still 30 s at 1080p60.
+Every other loop is byte-identical; only the hero moved.
+
+**First, a correction.** The critique that raised this called the hero "over the
+repo's 8–12 MB ceiling". It was not. That is the *gallery* budget;
+`encode_captures.py` records `BUDGET_MB = {"hero": 24, "gallery": 12}` and
+WEBSITE_PLAN §5 says "hero somewhat larger". At 15.26 MB the hero was inside its
+budget, and the finding compared it against the wrong number.
+
+**Why it moved anyway.** Not the budget — the fact that both codecs sat pinned
+to their caps. AV1 landed within 1 % of x264 on a clip AV1 should win easily,
+which only happens when the cap and not CRF is setting the size. So the bits
+were bounded by a number we chose, the quality was bounded with them, and the
+number was chosen once before for exactly this reason: W.3b already lowered the
+hero from the gallery cap because 22.5 MB "stalls on a weak connection". This is
+that decision continued, not reversed.
+
+**What it cost.** SSIM Y 0.9892 → 0.9840, XPSNR 37.29 dB. For scale, the lowest
+quality the site has ever published is Ferrofluid Ocean at 0.9337, accepted as
+shippable; the hero after this change sits far above it. Both renditions pass
+every bar — stream, frames, size, luminance seam, chroma seam — and the posters
+reproduce byte-identically, so the loop's framing and its still are unchanged.
+
+**Rejected: a shorter loop.** 30 → 20 s would have saved the same bytes at
+identical per-frame quality, and was the first instinct. It loses to the rate
+cut because W.3b chose 30 s on the reasoning that "visitors linger on the hero",
+and trading a third of the footage before repetition is a visible change to the
+page, where a 0.005 SSIM step is not.
+
+**Two encoder fixes this surfaced.**
+
+- `--only=<slug>` re-encodes one preset and keeps the rest. SVT-AV1 does not
+  reproduce, so the existing `--reencode` rewrites all eight loops' bytes to
+  change one — churning R2 objects and invalidating verdicts for nothing.
+- **An `encode_verdict` is now carried forward only onto the bytes it was
+  recorded against.** It was carried by slug, so any re-encode silently kept
+  Matt's "quality appears strong" against footage he had never seen. Murmuration's
+  verdict is now `null`, which is the honest state: **this encode is unjudged.**
+
+**Needs Matt.** The new hero is on the preview URL. The quality call is his, and
+until he makes it `encode_verdict` stays null.
+
 ### W.5 — Docs *(about two sessions)*
 
 Starlight curation, outsider-first, per plan §3: Getting Started (requirements, build-from-source today, the Screen Recording permission explainer, local files vs. streaming), Using Uzume, Contributing Presets (two-file drop-in, hot reload, gates and certification lifecycle). Each page's frontmatter names its upstream app-repo doc; `lychee` checks those references in CI.

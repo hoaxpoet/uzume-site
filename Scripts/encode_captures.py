@@ -24,8 +24,14 @@ in any thread or rate configuration tried (W.3b). So a plain run keeps the loops
 publishes and only re-measures them — the published, reviewed bytes stay the source of
 truth — and `--reencode` encodes every loop afresh.
 
-    python3 Scripts/encode_captures.py [--reencode] [out_dir]
+    python3 Scripts/encode_captures.py [--reencode] [--only=<slug>] [out_dir]
                                                      default ~/Movies/Uzume masters/W3b
+
+`--only=<slug>` re-encodes just that preset and keeps the rest, which is what you want
+when a setting changes for one role: SVT-AV1 does not reproduce, so a blanket
+`--reencode` rewrites every loop's bytes for no reason. An `encode_verdict` is carried
+forward only onto the exact bytes it was recorded against — re-encode a clip and it
+returns to unjudged, whatever the manifest said before.
 
 Exit 0 when every rendition meets its bars, 1 when any does not, 2 on a tool error.
 """
@@ -58,9 +64,14 @@ BUDGET_MB = {"hero": 24, "gallery": 12}  # WEBSITE_PLAN §5: 8-12 MB, hero "some
 # cap, hence 5000 against x264's 6M. Ferrofluid Ocean is near-incompressible — uncapped
 # AV1 at CRF 30 is 48 MB for SSIM 0.949, against 0.937 in budget — so its cap binds.
 # The hero is capped lower (Matt, W.3b): at the gallery cap Murmuration's 30 s loop was
-# 22.5 MB, about 6 Mbit/s, which stalls on a weak connection.
+# 22.5 MB, about 6 Mbit/s, which stalls on a weak connection. Lowered again at W.5l, the
+# same decision continued: 4 Mbit/s still bought 15.4 MB for SSIM 0.9892, far above the
+# 0.937 accepted for Ferrofluid Ocean, and the hero is the one file every landing-page
+# visitor downloads. Both codecs sat pinned to their caps at 4 Mbit/s — AV1 and x264
+# within 1 % of each other on a clip AV1 should win easily — so the cap, not CRF, is what
+# sets this clip's size, and moving the cap moves the bytes almost linearly.
 # ponytail: one setting per role; per-preset rates if one misses its bar.
-CAPS = {"hero": ("3500", "4M"), "gallery": ("5000", "6M")}  # (SVT-AV1 kbps, x264)
+CAPS = {"hero": ("2500", "3M"), "gallery": ("5000", "6M")}  # (SVT-AV1 kbps, x264)
 
 CRF = {"webm": "34", "mp4": "20"}
 # Per-preset CRF, where a role's default puts a rendition outside a bar. Skein's canvas
@@ -254,7 +265,8 @@ def contact_sheet(out, stem, inputs, graph, renditions, frames):
 def main():
     args = sys.argv[1:]
     reencode = "--reencode" in args
-    args = [a for a in args if a != "--reencode"]
+    only = {a.split("=", 1)[1] for a in args if a.startswith("--only=")}
+    args = [a for a in args if a != "--reencode" and not a.startswith("--only=")]
     out = pathlib.Path(args[0] if args else "~/Movies/Uzume masters/W3b").expanduser()
     if REPO in out.resolve().parents or out.resolve() == REPO:
         sys.exit("encode_captures: the output directory must be outside the repo")
@@ -262,7 +274,12 @@ def main():
         (out / sub).mkdir(parents=True, exist_ok=True)
     published = json.loads(MANIFEST.read_text()) if MANIFEST.exists() else []
     verdicts = {e["slug"]: e["provenance"].get("encode_verdict") for e in published}
+    # sha256 per slug as published, so a verdict can be carried forward only onto the
+    # exact bytes it was given for.
+    shas = {e["slug"]: {r["sha256"] for r in e["renditions"]} for e in published}
     kept = {r["url"].rsplit("/", 1)[1] for e in published for r in e["renditions"]}
+    if only - {slug(e["preset"]) for e in json.loads(LOG.read_text())}:
+        sys.exit(f"encode_captures: --only names no such preset: {sorted(only)}")
 
     manifest, all_ok = [], True
     for entry in json.loads(LOG.read_text()):
@@ -277,9 +294,10 @@ def main():
         print(f"{entry['preset']} ({entry['role']}, {frames // FPS} s, master {span[0]}-{span[1]} s)")
 
         renditions = []
+        fresh = reencode or name in only
         for ext in ("webm", "mp4"):
             keep = [p for p in (out / "loops").glob(f"{name}.*.{ext}") if p.name in kept]
-            if keep and not reencode:
+            if keep and not fresh:
                 path, existed = keep[0], True
                 digest = hashlib.sha256(path.read_bytes()).hexdigest()
             else:
@@ -298,7 +316,7 @@ def main():
                   f"seam dY {r['seam']:.2f} <= {r['inner']:.2f}  "
                   f"dUV {r['chroma_seam']:.2f} <= {r['chroma_inner']:.2f}  "
                   f"{'PASS' if not failed else 'FAIL ' + ','.join(failed)}"
-                  f"{'  (kept)' if keep and not reencode else '  (reproduced)' if existed else ''}")
+                  f"{'  (kept)' if keep and not fresh else '  (reproduced)' if existed else ''}")
 
         # Poster: the frame nearest the loop's median luma, from the same 8-bit loop.
         yavg = luma(inputs, graph)
@@ -335,7 +353,9 @@ def main():
                 "crossfade_s": FADE / FPS,
                 **{k: entry[k] for k in ("captured_at", "app_commit", "track", "rights",
                                          "d157_verdict")},
-                "encode_verdict": verdicts.get(name),
+                "encode_verdict": (verdicts.get(name)
+                                   if {r["sha256"] for r in renditions} == shas.get(name)
+                                   else None),
             },
         })
 

@@ -106,20 +106,20 @@
     "roster_quote": "Beautiful. Cloud could be bigger, take up more of the screen",
     "renditions": [
       {
-        "url": "https://media.uzume.io/loops/murmuration.f66a3fc2.webm",
+        "url": "https://media.uzume.io/loops/murmuration.1fd09f78.webm",
         "type": "video/webm; codecs=\"av01.0.09M.08\"",
-        "bytes": 15261362,
-        "sha256": "f66a3fc275a97342838c72c5c9969bef71196c5734a89bb730e0ec21e6315cbc",
+        "bytes": 11451426,
+        "sha256": "1fd09f787060db59d0cf3a64f600a7a097f9140d18445a1f43f7b91e0e86eb72",
         "width": 1920,
         "height": 1080,
         "fps": 60,
         "duration_s": 30.0
       },
       {
-        "url": "https://media.uzume.io/loops/murmuration.7d8c7572.mp4",
+        "url": "https://media.uzume.io/loops/murmuration.0f05848a.mp4",
         "type": "video/mp4; codecs=\"avc1.64002A\"",
-        "bytes": 15418963,
-        "sha256": "7d8c75722be4cba6d222adaa5515683e57c3c4d5bc0c251955d3a17edcc4bbc6",
+        "bytes": 11574799,
+        "sha256": "0f05848a6abb486c11fe8a32b0ca92fef21702f0a202a92f0e4e98200acc714c",
         "width": 1920,
         "height": 1080,
         "fps": 60,
@@ -146,7 +146,7 @@
       "track": "Delinquent Frequencies — The Goddamn Shame, Dispatches from the Grey City (EP, 2006)",
       "rights": "“Delinquent Frequencies” — The Goddamn Shame, Dispatches from the Grey City (EP, 2006, self-released). Written by Deming/Hudac. Used with the permission of the songwriters and the band. Audio not published.",
       "d157_verdict": "Matt, 2026-09-16: \"all three pass steady luminance\"",
-      "encode_verdict": "Matt, 2026-09-18: \"Quality appears strong across all three presets. Brightness is steady. Clear to proceed.\""
+      "encode_verdict": null
     }
   },
   {
