@@ -83,6 +83,20 @@ CRF = {"webm": "34", "mp4": "20"}
 # ponytail: one override, not a per-preset table; widen it only if another preset needs one.
 CRF_OVERRIDE = {("skein", "webm"): "26"}
 
+# Posters are placeholders, not prints. Six of the eight loops land at 13-52 kB of AVIF
+# at CRF 20; Skein and Ferrofluid Ocean land at 439 and 382, because the dense
+# high-frequency fields that make their video the heaviest on the site make their stills
+# heavy too. Measured at W.5m before choosing this: the frame is not the cause — the 24
+# frames closest to Skein's median luma, every one as representative as the one picked,
+# span 427-441 kB — and the quality curve is shallow, so a ladder that stops at the first
+# step inside budget beats a blanket quality cut. The first rung is the setting the light
+# posters already use, so they encode once and reproduce byte for byte; only a poster
+# over budget walks further down.
+# ponytail: a flat ceiling, not a per-preset table; the ladder is the escape hatch.
+POSTER_BUDGET = {"avif": 220_000, "jpg": 250_000}
+POSTER_LADDER = {"avif": ("20", "26", "30", "34", "38", "42"),
+                 "jpg": ("2", "4", "6", "8", "10")}
+
 
 def video_codec(ext, role, name):
     av1, x264 = CAPS[role]
@@ -324,17 +338,25 @@ def main():
         frame = min(range(len(yavg)), key=lambda i: (abs(yavg[i] - median), i))
         posters = {}
         for ext, finish, codec in (
-                ("avif", "", ["-c:v", "libsvtav1", "-crf", "20", "-svtav1-params", "lp=4"]),
-                ("jpg", ",scale=out_range=pc,format=yuvj420p", ["-c:v", "mjpeg", "-q:v", "2"])):
+                ("avif", "", lambda q: ["-c:v", "libsvtav1", "-crf", q, "-svtav1-params", "lp=4"]),
+                ("jpg", ",scale=out_range=pc,format=yuvj420p",
+                 lambda q: ["-c:v", "mjpeg", "-q:v", q])):
             tmp = out / "posters" / f".{name}.tmp.{ext}"
-            ffmpeg(*inputs, "-filter_complex", f"{graph},select=eq(n\\,{frame}){finish}", "-frames:v", "1",
-                   "-map_metadata", "-1", *codec, "-f", "avif" if ext == "avif" else "image2",
-                   str(tmp))
+            for q in POSTER_LADDER[ext]:
+                ffmpeg(*inputs, "-filter_complex", f"{graph},select=eq(n\\,{frame}){finish}",
+                       "-frames:v", "1", "-map_metadata", "-1", *codec(q),
+                       "-f", "avif" if ext == "avif" else "image2", str(tmp))
+                if tmp.stat().st_size <= POSTER_BUDGET[ext]:
+                    break
+            else:
+                print(f"  {ext:4} poster: {tmp.stat().st_size / 1e3:.0f} kB at the bottom of the "
+                      f"ladder, over the {POSTER_BUDGET[ext] / 1e3:.0f} kB budget")
             path, digest, existed = publish(tmp, out / "posters", name, ext)
             posters["jpeg" if ext == "jpg" else ext] = {
                 "url": f"{BASE_URL}/posters/{path.name}", "bytes": path.stat().st_size}
             print(f"  {ext:4} poster frame {frame} (Y {yavg[frame]:.1f}, median {median:.1f}) "
-                  f"{path.stat().st_size / 1e3:.0f} kB{'  (reproduced)' if existed else ''}")
+                  f"q {q:>2}  {path.stat().st_size / 1e3:.0f} kB"
+                  f"{'  (reproduced)' if existed else ''}")
 
         contact_sheet(out / "contact", name, inputs, graph, [r["path"] for r in renditions], frames)
 

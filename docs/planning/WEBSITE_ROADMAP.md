@@ -754,6 +754,45 @@ page, where a 0.005 SSIM step is not.
 **Needs Matt.** The new hero is on the preview URL. The quality call is his, and
 until he makes it `encode_verdict` stays null.
 
+### W.5m — The two heavy posters *(2026-09-23)*
+
+Skein and Ferrofluid Ocean's stills roughly halved. AVIF **439 → 213 kB** and
+**382 → 199 kB**; JPEG **585 → 240 kB** and **551 → 250 kB**. The other six
+posters and all eight loops are byte-identical.
+
+**The cause is the content, not the settings.** These two carry the densest
+fields on the site — which is also why their video is the heaviest — so their
+stills were 8-30x their siblings' 13-52 kB at the same CRF 20.
+
+**Two cheaper explanations were measured and ruled out first.**
+
+- *The frame.* The poster is whichever frame sits closest to the loop's median
+  luma, so a dense frame could have been bad luck. It was not: the 24 frames
+  nearest Skein's median — every one as representative as the one picked — span
+  427-441 kB. Frame choice is worth 1-3 %, so selecting for compressibility
+  would have bought nothing and cost the selection rule its meaning.
+- *A blanket quality cut.* The curve is shallow. Even CRF 42, visibly degraded,
+  leaves Skein at 171 kB — still 3x Murmuration at CRF 20. There is no setting
+  that makes these frames cheap, only one that makes every other poster worse.
+
+**So: a budget with a ladder.** 220 kB AVIF, 250 kB JPEG; the first rung is the
+CRF 20 / q2 the light posters already use, so six of eight encode once and
+reproduce byte for byte, and only a poster over budget walks further down.
+Ferrofluid lands at CRF 34, Skein at CRF 38.
+
+**Checked by eye, not by SSIM.** Both were compared against their CRF 20
+originals at 1:1 on a 700x560 crop. Skein's flat poster-paint shapes and
+Ferrofluid's violet gradients both hold; no banding in Ferrofluid's dark field,
+which was the risk worth looking for.
+
+**Not addressed: the same posters are the homepage's card images.** Six
+`PresetCard` stills render a few hundred pixels wide and load the full 1920x1080
+poster, because `<video poster>` takes one URL and the cards reuse it. A second
+narrow rendition would help every card, not just these two, and would also serve
+phones — where reduced motion, a metered connection or a narrow screen means the
+poster is the only image a visitor ever sees. That is a manifest-shape change
+and its own increment.
+
 ### W.5 — Docs *(about two sessions)*
 
 Starlight curation, outsider-first, per plan §3: Getting Started (requirements, build-from-source today, the Screen Recording permission explainer, local files vs. streaming), Using Uzume, Contributing Presets (two-file drop-in, hot reload, gates and certification lifecycle). Each page's frontmatter names its upstream app-repo doc; `lychee` checks those references in CI.
