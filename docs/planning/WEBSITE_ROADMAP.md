@@ -1233,9 +1233,29 @@ and a named author — and the largest cost. They cut against the one-page
 gallery, so they are a W.7 question, not a W.6 one. With them: per-page OG
 images, `max-image-preview:large`, and Search Console verification.
 
-### W.7 — Download flip *(blocked on app-side work; no site work wasted meanwhile)*
+### W.7 — Download flip *(landed 2026-09-30)*
 
-When a signed, notarized artifact is on GitHub Releases: `/download` gains the real CTA, the landing CTA flips, beta copy moves to present tense. The landing page's `SoftwareApplication` schema gains `offers`, `downloadUrl` and `softwareVersion` at the same moment — all three assert an installable artifact, so they are omitted until one exists. Prerequisite track (app repo, parallel, start whenever): ADP membership → Developer ID signing → `notarytool` in the release pipeline → tagged Release.
+Uzume 0.9.0 (build 9) is a signed, notarized, stapled DMG on GitHub Releases at
+tag `v0.9.0`. Decisions:
+
+- **The DMG is the download**, not the dSYM zip — that is debug symbols for
+  symbolicating crash reports, kept with the build, never offered to listeners.
+- **Linked directly, versioned.** `src/data/release.json` holds the version and
+  the asset URL; the landing page, /gallery and the schema read it, and Getting
+  started repeats the URL in Markdown. `releases/latest/download/…` was rejected:
+  the asset name carries the version, and `ml-weights-v1` competes for "latest".
+  A new build is one edit to that file (and the Markdown link).
+- **No `/download` page.** The landing section and the gallery outro carry the
+  button; Getting started carries install steps and build-from-source. A page
+  can arrive when there is more to say than "open, drag, open".
+- **Kit form retired.** `NotifyForm` and `/confirmed` are gone; `/confirmed`
+  301s to `/` for confirmation links still in inboxes; the CSP drops
+  `app.kit.com` and `form-action` is `'none'`. `email/` and `public/email/`
+  stay, for the announcement to the list.
+- **macOS 15, not 14.** The app's deployment target is 15.0
+  (`MACOSX_DEPLOYMENT_TARGET`, `UzumeEngine` `.macOS(.v15)`); the site said 14.
+- **Spotify is read from the screen** in the beta (D-260) — no login, no client
+  ID — so Getting started stopped describing the bring-your-own-ID connector.
 
 ## 4. Order
 
