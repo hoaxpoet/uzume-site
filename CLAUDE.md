@@ -10,11 +10,10 @@ Governing docs: `docs/planning/WEBSITE_ROADMAP.md` (sessions W.0–W.7) and
 - **Source-of-truth boundary** (`README.md` table): this repo never asserts product
   facts on its own. Any claim about what the app does, requires, or ships is verified
   against the app repo before it appears in copy.
-- **Copy law** (`PRODUCT.md`): the beta is written in the **future tense** until a
-  signed, notarized artifact exists on GitHub Releases. No AI or AI-orchestration
-  claims. Flash safety is stated as **"steady luminance"** (the D-157 gate), never as
-  a flashes-per-second figure. "Open source and buildable" and "available to install"
-  are different claims — only the first is true today.
+- **Copy law** (`PRODUCT.md`): the beta has shipped (W.7) and is written in the
+  **present tense**; the download URL and version live in `src/data/release.json`.
+  No AI or AI-orchestration claims. Flash safety is stated as **"steady luminance"**
+  (the D-157 gate), never as a flashes-per-second figure.
 - **Tokens first**: all styling flows from the custom properties in `tokens.css`
   (repo root — the single source; import it, never fork it). No hardcoded colors or
   type in pages or components. Gate: `python3 Scripts/check_contrast.py tokens.css`.

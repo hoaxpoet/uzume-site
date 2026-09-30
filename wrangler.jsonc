@@ -23,8 +23,7 @@
   // reached at uzume.io, and preview versions take no traffic from it.
   //
   // Note that a preview URL is public to anyone who has it. Everything the site
-  // says is already written for publication, and the beta copy is in the future
-  // tense either way (PRODUCT.md), so this exposes no claim that uzume.io will
-  // not eventually make.
+  // says is already written for publication, so this exposes no claim that
+  // uzume.io does not make.
   "preview_urls": true
 }
