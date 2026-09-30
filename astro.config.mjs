@@ -16,7 +16,7 @@ export default defineConfig({
     // /404 is excluded by the integration itself; named anyway so the set of
     // pages kept out of search lives in one readable place.
     sitemap({
-      filter: (page) => !/\/(404|design|confirmed)\/$/.test(page),
+      filter: (page) => !/\/(404|design)\/$/.test(page),
     }),
     starlight({
       title: "Uzume",

@@ -9,8 +9,8 @@ something for it to play.
 
 ## Start here
 
-- **[Getting started](/docs/getting-started/)** — what it needs, how to build
-  and run it today, what the Screen Recording permission is for, and the
+- **[Getting started](/docs/getting-started/)** — what it needs, how to
+  download and install it, what the Screen Recording permission is for, and the
   questions most people arrive with.
 - **[Using Uzume](/docs/using-uzume/)** — what happens while a session runs,
   how to steer it, and what to do when it goes quiet.

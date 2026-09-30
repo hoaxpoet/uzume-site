@@ -5,8 +5,8 @@ import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import VideoTile from "../components/VideoTile.astro";
 import Button from "../components/Button.astro";
-import NotifyForm from "../components/NotifyForm.astro";
 import media from "../data/media.json";
+import release from "../data/release.json";
 
 // Neither the old title ("Gallery — Uzume") nor the old description said what
 // the page held a gallery of, so a result for it read as a gallery of nothing
@@ -145,8 +145,8 @@ const schema = {
         </Button>
       </div>
 
-      <div class="outro__notify">
-        <NotifyForm />
+      <div class="outro__get">
+        <Button href={release.dmg}>Download the beta</Button>
       </div>
 
       <p class="outro__rights">
@@ -256,22 +256,17 @@ const schema = {
 
   /* The page that convinces people had no way out of it: its last focusable
      element was the footer's GitHub link. Both audiences get a door now — the
-     contributor a repository, the listener the same form the landing page
+     contributor a repository, the listener the same download the landing page
      offers, because this is where they are persuaded. */
   .outro__actions {
     margin-bottom: var(--space-16);
   }
 
-  .outro__notify {
+  .outro__get {
     display: flex;
     justify-content: center;
     padding-block: var(--space-12);
     border-top: 1px solid var(--color-line);
-  }
-
-  .outro__notify :global(.notify) {
-    align-items: center;
-    text-align: center;
   }
 
   .outro__rights {

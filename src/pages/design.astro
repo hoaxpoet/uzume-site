@@ -9,14 +9,14 @@ import PresetCard from "../components/PresetCard.astro";
 import VideoTile from "../components/VideoTile.astro";
 
 const requirements = [
-  { term: "macOS", description: "macOS 14 Sonoma or later" },
+  { term: "macOS", description: "macOS 15 Sequoia or later" },
   { term: "Hardware", description: "Any Apple silicon Mac" },
   {
     term: "Audio",
     description:
       "Local files today; system audio needs the Screen Recording permission",
   },
-  { term: "Cost", description: "Open source and buildable from source" },
+  { term: "Cost", description: "Free and open source, MIT-licensed" },
 ];
 ---
 
@@ -45,7 +45,7 @@ const requirements = [
       </div>
       <Button
         disabled
-        reason="A signed, notarized build is not on GitHub Releases yet."
+        reason="Uzume needs macOS 15 or later."
       >
         Download beta
       </Button>
@@ -54,9 +54,8 @@ const requirements = [
     <section>
       <h2>Callout</h2>
       <div class="stack">
-        <Callout title="The beta is coming">
-          Uzume is open source and buildable from source today. A notarized
-          build will follow.
+        <Callout title="The beta is here">
+          Uzume is free and open source, and the beta is signed and notarized.
         </Callout>
         <Callout tone="success" title="Tested for steady luminance">
           Every preset holds its luminance steady across the frame.

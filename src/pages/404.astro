@@ -1,7 +1,6 @@
 ---
 // Starlight's disable404Route leaves the whole site without one, so every
-// mistyped or stale link — /download and /gallery among them, both named as
-// forthcoming in Nav.astro — served an empty 0-byte document until this page.
+// mistyped or stale link served an empty 0-byte document until this page.
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
@@ -27,8 +26,8 @@ const description = "That page isn't here.";
       <h1 class="notfound__title">That page isn't here.</h1>
 
       <p class="notfound__lede">
-        It may never have been, or it may be waiting on a later increment — the
-        gallery and the download page are both still to come.
+        It may never have been, or it may have moved. The start is a good place
+        to look again.
       </p>
 
       <div class="notfound__actions">

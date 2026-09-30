@@ -2,18 +2,6 @@
 # _headers is honored for asset responses, and the www -> apex redirect cannot live
 # here — _redirects does not support domain-level (source hostname) matching, so it
 # is a zone-level Redirect Rule instead.
-# NotifyForm posts to Kit, and the CSP has to permit BOTH of its paths or the form
-# silently cannot submit at all:
-#
-#   connect-src https://app.kit.com   the JavaScript path. Without it the fetch is
-#                                     refused by the browser before it leaves, the
-#                                     promise rejects, and the form's catch branch
-#                                     reports "Couldn't reach the mailing list" —
-#                                     which reads like Kit is down rather than like
-#                                     a policy on our own page.
-#   form-action https://app.kit.com   the no-JavaScript fallback, which is a native
-#                                     POST to the same origin. This was 'none',
-#                                     which blocks every form on the site.
 #
 # Media (video loops, posters) is served from R2 at media.uzume.io, so BOTH of
 # these are required or the gallery renders nothing:
@@ -24,13 +12,14 @@
 #                                      refused.
 #   img-src   https://media.uzume.io   posters and stills, same reason.
 #
-# Same class of bug as the Kit one below, and it fails the same silent way.
+# Both were blocked from W.2 until 2026-09-15, and it went unnoticed because CSP
+# exists only in the browser. Test in a real browser after touching this file, not
+# with a request tool.
 #
-# Both were blocked from W.2 until 2026-09-15, and it went unnoticed because Kit's
-# endpoint tests clean from curl — CSP exists only in the browser. Test the form in
-# a real browser after touching this file, not with a request tool.
+# form-action is 'none': the site has no forms since the Kit notify form retired
+# at W.7.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: accelerometer=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com/beacon.min.js; connect-src 'self' https://cloudflareinsights.com https://app.kit.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://media.uzume.io; media-src 'self' https://media.uzume.io; font-src 'self'; object-src 'none'; base-uri 'none'; form-action https://app.kit.com; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com/beacon.min.js; connect-src 'self' https://cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://media.uzume.io; media-src 'self' https://media.uzume.io; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
